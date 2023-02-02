@@ -1,1 +1,0 @@
-const landing = 1;
