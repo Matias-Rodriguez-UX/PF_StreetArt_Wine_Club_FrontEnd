@@ -38,4 +38,5 @@ export default function Why() {
             </div>
         </>
     )
+
 }

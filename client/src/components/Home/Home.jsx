@@ -1,6 +1,6 @@
 import React from "react";
 import Banner from '../Banner'
-import NavBar from '../Navbar'
+import NavBar from '../Navbar/index'
 import Main from './Main'
 import Section1 from './Section1'
 import Why from './Why'
