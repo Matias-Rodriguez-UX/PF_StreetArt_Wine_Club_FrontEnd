@@ -1,22 +1,20 @@
 import './App.css';
-import {  BrowserRouter, Route, Switch} from 'react-router-dom';
-import Detail from './components/Detail/Detail.jsx';
-/* import Home from './components/Home/Home.jsx' */
+import { BrowserRouter, Route, Switch } from 'react-router-dom'
+import Home from './components/Home/Home'
+import 'bootstrap/dist/css/bootstrap.min.css';
+import Landing from './components/Landing';
+import Join from './components/Join'
+import Shop from './components/Shop'
 
 function App() {
   return (
     <BrowserRouter>
-    <div className="App">
-        <Switch>
-          {/* <Route exact path="/" component={LandingPage}/>
-          <Route exact path= '/home' component={Home}/>
-          <Route path='/videogame' component={VideogameCreate}/>
-          <Route path='/home/:id' component={Detail}/>
-          <Route path='/*' component={NotFound}/> */}
-          <Route exact path="/" component={Detail}/>
-        </Switch>
-     
-    </div>
+      <Switch>
+        <Route exact path={'/'} component={Landing} />
+        <Route path={'/home'} component={Home} />
+        <Route path={'/join'} component={Join} />
+        <Route path={'/shop'} component={Shop} />
+      </Switch>
     </BrowserRouter>
   );
 }
