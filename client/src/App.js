@@ -5,15 +5,17 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Landing from './components/Landing';
 import Join from './components/Join'
 import Shop from './components/Shop'
+import Detail from './components/Detail/Detail';
 
 function App() {
   return (
     <BrowserRouter>
       <Switch>
-        <Route exact path={'/'} component={Landing} />
+        <Route exact path={'/'} component={Detail} />
         <Route path={'/home'} component={Home} />
         <Route path={'/join'} component={Join} />
         <Route path={'/shop'} component={Shop} />
+        <Route path={'/shop/:id'} component={Detail} />
       </Switch>
     </BrowserRouter>
   );
