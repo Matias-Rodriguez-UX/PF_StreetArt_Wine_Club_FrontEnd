@@ -5,7 +5,7 @@ import { Form, Button } from 'react-bootstrap';
 export default function Contact() {
     return (
         <>
-            <div className="container">
+            <div className="container mb-4">
                 <h1>Contact</h1>
                 <div className="row">
                     <div className="col-6">
