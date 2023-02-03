@@ -5,10 +5,9 @@ import { Container, Row, Col, Button} from 'react-bootstrap';
 
 export default function Landing() {
 
-    // const ButtonToGoogle = () => {
-    //     const handleClick = () => {
-    //       window.location.href = 'https://www.google.com';
-    //     };
+        const handleClick = () => {
+          window.location.href = 'https://www.google.com';
+        };
 
     return (
       <Container fluid>
@@ -18,7 +17,7 @@ export default function Landing() {
             <Link to='/home'>
                 <button type="button" className="btn btn-warning btn-lg px-4 me-md-2">Older than 18</button>
             </Link>
-            <button type="button" className="btn btn-warning btn-lg px-4 me-md-2">Younger than 18</button>
+            <button type="button" className="btn btn-warning btn-lg px-4 me-md-2" onClick={handleClick}>Younger than 18</button>
           </Col>
           <Col md={6} className="text-center">
           <video autoPlay loop muted>
