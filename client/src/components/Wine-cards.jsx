@@ -19,7 +19,10 @@ return(
         <p className="cardPrecio"> {price} </p>
         <Link to={`/${id}`}>
             <h2 className="cardComprar"> Comprar </h2>
-          </Link>
+        </Link>
+        <div> 
+            
+        </div>
     </div>
 )
 }
