@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 
 
-export default function Winecards({id, image, name, precio, typeId}) {
+export default function Winecards({id, image, name, price, winery }) {
 
 
 
@@ -15,9 +15,11 @@ return(
         <Link to={`/ruta/${id}`}>
             <h2 className="cardName"> {name} </h2>
         </Link>
-
-        <p> Precio: {precio} </p>
-        <p> Tipo de vino: { typeId }</p>
+        <p> { winery } </p>
+        <p className="cardPrecio"> {price} </p>
+        <Link to={`/${id}`}>
+            <h2 className="cardComprar"> Comprar </h2>
+          </Link>
     </div>
 )
 }
