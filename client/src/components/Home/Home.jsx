@@ -1,6 +1,6 @@
 import React from "react";
 import Banner from '../Banner'
-import NavigationBar from '../Navbar/index'
+import NavBar from '../Navbar/index'
 import Main from './Main'
 import Section1 from './Section1'
 import Why from './Why'
@@ -14,7 +14,7 @@ export default function Home() {
     return (
         <>
             <Banner></Banner>
-            <NavigationBar></NavigationBar>
+            <NavBar></NavBar>
             <Main></Main>
             <Section1></Section1>
             <Why></Why>
@@ -25,4 +25,4 @@ export default function Home() {
             <Footer></Footer>
         </>
     )
-};
+}
