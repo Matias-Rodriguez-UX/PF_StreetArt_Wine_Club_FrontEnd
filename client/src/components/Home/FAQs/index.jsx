@@ -3,7 +3,7 @@ import Accordion from 'react-bootstrap/Accordion';
 
 export default function FAQs() {
     return (
-        <>
+        <section id='FAQs'>
             <div className="container mt-4 mb-4">
                 <div className="py-5">
                     <div className="col-lg-8 mx-auto">
@@ -40,6 +40,6 @@ export default function FAQs() {
 
 
             </div>
-        </>
+        </section>
     )
 }

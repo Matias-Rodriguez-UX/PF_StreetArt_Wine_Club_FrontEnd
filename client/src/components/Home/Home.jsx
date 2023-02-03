@@ -1,5 +1,5 @@
 import React from "react";
-import Banner from '../Banner'
+import Banner from './Banner'
 import NavigationBar from '../Navbar/index'
 import Main from './Main'
 import Section1 from './Section1'
@@ -11,6 +11,7 @@ import Contact from "./Contact";
 import Footer from '../Footer'
 
 export default function Home() {
+    
     return (
         <>
             <Banner></Banner>
