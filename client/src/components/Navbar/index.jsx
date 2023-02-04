@@ -8,14 +8,14 @@ import Navbar from 'react-bootstrap/Navbar';
 
 export default function NavigationBar() {
 
-    // const faqRef = useRef(null);
+  // const faqRef = useRef(null);
 
-    // const handleClick = () => {
-    //     faqRef.current.scrollIntoView({ behavior: 'smooth', block: 'start'})
-    // };
+  // const handleClick = () => {
+  //     faqRef.current.scrollIntoView({ behavior: 'smooth', block: 'start'})
+  // };
 
-    return (
-        <Navbar collapseOnSelect expand="lg" bg="light" variant="light" style={{ boxShadow: 'rgba(0, 0, 0, 0.1) 0px 4px 12px' }}>
+  return (
+    <Navbar collapseOnSelect expand="lg" bg="light" variant="light" style={{ boxShadow: 'rgba(0, 0, 0, 0.1) 0px 4px 12px' }}>
       <Container>
         <Navbar.Brand href='/home'>StreetArt Wine Club</Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
@@ -28,20 +28,20 @@ export default function NavigationBar() {
             <Nav.Link href="/shop">Shop</Nav.Link>
             <Nav.Link href="/memberships">Join</Nav.Link>
             <Link to="FAQs" spy={true} smooth={true} offset={-50} duration={500}>
-                <Nav.Link href='#'>FAQs</Nav.Link>
+              <Nav.Link href='#'>FAQs</Nav.Link>
             </Link>
             <Link to="contact" spy={true} smooth={true} offset={-50} duration={500}>
               <Nav.Link href="#">Contact</Nav.Link>
             </Link>
           </Nav>
           <Nav>
-            <Nav.Link type="button" className="btn btn-warning btn-sm" href="/login">Login</Nav.Link>
-            <Nav.Link eventKey={2} href="/signup" type="button" className="btn btn-warning btn-sm">
+            <Nav.Link type="button" className="btn btn-warning btn-sm me-4 ps-3 pe-3" href="/login">Login</Nav.Link>
+            <Nav.Link eventKey={2} href="/signup" type="button" className="btn btn-outline-dark btn-sm ms-4 ps-3 pe-3">
               Sign up
             </Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Container>
     </Navbar>
-    )
+  )
 }
