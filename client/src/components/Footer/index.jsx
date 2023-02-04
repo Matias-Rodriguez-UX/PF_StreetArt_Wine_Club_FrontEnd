@@ -1,6 +1,7 @@
 import React from "react";
 import "./footer.css";
-import { Link } from "react-router-dom";
+import { Link } from "react-scroll";
+import Nav from 'react-bootstrap/Nav';
 
 export default function Footer() {
     return (
@@ -9,12 +10,20 @@ export default function Footer() {
                 <div className="container d-flex flex-wrap gap-3 align-items-center justify-content-center">
                     <h1 className="fs-1 ms-5 me-5 text-center">StreetArt</h1>
                     <div className="d-flex m-1 gap-3 ms-5 me-5 align-items-center justify-content-center ">
-                        <Link to="/home" className="text-reset text-decoration-none">Home</Link>
-                        <Link to="/about" className="text-reset text-decoration-none">About</Link>
-                        <Link to="/join" className="text-reset text-decoration-none">Join</Link>
-                        <Link to="/shop" className="text-reset text-decoration-none">Shop</Link>
-                        <a href="#" className="text-reset text-decoration-none">FAQs</a>
-                        <Link to="/contact" className="text-reset text-decoration-none">Contact</Link>
+                    <Nav className="me-auto">
+                        <Nav.Link className='link-light' href='/home'>Home</Nav.Link>
+                        <Link to="about" spy={true} smooth={true} offset={-50} duration={500}>
+                            <Nav.Link className='link-light' href="#">About</Nav.Link>
+                        </Link>
+                        <Nav.Link className='link-light' href="/shop">Shop</Nav.Link>
+                        <Nav.Link className='link-light' href="/memberships">Join</Nav.Link>
+                        <Link to="FAQs" spy={true} smooth={true} offset={-50} duration={500}>
+                            <Nav.Link className='link-light' href='#'>FAQs</Nav.Link>
+                        </Link>
+                        <Link to="contact" spy={true} smooth={true} offset={-50} duration={500}>
+                            <Nav.Link className='link-light' href="#">Contact</Nav.Link>
+                        </Link>
+                    </Nav>
                     </div>
                     <div className="d-flex gap-2 ms-5 me-5 align-items-center justify-content-center ">
                         <a href="https://www.facebook.com"><img width={'25px'} src="https://cdn-icons-png.flaticon.com/512/4138/4138166.png" alt="img" /></a>
