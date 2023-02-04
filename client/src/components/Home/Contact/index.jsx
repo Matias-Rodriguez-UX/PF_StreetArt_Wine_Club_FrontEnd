@@ -4,7 +4,7 @@ import { Form, Button } from 'react-bootstrap';
 
 export default function Contact() {
     return (
-        <>
+        <section id='contact'>
             <div className="container mb-4">
                 <h1>Contact</h1>
                 <div className="row">
@@ -41,6 +41,6 @@ export default function Contact() {
 
 
             </div>
-        </>
+        </section>
     )
 }
