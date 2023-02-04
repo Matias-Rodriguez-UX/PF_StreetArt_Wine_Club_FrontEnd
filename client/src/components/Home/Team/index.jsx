@@ -3,7 +3,7 @@ import React from "react";
 
 export default function Team() {
     return (
-        <>
+        <section id='about'>
             <div className="bg-dark text-secondary px-4 py-5 text-center mb-4">
                 <div>
                     <h2 className="display-5 fw-bold text-white">Our Team</h2>
@@ -32,6 +32,6 @@ export default function Team() {
                 </div>
             </div>
 
-        </>
+        </section>
     )
 }
