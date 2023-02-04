@@ -1,6 +1,5 @@
-import React, { useRef } from "react";
-import { BrowserRouter } from "react-router-dom";
-import { HashLink as Link } from 'react-router-hash-link';
+import React from "react";
+import { Link } from 'react-scroll';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
@@ -16,7 +15,6 @@ export default function NavigationBar() {
     // };
 
     return (
-        <BrowserRouter>
         <Navbar collapseOnSelect expand="lg" bg="light" variant="light">
       <Container>
         <Navbar.Brand href='/home'>StreetArt Wine Club</Navbar.Brand>
@@ -24,11 +22,17 @@ export default function NavigationBar() {
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="me-auto">
             <Nav.Link href='/home'>Home</Nav.Link>
-            <Nav.Link href="/about">About</Nav.Link>
+            <Link to="about" spy={true} smooth={true} offset={50} duration={500}>
+              <Nav.Link href="#">About</Nav.Link>
+            </Link>
             <Nav.Link href="/shop">Shop</Nav.Link>
             <Nav.Link href="/memberships">Join</Nav.Link>
+            <Link to="FAQs" spy={true} smooth={true} offset={-50} duration={500}>
                 <Nav.Link href='#'>FAQs</Nav.Link>
-            <Nav.Link href="#">Contact</Nav.Link>
+            </Link>
+            <Link to="contact" spy={true} smooth={true} offset={-50} duration={500}>
+              <Nav.Link href="#">Contact</Nav.Link>
+            </Link>
           </Nav>
           <Nav>
             <Nav.Link type="button" className="btn btn-warning btn-sm" href="/login">Login</Nav.Link>
@@ -39,6 +43,5 @@ export default function NavigationBar() {
         </Navbar.Collapse>
       </Container>
     </Navbar>
-    </BrowserRouter>
     )
 }
