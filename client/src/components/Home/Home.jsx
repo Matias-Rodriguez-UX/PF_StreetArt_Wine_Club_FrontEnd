@@ -1,6 +1,6 @@
 import React from "react";
-import Banner from '../Banner'
-import NavBar from '../Navbar/index'
+import Banner from './Banner'
+import NavigationBar from '../Navbar/index'
 import Main from './Main'
 import Section1 from './Section1'
 import Why from './Why'
@@ -11,10 +11,11 @@ import Contact from "./Contact";
 import Footer from '../Footer'
 
 export default function Home() {
+    
     return (
         <>
             <Banner></Banner>
-            <NavBar></NavBar>
+            <NavigationBar></NavigationBar>
             <Main></Main>
             <Section1></Section1>
             <Why></Why>
@@ -25,4 +26,4 @@ export default function Home() {
             <Footer></Footer>
         </>
     )
-}
+};
