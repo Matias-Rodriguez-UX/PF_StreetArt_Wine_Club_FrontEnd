@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import { BrowserRouter } from "react-router-dom";
-// import { HashLink as Link } from 'react-router-hash-link';
+import { HashLink as Link } from 'react-router-hash-link';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
