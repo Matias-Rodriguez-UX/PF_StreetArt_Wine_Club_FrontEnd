@@ -7,11 +7,13 @@ import Join from './components/Join'
 import Shop from './components/Shop/Shop.jsx'
 import Memberships from './components/Memberships'
 import Login from './components/Login/Login';
+import Winecards from './components/Shop/WineCard/WineCard';
 
 function App() {
   return (
     <BrowserRouter>
       <Switch>
+      <Route exact path={'/card'} component={Winecards}/>
         <Route exact path={'/'} component={Landing} />
         <Route path={'/home'} component={Home} />
         <Route exact path={'/memberships'} component={Memberships} />
