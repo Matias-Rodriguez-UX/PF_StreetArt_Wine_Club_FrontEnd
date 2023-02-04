@@ -43,7 +43,7 @@ export default function Detail(props){
               <div className="product-description">
                 <ul>
                   <li>Grapes: </li>
-                  <li>Winrey: </li>
+                  <li>Winery: </li>
                   <li>Type: </li>
                   <li>State: </li>
                   <li>Regions: </li>
