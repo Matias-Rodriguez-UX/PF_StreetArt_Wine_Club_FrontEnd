@@ -15,7 +15,7 @@ export default function NavigationBar() {
     // };
 
     return (
-        <Navbar collapseOnSelect expand="lg" bg="light" variant="light">
+        <Navbar collapseOnSelect expand="lg" bg="light" variant="light" style={{ boxShadow: 'rgba(0, 0, 0, 0.1) 0px 4px 12px' }}>
       <Container>
         <Navbar.Brand href='/home'>StreetArt Wine Club</Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
