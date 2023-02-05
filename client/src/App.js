@@ -6,18 +6,18 @@ import Landing from './components/Landing';
 import Join from './components/Join'
 
 /* import Shop from './components/Shop' */
-import Detail from './components/Detail';
+import WineDetailCard from './components/Shop/WineDetailCard/WineDetailCard';
 
 function App() {
   return (
     <BrowserRouter>
       <Switch>
-        <Route exact path={'/'} component={Detail} />
+      {/*  <Route exact path={'/'} component={Detail} /> */}
 
         <Route path={'/home'} component={Home} />
         <Route path={'/join'} component={Join} />
         {/* <Route path={'/shop'} component={Shop} /> */}
-        <Route path={'/shop/:id'} component={Detail} />
+        <Route path={'/shop/:id'} component={WineDetailCard} />
       </Switch>
     </BrowserRouter>
   );
