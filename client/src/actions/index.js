@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { GET_PRODUCTS, LOADING_ACTION } from './allActions';
+import { GET_PRODUCTS, LOADING_ACTION, GET_PRODUCT_BY_ID } from './allActions';
 
 
 const headers = {
@@ -27,5 +27,23 @@ export function getProducts() {
         } catch (error) {
             return error
         }
+    }
+}
+
+export function getDetail(id) {
+    return async function (dispatch) {
+        try{
+            var detail = await axios.get(`http://localhost:3001/products/${id}`
+, headers);
+            
+            return dispatch({
+                type: GET_PRODUCT_BY_ID,
+                payload: detail.data
+            })
+
+        } catch (error) {
+            console.log("Error", error)
+        }
+
     }
 }
