@@ -1,6 +1,9 @@
 
-const initialState = {}
 
-export default function rootReducer(state = initialState, action) {
+const initialState = {
+   
+}
+
+export default function reducer(state = initialState, action) {
 
 }
