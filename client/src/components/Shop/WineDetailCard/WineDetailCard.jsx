@@ -34,13 +34,12 @@ export default function Detail(props){
               <div className="img-display">
                 <div className="img-showcase">
                   {/* <img src={wine.image} alt="imagen" className="imgWine"/> */}
-                  <img src="https://www.shutterstock.com/image-vector/wine-bottle-isolated-on-white-260nw-540522802.jpg" alt="imagen" className="mx-auto d-block"/>
+                  <img src={wine.image} alt="imagen" className="mx-auto d-block" id="img-detail"/>
                 </div>
               </div>
             </div> 
             <div className="col col-6">
             <h1>{wine.name}</h1>
-            <div>☆&nbsp;&nbsp;<span>{wine.rating}</span></div>
             <div className="product-price">
               <h2>Price: <span>${wine.price}</span></h2>
             </div>
@@ -53,7 +52,7 @@ export default function Detail(props){
                   <li>State: {wine.states.map(e => e.name + ("  "))}</li>
               </ul>
               <div className="input-cart">
-                <input type="number" id="typeNumber" class="form-control" />
+                <input type="number" id="typeNumber" class="form-control"/>
                 <button type="button" id="button-cart" className="btn btn-warning btn-sm">Add to cart <i class="bi bi-cart-check-fill"></i></button>
                 
               </div>
@@ -99,7 +98,16 @@ export default function Detail(props){
           <Footer />
         </div>
       </div>
-            ) : (<h1>chau!</h1>)}
+            ) : ( 
+      <div className="container-fluid">
+      <div><Banner /></div>
+      <div><NavigationBar /></div>
+      <h1>LOADING....</h1>
+      <div className="col col-12">
+        <Footer />
+      </div>
+      </div>
+      )}
 
           
 </>
