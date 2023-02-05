@@ -28,3 +28,8 @@
     background-size: 100% auto;
     background-position: 50%;
 }
+
+#img-detail {
+    width: 400px; 
+    height: 400px; 
+}
