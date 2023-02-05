@@ -19,10 +19,11 @@ export function getProducts() {
     return async function (dispatch) {
         try {
             let products = await axios.get('http://localhost:3001/products', headers);
+            console.log(products.data)
             return (dispatch({
                 type: GET_PRODUCTS,
                 payload: products.data
-            }), dispatch(loadingAction(false))
+            })
             )
         } catch (error) {
             return error
