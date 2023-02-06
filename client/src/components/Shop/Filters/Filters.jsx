@@ -32,6 +32,7 @@ export default function Filters({ grapes, states, types, quantities, prices }) {
         e.preventDefault()
         dispatch(getFilterQuantities(e.target.value))
     }
+
     return (
         <div>
             <div className="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark">
