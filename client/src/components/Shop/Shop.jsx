@@ -8,42 +8,49 @@ import { Link } from 'react-router-dom';
 import { Loader } from "../Loader";
 import { getProducts } from "../../actions";
 import Winecards from "./WineCard/WineCard";
+import Filter from "./Filter/Filter";
 
 
 export default function Shop() {
+        const [filter, setFilter] = useState("");
 
-        const dispatch = useDispatch()
-        const allProducts = useSelector((state) => state.products)
+        const dispatch = useDispatch();
+        const products = useSelector((state) => state.products);
 
-        useEffect(()=> {
+        useEffect(() => {
             dispatch(getProducts());
-        },[]);
+        }, []);
+
+        const filteredProducts = products.filter(product => 
+            product.grapes.find(grape => grape.name === filter) || filter === ""
+        );
+
+        function handleFilter(filter) {
+            setFilter(filter);
+        }
 
     return (
         <>
             <Banner />
             <NavigationBar />
-            
-            {allProducts.length > 0 ? (<>{allProducts?.map((el) => {
-                return(
-                    <> 
-                        <Link to={"/shop/" + el.id} />
+            <Filter onFilter={handleFilter} />
+
+            {products.length > 0 ? (
+                filteredProducts.map((el) => (
+                    <Link to={"/shop/" + el.id} key={el.id}>
                         <Winecards
                             image={el.image}
-                            name = {el.name}
-                            winery = {el.winery}
-                            price = {el.price}
+                            name={el.name}
+                            winery={el.winery}
+                            price={el.price}
                         />
-                    </>
-                )
-            })}</>) : (<Loader />)}
-            <h1>Shop</h1>
-            <h3>SearchBar</h3>
-            <h5>filters/sorts</h5>
-            <h5>Products</h5>
-            <h6>Pagination</h6>
-            <h7>Winecard</h7>
+                    </Link>
+                ))
+            ) : (
+                <Loader />
+            )}
+
             <Footer />
         </>
-    )
+    );
 }
