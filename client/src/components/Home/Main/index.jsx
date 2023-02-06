@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 export default function Main() {
     return (
@@ -17,7 +18,9 @@ export default function Main() {
                         <p><i>“Wine is the only work of art that can be drunk.”</i> Luis Fernando Olaverri</p>
                         <p>We believe a wine club should offer wines that expand your knowledge and teach you about the world.</p>
                         <div className="d-grid gap-2 d-md-flex justify-content-md-end">
-                            <button type="button" className="btn btn-warning btn-lg px-4 me-md-2">Join Us!</button>
+                             <Link to='/memberships'>
+                                <button type="button" className="btn btn-warning btn-lg px-4 me-md-2">Join Us!</button>
+                             </Link>
                         </div>
                     </div>
                 </div>
