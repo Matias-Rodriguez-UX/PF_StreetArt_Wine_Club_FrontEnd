@@ -3,7 +3,8 @@ import {
   GET_PRODUCTS,
   LOADING_ACTION,
   GET_PRODUCT_BY_ID,
-  GET_PRODUCT_BY_NAME,
+  GET_FILTER_PRODUCTS,
+  GET_FILTER_QUANTITIES,
 } from "./allActions";
 
 const headers = {
@@ -24,10 +25,13 @@ export function getProducts() {
     try {
       let products = await axios.get("http://localhost:3001/products", headers);
       console.log(products.data);
-      return dispatch({
-        type: GET_PRODUCTS,
-        payload: products.data,
-      });
+      return (
+        dispatch({
+          type: GET_PRODUCTS,
+          payload: products.data,
+        }),
+        dispatch(loadingAction(false))
+      );
     } catch (error) {
       return error;
     }
@@ -42,26 +46,41 @@ export function getDetail(id) {
         headers
       );
 
-      return dispatch({
-        type: GET_PRODUCT_BY_ID,
-        payload: detail.data,
-      });
+      return (
+        dispatch({
+          type: GET_PRODUCT_BY_ID,
+          payload: detail.data,
+        }),
+        dispatch(loadingAction(false))
+      );
     } catch (error) {
       console.log("Error", error);
     }
   };
 }
 
-export function getProductsByName(product) {
+export function getFilterProducts(filter, value) {
   return async function (dispatch) {
     try {
-      console.log(product);
-      return dispatch({
-        type: GET_PRODUCT_BY_NAME,
-        payload: product,
-      });
+      let info = await axios.get(
+        `http://localhost:3001/products/filters?filter=${filter}&value=${value}`
+      );
+      return (
+        dispatch({
+          type: GET_FILTER_PRODUCTS,
+          payload: info.data,
+        }),
+        dispatch(loadingAction(false))
+      );
     } catch (error) {
-      return error;
+      console.log("Error", error);
     }
+  };
+}
+
+export function getFilterQuantities(payload) {
+  return {
+    type: GET_FILTER_QUANTITIES,
+    payload,
   };
 }
