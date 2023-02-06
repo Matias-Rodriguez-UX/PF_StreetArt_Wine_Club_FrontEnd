@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { GET_PRODUCTS, LOADING_ACTION, GET_PRODUCT_BY_ID } from './allActions';
+import { GET_PRODUCTS, LOADING_ACTION, GET_PRODUCT_BY_ID, GET_FILTERS, GET_FILTERED_PRODUCTS } from './allActions';
 
 
 const headers = {
@@ -47,4 +47,38 @@ export function getDetail(id) {
         }
 
     }
+<<<<<<< HEAD
 };
+=======
+    
+}
+
+export function getFilter(filter, value){
+    return async function (dispatch) {
+        try{
+            var filter = await axios.get("http://localhost:3001/products/filters", headers);
+            return dispatch({
+                type: GET_FILTERS,
+                payload: filter.data
+            })
+        }
+        catch (error){
+            console.log("Error", error)
+        }
+    } 
+}
+
+export function getFilteredProducts(filter) {
+    return async function (dispatch) {
+        try {
+            let filteredProducts = await axios.get(`http://localhost:3001/products?filter=${filter}`, headers);
+            return dispatch({
+                type: GET_FILTERED_PRODUCTS,
+                payload: filteredProducts.data
+            });
+        } catch (error) {
+            console.log("Error", error);
+        }
+    };
+}
+>>>>>>> 6f4ae89decf5bd6a4d8f5fa9873b35ef7d501b1f

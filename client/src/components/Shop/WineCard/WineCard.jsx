@@ -12,7 +12,7 @@ const Winecards = ({ name, winery, price, image }) => {
           {winery}
         </Card.Text>
         <Card.Text className="text-center">
-          {price}
+          $ {price}
         </Card.Text>
         <Link to="/new-route">
           <Button variant="primary">BUY</Button>

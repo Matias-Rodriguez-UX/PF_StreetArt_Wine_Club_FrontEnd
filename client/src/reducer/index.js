@@ -1,28 +1,37 @@
-import { GET_PRODUCT_BY_ID, GET_PRODUCTS } from "../actions/allActions";
-
+import { GET_PRODUCTS, LOADING_ACTION, GET_PRODUCT_BY_ID, GET_FILTERED_PRODUCTS } from '../actions/allActions';
 
 const initialState = {
-    wineDetail: [],
-    products: []
-}
+    products: [],
+    product: {},
+    loading: true,
+};
 
-export default function reducer(state = initialState, action) {
-
+export default function (state = initialState, action) {
     switch (action.type) {
-        case GET_PRODUCT_BY_ID:
-            
-          return{
-            ...state,
-            wineDetail: action.payload 
-          }
-          case GET_PRODUCTS:
-            return{
+        case LOADING_ACTION:
+            return {
                 ...state,
-                products: action.payload
-            }
-    
+                loading: true,
+            };
+        case GET_PRODUCTS:
+            return {
+                ...state,
+                products: action.payload,
+                loading: false,
+            };
+        case GET_PRODUCT_BY_ID:
+            return {
+                ...state,
+                product: action.payload,
+                loading: false,
+            };
+        case GET_FILTERED_PRODUCTS:
+            return {
+                ...state,
+                products: action.payload,
+                loading: false,
+            };
         default:
-            return state; //!
+            return state;
     }
-
 }

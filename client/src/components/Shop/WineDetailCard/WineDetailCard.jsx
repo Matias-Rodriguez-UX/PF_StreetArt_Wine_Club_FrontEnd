@@ -23,7 +23,6 @@ export default function Detail(props){
  
       return(
         
-
         <>
           {wine.name ? (<div className="container-fluid">
           <div><Banner /></div>
