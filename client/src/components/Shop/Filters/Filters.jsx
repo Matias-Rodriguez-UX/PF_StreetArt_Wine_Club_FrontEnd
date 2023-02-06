@@ -1,10 +1,37 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
+import { getAllProducts, getFilterProducts, getFilterQuantities } from "../../../actions";
 import './Filters.css'
 
 
 export default function Filters({ grapes, states, types, quantities, prices }) {
+    const dispatch = useDispatch()
+
+    function handleFilterTypes(e) {
+        e.preventDefault()
+
+        dispatch(getFilterProducts("Type", e.target.value))
+
+    }
+
+    function handleFilterGrapes(e) {
+        e.preventDefault()
+
+        dispatch(getFilterProducts("Grape", e.target.value))
+
+    }
+
+    function handleFilterStates(e) {
+        e.preventDefault()
+        dispatch(getFilterProducts("State", e.target.value))
+
+    }
+
+    function handleFilterQuantity(e) {
+        e.preventDefault()
+        dispatch(getFilterQuantities(e.target.value))
+    }
     return (
         <div>
             <div className="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark">
@@ -17,7 +44,7 @@ export default function Filters({ grapes, states, types, quantities, prices }) {
                         <li className="nav-item">
                             Grapes
                             <br />
-                            <select name="filterType" id="" onChange={(e) => (handleFilterGrape(e))} style={{ width: '80%' }} className="mt-2 mb-2" >
+                            <select name="filterType" id="" onChange={(e) => (handleFilterGrapes(e))} style={{ width: '80%' }} className="mt-2 mb-2" >
                                 <option value="" disabled selected hidden>All</option>
                                 <option value="all">All</option>
                                 {
