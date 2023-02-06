@@ -10,7 +10,7 @@ import { getProducts, loadingAction } from "../../actions";
 import Winecards from "./WineCard/WineCard";
 import './shop.css'
 import Filters from "./Filters/Filters";
-
+import SearchBar from "./SearchBar";
 
 export default function Shop() {
 
@@ -72,6 +72,7 @@ export default function Shop() {
         <>
             <Banner />
             <NavigationBar />
+            <SearchBar />
             <div className="row g-3 py-2">
                 <div className="col-3 col-sm-3 col-lg-3 mt-5 py-4" >
                     <Filters
