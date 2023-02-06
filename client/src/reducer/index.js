@@ -1,7 +1,7 @@
 import {
   GET_PRODUCT_BY_ID,
   GET_PRODUCTS,
-  //   GET_PRODUCT_BY_NAME,
+  GET_PRODUCT_BY_NAME,
 } from "../actions/allActions";
 
 const initialState = {
@@ -22,11 +22,11 @@ export default function reducer(state = initialState, action) {
         ...state,
         products: action.payload,
       };
-    // case GET_PRODUCT_BY_NAME:
-    //   return {
-    //     ...state,
-    //     productByName: action.payload,
-    //   };
+    case GET_PRODUCT_BY_NAME:
+      return {
+        ...state,
+        products: action.payload,
+      };
 
     default:
       return state; //!

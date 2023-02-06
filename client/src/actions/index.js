@@ -52,16 +52,16 @@ export function getDetail(id) {
   };
 }
 
-// export function getProductsByName(product) {
-//   return async function (dispatch) {
-//     try {
-//       console.log(product);
-//       return dispatch({
-//         type: GET_PRODUCT_BY_NAME,
-//         payload: product[0],
-//       });
-//     } catch (error) {
-//       return error;
-//     }
-//   };
-// }
+export function getProductsByName(product) {
+  return async function (dispatch) {
+    try {
+      console.log(product);
+      return dispatch({
+        type: GET_PRODUCT_BY_NAME,
+        payload: product,
+      });
+    } catch (error) {
+      return error;
+    }
+  };
+}
