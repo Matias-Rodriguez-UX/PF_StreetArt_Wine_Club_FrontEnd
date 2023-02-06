@@ -1,0 +1,12 @@
+.autocomplete-cont{
+    height: max-content;
+    align-items: center;
+
+}
+
+.option-list{
+    top:160px;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}

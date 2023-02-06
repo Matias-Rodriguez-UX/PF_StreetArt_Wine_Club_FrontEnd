@@ -11,7 +11,7 @@ import Winecards from "./WineCard/WineCard";
 import './shop.css'
 import Filters from "./Filters/Filters";
 import { all } from "axios";
-
+import SearchBar from "./SearchBar";
 
 export default function Shop() {
 
@@ -66,6 +66,7 @@ export default function Shop() {
         <>
             <Banner />
             <NavigationBar />
+            <SearchBar />
             <div className="row g-3 py-2">
                 <div className="col-3 col-sm-3 col-lg-3 mt-5 py-4" >
                     <Filters
@@ -80,7 +81,7 @@ export default function Shop() {
                     {allProducts.length > 0 ? (<>{allProducts?.map((el) => {
                         return (
                             <>
-                                <Link to={"/shop/" + el.id}>
+                                <Link to={"/shop/" + el.id} className="text-decoration-none text-reset">
                                     <Winecards
                                         image={el.image}
                                         name={el.name}

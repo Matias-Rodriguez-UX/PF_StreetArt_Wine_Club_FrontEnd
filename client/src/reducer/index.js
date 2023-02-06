@@ -1,28 +1,34 @@
-import { GET_PRODUCT_BY_ID, GET_PRODUCTS } from "../actions/allActions";
-
+import {
+  GET_PRODUCT_BY_ID,
+  GET_PRODUCTS,
+  //   GET_PRODUCT_BY_NAME,
+} from "../actions/allActions";
 
 const initialState = {
-    wineDetail: [],
-    products: []
-}
+  wineDetail: [],
+  products: [],
+  productByName: {},
+};
 
 export default function reducer(state = initialState, action) {
+  switch (action.type) {
+    case GET_PRODUCT_BY_ID:
+      return {
+        ...state,
+        wineDetail: action.payload,
+      };
+    case GET_PRODUCTS:
+      return {
+        ...state,
+        products: action.payload,
+      };
+    // case GET_PRODUCT_BY_NAME:
+    //   return {
+    //     ...state,
+    //     productByName: action.payload,
+    //   };
 
-    switch (action.type) {
-        case GET_PRODUCT_BY_ID:
-            
-          return{
-            ...state,
-            wineDetail: action.payload 
-          }
-          case GET_PRODUCTS:
-            return{
-                ...state,
-                products: action.payload
-            }
-    
-        default:
-            return state; //!
-    }
-
+    default:
+      return state; //!
+  }
 }
