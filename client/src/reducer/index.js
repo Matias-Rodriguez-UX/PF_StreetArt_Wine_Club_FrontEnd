@@ -48,6 +48,7 @@ export default function reducer(state = initialState, action) {
         ...state,
         products: filtered,
       };
+
     case GET_PRODUCT_BY_NAME:
       return {
         ...state,

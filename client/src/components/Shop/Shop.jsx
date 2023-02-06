@@ -10,6 +10,7 @@ import { getProducts, loadingAction } from "../../actions";
 import Winecards from "./WineCard/WineCard";
 import './shop.css'
 import Filters from "./Filters/Filters";
+import SearchBar from "./SearchBar";
 
 export default function Shop() {
 

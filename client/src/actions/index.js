@@ -5,6 +5,7 @@ import {
   GET_PRODUCT_BY_ID,
   GET_FILTER_PRODUCTS,
   GET_FILTER_QUANTITIES,
+  GET_PRODUCT_BY_NAME,
 } from "./allActions";
 
 const headers = {
@@ -82,5 +83,12 @@ export function getFilterQuantities(payload) {
   return {
     type: GET_FILTER_QUANTITIES,
     payload,
+  };
+}
+
+export function getProductsByName(product) {
+  return {
+    type: GET_PRODUCT_BY_NAME,
+    payload: product,
   };
 }
