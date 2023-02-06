@@ -27,22 +27,19 @@ export default function Shop() {
             {allProducts.length > 0 ? (<>{allProducts?.map((el) => {
                 return(
                     <> 
-                        <Link to={"/shop/" + el.id} />
+                        <Link to={"/shop/" + el.id}>
                         <Winecards
                             image={el.image}
                             name = {el.name}
                             winery = {el.winery}
                             price = {el.price}
+                            id = {el.id}
                         />
+                        </Link>
                     </>
                 )
             })}</>) : (<Loader />)}
-            <h1>Shop</h1>
-            <h3>SearchBar</h3>
-            <h5>filters/sorts</h5>
-            <h5>Products</h5>
-            <h6>Pagination</h6>
-            <h7>Winecard</h7>
+
             <Footer />
         </>
     )
