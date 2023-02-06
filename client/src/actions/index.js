@@ -66,6 +66,7 @@ export function getFilterProducts(filter, value) {
     }
 }
 
+
 export function getFilterQuantities(payload) {
     return {
         type: GET_FILTER_QUANTITIES,
