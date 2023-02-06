@@ -6,17 +6,19 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Loader } from "../Loader";
-import { getProducts } from "../../actions";
+import { getProducts, loadingAction } from "../../actions";
 import Winecards from "./WineCard/WineCard";
 import './shop.css'
 import Filters from "./Filters/Filters";
-import { all } from "axios";
 
 
 export default function Shop() {
 
     const dispatch = useDispatch()
-    const allProducts = useSelector((state) => state.products)
+
+    const showLoading = useSelector((state) => state.showLoading)
+    const allProducts = useSelector((state) => state.allProducts)
+    const Products = useSelector((state) => state.products)
 
     const allGrapes = () => {
         let grapes = []
@@ -58,8 +60,12 @@ export default function Shop() {
     const quantities = allQuantity()
     const prices = allPrices()
 
+
+
     useEffect(() => {
+        dispatch(loadingAction(true))
         dispatch(getProducts());
+
     }, []);
 
     return (
@@ -76,10 +82,11 @@ export default function Shop() {
                         prices={prices}
                     />
                 </div>
-                <div className="Cards container col mt-4 py-5">
-                    {allProducts.length > 0 ? (<>{allProducts?.map((el) => {
-                        return (
-                            <>
+
+                {showLoading ? <Loader /> :
+                    <div className="Cards container col mt-4 py-5">
+                        {Products.length ? Products?.map((el) => {
+                            return (
                                 <Link to={"/shop/" + el.id}>
                                     <Winecards
                                         image={el.image}
@@ -89,10 +96,9 @@ export default function Shop() {
                                         id={el.id}
                                     />
                                 </Link>
-                            </>
-                        )
-                    })}</>) : (<Loader />)}
-                </div>
+                            )
+                        }) : <h1>Wines not Found</h1>}
+                    </div>}
             </div>
 
             <Footer />
