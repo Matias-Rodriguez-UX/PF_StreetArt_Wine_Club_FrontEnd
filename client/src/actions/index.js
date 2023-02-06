@@ -13,7 +13,7 @@ export function loadingAction(payload) {
         type: LOADING_ACTION,
         payload,
     }
-}
+};
 
 export function getProducts() {
     return async function (dispatch) {
@@ -29,7 +29,7 @@ export function getProducts() {
             return error
         }
     }
-}
+};
 
 export function getDetail(id) {
     return async function (dispatch) {
@@ -47,4 +47,4 @@ export function getDetail(id) {
         }
 
     }
-}
+};
