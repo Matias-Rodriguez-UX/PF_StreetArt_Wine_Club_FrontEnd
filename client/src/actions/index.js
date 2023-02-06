@@ -13,7 +13,7 @@ export function loadingAction(payload) {
         type: LOADING_ACTION,
         payload,
     }
-}
+};
 
 export function getProducts() {
     return async function (dispatch) {
@@ -29,7 +29,7 @@ export function getProducts() {
             return error
         }
     }
-}
+};
 
 export function getDetail(id) {
     return async function (dispatch) {
@@ -48,29 +48,3 @@ export function getDetail(id) {
         }
 
     }
-}
-
-
-export function getFilterProducts(filter, value) {
-    return async function (dispatch) {
-        try {
-            let info = await axios.get(`http://localhost:3001/products/filters?filter=${filter}&value=${value}`,);
-            return (dispatch({
-                type: GET_FILTER_PRODUCTS,
-                payload: info.data
-            }),
-                dispatch(loadingAction(false)))
-        } catch (error) {
-            console.log("Error", error)
-        }
-    }
-}
-
-export function getFilterQuantities(payload) {
-    return {
-        type: GET_FILTER_QUANTITIES,
-        payload
-    }
-}
-
-
