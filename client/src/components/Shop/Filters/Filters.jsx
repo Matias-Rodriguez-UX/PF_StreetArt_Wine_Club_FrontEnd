@@ -1,38 +1,59 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
-import { getAllProducts, getFilterProducts, getFilterQuantities } from "../../../actions";
+import { getAllProducts, getFilterProducts,getFilterProductsTypes, getFilterQuantities,getFilterProductsStates,getFilterProductsGrapes } from "../../../actions";
 import './Filters.css'
 
 
 export default function Filters({ grapes, states, types, quantities, prices }) {
     const dispatch = useDispatch()
 
+    const [filter, setFilter] = useState({grapes:'',state:'', types:'', quantity:''})
+    const todoslosproductos = useSelector((state)=> state.products)
+    const productos = useSelector((state)=> state.allProducts)
+
+    console.log(productos)
+    console.log(todoslosproductos)
+
+    // function handleFilterTypes(e) {
+    //     e.preventDefault()
+    //     dispatch(getFilterProductsTypes(e.target.value))
+    // }
     function handleFilterTypes(e) {
         e.preventDefault()
-
-        dispatch(getFilterProducts("Type", e.target.value))
-
+        setFilter({...filter,types: e.target.value})
     }
-
     function handleFilterGrapes(e) {
         e.preventDefault()
-
-        dispatch(getFilterProducts("Grape", e.target.value))
-
+        setFilter({...filter,grapes: e.target.value})
     }
-
     function handleFilterStates(e) {
         e.preventDefault()
-        dispatch(getFilterProducts("State", e.target.value))
-
+        setFilter({...filter,state: e.target.value})
     }
-
     function handleFilterQuantity(e) {
         e.preventDefault()
-        dispatch(getFilterQuantities(e.target.value))
+        setFilter({...filter,quantity: e.target.value})
     }
+    // function handleFilterQuantity(e) {
+    //     e.preventDefault()
+    //     dispatch(getFilterQuantities(e.target.value))
+    // }
+    function handleSubmit(e) {
+        e.preventDefault()
+        let {grapes,state, types, quantity} = filter
+        console.log(types)
+        console.log(filter.types)
+        if(quantity !== ''){dispatch(getFilterQuantities(quantity))}
+        if(types !== ''){dispatch(getFilterProductsTypes(types))}
+        if(state !== ''){dispatch(getFilterProductsStates(state))}
+        if(grapes !== ''){dispatch(getFilterProductsGrapes(grapes))}
+        setFilter({grapes:'',state:'', types:'', quantity:''})
+    }
+    
 
+
+    console.log(filter)
     return (
         <div>
             <div className="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark">
