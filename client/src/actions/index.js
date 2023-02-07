@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { GET_PRODUCTS, LOADING_ACTION, GET_PRODUCT_BY_ID, GET_FILTER_PRODUCTS, GET_FILTER_QUANTITIES,GET_FILTER_STATES, GET_FILTER_TYPES, GET_FILTER_GRAPES } from './allActions';
+import { GET_PRODUCTS, LOADING_ACTION, GET_PRODUCT_BY_ID, GET_FILTER_PRODUCTS, GET_FILTER_QUANTITIES,GET_FILTER_STATES, GET_FILTER_TYPES, GET_FILTER_GRAPES, CLEAN_FILTERS } from './allActions';
 
 
 const headers = {
@@ -92,4 +92,12 @@ export function getFilterProductsGrapes(payload) {
     }
 }
 
-
+export function cleanFilters() {
+    return function (dispatch) {
+     
+      return dispatch({
+        type: CLEAN_FILTERS,
+      
+      });
+    };
+  }

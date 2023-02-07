@@ -1,7 +1,7 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
-import { getAllProducts, getFilterProducts,getFilterProductsTypes, getFilterQuantities,getFilterProductsStates,getFilterProductsGrapes } from "../../../actions";
+import { getAllProducts, getFilterProducts,getFilterProductsTypes, getFilterQuantities,getFilterProductsStates,getFilterProductsGrapes, cleanFilters } from "../../../actions";
 import './Filters.css'
 
 
@@ -42,13 +42,18 @@ export default function Filters({ grapes, states, types, quantities, prices }) {
     function handleSubmit(e) {
         e.preventDefault()
         let {grapes,state, types, quantity} = filter
-        console.log(types)
-        console.log(filter.types)
+        //console.log(types)
+        //console.log(filter.types)
         if(quantity !== ''){dispatch(getFilterQuantities(quantity))}
         if(types !== ''){dispatch(getFilterProductsTypes(types))}
         if(state !== ''){dispatch(getFilterProductsStates(state))}
         if(grapes !== ''){dispatch(getFilterProductsGrapes(grapes))}
+        document.getElementById('grapes').value = "all";
+        document.getElementById('state').value = "all";
+        document.getElementById('types').value = "all";
+        document.getElementById('quantity').value = "all";
         setFilter({grapes:'',state:'', types:'', quantity:''})
+        //dispatch(cleanFilters())
     }
     
 
@@ -66,7 +71,7 @@ export default function Filters({ grapes, states, types, quantities, prices }) {
                         <li className="nav-item">
                             Grapes
                             <br />
-                            <select name="filterType" id="" onChange={(e) => (handleFilterGrapes(e))} style={{ width: '80%' }} className="mt-2 mb-2" >
+                            <select name="filterType" id="grapes" onChange={(e) => (handleFilterGrapes(e))} style={{ width: '80%' }} className="mt-2 mb-2" >
                                 <option value="" disabled selected hidden>All</option>
                                 <option value="all">All</option>
                                 {
@@ -77,7 +82,7 @@ export default function Filters({ grapes, states, types, quantities, prices }) {
                         <li>
                             States
                             <br />
-                            <select name="filterType" id="" onChange={(e) => (handleFilterStates(e))} style={{ width: '80%' }} className="mt-2 mb-2" >
+                            <select name="filterType" id="state" onChange={(e) => (handleFilterStates(e))} style={{ width: '80%' }} className="mt-2 mb-2" >
                                 <option value="" disabled selected hidden>All</option>
                                 <option value="all">All</option>
                                 {
@@ -101,7 +106,7 @@ export default function Filters({ grapes, states, types, quantities, prices }) {
                         <li>
                             Types
                             <br />
-                            <select name="filterType" id="" onChange={(e) => (handleFilterTypes(e))} style={{ width: '80%' }} className="mt-2 mb-2" >
+                            <select name="filterType" id="types" onChange={(e) => (handleFilterTypes(e))} style={{ width: '80%' }} className="mt-2 mb-2" >
                                 <option value="" disabled selected hidden>All</option>
                                 <option value="all">All</option>
                                 {
@@ -112,7 +117,7 @@ export default function Filters({ grapes, states, types, quantities, prices }) {
                         <li>
                             Quantity
                             <br />
-                            <select name="filterType" id="" onChange={(e) => (handleFilterQuantity(e))} style={{ width: '80%' }} className="mt-2 mb-2" >
+                            <select name="filterType" id="quantity" onChange={(e) => (handleFilterQuantity(e))} style={{ width: '80%' }} className="mt-2 mb-2" >
                                 <option value="" disabled selected hidden>All</option>
                                 <option value="all">All</option>
                                 {
