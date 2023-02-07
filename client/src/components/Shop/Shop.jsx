@@ -10,7 +10,7 @@ import { getProducts, loadingAction } from "../../actions";
 import Winecards from "./WineCard/WineCard";
 import './shop.css'
 import Filters from "./Filters/Filters";
-import SearchBar from "./SearchBar";
+
 
 export default function Shop() {
 
@@ -19,6 +19,14 @@ export default function Shop() {
     const showLoading = useSelector((state) => state.showLoading)
     const allProducts = useSelector((state) => state.allProducts)
     const Products = useSelector((state) => state.products)
+    const [sort, setSort] = useState('')
+
+    function handleClick(e) {
+        e.preventDefault()
+        dispatch(loadingAction(true))
+        dispatch(getProducts())
+    }
+
 
     const allGrapes = () => {
         let grapes = []
@@ -61,7 +69,6 @@ export default function Shop() {
     const prices = allPrices()
 
 
-
     useEffect(() => {
         dispatch(loadingAction(true))
         dispatch(getProducts());
@@ -72,9 +79,8 @@ export default function Shop() {
         <>
             <Banner />
             <NavigationBar />
-            <SearchBar />
             <div className="row g-3 py-2">
-                <div className="col-3 col-sm-3 col-lg-3 mt-5 py-4" >
+                <div className="col-3 col-sm-3 col-lg-3 py-4" >
                     <Filters
                         grapes={grapes}
                         states={states}
@@ -85,7 +91,7 @@ export default function Shop() {
                 </div>
 
                 {showLoading ? <Loader /> :
-                    <div className="Cards container col mt-4 py-5">
+                    <div className="Cards container col py-5">
                         {Products.length ? Products?.map((el) => {
                             return (
                                 <Link to={"/shop/" + el.id}>

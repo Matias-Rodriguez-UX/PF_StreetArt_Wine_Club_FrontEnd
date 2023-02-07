@@ -1,37 +1,73 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
-import { getAllProducts, getFilterProducts, getFilterQuantities } from "../../../actions";
+import { getFilterProducts } from "../../../actions";
 import './Filters.css'
 
 
-export default function Filters({ grapes, states, types, quantities, prices }) {
+export default function Filters({ grapes, states, types, quantities }) {
+    const inSt = 'all'
+    const [grape, setGrape] = useState(inSt)
+    const [state, setSate] = useState(inSt)
+    const [quant, setQuant] = useState(inSt)
+    const [type, setType] = useState(inSt)
+    const [filters, setFilters] = useState([
+        { filter: "Grape", value: inSt },
+        { filter: "State", value: inSt },
+        { filter: "Type", value: inSt }])
+
     const dispatch = useDispatch()
 
+
     function handleFilterTypes(e) {
-        e.preventDefault()
-
-        dispatch(getFilterProducts("Type", e.target.value))
-
+        setType(e.target.value)
+        setFilters([
+            { filter: "Grape", value: grape },
+            { filter: "State", value: state },
+            { filter: "Type", value: e.target.value }
+        ])
     }
 
     function handleFilterGrapes(e) {
-        e.preventDefault()
-
-        dispatch(getFilterProducts("Grape", e.target.value))
-
+        setGrape(e.target.value)
+        setFilters([
+            { filter: "Grape", value: e.target.value },
+            { filter: "State", value: state },
+            { filter: "Type", value: type }
+        ])
     }
 
     function handleFilterStates(e) {
-        e.preventDefault()
-        dispatch(getFilterProducts("State", e.target.value))
-
+        setSate(e.target.value)
+        setFilters([
+            { filter: "Grape", value: grape },
+            { filter: "State", value: e.target.value },
+            { filter: "Type", value: type }
+        ])
     }
 
     function handleFilterQuantity(e) {
-        e.preventDefault()
-        dispatch(getFilterQuantities(e.target.value))
+        setQuant(e.target.value)
+        setFilters([
+            { filter: "Grape", value: grape },
+            { filter: "State", value: state },
+            { filter: "Type", value: type }
+        ])
     }
+
+    function handleClick(e) {
+        dispatch(getFilterProducts(filters, quant))
+        setGrape(inSt)
+        setQuant(inSt)
+        setSate(inSt)
+        setType(inSt)
+        setFilters([
+            { filter: "Grape", value: inSt },
+            { filter: "State", value: inSt },
+            { filter: "Type", value: inSt }
+        ])
+    }
+
 
     return (
         <div>
@@ -40,71 +76,57 @@ export default function Filters({ grapes, states, types, quantities, prices }) {
                     <span className="fs-4">Filters</span>
                 </a>
                 <hr />
-                <form action="" onSubmit={(e) => (handleSubmit(e))}>
-                    <ul className="nav nav-pills flex-column mb-auto">
-                        <li className="nav-item">
-                            Grapes
-                            <br />
-                            <select name="filterType" id="" onChange={(e) => (handleFilterGrapes(e))} style={{ width: '80%' }} className="mt-2 mb-2" >
-                                <option value="" disabled selected hidden>All</option>
-                                <option value="all">All</option>
-                                {
-                                    grapes?.map((el, index) => <option value={el} key={index}>{el}</option>)
-                                }
-                            </select>
-                        </li>
-                        <li>
-                            States
-                            <br />
-                            <select name="filterType" id="" onChange={(e) => (handleFilterStates(e))} style={{ width: '80%' }} className="mt-2 mb-2" >
-                                <option value="" disabled selected hidden>All</option>
-                                <option value="all">All</option>
-                                {
-                                    states?.map((el, index) => <option value={el} key={index}>{el}</option>)
-                                }
-                            </select>
-                        </li>
-                        <li>
-                            Price
-                            <div className="mb-2" style={{ width: '80%' }}>
-                                <div className="d-flex justify-content-between mb-2"><span>From</span>
-                                    <input className="ms-4" type="number" name="" id="" placeholder={`$${prices[0]}`} style={{ width: '50%' }}
-                                        onChange={(e) => (handleFilterPriceMin(e))} />
-                                </div>
-                                <div className="d-flex justify-content-between"><span>To</span>
-                                    <input className="ms-4" type="number" name="" id="" placeholder={`$${prices[1]}`} style={{ width: '50%' }}
-                                        onChange={(e) => (handleFilterPriceMax(e))} />
-                                </div>
-                            </div>
-                        </li>
-                        <li>
-                            Types
-                            <br />
-                            <select name="filterType" id="" onChange={(e) => (handleFilterTypes(e))} style={{ width: '80%' }} className="mt-2 mb-2" >
-                                <option value="" disabled selected hidden>All</option>
-                                <option value="all">All</option>
-                                {
-                                    types?.map((el, index) => <option value={el} key={index}>{el}</option>)
-                                }
-                            </select>
-                        </li>
-                        <li>
-                            Quantity
-                            <br />
-                            <select name="filterType" id="" onChange={(e) => (handleFilterQuantity(e))} style={{ width: '80%' }} className="mt-2 mb-2" >
-                                <option value="" disabled selected hidden>All</option>
-                                <option value="all">All</option>
-                                {
-                                    quantities?.map((el, index) => <option value={el} key={index}>{el}</option>)
-                                }
-                            </select>
-                        </li>
-                    </ul>
-                    <hr />
-                    <div>
-                        <button className="btn btn-warning float-end me-4"> <strong>Filter</strong></button>
-                    </div>
-                </form>
+                <ul className="nav nav-pills flex-column mb-auto">
+                    <li className="nav-item">
+                        Grapes
+                        <br />
+                        <select value={grape} name="filterType" id="" onChange={(e) => (handleFilterGrapes(e))} style={{ width: '80%' }} className=" form-select mt-2 mb-2" >
+                            <option value="" disabled selected hidden>{grape}</option>
+                            <option value="all">All</option>
+                            {
+                                grapes?.map((el, index) => <option value={el} key={index}>{el}</option>)
+                            }
+                        </select>
+                    </li>
+                    <li>
+                        States
+                        <br />
+                        <select value={state} name="filterType" id="" onChange={(e) => (handleFilterStates(e))} style={{ width: '80%' }} className="form-select mt-2 mb-2" >
+                            <option value="" disabled selected hidden>{state}</option>
+                            <option value="all">All</option>
+                            {
+                                states?.map((el, index) => <option value={el} key={index}>{el}</option>)
+                            }
+                        </select>
+                    </li>
+                    <li>
+                        Types
+                        <br />
+                        <select value={type} name="filterType" id="" onChange={(e) => (handleFilterTypes(e))} style={{ width: '80%' }} className=" form-select mt-2 mb-2" >
+                            <option value="" disabled selected hidden>{type}</option>
+                            <option value="all">All</option>
+                            {
+                                types?.map((el, index) => <option value={el} key={index}>{el}</option>)
+                            }
+                        </select>
+                    </li>
+                    <li>
+                        Quantity
+                        <br />
+                        <select value={quant} name="filterQuant" id="" onChange={(e) => (handleFilterQuantity(e))} style={{ width: '80%' }} className="form-select mt-2 mb-2" >
+                            <option value="" disabled selected hidden>{quant}</option>
+                            <option value="all">All</option>
+                            {
+                                quantities?.map((el, index) => <option value={el} key={index}>{el}</option>)
+                            }
+                        </select>
+                    </li>
+                </ul>
+                <hr />
+                <div>
+                    <button type="submit" className="btn btn-warning float-end me-4" onClick={(e) => handleClick(e)}>Filter</button>
+                </div>
+
 
             </div>
         </div>
