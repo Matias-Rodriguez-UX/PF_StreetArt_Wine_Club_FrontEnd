@@ -2,19 +2,21 @@ import React from "react"
 import { useDispatch } from "react-redux"
 import { orderAtoZ, orderByPrice } from "../../../actions"
 
-export default function Sort({ setSort, handleClick }) {
+export default function Sort({ setSort, handleClick, setCurrentPage }) {
     const dispatch = useDispatch()
 
     function handleOrderAlph(e) {
         e.preventDefault()
         dispatch(orderAtoZ(e.target.value))
         setSort(`${e.target.value}`)
+        setCurrentPage(1)
     }
 
     function handleOrderByPrice(e) {
         e.preventDefault()
         dispatch(orderByPrice(e.target.value))
         setSort(`${e.target.value}`)
+        setCurrentPage(1)
     }
 
     return (

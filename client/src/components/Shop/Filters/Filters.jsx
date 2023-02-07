@@ -5,7 +5,7 @@ import { getFilterProducts } from "../../../actions";
 import './Filters.css'
 
 
-export default function Filters({ grapes, states, types, quantities }) {
+export default function Filters({ grapes, states, types, quantities, setCurrentPage }) {
     const inSt = 'all'
     const [grape, setGrape] = useState(inSt)
     const [state, setSate] = useState(inSt)
@@ -66,6 +66,7 @@ export default function Filters({ grapes, states, types, quantities }) {
             { filter: "State", value: inSt },
             { filter: "Type", value: inSt }
         ])
+        setCurrentPage(1)
     }
 
 
