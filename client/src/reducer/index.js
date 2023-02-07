@@ -1,16 +1,21 @@
-import { GET_PRODUCT_BY_ID, GET_PRODUCTS, GET_FILTER_PRODUCTS, GET_FILTER_QUANTITIES, GET_ALL_PRODUCTS } from "../actions/allActions";
-
+import {
+  GET_PRODUCT_BY_ID,
+  GET_PRODUCTS,
+  GET_FILTER_PRODUCTS,
+  GET_FILTER_QUANTITIES,
+  GET_ALL_PRODUCTS,
+  GET_PRODUCT_BY_NAME,
+} from "../actions/allActions";
 
 const initialState = {
-    wineDetail: [],
-    products: [],
-    allProducts: [],
-    filtersActive: false,
-    showLoading: false,
-}
+  wineDetail: [],
+  products: [],
+  allProducts: [],
+  filtersActive: false,
+  showLoading: false,
+};
 
 export default function reducer(state = initialState, action) {
-
     switch (action.type) {
         case GET_PRODUCT_BY_ID:
             return {
