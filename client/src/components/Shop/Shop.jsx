@@ -11,6 +11,7 @@ import Winecards from "./WineCard/WineCard";
 import './shop.css'
 import Filters from "./Filters/Filters";
 import Sort from "./Sorts";
+import WebPagination from "./Pagination/Pagination";
 
 
 export default function Shop() {
@@ -21,6 +22,15 @@ export default function Shop() {
     const allProducts = useSelector((state) => state.allProducts)
     const Products = useSelector((state) => state.products)
     const [sort, setSort] = useState('')
+
+    const [currentPage, setCurrentPage] = useState(1);
+    const [winesPerPage, setWinesPerPage] = useState(4);
+    const indexOfLastWine = currentPage * winesPerPage;
+    const indexOfFirstWine = indexOfLastWine - winesPerPage;
+    const currentWines = Products.slice(indexOfFirstWine, indexOfLastWine);
+    const pagination = (pageNumber) => {
+        setCurrentPage(pageNumber)
+    };
 
     function handleClick(e) {
         e.preventDefault()
@@ -56,7 +66,7 @@ export default function Shop() {
     }
     const allPrices = () => {
         let prices = []
-        prices = allProducts.map(product => product.price)
+        prices = Products.map(product => product.price)
         const min = Math.min(...prices);
         const max = Math.max(...prices);
         const result = [min, max]
@@ -83,6 +93,7 @@ export default function Shop() {
             <Sort
                 handleClick={handleClick}
                 setSort={setSort}
+                setCurrentPage={setCurrentPage}
             />
             <div className="row g-3 py-2">
                 <div className="col-3 col-sm-3 col-lg-3 py-4" >
@@ -92,12 +103,13 @@ export default function Shop() {
                         types={types}
                         quantities={quantities}
                         prices={prices}
+                        setCurrentPage={setCurrentPage}
                     />
                 </div>
 
                 {showLoading ? <Loader /> :
                     <div className="Cards container col py-5">
-                        {Products.length ? Products?.map((el) => {
+                        {currentWines.length ? currentWines?.map((el) => {
                             return (
                                 <Link style={{ textDecoration: 'none' }} to={"/shop/" + el.id}>
                                     <Winecards
@@ -111,6 +123,12 @@ export default function Shop() {
                             )
                         }) : <h1>Wines not Found</h1>}
                     </div>}
+                    <WebPagination
+                    winesPerPage = {winesPerPage}
+                    numberOfWines = { Products.length }
+                    currentPage = {currentPage}
+                    setCurrentPage = {setCurrentPage}
+                    pagination = { pagination }/>
             </div>
 
             <Footer />
