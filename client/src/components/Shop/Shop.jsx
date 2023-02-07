@@ -99,7 +99,7 @@ export default function Shop() {
                     <div className="Cards container col py-5">
                         {Products.length ? Products?.map((el) => {
                             return (
-                                <Link to={"/shop/" + el.id}>
+                                <Link style={{ textDecoration: 'none' }} to={"/shop/" + el.id}>
                                     <Winecards
                                         image={el.image}
                                         name={el.name}
