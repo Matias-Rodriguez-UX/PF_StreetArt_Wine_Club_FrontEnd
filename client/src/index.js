@@ -17,7 +17,7 @@ ReactDOM.render(
         domain= {domain}
         clientId = {clientId}
         authorizationParams={{
-          redirect_uri: window.location.origin
+          redirect_uri: 'http://localhost:3000/userprofile'
         }}>
         <App />
     </Auth0Provider>
