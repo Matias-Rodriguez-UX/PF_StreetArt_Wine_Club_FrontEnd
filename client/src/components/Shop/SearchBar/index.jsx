@@ -59,16 +59,6 @@ export default function SearchBar() {
         onChange
         };
 
-    // const eventEnter=(e)=>{
-    //     if(e.key == "Enter"){
-    //         var split = e.target.value.split('-');
-    //         var presidente ={
-    //             presidente: split[0].trim(),
-    //             pais: split[1].trim(),
-    //           };
-    //           seleccionarPresidente(presidente);
-    //         }
-    //         }
     
     const handleClick = (product) => {
         dispatch(getProductsByName(product))
