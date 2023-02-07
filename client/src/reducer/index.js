@@ -1,4 +1,4 @@
-import { GET_PRODUCT_BY_ID, GET_PRODUCTS, GET_FILTER_PRODUCTS, GET_FILTER_QUANTITIES, GET_ALL_PRODUCTS } from "../actions/allActions";
+import { GET_PRODUCT_BY_ID, GET_PRODUCTS, GET_FILTER_PRODUCTS, ORDER_BY_PRICE, ORDER_A_TO_Z } from "../actions/allActions";
 
 
 const initialState = {
@@ -7,6 +7,17 @@ const initialState = {
     allProducts: [],
     filtersActive: false,
     showLoading: false,
+}
+
+function sortArrayAtoZ(x, y) {
+    if (x.name < y.name) { return -1; }
+    if (x.name > y.name) { return 1; }
+    return 0;
+}
+function sortArrayZtoA(x, y) {
+    if (x.name > y.name) { return -1; }
+    if (x.name < y.name) { return 1; }
+    return 0;
 }
 
 export default function reducer(state = initialState, action) {
@@ -31,14 +42,17 @@ export default function reducer(state = initialState, action) {
                 ...state,
                 products: matchingWines
             }
-
-        case GET_FILTER_QUANTITIES:
-            const allquantities = state.allProducts
-            const quantityFil = state.products
-            const filtered = action.payload === "all" ? allquantities : quantityFil.filter(product => product.quantity == action.payload)
+        case ORDER_A_TO_Z:
+            const productsByName = action.payload === "a" ? state.products.sort(sortArrayAtoZ) : state.products.sort(sortArrayZtoA)
             return {
                 ...state,
-                products: filtered
+                products: productsByName
+            }
+        case ORDER_BY_PRICE:
+            const productsByPrice = action.payload === "high" ? state.products.sort(((b, a) => a.price - b.price)) : state.products.sort((b, a) => b.price - a.price)
+            return {
+                ...state,
+                products: productsByPrice
             }
 
         default:

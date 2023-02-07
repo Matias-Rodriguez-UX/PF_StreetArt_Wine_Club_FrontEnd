@@ -80,7 +80,7 @@ export default function Filters({ grapes, states, types, quantities }) {
                     <li className="nav-item">
                         Grapes
                         <br />
-                        <select value={grape} name="filterType" id="" onChange={(e) => (handleFilterGrapes(e))} style={{ width: '80%' }} className="mt-2 mb-2" >
+                        <select value={grape} name="filterType" id="" onChange={(e) => (handleFilterGrapes(e))} style={{ width: '80%' }} className=" form-select mt-2 mb-2" >
                             <option value="" disabled selected hidden>{grape}</option>
                             <option value="all">All</option>
                             {
@@ -91,7 +91,7 @@ export default function Filters({ grapes, states, types, quantities }) {
                     <li>
                         States
                         <br />
-                        <select value={state} name="filterType" id="" onChange={(e) => (handleFilterStates(e))} style={{ width: '80%' }} className="mt-2 mb-2" >
+                        <select value={state} name="filterType" id="" onChange={(e) => (handleFilterStates(e))} style={{ width: '80%' }} className="form-select mt-2 mb-2" >
                             <option value="" disabled selected hidden>{state}</option>
                             <option value="all">All</option>
                             {
@@ -99,23 +99,10 @@ export default function Filters({ grapes, states, types, quantities }) {
                             }
                         </select>
                     </li>
-                    {/* <li>
-                        Price
-                        <div className="mb-2" style={{ width: '80%' }}>
-                            <div className="d-flex justify-content-between mb-2"><span>From</span>
-                                <input className="ms-4" type="number" name="" id="" placeholder={`$${prices[0]}`} style={{ width: '50%' }}
-                                    onChange={(e) => (handleFilterPriceMin(e))} />
-                            </div>
-                            <div className="d-flex justify-content-between"><span>To</span>
-                                <input className="ms-4" type="number" name="" id="" placeholder={`$${prices[1]}`} style={{ width: '50%' }}
-                                    onChange={(e) => (handleFilterPriceMax(e))} />
-                            </div>
-                        </div>
-                    </li> */}
                     <li>
                         Types
                         <br />
-                        <select value={type} name="filterType" id="" onChange={(e) => (handleFilterTypes(e))} style={{ width: '80%' }} className="mt-2 mb-2" >
+                        <select value={type} name="filterType" id="" onChange={(e) => (handleFilterTypes(e))} style={{ width: '80%' }} className=" form-select mt-2 mb-2" >
                             <option value="" disabled selected hidden>{type}</option>
                             <option value="all">All</option>
                             {
@@ -126,7 +113,7 @@ export default function Filters({ grapes, states, types, quantities }) {
                     <li>
                         Quantity
                         <br />
-                        <select value={quant} name="filterQuant" id="" onChange={(e) => (handleFilterQuantity(e))} style={{ width: '80%' }} className="mt-2 mb-2" >
+                        <select value={quant} name="filterQuant" id="" onChange={(e) => (handleFilterQuantity(e))} style={{ width: '80%' }} className="form-select mt-2 mb-2" >
                             <option value="" disabled selected hidden>{quant}</option>
                             <option value="all">All</option>
                             {
