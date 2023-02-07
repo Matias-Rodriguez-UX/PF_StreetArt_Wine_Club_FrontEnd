@@ -67,14 +67,15 @@ export function getFilterProducts(filters, quantity) {
         } catch (error) {
             console.log("Error", error)
         }
+    }
+}
 
-
-        export function getFilterQuantities(payload) {
-            return {
-                type: GET_FILTER_QUANTITIES,
-                payload,
-            };
-        }
+export function getFilterQuantities(payload) {
+    return {
+        type: GET_FILTER_QUANTITIES,
+        payload,
+    };
+}
 
 
 
