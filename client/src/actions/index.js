@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { GET_PRODUCTS, LOADING_ACTION, GET_PRODUCT_BY_ID, GET_FILTER_PRODUCTS, GET_FILTER_QUANTITIES } from './allActions';
+import { GET_PRODUCTS, LOADING_ACTION, GET_PRODUCT_BY_ID, GET_FILTER_PRODUCTS } from './allActions';
 
 
 const headers = {
@@ -51,10 +51,11 @@ export function getDetail(id) {
 }
 
 
-export function getFilterProducts(filter, value) {
+export function getFilterProducts(filters, quantity) {
+    let json = JSON.stringify(filters)
     return async function (dispatch) {
         try {
-            let info = await axios.get(`http://localhost:3001/products/filters?filter=${filter}&value=${value}`,);
+            let info = await axios.get(`http://localhost:3001/products/filters?filter=${json}&quantity=${quantity}`);
             return (dispatch({
                 type: GET_FILTER_PRODUCTS,
                 payload: info.data
@@ -66,11 +67,5 @@ export function getFilterProducts(filter, value) {
     }
 }
 
-export function getFilterQuantities(payload) {
-    return {
-        type: GET_FILTER_QUANTITIES,
-        payload
-    }
-}
 
 

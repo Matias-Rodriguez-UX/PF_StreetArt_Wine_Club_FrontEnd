@@ -61,7 +61,6 @@ export default function Shop() {
     const prices = allPrices()
 
 
-
     useEffect(() => {
         dispatch(loadingAction(true))
         dispatch(getProducts());

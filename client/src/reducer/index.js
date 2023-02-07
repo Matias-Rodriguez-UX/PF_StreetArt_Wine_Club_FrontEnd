@@ -25,11 +25,11 @@ export default function reducer(state = initialState, action) {
             }
 
         case GET_FILTER_PRODUCTS:
-            const filterDB = action.payload
+            const names = action.payload
+            const matchingWines = state.allProducts.filter(wines => names.includes(wines.name))
             return {
                 ...state,
-                products: filterDB,
-                filtersActive: true
+                products: matchingWines
             }
 
         case GET_FILTER_QUANTITIES:
