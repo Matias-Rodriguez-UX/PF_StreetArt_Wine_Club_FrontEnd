@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { GET_PRODUCTS, LOADING_ACTION, GET_PRODUCT_BY_ID, GET_FILTER_PRODUCTS } from './allActions';
+import { GET_PRODUCTS, LOADING_ACTION, GET_PRODUCT_BY_ID, GET_FILTER_PRODUCTS, ORDER_BY_PRICE, ORDER_A_TO_Z } from './allActions';
 
 
 const headers = {
@@ -76,6 +76,18 @@ export function getFilterQuantities(payload) {
         payload,
     };
 }
+export function orderAtoZ(payload) {
+    return {
+        type: ORDER_A_TO_Z,
+        payload
+    }
+}
 
+export function orderByPrice(payload) {
+    return {
+        type: ORDER_BY_PRICE,
+        payload
+    }
+}
 
 
