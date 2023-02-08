@@ -72,7 +72,7 @@ export default function SearchBar() {
         }
 
     return(
-        <div className="gap-3 w-100 bg-dark p-2 d-flex col align-items-center justify-content-center">
+        <div className="gap-3 w-100 bg-dark p-2 d-flex col align-items-center justify-content-center p-3">
             <Autosuggest 
             suggestions={productsFiltered}
             onSuggestionsFetchRequested={onSuggestionsFetchRequested}

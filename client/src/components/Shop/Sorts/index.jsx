@@ -20,7 +20,7 @@ export default function Sort({ setSort, handleClick, setCurrentPage }) {
     }
 
     return (
-        <div className="container-fluid bg-dark row p-3 mt-4">
+        <div className="container-fluid bg-dark row p-3">
             <div className="col-8 d-flex justify-content-evenly me-4">
                 <h3 className="ms-4 me-4" style={{ color: "white" }}>Sort</h3>
                 <select className="form-select me-4" placeholder="Order by Name" name="orderAlph" id="name" onChange={(e) => (handleOrderAlph(e))}>
