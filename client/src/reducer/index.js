@@ -5,6 +5,7 @@ import {
   ORDER_BY_PRICE,
   ORDER_A_TO_Z,
   GET_PRODUCT_BY_NAME,
+  ADD_TO_CART,
 } from "../actions/allActions";
 
 const initialState = {
@@ -13,6 +14,7 @@ const initialState = {
   allProducts: [],
   filtersActive: false,
   showLoading: false,
+  cart: []
 };
 
 function sortArrayAtoZ(x, y) {
@@ -87,6 +89,13 @@ export default function reducer(state = initialState, action) {
                   .split(" ")
                   .some((el) => el.includes(action.payload.split(" ")[0]))
               ),
+      };
+
+    case ADD_TO_CART:
+      let newProduct = state.allProducts.find((product) => product.id === action.payload)
+      return {
+        ...state,
+        cart: [...state.cart, newProduct]
       };
 
     default:

@@ -7,6 +7,9 @@ import {
   ORDER_BY_PRICE,
   ORDER_A_TO_Z,
   GET_PRODUCT_BY_NAME,
+  ADD_TO_CART,
+  DELETE_ALL_FROM_CART,
+  DELETE_PRODUCT_FROM_CART
 } from "./allActions";
 
 const headers = {
@@ -106,4 +109,25 @@ export function getProductByName(payload) {
     type: GET_PRODUCT_BY_NAME,
     payload,
   };
+}
+
+export function addToCart(id) {
+ return {
+    type: ADD_TO_CART,
+    payload: id,
+ }     
+}
+
+export function deleteFromCart(payload) {
+return {
+    type: GET_PRODUCT_BY_NAME,
+    payload,
+};
+}
+
+export function clearCart(payload) {
+return {
+    type: GET_PRODUCT_BY_NAME,
+    payload,
+};
 }
