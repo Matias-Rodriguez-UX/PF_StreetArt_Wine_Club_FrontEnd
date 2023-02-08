@@ -9,11 +9,16 @@ import FAQs from './FAQs'
 import Team from './Team'
 import Contact from "./Contact";
 import Footer from '../Footer'
+import RegisterModal from "./RegisterModal/RegisterModal";
 
 export default function Home() {
-    
+
     return (
         <>
+            <RegisterModal
+
+            />
+
             <Banner></Banner>
             <NavigationBar></NavigationBar>
             <Main></Main>
