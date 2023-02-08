@@ -66,7 +66,6 @@ export default function SearchBar() {
 
     const eventEnter=(e)=>{
         if(e.key == "Enter"){
-            console.log(e.target.value)
             setValue(e.target.value)
             handleClick(value)
         }
