@@ -2,7 +2,7 @@ import Autosuggest from 'react-autosuggest'
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import "./searchBar.css"
-import { getProductsByName } from '../../../actions';
+import { getProductByName } from '../../../actions';
 import { useDispatch } from 'react-redux';
 
 export default function SearchBar() {
@@ -11,7 +11,7 @@ export default function SearchBar() {
     const [value, setValue]= useState("");
     const [selection, setSelection]= useState([]);
 
-    const allProducts = useSelector(state => state.products)
+    const allProducts = useSelector(state => state.allProducts)
     const dispatch = useDispatch()
     
     const nameConverter = (str) => {
@@ -61,11 +61,18 @@ export default function SearchBar() {
 
     
     const handleClick = (product) => {
-        dispatch(getProductsByName(product))
+        dispatch(getProductByName(product))
     }
 
+    const eventEnter=(e)=>{
+        if(e.key == "Enter"){
+            setValue(e.target.value)
+            handleClick(value)
+        }
+        }
+
     return(
-        <div className="className='w-100 bg-dark p-2 d-flex col align-items-center justify-content-center">
+        <div className="gap-3 w-100 bg-dark p-2 d-flex col align-items-center justify-content-center">
             <Autosuggest 
             suggestions={productsFiltered}
             onSuggestionsFetchRequested={onSuggestionsFetchRequested}
@@ -73,9 +80,9 @@ export default function SearchBar() {
             getSuggestionValue={getSuggestionValue}
             renderSuggestion={renderSuggestion}
             inputProps={inputProps}
-            // onSuggestionSelected={eventEnter}
+            onSuggestionSelected={eventEnter}
             />
-            <button className='btn btn-warning btn-sm ' onClick={()=>handleClick(selection)}>Search</button>
+            <button className=' btn btn-warning btn-md position-absolute pos-btn' onClick={()=>handleClick(value)}>Search</button>
         </div>
     )
 }

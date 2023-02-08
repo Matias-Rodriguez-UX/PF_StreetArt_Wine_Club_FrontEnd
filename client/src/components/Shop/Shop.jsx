@@ -12,6 +12,7 @@ import './shop.css'
 import Filters from "./Filters/Filters";
 import Sort from "./Sorts";
 import WebPagination from "./Pagination/Pagination";
+import SearchBar from "./SearchBar";
 
 
 export default function Shop() {
@@ -95,6 +96,7 @@ export default function Shop() {
                 setSort={setSort}
                 setCurrentPage={setCurrentPage}
             />
+            <SearchBar />
             <div className="row g-3 py-2">
                 <div className="col-3 col-sm-3 col-lg-3 py-4" >
                     <Filters
