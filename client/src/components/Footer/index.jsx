@@ -11,7 +11,7 @@ export default function Footer() {
                         <a className='text-reset text-decoration-none' href="/home">Home</a>
                         <a className='text-reset text-decoration-none' href="/home#about">About</a>
                         <a className='text-reset text-decoration-none' href="/shop">Shop</a>
-                        <a className='text-reset text-decoration-none' href="/join">Join</a>
+                        <a className='text-reset text-decoration-none' href="/memberships">Join</a>
                         <a className='text-reset text-decoration-none' href="/home#FAQs">FAQs</a>
                         <a className='text-reset text-decoration-none' href="/home#contact">Contact</a>
                     </div>
