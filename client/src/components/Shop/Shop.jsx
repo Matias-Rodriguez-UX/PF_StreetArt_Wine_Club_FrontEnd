@@ -91,14 +91,14 @@ export default function Shop() {
         <>
             <Banner />
             <NavigationBar />
+            <SearchBar />
             <Sort
                 handleClick={handleClick}
                 setSort={setSort}
                 setCurrentPage={setCurrentPage}
             />
-            <SearchBar />
-            <div className="row g-3 py-2">
-                <div className="col-3 col-sm-3 col-lg-3 py-4" >
+            <div className="row g-3">
+                <div className="col-3 col-sm-3 col-lg-3" >
                     <Filters
                         grapes={grapes}
                         states={states}
@@ -110,7 +110,7 @@ export default function Shop() {
                 </div>
 
                 {showLoading ? <Loader /> :
-                    <div className="Cards container col py-5">
+                    <div className="Cards container col py-3">
                         {currentWines.length ? currentWines?.map((el) => {
                             return (
                                 <Link style={{ textDecoration: 'none' }} to={"/shop/" + el.id}>
@@ -125,12 +125,12 @@ export default function Shop() {
                             )
                         }) : <h1>Wines not Found</h1>}
                     </div>}
-                    <WebPagination
-                    winesPerPage = {winesPerPage}
-                    numberOfWines = { Products.length }
-                    currentPage = {currentPage}
-                    setCurrentPage = {setCurrentPage}
-                    pagination = { pagination }/>
+                <WebPagination
+                    winesPerPage={winesPerPage}
+                    numberOfWines={Products.length}
+                    currentPage={currentPage}
+                    setCurrentPage={setCurrentPage}
+                    pagination={pagination} />
             </div>
 
             <Footer />
