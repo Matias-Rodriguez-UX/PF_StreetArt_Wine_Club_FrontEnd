@@ -60,8 +60,6 @@ export default function Memberships() {
                                 <Card.Title className='mt-3 mb-3'>Graffiti</Card.Title>
                                 <Card.Text className='bg-light rounded-pill pe-3 ps-3 pt-1 pb-1 font-weight-bolder '>Popular</Card.Text>
                             </div>
-
-
                             <div className='d-flex h-auto gap-1 mb-3' >
                                 <Card.Text className='d-flex fs-1 m-0 align-items-end'>$5900</Card.Text>
                                 <Card.Text className='d-flex m-0 pt-3 align-items-center' >/month</Card.Text>
