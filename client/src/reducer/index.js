@@ -83,7 +83,9 @@ export default function reducer(state = initialState, action) {
           action.payload === ""
             ? state.allProducts
             : state.allProducts.filter((el) =>
-                el.name.split(" ").some((el) => el.includes(action.payload))
+                el.name
+                  .split(" ")
+                  .some((el) => el.includes(action.payload.split(" ")[0]))
               ),
       };
 
