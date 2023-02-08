@@ -7,6 +7,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import LoginButton from "../Login/LoginButton";
 import LogOutButton from "../Login/LogOutButton";
 import SignupButton from "../Login/Signup";
+import { NavDropdown } from "react-bootstrap";
 
 
 
@@ -20,34 +21,34 @@ export default function NavigationBar() {
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="me-auto">
-            <Nav.Link href='/home'>Home</Nav.Link>
-            <Link to="about" spy={true} smooth={true} offset={50} duration={500}>
-              <Nav.Link href="#">About</Nav.Link>
-            </Link>
+            <NavDropdown
+              id="nav-dropdown"
+              title="Home"
+              menuVariant="light"
+            >
+              <NavDropdown.Item spy={true} smooth={true} offset={-50} duration={500} href="/home#main">Main</NavDropdown.Item>
+              <NavDropdown.Item spy={true} smooth={true} offset={-50} duration={500} href="/home#about">About</NavDropdown.Item>
+              <NavDropdown.Item spy={true} smooth={true} offset={-50} duration={500} href="/home#FAQs">FAQs</NavDropdown.Item>
+              <NavDropdown.Item spy={true} smooth={true} offset={-50} duration={500} href="/home#contact">Contact</NavDropdown.Item>
+            </NavDropdown>
             <Nav.Link href="/shop">Shop</Nav.Link>
-            <Nav.Link href="/memberships">Join</Nav.Link>
-            <Link to="FAQs" spy={true} smooth={true} offset={-50} duration={500}>
-              <Nav.Link href='#'>FAQs</Nav.Link>
-            </Link>
-            <Link to="contact" spy={true} smooth={true} offset={-50} duration={500}>
-              <Nav.Link href="#">Contact</Nav.Link>
-            </Link>
+            <Nav.Link href="/memberships">Memberships</Nav.Link>
           </Nav>
           <Nav>
-            { isAuthenticated ? 
-            (
-          <>
-          <Nav.Link href="/userprofile">{user.name}</Nav.Link>
-          <LogOutButton/> 
-          </>
-          ) : 
-          (
-          <>
-            <LoginButton/>
-            <SignupButton/>  
-          </>
-            )
-          }
+            {isAuthenticated ?
+              (
+                <>
+                  <Nav.Link href="/userprofile">{user.name}</Nav.Link>
+                  <LogOutButton />
+                </>
+              ) :
+              (
+                <>
+                  <LoginButton />
+                  <SignupButton />
+                </>
+              )
+            }
           </Nav>
         </Navbar.Collapse>
       </Container>

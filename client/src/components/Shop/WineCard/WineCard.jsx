@@ -5,7 +5,7 @@ import './Card.css'
 
 const Winecards = ({ name, winery, price, image, id }) => {
   return (
-    <Card className="cardWine" style={{ width: '18rem', boxShadow: ' rgba(0, 0, 0, 0.1) 0px 4px 8px', height: '32rem' }}>
+    <Card className="cardWine" style={{ width: '18rem', height: '32rem' }}>
       <Card.Img variant="top" src={image} />
       <Card.Body className="d-flex flex-column align-items-center justify-content-evenly">
         <Card.Title style={{ fontSize: "24px" }}><strong>{name}</strong></Card.Title>
