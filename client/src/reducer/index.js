@@ -5,6 +5,7 @@ import {
   ORDER_BY_PRICE,
   ORDER_A_TO_Z,
   GET_PRODUCT_BY_NAME,
+  LOADING_ACTION,
 } from "../actions/allActions";
 
 const initialState = {
@@ -36,6 +37,11 @@ function sortArrayZtoA(x, y) {
 
 export default function reducer(state = initialState, action) {
   switch (action.type) {
+    case LOADING_ACTION:
+      return {
+        ...state,
+        showLoading: action.payload
+      }
     case GET_PRODUCT_BY_ID:
       return {
         ...state,
@@ -83,10 +89,10 @@ export default function reducer(state = initialState, action) {
           action.payload === ""
             ? state.allProducts
             : state.allProducts.filter((el) =>
-                el.name
-                  .split(" ")
-                  .some((el) => el.includes(action.payload.split(" ")[0]))
-              ),
+              el.name
+                .split(" ")
+                .some((el) => el.includes(action.payload.split(" ")[0]))
+            ),
       };
 
     default:

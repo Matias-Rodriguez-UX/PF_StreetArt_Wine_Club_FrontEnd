@@ -109,7 +109,7 @@ export default function Shop() {
                     />
                 </div>
 
-                {showLoading ? <Loader /> :
+                {showLoading ? <div className="container col py-5 mt-5"> <Loader /> </div> :
                     <div className="Cards container col py-3">
                         {currentWines.length ? currentWines?.map((el) => {
                             return (
