@@ -1,0 +1,14 @@
+.cardAdmin {
+    text-decoration: none;
+    color: black
+}
+
+.cardAdmin {
+    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.15);
+    transition: 0.5s;
+}
+
+.cardAdmin:hover {
+    transform: translateY(-10px) scale(1.05);
+    box-shadow: 0 20px 30px rgba(0, 0, 0, 0.15);
+}

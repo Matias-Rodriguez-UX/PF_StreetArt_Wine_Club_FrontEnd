@@ -3,12 +3,12 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import Home from './components/Home/Home'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Landing from './components/Landing';
-import Join from './components/Join'
 import Shop from './components/Shop/Shop.jsx'
 import Detail from './components/Shop/WineDetailCard/WineDetailCard.jsx';
 import Memberships from './components/Memberships';
 import UserProfile from './components/UserProfile/UserProfile';
-import HomeAdmin from './components/Admin/Home';
+import AdminProfile from './components/Admin/AdminProfile';
+
 
 
 
@@ -22,7 +22,7 @@ function App() {
         <Route exact path={'/shop'} component={Shop} />
         <Route path={'/shop/:id'} component={Detail} />
         <Route path={'/userprofile'} component={UserProfile} />
-        <Route path={'/admin/home'} component={HomeAdmin} />
+        <Route exact path={'/admin'} component={AdminProfile} />
       </Switch>
     </BrowserRouter>
   );
