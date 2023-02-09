@@ -81,12 +81,6 @@ export function getFilterProducts(filters, quantity) {
   };
 }
 
-export function getFilterQuantities(payload) {
-  return {
-    type: GET_FILTER_QUANTITIES,
-    payload,
-  };
-}
 export function orderAtoZ(payload) {
   return {
     type: ORDER_A_TO_Z,
