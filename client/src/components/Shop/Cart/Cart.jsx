@@ -19,7 +19,7 @@ export default function Cart(){
           <li key={product.id}>
             <h3>{product.name}</h3>
             <p>price: ${product.price}</p>
-            <button onClick={() => handleDeleteFromCart(id)}>
+            <button onClick={() => handleDeleteFromCart(product.id)}>
               Delete
             </button>
           </li>

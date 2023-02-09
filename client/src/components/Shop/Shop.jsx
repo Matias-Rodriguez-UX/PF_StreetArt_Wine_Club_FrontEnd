@@ -82,10 +82,9 @@ export default function Shop() {
 
 
     useEffect(() => {
-        dispatch(loadingAction(true))
-        dispatch(getProducts());
-
-    }, []);
+            dispatch(loadingAction(true))
+            dispatch(getProducts());
+    }, [dispatch]);
 
     return (
         <>
