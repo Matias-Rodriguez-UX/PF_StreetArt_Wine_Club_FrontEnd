@@ -8,6 +8,7 @@ import Shop from './components/Shop/Shop.jsx'
 import Detail from './components/Shop/WineDetailCard/WineDetailCard.jsx';
 import Memberships from './components/Memberships';
 import UserProfile from './components/UserProfile/UserProfile';
+import HomeAdmin from './components/Admin/Home';
 
 
 
@@ -21,6 +22,7 @@ function App() {
         <Route exact path={'/shop'} component={Shop} />
         <Route path={'/shop/:id'} component={Detail} />
         <Route path={'/userprofile'} component={UserProfile} />
+        <Route path={'/admin/home'} component={HomeAdmin} />
       </Switch>
     </BrowserRouter>
   );
