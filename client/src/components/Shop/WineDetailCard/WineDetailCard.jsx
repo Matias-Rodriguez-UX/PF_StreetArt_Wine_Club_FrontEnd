@@ -9,7 +9,7 @@ import Footer from '../../Footer/index'
 /* import {videogameDetail} from '../../actions/index'; */
 
 /* import Loading from "../Loading/Loading.jsx"; */
-import { getDetail } from "../../../actions";
+import { getDetail, addToCart } from "../../../actions";
 
 export default function Detail(props){
 
@@ -21,10 +21,9 @@ export default function Detail(props){
 
     const wine = useSelector((state) => state.wineDetail);
  
-      return(
-        
-
+      return(   
         <>
+        <div><Link to={"/cart/"} ><button>cart</button></Link></div>
           {wine.name ? (<div className="container-fluid">
           <div><Banner /></div>
           <div><NavigationBar /></div>
@@ -50,10 +49,12 @@ export default function Detail(props){
                   <li>Type: {wine.types.map(e => e.name + ("  "))}</li>
                   <li>Regions: {wine.regions.map(e => e.name + (",  "))}</li>
                   <li>State: {wine.states.map(e => e.name + ("  "))}</li>
+                  <li>Quantity: {wine.quantity}</li>
               </ul>
               <div className="input-cart">
-                <input type="number" id="typeNumber" class="form-control"/>
-                <button type="button" id="button-cart" className="btn btn-warning btn-sm">Add to cart <i class="bi bi-cart-check-fill"></i></button>
+                <label class="form-label" for="typeNumber">Number of boxes</label>
+                <input type="number" id="typeNumber" class="form-control" placeholder="1"/>
+                <button type="button" id="button-cart" className="btn btn-warning btn-sm" onClick={() => dispatch(addToCart(wine.id))}>Add to cart <i class="bi bi-cart-check-fill"></i></button>
                 
               </div>
             </div>

@@ -8,8 +8,7 @@ import {
   ORDER_A_TO_Z,
   GET_PRODUCT_BY_NAME,
   ADD_TO_CART,
-  DELETE_ALL_FROM_CART,
-  DELETE_PRODUCT_FROM_CART
+  DELETE_FROM_CART
 } from "./allActions";
 
 const headers = {
@@ -118,16 +117,10 @@ export function addToCart(id) {
  }     
 }
 
-export function deleteFromCart(payload) {
+export function deleteFromCart(id) {
 return {
-    type: GET_PRODUCT_BY_NAME,
-    payload,
+    type: DELETE_FROM_CART,
+    id,
 };
 }
 
-export function clearCart(payload) {
-return {
-    type: GET_PRODUCT_BY_NAME,
-    payload,
-};
-}

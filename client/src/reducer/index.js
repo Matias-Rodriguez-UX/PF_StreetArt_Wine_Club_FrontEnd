@@ -6,6 +6,7 @@ import {
   ORDER_A_TO_Z,
   GET_PRODUCT_BY_NAME,
   ADD_TO_CART,
+  DELETE_FROM_CART
 } from "../actions/allActions";
 
 const initialState = {
@@ -92,10 +93,18 @@ export default function reducer(state = initialState, action) {
       };
 
     case ADD_TO_CART:
+      console.log(action.payload);
       let newProduct = state.allProducts.find((product) => product.id === action.payload)
+      console.log(newProduct);
       return {
         ...state,
-        cart: [...state.cart, newProduct]
+        cart: [...state.cart,  state.allProducts.find((product) => product.id === action.payload) ],
+      };
+
+    case DELETE_FROM_CART:
+      return {
+        ...state,
+        cart: state.cart.filter((product) => product.id !== action.payload),
       };
 
     default:
