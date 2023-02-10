@@ -8,6 +8,9 @@ import Detail from './components/Shop/WineDetailCard/WineDetailCard.jsx';
 import Memberships from './components/Memberships';
 import UserProfile from './components/UserProfile/UserProfile';
 import AdminProfile from './components/Admin/AdminProfile';
+import PrivateRoute from './Helpers/PrivateRoutes';
+import AlertPage from './Helpers/AlertPage';
+import { useAuth0 } from '@auth0/auth0-react';
 
 
 
@@ -22,7 +25,8 @@ function App() {
         <Route exact path={'/shop'} component={Shop} />
         <Route path={'/shop/:id'} component={Detail} />
         <Route path={'/userprofile'} component={UserProfile} />
-        <Route exact path={'/admin'} component={AdminProfile} />
+        <Route exact path={'/alertPage'} component={AlertPage} />
+        <PrivateRoute exact path={'/admin'} component={AdminProfile} />
       </Switch>
     </BrowserRouter>
   );
