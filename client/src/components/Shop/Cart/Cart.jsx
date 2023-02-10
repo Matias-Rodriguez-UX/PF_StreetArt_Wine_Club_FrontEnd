@@ -1,15 +1,19 @@
 import React from "react";
 import { useSelector, useDispatch } from 'react-redux';
-import { deleteFromCart } from '../../../actions'
+import { deleteFromCart } from '../../../actions';
+import NavigationBar from "../../Navbar/index";
+import Banner from '../../Home/Banner/index';
+import Footer from '../../Footer/index';
 
 export default function Cart(){
   const cart = useSelector((state) => state.cart);
   const dispatch = useDispatch();
   const total = cart.reduce((acc, product) => acc + product.price, 0);
-
-  console.log(cart);
+  
   return (
-    <div>
+    <div className="container-fluid">
+          <div><Banner /></div>
+          <div><NavigationBar /></div>
       <h2>Carrito de compras</h2>
       <ul>
         {cart?.map((product) => (
@@ -23,6 +27,9 @@ export default function Cart(){
         ))}
       </ul>
       <p>Total: ${total}</p>
+      <div className="col col-12">
+          <Footer />
+        </div>
     </div>
   );
 };

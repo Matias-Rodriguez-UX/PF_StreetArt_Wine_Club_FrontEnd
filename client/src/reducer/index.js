@@ -15,8 +15,7 @@ const initialState = {
   allProducts: [],
   filtersActive: false,
   showLoading: false,
-  cart: [],
-  totalCart: 0
+  cart: []
 };
 
 function sortArrayAtoZ(x, y) {
@@ -94,15 +93,13 @@ export default function reducer(state = initialState, action) {
       };
 
     case ADD_TO_CART:
-      const { wine, quantity } = action.payload;
-      const item = state.cart.find((i) => i.wine.id === wine.id);
-      if (item) {
-        item.quantity += quantity;
-      } else {
-        state.items.push({ wine, quantity });
-      }
-      state.total += wine.price * quantity;
-      return { ...state };
+      console.log(action.payload);
+      let newProduct = state.allProducts.find((product) => product.id === action.payload)
+      console.log(newProduct);
+      return {
+        ...state,
+        cart: [...state.cart,  state.allProducts.find((product) => product.id === action.payload) ],
+      };
 
     case DELETE_FROM_CART:
       return {

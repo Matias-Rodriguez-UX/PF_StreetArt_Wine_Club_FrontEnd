@@ -110,13 +110,10 @@ export function getProductByName(payload) {
   };
 }
 
-export function addToCart(wine, quantity) {
+export function addToCart(id) {
  return {
     type: ADD_TO_CART,
-    payload: {
-      wine,
-      quantity,
-    } 
+    payload: id, 
  }     
 }
 
