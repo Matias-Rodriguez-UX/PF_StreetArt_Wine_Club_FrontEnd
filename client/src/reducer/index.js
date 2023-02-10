@@ -6,6 +6,10 @@ import {
   ORDER_A_TO_Z,
   GET_PRODUCT_BY_NAME,
   LOADING_ACTION,
+  GET_TYPES,
+  GET_REGIONS,
+  GET_STATES,
+  GET_GRAPES,
 } from "../actions/allActions";
 
 const initialState = {
@@ -14,6 +18,10 @@ const initialState = {
   allProducts: [],
   filtersActive: false,
   showLoading: false,
+  types: [],
+  regions: [],
+  states: [],
+  grapes: [],
 };
 
 function sortArrayAtoZ(x, y) {
@@ -94,7 +102,26 @@ export default function reducer(state = initialState, action) {
                 .some((el) => el.includes(action.payload.split(" ")[0]))
             ),
       };
-
+    case GET_TYPES:
+      return {
+        ...state,
+        types: action.payload
+      }
+    case GET_REGIONS:
+      return {
+        ...state,
+        regions: action.payload
+      }
+    case GET_STATES:
+      return {
+        ...state,
+        states: action.payload
+      }
+    case GET_GRAPES:
+      return {
+        ...state,
+        grapes: action.payload
+      }
     default:
       return state; //!
   }

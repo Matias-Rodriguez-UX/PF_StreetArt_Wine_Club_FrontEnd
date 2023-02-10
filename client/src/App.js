@@ -26,7 +26,7 @@ function App() {
         <Route path={'/shop/:id'} component={Detail} />
         <Route path={'/userprofile'} component={UserProfile} />
         <Route exact path={'/alertPage'} component={AlertPage} />
-        <PrivateRoute path={'/admin'} component={AdminProfile} />
+        <PrivateRoute exact path={'/admin'} component={AdminProfile} />
       </Switch>
     </BrowserRouter>
   );

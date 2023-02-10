@@ -8,7 +8,6 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const { isLoading, isAuthenticated: auth, user } = useAuth0();
     const emailAdmin = 'artstreetwineclub@gmail.com'
-    console.log(user, isAuthenticated)
 
     useEffect(() => {
         setLoading(isLoading);
@@ -18,7 +17,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
     if (loading) {
         return <Loader />;
     }
-    console.log(user, isAuthenticated)
+
     return (
         <Route
             {...rest}
