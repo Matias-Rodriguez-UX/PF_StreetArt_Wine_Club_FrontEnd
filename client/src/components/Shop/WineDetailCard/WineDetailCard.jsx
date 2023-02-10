@@ -12,7 +12,7 @@ import Footer from '../../Footer/index'
 import { getDetail, addToCart } from "../../../actions";
 
 export default function Detail(props){
-
+     const [quantity, setQuantity] = useState(1);
      const dispatch = useDispatch()
 
     useEffect(() => {
@@ -53,8 +53,9 @@ export default function Detail(props){
               </ul>
               <div className="input-cart">
                 <label class="form-label" for="typeNumber">Number of boxes</label>
-                <input type="number" id="typeNumber" class="form-control" placeholder="1"/>
-                <button type="button" id="button-cart" className="btn btn-warning btn-sm" onClick={() => dispatch(addToCart(wine.id))}>Add to cart <i class="bi bi-cart-check-fill"></i></button>
+                <input type="number" id="typeNumber" class="form-control" placeholder="1" value={quantity}
+        onChange={(e) => setQuantity(e.target.value)}/>
+                <button type="button" id="button-cart" className="btn btn-warning btn-sm" onClick={() => dispatch(addToCart(wine, quantity))}>Add to cart <i class="bi bi-cart-check-fill"></i></button>
                 
               </div>
             </div>

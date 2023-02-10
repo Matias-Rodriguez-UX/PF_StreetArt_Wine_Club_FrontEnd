@@ -110,17 +110,20 @@ export function getProductByName(payload) {
   };
 }
 
-export function addToCart(id) {
+export function addToCart(wine, quantity) {
  return {
     type: ADD_TO_CART,
-    payload: id,
+    payload: {
+      wine,
+      quantity,
+    } 
  }     
 }
 
 export function deleteFromCart(id) {
 return {
     type: DELETE_FROM_CART,
-    id,
+    payload: id,
 };
 }
 

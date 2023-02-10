@@ -7,9 +7,6 @@ export default function Cart(){
   const dispatch = useDispatch();
   const total = cart.reduce((acc, product) => acc + product.price, 0);
 
-  const handleDeleteFromCart = (id) => {
-    dispatch(deleteFromCart(id));
-  };
   console.log(cart);
   return (
     <div>
@@ -19,7 +16,7 @@ export default function Cart(){
           <li key={product.id}>
             <h3>{product.name}</h3>
             <p>price: ${product.price}</p>
-            <button onClick={() => handleDeleteFromCart(product.id)}>
+            <button onClick={() => dispatch(deleteFromCart(product.id))}>
               Delete
             </button>
           </li>
