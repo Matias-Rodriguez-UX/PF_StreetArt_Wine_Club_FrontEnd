@@ -35,7 +35,7 @@ export default function NavigationBar() {
 
             </NavDropdown>
             <Nav.Link to="/shop">Shop</Nav.Link>
-            <Link to='/memberships'>Memberships</Link>
+            <Nav.Link to='/memberships'>Memberships</Nav.Link>
           </Nav>
           <Nav>
             {isAuthenticated ?

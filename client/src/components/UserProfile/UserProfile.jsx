@@ -7,6 +7,8 @@ import NavigationBar from "../Navbar";
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import LoginButton from "../Login/LoginButton";
+import UserSideBar from "./UserSideBar/UserSideBar";
+import UserProfileCard from "./UserProfileCard/UserProfileCard";
 import { Loader } from "../Loader";
 
 // import { useEffect, useState } from "react";
@@ -59,13 +61,10 @@ export default function UserProfile() {
             <div>
                 <Banner />
                 <NavigationBar />
+                <UserSideBar userName={user.name} userPicture={user.picture}/>
+                <UserProfileCard userName={user.name} userPicture={user.picture} userEmail={user.email}/>
                 <Card style={{ width: '18rem' }}>
-                    <Card.Img variant="top" src={user.picture} alt={user.name} />
                     <Card.Body>
-                        <Card.Title>{user.name}</Card.Title>
-                        <Card.Text>
-                            Email: {user.email}
-                        </Card.Text>
 
                         {user.email === emailAdmin ?
                             <Link to='/admin'>
