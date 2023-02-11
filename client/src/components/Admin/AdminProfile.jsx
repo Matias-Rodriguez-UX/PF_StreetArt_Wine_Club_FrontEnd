@@ -12,10 +12,10 @@ export default function AdminProfile() {
     return (
         <>
             <div className="row">
-                <SideBar className="col"
+                <SideBar className='col-3'
                     setCurrentPage={setCurrentPage}
                 />
-                <div className="container col d-flex flex-column">
+                <div className="container col-9">
                     {currentPage === "home" && <HomeAdmin setCurrentPage={setCurrentPage} />}
                     {currentPage === "products" && <AdminProducts />}
                     {currentPage === "memberships" && <AdminMemberships />}

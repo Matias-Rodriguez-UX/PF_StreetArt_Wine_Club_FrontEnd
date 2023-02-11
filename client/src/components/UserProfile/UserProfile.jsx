@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { Link } from "react-router-dom";
 import Footer from "../Footer";
@@ -7,6 +7,9 @@ import NavigationBar from "../Navbar";
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import LoginButton from "../Login/LoginButton";
+import UserSideBar from "./UserSideBar/UserSideBar";
+import UserProfileCard from "./UserProfileCard/UserProfileCard";
+import { Loader } from "../Loader";
 
 // import { useEffect, useState } from "react";
 
@@ -39,26 +42,40 @@ import LoginButton from "../Login/LoginButton";
 
 // export default Profile;
 export default function UserProfile() {
-    const { user, isAuthenticated, isLoading } = useAuth0();
+    const [loading, setLoading] = useState(true)
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const { isLoading, isAuthenticated: auth, user } = useAuth0();
+    const emailAdmin = 'artstreetwineclub@gmail.com'
+
+    useEffect(() => {
+        setLoading(isLoading);
+        setIsAuthenticated(auth);
+    }, [isLoading, auth]);
+
+    if (loading) {
+        return <Loader />;
+    }
+
     return (
         isAuthenticated ? (
-            <div>
+            <div className="row" >
                 <Banner />
                 <NavigationBar />
+                <UserSideBar className='col-3' userName={user.name} userPicture={user.picture} />
+                <UserProfileCard className='col-3' userName={user.name} userPicture={user.picture} userEmail={user.email}/>
                 <Card style={{ width: '18rem' }}>
-                    <Card.Img variant="top" src={user.picture} alt={user.name} />
                     <Card.Body>
-                        <Card.Title>{user.name}</Card.Title>
-                        <Card.Text>
-                            Email: {user.email}
-                        </Card.Text>
-                        <Link to='/shop'>
-                            <Button type="button" className="btn btn-warning btn-sm">Go shopping</Button>
-                        </Link>
+
+                        {user.email === emailAdmin ?
+                            <Link to='/admin'>
+                                <Button type="button" className="btn btn-warning btn-sm">Admin profile</Button>
+                            </Link> : <Link to='/shop'>
+                                <Button type="button" className="btn btn-warning btn-sm">Go shopping</Button>
+                            </Link>}
                     </Card.Body>
                 </Card>
                 <Footer />
-            </div>
+            </div >
         ) : (
             <div className="conatiner-fluid d-flex alig-items-center justify-content-center" style={{ height: '100vh', width: '100vw' }}>
                 <div className="d-flex flex-column align-items-center justify-content-center" >
