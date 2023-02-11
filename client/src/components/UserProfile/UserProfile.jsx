@@ -58,11 +58,11 @@ export default function UserProfile() {
 
     return (
         isAuthenticated ? (
-            <div>
+            <div className="row" >
                 <Banner />
                 <NavigationBar />
-                <UserSideBar userName={user.name} userPicture={user.picture}/>
-                <UserProfileCard userName={user.name} userPicture={user.picture} userEmail={user.email}/>
+                <UserSideBar className='col-3' userName={user.name} userPicture={user.picture} />
+                <UserProfileCard className='col-3' userName={user.name} userPicture={user.picture} userEmail={user.email}/>
                 <Card style={{ width: '18rem' }}>
                     <Card.Body>
 

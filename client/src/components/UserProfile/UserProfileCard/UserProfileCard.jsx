@@ -1,16 +1,34 @@
 import React from "react";
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+// import { CloudinaryContext, Image, Transformation } from 'cloudinary-react';
+
+// const cloudinaryConfig = {
+//   cloud_name: 'dom9fvn1q',
+//   api_key: '757917398541782',
+//   api_secret: '2uqjwgL1ZZuqdoTN-YT-Kpc0aLY'
+// };
 
 export default function UserProfileCard({ userName, userPicture, userEmail }) {
+    // const [selectedFile, setSelectedFile] = useState(null);
+
+    // const onFileChange = event => {
+    //     setSelectedFile(event.target.files[0]);
+    //  };
 
     return (
         <>
-        <div class="col-xs-12 col-sm-9" display='flex'>
+        <div className="container col py-5 mt-5" display='flex'>
             <h1 className="text-center">My info</h1>
-            <div className="container Form">
-                <Form>
-                <Form.Group className="mb-3" controlId="formBasicName">
+                <Form>   
+                {/* <CloudinaryContext cloudName={cloudinaryConfig.cloud_name}>   */}
+                <Form.Group controlId="formImg">
+                    <Form.Label>Image</Form.Label>
+                    <Form.Control type="file" accept="image/png, image/jpeg" name="image" />
+                </Form.Group>
+                {/* </CloudinaryContext> */}
+                <div className="form-row">
+                <Form.Group className=" col mb-3" controlId="formBasicName">
                     <Form.Label>Name </Form.Label>
                     <Form.Control type="text" placeholder="Enter your name"/>
                 </Form.Group>
@@ -19,6 +37,7 @@ export default function UserProfileCard({ userName, userPicture, userEmail }) {
                     <Form.Label>Lastname </Form.Label>
                     <Form.Control type="text" placeholder="Enter your lastname"/>
                 </Form.Group>
+                </div>
 
                 <Form.Group className="mb-3" controlId="formBasicId">
                     <Form.Label>Id number </Form.Label>
@@ -54,7 +73,6 @@ export default function UserProfileCard({ userName, userPicture, userEmail }) {
                 </Button>
                 </Form>
             </div>
-            </div>
         </>
-    )
-}
+    );
+};
