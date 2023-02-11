@@ -110,10 +110,10 @@ export function getProductByName(payload) {
   };
 }
 
-export function addToCart(id) {
+export function addToCart(id, cartQuantity) {
  return {
     type: ADD_TO_CART,
-    payload: id, 
+    payload: {id, cartQuantity: parseInt(cartQuantity)} 
  }     
 }
 

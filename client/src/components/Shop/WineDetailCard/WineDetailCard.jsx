@@ -1,5 +1,5 @@
 import React from "react";
-import {useEffect} from 'react';
+import {useEffect, useState} from 'react';
 import {Link } from "react-router-dom";
 import {useDispatch, useSelector} from 'react-redux';
 import '../WineDetailCard/WineDetailCard.css';
@@ -12,7 +12,8 @@ import Footer from '../../Footer/index'
 import { getDetail, addToCart } from "../../../actions";
 
 export default function Detail(props){
-     
+     const [cartQuantity, setCartQuantity] = useState(1);
+     console.log(cartQuantity);
      const dispatch = useDispatch()
 
     useEffect(() => {
@@ -20,7 +21,7 @@ export default function Detail(props){
       }, []);
 
     const wine = useSelector((state) => state.wineDetail);
-      
+    
       return(   
         <>
           {wine.name ? (<div className="container-fluid">
@@ -53,8 +54,8 @@ export default function Detail(props){
               </ul>
               <div className="input-cart">
                 <label class="form-label" for="typeNumber">Number of boxes</label>
-                <input type="number" id="typeNumber" class="form-control" placeholder="1"/> 
-                <button type="button" id="button-cart" className="btn btn-warning btn-sm" onClick={() => dispatch(addToCart(wine.id))}>Add to cart <i class="bi bi-cart-check-fill"></i></button>
+                <input type="number" id="typeNumber" class="form-control" placeholder="1" value={cartQuantity} onChange={e => setCartQuantity(e.target.value)}/> 
+                <button type="button" id="button-cart" className="btn btn-warning btn-sm" onClick={() => dispatch(addToCart(wine.id, cartQuantity ))}>Add to cart <i class="bi bi-cart-check-fill"></i></button>
                 
               </div>
             </div>
