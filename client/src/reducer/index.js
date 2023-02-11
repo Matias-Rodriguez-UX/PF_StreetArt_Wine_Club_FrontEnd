@@ -6,7 +6,12 @@ import {
   ORDER_A_TO_Z,
   GET_PRODUCT_BY_NAME,
   ADD_TO_CART,
-  DELETE_FROM_CART
+  DELETE_FROM_CART,
+  LOADING_ACTION,
+  GET_TYPES,
+  GET_REGIONS,
+  GET_STATES,
+  GET_GRAPES,
 } from "../actions/allActions";
 
 const initialState = {
@@ -16,7 +21,11 @@ const initialState = {
   filtersActive: false,
   showLoading: false,
   cart: [],
-  totalCart: 0
+  totalCart: 0,
+  types: [],
+  regions: [],
+  states: [],
+  grapes: [],
 };
 
 function sortArrayAtoZ(x, y) {
@@ -109,7 +118,26 @@ export default function reducer(state = initialState, action) {
         ...state,
         cart: state.cart.filter((product) => product.id !== action.payload),
       };
-
+    case GET_TYPES:
+      return {
+        ...state,
+        types: action.payload,
+      };
+    case GET_REGIONS:
+      return {
+        ...state,
+        regions: action.payload,
+      };
+    case GET_STATES:
+      return {
+        ...state,
+        states: action.payload,
+      };
+    case GET_GRAPES:
+      return {
+        ...state,
+        grapes: action.payload,
+      };
     default:
       return state; //!
   }

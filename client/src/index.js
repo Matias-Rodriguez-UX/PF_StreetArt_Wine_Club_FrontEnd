@@ -4,7 +4,7 @@ import ReactDOM from "react-dom";
 import App from "./App";
 import { Provider } from "react-redux";
 import { store } from "./store";
-import { BrowserRouter } from "react-router-dom";
+import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 
 const domain = "dev-142tko5ud5c6ozuq.us.auth0.com";

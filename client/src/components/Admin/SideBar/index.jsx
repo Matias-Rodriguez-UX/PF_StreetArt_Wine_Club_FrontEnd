@@ -7,6 +7,7 @@ export default function SideBar({ setCurrentPage }) {
 
     return (
         <>
+
             <Nav variant="pills" defaultActiveKey={'/'} className="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark" style={{ width: '280px', height: '100vh' }}>
                 <a href="/home" className="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
                     <span className="fs-4">StreetArt</span>
@@ -79,6 +80,8 @@ export default function SideBar({ setCurrentPage }) {
                     </ul>
                 </div>
             </Nav>
+
+
         </>
     )
 }

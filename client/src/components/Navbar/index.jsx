@@ -1,6 +1,6 @@
 import React from "react";
 import { useAuth0 } from "@auth0/auth0-react";
-import { Link } from "react-router-dom"
+import { Link } from "react-router-dom";
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
@@ -29,7 +29,10 @@ export default function NavigationBar() {
               <NavDropdown.Item spy={true} smooth={true} offset={-50} duration={500} href="/home#main">Main</NavDropdown.Item>
               <NavDropdown.Item spy={true} smooth={true} offset={-50} duration={500} href="/home#about">About</NavDropdown.Item>
               <NavDropdown.Item spy={true} smooth={true} offset={-50} duration={500} href="/home#FAQs">FAQs</NavDropdown.Item>
-              <NavDropdown.Item spy={true} smooth={true} offset={-50} duration={500} href="/home#contact">Contact</NavDropdown.Item>
+              <Link to='/home/contact'>
+                <NavDropdown.Item spy={true} smooth={true} offset={-50} duration={500}>Contact</NavDropdown.Item>
+              </Link>
+
             </NavDropdown>
             <Link to="/shop">Shop</Link>
             <Link to="/memberships">Memberships</Link>
