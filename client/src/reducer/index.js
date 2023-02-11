@@ -103,15 +103,26 @@ export default function reducer(state = initialState, action) {
       };
 
     case ADD_TO_CART:
-      const { wine, quantity } = action.payload;
-      const item = state.cart.find((i) => i.wine.id === wine.id);
-      if (item) {
-        item.quantity += quantity;
-      } else {
-        state.items.push({ wine, quantity });
+      let { id, cartQuantity } = action.payload;
+      let newProduct = state.allProducts.find((product) => product.id === id);
+      let addWineBox = { ...newProduct, cartQuantity };
+      if (state.cart.some((product) => product.id === id)) {
+        let existingProduct = state.cart.find((product) => product.id === id);
+        let updatedProduct = {
+          ...existingProduct,
+          cartQuantity: existingProduct.cartQuantity + cartQuantity,
+        };
+        return {
+          ...state,
+          cart: state.cart.map((product) =>
+            product.id === id ? updatedProduct : product
+          ),
+        };
       }
-      state.total += wine.price * quantity;
-      return { ...state };
+      return {
+        ...state,
+        cart: [...state.cart, addWineBox],
+      };
 
     case DELETE_FROM_CART:
       return {

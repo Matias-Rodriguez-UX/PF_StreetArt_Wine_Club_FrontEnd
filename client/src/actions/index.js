@@ -7,6 +7,8 @@ import {
   ORDER_BY_PRICE,
   ORDER_A_TO_Z,
   GET_PRODUCT_BY_NAME,
+  GET_FILTER_QUANTITIES,
+  ADD_TO_CART,
   GET_TYPES,
   GET_REGIONS,
   GET_STATES,
@@ -119,6 +121,13 @@ export function postProduct(payload) {
     } catch (error) {
       console.log("ERROR", error);
     }
+  };
+}
+
+export function addToCart(id, cartQuantity) {
+  return {
+    type: ADD_TO_CART,
+    payload: { id, cartQuantity: parseInt(cartQuantity) },
   };
 }
 
