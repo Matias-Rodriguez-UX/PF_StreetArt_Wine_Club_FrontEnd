@@ -1,5 +1,6 @@
 import React from "react";
 import "./footer.css";
+import { Link } from 'react-router-dom';
 
 export default function Footer() {
     return (
@@ -8,12 +9,9 @@ export default function Footer() {
                 <div className="container d-flex flex-wrap gap-3 align-items-center justify-content-center">
                     <h1 className="fs-1 ms-5 me-5 text-center w-25">StreetArt</h1>
                     <div className="d-flex m-1 gap-3 ms-5 me-5 align-items-center justify-content-center ">
-                        <a className='text-reset text-decoration-none' href="/home">Home</a>
-                        <a className='text-reset text-decoration-none' href="/home#about">About</a>
-                        <a className='text-reset text-decoration-none' href="/shop">Shop</a>
-                        <a className='text-reset text-decoration-none' href="/memberships">Join</a>
-                        <a className='text-reset text-decoration-none' href="/home#FAQs">FAQs</a>
-                        <a className='text-reset text-decoration-none' href="/home#contact">Contact</a>
+                        <Link className='text-reset text-decoration-none' to="/home">Home</Link>
+                        <Link className='text-reset text-decoration-none' to="/shop">Shop</Link>
+                        <Link className='text-reset text-decoration-none' to="/memberships">Join</Link>
                     </div>
                     <div className="w-25 d-flex gap-2 ms-5 me-5 align-items-center justify-content-center ">
                         <a href="https://www.facebook.com"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" class="bi bi-facebook me-4" viewBox="0 0 16 16">

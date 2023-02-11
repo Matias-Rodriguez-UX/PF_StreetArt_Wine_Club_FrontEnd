@@ -50,6 +50,7 @@ export default function Detail(props){
                   <li>Type: {wine.types.map(e => e.name + ("  "))}</li>
                   <li>Regions: {wine.regions.map(e => e.name + (",  "))}</li>
                   <li>State: {wine.states.map(e => e.name + ("  "))}</li>
+                  <li>Quantity: {wine.quantity}</li>
               </ul>
               <div className="input-cart">
                 <input type="number" id="typeNumber" class="form-control"/>
