@@ -10,7 +10,7 @@ export default function UserSideBar({userName, userPicture}) {
             <Nav variant="pills" defaultActiveKey={'/'} className="d-flex flex-column flex-shrink-0 p-3 text-white bg-lg" style={{ width: '280px', height: '100vh' }}>
                 <a href="/home" className="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-black text-decoration-none">
                     {/* //Idea de que el nombre el usuario se vea al inicio de la sidebar */}
-                    <span className="fs-4">Wine Club - Your Profile</span>
+                    <span className="fs-4">StreetArt Wine Club</span>
                 </a>
                 <hr />
                 <div className="">
