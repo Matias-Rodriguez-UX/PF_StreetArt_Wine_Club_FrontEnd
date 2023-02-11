@@ -62,6 +62,17 @@ export default function UserProfileCard({ userName, userPicture, userEmail }) {
                     <Form.Control type="text" placeholder="Enter your address"/>
                 </Form.Group>
 
+                
+                <Form.Group className="mb-3" controlId="formBasicState">
+                    <Form.Label>State</Form.Label>
+                    <Form.Control type="text" placeholder="Enter your state"/>
+                </Form.Group>
+
+                <Form.Group className="mb-3" controlId="formBasicCity">
+                    <Form.Label>City</Form.Label>
+                    <Form.Control type="text" placeholder="Enter your city"/>
+                </Form.Group>
+
 
                 <Form.Group className="mb-3" controlId="formBasicCP">
                     <Form.Label>CP</Form.Label>

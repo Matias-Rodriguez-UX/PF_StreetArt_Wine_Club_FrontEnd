@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
+import { useDispatch, useSelector} from 'react-redux';
+import { createUser, editUserInfo } from "../../actions/userActions";
 import { Link } from "react-router-dom";
 import Footer from "../Footer";
 import Banner from "../Home/Banner";
@@ -11,37 +13,13 @@ import UserSideBar from "./UserSideBar/UserSideBar";
 import UserProfileCard from "./UserProfileCard/UserProfileCard";
 import { Loader } from "../Loader";
 
-// import { useEffect, useState } from "react";
 
-// const Profile = () => {
-//     const [userInfo, setUserInfo] = useState(null);
-//     const { user, loading, getIdTokenClaims } = useAuth0();
 
-//     useEffect(() => {
-//         if (user && !loading) {
-//             getIdTokenClaims().then(({ __raw: idToken }) => {
-//                 setUserInfo(JSON.parse(atob(idToken.split(".")[1])));
-//             });
-//         }
-//     }, [user, loading, getIdTokenClaims]);
-
-//     if (loading || !user) {
-//         return <div>Loading...</div>;
-//     }
-
-//     return (
-//         <>
-//             <img src={user.picture} alt="Profile" />
-
-//             <h2>{user.name}</h2>
-//             <p>{user.email}</p>
-//             <code>{JSON.stringify(userInfo, null, 2)}</code>
-//         </>
-//     );
-// };
-
-// export default Profile;
 export default function UserProfile() {
+    const dispatch = useDispatch();
+    const users = useSelector ((state) => state.users );
+    console.log(users);
+
     const [loading, setLoading] = useState(true)
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const { isLoading, isAuthenticated: auth, user } = useAuth0();
@@ -87,3 +65,61 @@ export default function UserProfile() {
         )
     );
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// import { useEffect, useState } from "react";
+
+// const Profile = () => {
+//     const [userInfo, setUserInfo] = useState(null);
+//     const { user, loading, getIdTokenClaims } = useAuth0();
+
+//     useEffect(() => {
+//         if (user && !loading) {
+//             getIdTokenClaims().then(({ __raw: idToken }) => {
+//                 setUserInfo(JSON.parse(atob(idToken.split(".")[1])));
+//             });
+//         }
+//     }, [user, loading, getIdTokenClaims]);
+
+//     if (loading || !user) {
+//         return <div>Loading...</div>;
+//     }
+
+//     return (
+//         <>
+//             <img src={user.picture} alt="Profile" />
+
+//             <h2>{user.name}</h2>
+//             <p>{user.email}</p>
+//             <code>{JSON.stringify(userInfo, null, 2)}</code>
+//         </>
+//     );
+// };
