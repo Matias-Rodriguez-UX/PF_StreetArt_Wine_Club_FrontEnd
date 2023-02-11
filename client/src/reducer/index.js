@@ -6,7 +6,9 @@ import {
   ORDER_A_TO_Z,
   GET_PRODUCT_BY_NAME,
   ADD_TO_CART,
-  DELETE_FROM_CART
+  DELETE_FROM_CART,
+  ADD_CART_QUANTITY,
+  REMOVE_CART_QUANTITY
 } from "../actions/allActions";
 
 const initialState = {
@@ -114,6 +116,33 @@ export default function reducer(state = initialState, action) {
         ...state,
         cart: state.cart.filter((product) => product.id !== action.payload),
       };
+
+    case ADD_CART_QUANTITY:
+      return {
+        ...state,
+        cart: state.cart.map(product =>
+          product.id === action.payload
+            ? { ...product, cartQuantity: product.cartQuantity + 1 }
+            : product
+        )
+      };
+    
+    case REMOVE_CART_QUANTITY:
+      return {
+        ...state,
+        cart: state.cart.map(product =>
+          product.id === action.payload && product.cartQuantity > 0
+            ? { ...product, cartQuantity: product.cartQuantity - 1 }
+            : product
+        )
+      };
+
+
+
+
+
+
+
 
     default:
       return state; //!

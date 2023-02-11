@@ -8,4 +8,6 @@ export const ORDER_A_TO_Z = "ORDER_A_TO_Z"
 export const GET_PRODUCT_BY_NAME = "GET_PRODUCTS_BY_NAME";
 export const ADD_TO_CART = "ADD_TO_CART";
 export const DELETE_FROM_CART = "DELETE_FROM_CART";
+export const ADD_CART_QUANTITY = "ADD_ART_QUANTITY";
+export const REMOVE_CART_QUANTITY = "REMOVE_ART_QUANTITY";
 

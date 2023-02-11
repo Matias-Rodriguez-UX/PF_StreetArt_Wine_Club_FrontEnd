@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector, useDispatch } from 'react-redux';
-import { deleteFromCart } from '../../../actions';
+import { deleteFromCart, removeCartQuantity, addCartQuantity } from '../../../actions';
 import NavigationBar from "../../Navbar/index";
 import Banner from '../../Home/Banner/index';
 import Footer from '../../Footer/index';
@@ -17,26 +17,30 @@ export default function Cart(){
           <div><Banner /></div>
           <div><NavigationBar /></div>
           <h2>Carrito de compras</h2>
-      <table>
+      <table className="table table-dark table-striped">
         <thead>
           <tr>
-            <th>Producto</th>
-            <th>Precio unitario</th>
-            <th>Cantidad</th>
-            <th>Subtotal</th>
+            <th>Product</th>
+            <th>Name</th>
+            <th>Unit Price</th>
+            <th>Quantity Box</th>
+            <th>Total Parcial</th>
+            <th>Delete Quantity Product</th>
+            <th>Add Quantity Product</th>
             <th>Delete Product</th>
           </tr>
         </thead>
         <tbody>
         {cart.map(product => (
             <tr key={product.id}>
+              <td><img src={product.image} alt="imagen" className="mx-auto d-block" id="img-detail"/></td>
               <td>{product.name}</td>
               <td>{product.price}</td>
               <td>{product.cartQuantity}</td>
               <td>{product.price * product.cartQuantity}</td>
-              <td><button onClick={() => dispatch(deleteFromCart(product.id))}>
-              Delete
-            </button></td>
+              <td><button className="btn btn-warning btn-sm" onClick={() => dispatch(removeCartQuantity(product.id))}>-</button></td>
+              <td><button className="btn btn-warning btn-sm" onClick={() => dispatch(addCartQuantity(product.id))}>+</button></td>
+              <td><button className="btn btn-warning btn-sm" onClick={() => dispatch(deleteFromCart(product.id))}>Delete Product</button></td>
             </tr>
           ))}
         </tbody>
