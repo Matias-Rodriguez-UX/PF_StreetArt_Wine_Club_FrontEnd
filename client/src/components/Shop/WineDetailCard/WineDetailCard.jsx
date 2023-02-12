@@ -13,7 +13,6 @@ import { getDetail, addToCart } from "../../../actions";
 
 export default function Detail(props){
      const [cartQuantity, setCartQuantity] = useState(1);
-     console.log(cartQuantity);
      const dispatch = useDispatch()
 
     useEffect(() => {

@@ -66,7 +66,7 @@ export default function Cart(){
           </div>
           <div className="container w-75 bg-wa">
             <p>
-              Total: <strong>{total}</strong>
+            <strong>Total: ${total}</strong>
             </p>
           </div>      
       <div className="col col-12">
