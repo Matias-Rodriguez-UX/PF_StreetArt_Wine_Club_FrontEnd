@@ -19,9 +19,7 @@ ReactDOM.render(
         redirect_uri: "http://localhost:3000/userprofile",
       }}
     >
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
+      <App />
     </Auth0Provider>
   </Provider>,
   document.getElementById("root")

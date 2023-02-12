@@ -15,7 +15,7 @@ import {
   GET_GRAPES,
   DELETE_FROM_CART,
   ADD_CART_QUANTITY,
-  REMOVE_CART_QUANTITY
+  REMOVE_CART_QUANTITY,
 } from "./allActions";
 
 const headers = {
@@ -199,26 +199,28 @@ export function getGrapes() {
       return error;
     }
   };
+}
+
 export function deleteFromCart(id) {
   console.log(id);
-return {
+  return {
     type: DELETE_FROM_CART,
     payload: id,
-};
+  };
 }
 
 export function addCartQuantity(id) {
   console.log(id);
   return {
     type: ADD_CART_QUANTITY,
-    payload: id
-  }
+    payload: id,
+  };
 }
 
 export function removeCartQuantity(id) {
   console.log(id);
   return {
     type: REMOVE_CART_QUANTITY,
-    payload: id
-  }
+    payload: id,
+  };
 }
