@@ -6,9 +6,7 @@ import '../WineDetailCard/WineDetailCard.css';
 import NavigationBar from "../../Navbar/index";
 import Banner from '../../Home/Banner/index';
 import Footer from '../../Footer/index'
-/* import {videogameDetail} from '../../actions/index'; */
-
-/* import Loading from "../Loading/Loading.jsx"; */
+import Swal from 'sweetalert2';
 import { getDetail, addToCart } from "../../../actions";
 
 export default function Detail(props){
@@ -21,13 +19,28 @@ export default function Detail(props){
 
     const wine = useSelector((state) => state.wineDetail);
     
+    const addAlert =(cartQuantity, name) =>{
+      Swal.fire({
+        title: "YOUR PRODUCT WAS ADDED",
+        text: `You add ${name} \n Quantity Box ${cartQuantity}`,
+        icon: 'success',
+        timer: '4000',
+        timerProgressBar: true,
+        allowOutsideClick: true,
+        confirmButtonColor: '#ffc107'
+      })
+    }
+    const handleClick = (id, cartQuantity, name) => {
+      dispatch(addToCart(id, cartQuantity));
+      addAlert(cartQuantity, name);
+    };
+    
       return(   
         <>
           {wine.name ? (<div className="container-fluid">
           <div><Banner /></div>
           <div><NavigationBar /></div>
           <div className="row" id="detail">
-          <div><Link to={"/cart/"} ><button type="button" id="button-cart" className="btn btn-warning btn-sm">CART</button></Link></div>
             {/* <!----cardl left---> */}
             <div className="col col-6">
               <div className="img-display">
@@ -54,7 +67,7 @@ export default function Detail(props){
               <div className="input-cart">
                 <label class="form-label" for="typeNumber">Number of boxes</label>
                 <input type="number" id="typeNumber" class="form-control" placeholder="1" value={cartQuantity} onChange={e => setCartQuantity(e.target.value)}/> 
-                <button type="button" id="button-cart" className="btn btn-warning btn-sm" onClick={() => dispatch(addToCart(wine.id, cartQuantity ))}>Add to cart <i class="bi bi-cart-check-fill"></i></button>
+                <button type="button" id="button-cart" className="btn btn-warning btn-sm" onClick={() => handleClick(wine.id, cartQuantity, wine.name )}>Add to cart <i class="bi bi-cart-check-fill"></i></button>
                 
               </div>
             </div>

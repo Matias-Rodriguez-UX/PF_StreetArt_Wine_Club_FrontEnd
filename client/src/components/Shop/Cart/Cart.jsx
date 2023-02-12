@@ -1,17 +1,28 @@
 import React from "react";
+import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import { deleteFromCart, removeCartQuantity, addCartQuantity } from '../../../actions';
 import NavigationBar from "../../Navbar/index";
 import Banner from '../../Home/Banner/index';
 import Footer from '../../Footer/index';
 import "./Cart.css"
+import useLocalStorage from  '../../../useLocalStorage';
 
 export default function Cart(){
   const cart = useSelector((state) => state.cart);
   const dispatch = useDispatch();
+  const [storedCart, setStoredCart] = useLocalStorage("cart", []);
   const total = cart.reduce((acc, product) => {
     return acc + product.price * product.cartQuantity;
   }, 0);
+
+  useEffect(() => {
+    if (storedCart.length === 0 && cart.length > 0) {
+      setStoredCart(cart);
+    } else if (storedCart.length > 0 && cart.length === 0) {
+      cart.forEach(item => dispatch(addToCart(item)));
+    }
+  }, [dispatch, cart, storedCart, setStoredCart]);
   
   return (
     <>
