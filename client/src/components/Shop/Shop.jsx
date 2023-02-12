@@ -110,7 +110,7 @@ export default function Shop() {
                 </div>
 
                 {showLoading ? <div className="container col py-5 mt-5"> <Loader /> </div> :
-                    <div className="Cards container col py-3">
+                    <div className="Cards container col py-5">
                         {currentWines.length ? currentWines?.map((el) => {
                             return (
                                 <Link style={{ textDecoration: 'none' }} to={"/shop/" + el.id}>
