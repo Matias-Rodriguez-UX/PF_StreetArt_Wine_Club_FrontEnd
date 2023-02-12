@@ -1,103 +1,136 @@
-import React from "react";
-import { Button, Form, InputGroup } from "react-bootstrap";
+import React, { useState } from "react";
+import { Modal, Button, Form, InputGroup } from "react-bootstrap";
+import { useDispatch } from "react-redux";
+import { deleteProduct } from "../../../actions";
 
 
-export default function FormProducts({ selectedData }) {
+export default function FormProducts({ selectedData, setShowModalEdit }) {
+    const dispatch = useDispatch()
+    const [showModal, setShowModal] = useState(false);
+    const [productToDelete, setProductToDelete] = useState(null);
+
+    function handleDelete(id) {
+        setProductToDelete(id)
+        setShowModal(true)
+    }
+    function handleConfirmDelete() {
+        dispatch(deleteProduct(productToDelete))
+        setShowModalEdit(false)
+    }
 
     return (
-        <Form>
-            <Form.Group controlId="formName">
-                <Form.Label>Name</Form.Label>
-                <Form.Control type="text" defaultValue={selectedData.name} />
-            </Form.Group>
-            <Form.Group controlId="formPrice">
-                <Form.Label>Price</Form.Label>
-                <InputGroup className="mb-3">
-                    <InputGroup.Text id="basic-addon1">$</InputGroup.Text>
-                    <Form.Control
-                        placeholder="pricr"
-                        aria-label="price"
-                        defaultValue={selectedData.price}
-                    />
-                    <InputGroup.Text>.00</InputGroup.Text>
-                </InputGroup>
-            </Form.Group>
-            <Form.Group controlId="formImg">
-                <Form.Label>Image</Form.Label>
-                <Form.Control type="url" defaultValue={selectedData.image} />
-            </Form.Group>
-            <Form.Group controlId="formVolume">
-                <Form.Label>Volume</Form.Label>
-                <InputGroup className="mb-3">
-                    <Form.Control type="text" defaultValue={selectedData.volume} />
-                    <InputGroup.Text>ml</InputGroup.Text>
-                </InputGroup>
-            </Form.Group>
-            <Form.Group controlId="formQuantity">
-                <Form.Label>Quantity of Bottles</Form.Label>
-                <Form.Control type="text" defaultValue={selectedData.quantity} />
-            </Form.Group>
-            <Form.Group controlId="formStock">
-                <Form.Label>Stock available</Form.Label>
-                <Form.Control type="text" defaultValue={selectedData.stock} />
-            </Form.Group>
-            <Form.Group controlId="formDetails">
-                <Form.Label>Details</Form.Label>
-                <InputGroup>
-                    <InputGroup.Text>Products Details</InputGroup.Text>
-                    <Form.Control as="textarea" aria-label="With textarea" defaultValue={selectedData.details} />
-                </InputGroup>
-            </Form.Group>
-            <Form.Group controlId="formWinerys">
-                <Form.Label>Winerys</Form.Label>
-                <InputGroup>
-                    {selectedData.winery?.map(
-                        (win, index) => (<Form.Control className="mb-2" key={index} type="text" defaultValue={win} controlId={`wineryControl-${index}`} />)
-                    )}
-                </InputGroup>
-            </Form.Group>
-            <Form.Group controlId="formGrapes">
-                <Form.Label>Grapes</Form.Label>
-                <InputGroup>
-                    {selectedData.grapes?.map(
-                        (grape, index) => (<Form.Control key={index} type="text" defaultValue={grape.name} controlId={`grapeControl-${index}`} />)
-                    )}
-                </InputGroup>
-            </Form.Group>
-            <Form.Group controlId="formStates">
-                <Form.Label>Sates</Form.Label>
-                <InputGroup>
-                    {selectedData.states?.map(
-                        (state, index) => (<Form.Control key={index} type="text" defaultValue={state.name} controlId={`stateControl-${index}`} />)
-                    )}
-                </InputGroup>
-            </Form.Group>
-            <Form.Group controlId="formRegions">
-                <Form.Label>Regions</Form.Label>
-                <InputGroup>
-                    {selectedData.regions?.map(
-                        (region, index) => (<Form.Control type="text" key={index} defaultValue={region.name} controlId={`regionControl-${index}`} />)
-                    )}
-                </InputGroup>
-            </Form.Group>
-            <Form.Group controlId="formTypes">
-                <Form.Label>Types</Form.Label>
-                <InputGroup>
-                    {selectedData.types?.map(
-                        (type, index) => (<Form.Control key={index} type="text" defaultValue={type.name} controlId={`typeControl-${index}`} />)
-                    )}
-                </InputGroup>
-            </Form.Group>
-            <div className="d-flex flex-row-reverse justify-content-evenly mt-3">
-                <Button variant="warning" type="submit">
-                    Save the change
-                </Button>
-                <Button variant="outline-dark" type="submit">
-                    Cancel
-                </Button>
-            </div>
+        <>
+            <Form>
+                <Form.Group controlId="formName">
+                    <Form.Label>Name</Form.Label>
+                    <Form.Control type="text" defaultValue={selectedData.name} />
+                </Form.Group>
+                <Form.Group controlId="formPrice">
+                    <Form.Label>Price</Form.Label>
+                    <InputGroup className="mb-3">
+                        <InputGroup.Text id="basic-addon1">$</InputGroup.Text>
+                        <Form.Control
+                            placeholder="pricr"
+                            aria-label="price"
+                            defaultValue={selectedData.price}
+                        />
+                        <InputGroup.Text>.00</InputGroup.Text>
+                    </InputGroup>
+                </Form.Group>
+                <Form.Group controlId="formImg">
+                    <Form.Label>Image</Form.Label>
+                    <Form.Control type="url" defaultValue={selectedData.image} />
+                </Form.Group>
+                <Form.Group controlId="formVolume">
+                    <Form.Label>Volume</Form.Label>
+                    <InputGroup className="mb-3">
+                        <Form.Control type="text" defaultValue={selectedData.volume} />
+                        <InputGroup.Text>ml</InputGroup.Text>
+                    </InputGroup>
+                </Form.Group>
+                <Form.Group controlId="formQuantity">
+                    <Form.Label>Quantity of Bottles</Form.Label>
+                    <Form.Control type="text" defaultValue={selectedData.quantity} />
+                </Form.Group>
+                <Form.Group controlId="formStock">
+                    <Form.Label>Stock available</Form.Label>
+                    <Form.Control type="text" defaultValue={selectedData.stock} />
+                </Form.Group>
+                <Form.Group controlId="formDetails">
+                    <Form.Label>Details</Form.Label>
+                    <InputGroup>
+                        <InputGroup.Text>Products Details</InputGroup.Text>
+                        <Form.Control as="textarea" aria-label="With textarea" defaultValue={selectedData.details} />
+                    </InputGroup>
+                </Form.Group>
+                <Form.Group controlId="formWinerys">
+                    <Form.Label>Winerys</Form.Label>
+                    <InputGroup>
+                        {selectedData.winery?.map(
+                            (win, index) => (<Form.Control className="mb-2" key={index} type="text" defaultValue={win} controlId={`wineryControl-${index}`} />)
+                        )}
+                    </InputGroup>
+                </Form.Group>
+                <Form.Group controlId="formGrapes">
+                    <Form.Label>Grapes</Form.Label>
+                    <InputGroup>
+                        {selectedData.grapes?.map(
+                            (grape, index) => (<Form.Control key={index} type="text" defaultValue={grape.name} controlId={`grapeControl-${index}`} />)
+                        )}
+                    </InputGroup>
+                </Form.Group>
+                <Form.Group controlId="formStates">
+                    <Form.Label>Sates</Form.Label>
+                    <InputGroup>
+                        {selectedData.states?.map(
+                            (state, index) => (<Form.Control key={index} type="text" defaultValue={state.name} controlId={`stateControl-${index}`} />)
+                        )}
+                    </InputGroup>
+                </Form.Group>
+                <Form.Group controlId="formRegions">
+                    <Form.Label>Regions</Form.Label>
+                    <InputGroup>
+                        {selectedData.regions?.map(
+                            (region, index) => (<Form.Control type="text" key={index} defaultValue={region.name} controlId={`regionControl-${index}`} />)
+                        )}
+                    </InputGroup>
+                </Form.Group>
+                <Form.Group controlId="formTypes">
+                    <Form.Label>Types</Form.Label>
+                    <InputGroup>
+                        {selectedData.types?.map(
+                            (type, index) => (<Form.Control key={index} type="text" defaultValue={type.name} controlId={`typeControl-${index}`} />)
+                        )}
+                    </InputGroup>
+                </Form.Group>
+                <div className="d-flex flex-row-reverse justify-content-evenly mt-3">
+                    <Button variant="warning" type="submit">
+                        Save the change
+                    </Button>
+                    <Button variant="outline-dark" type="submit">
+                        Cancel
+                    </Button>
+                    <Button variant="outline-danger" type="button" onClick={() => handleDelete(selectedData.id)}>
+                        Delete
+                    </Button>
+                </div>
 
-        </Form>
+            </Form>
+            <Modal show={showModal} onHide={() => setShowModal(false)}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Eliminar producto</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>¿Estás seguro de que deseas eliminar este producto?</Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={() => setShowModal(false)}>
+                        Cancelar
+                    </Button>
+                    <Button variant="danger" onClick={handleConfirmDelete}>
+                        Eliminar
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+        </>
     )
 }
 
