@@ -109,11 +109,21 @@ export function postProduct(payload) {
   return async function () {
     try {
       let info = await axios.post('http://localhost:3001/products', payload);
-      return (info)
+      return (info.status)
     } catch (error) {
       console.log("ERROR", error)
     }
+  }
+}
 
+export function deleteProduct(id) {
+  return async function () {
+    try {
+      let info = await axios.delete(`http://localhost:3001/products/${id}`);
+      return (info.status)
+    } catch (error) {
+      console.log("ERROR", error)
+    }
   }
 }
 

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Table, Modal, Form, Button } from 'react-bootstrap';
+import { Table, Modal, Form, Button, Alert } from 'react-bootstrap';
 import FormProductsPost from './FormProductPost';
 import FormProducts from './FormProducts';
 import './Style.css'
@@ -7,6 +7,7 @@ import './Style.css'
 function TableProducts({ currentWines }) {
     const [showModalEdit, setShowModalEdit] = useState(false);
     const [showModalPost, setShowModalPost] = useState(false);
+    const [showModalConfirm, setShowModalConfirm] = useState(false);
     const [selectedData, setSelectedData] = useState({});
 
     const handleClick = (item) => {
@@ -56,7 +57,7 @@ function TableProducts({ currentWines }) {
                     <Modal.Title>Edit Product</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <FormProducts selectedData={selectedData} />
+                    <FormProducts selectedData={selectedData} setShowModalEdit={setShowModalEdit} />
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={() => setShowModalEdit(false)}>
@@ -69,13 +70,18 @@ function TableProducts({ currentWines }) {
                     <Modal.Title>Edit Product</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <FormProductsPost />
+                    <FormProductsPost setShowModalPost={setShowModalPost} setShowModalConfirm={setShowModalConfirm} />
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={() => setShowModalPost(false)}>
                         Close
                     </Button>
                 </Modal.Footer>
+            </Modal>
+            <Modal show={showModalConfirm} onHide={() => setShowModalConfirm(false)} className="d-flex align-items-center">
+                <Alert variant="success" >
+                    Product created!!!
+                </Alert>
             </Modal>
         </>
 

@@ -17,7 +17,7 @@ export default function AdminProfile() {
                 />
                 <div className="container col-9">
                     {currentPage === "home" && <HomeAdmin setCurrentPage={setCurrentPage} />}
-                    {currentPage === "products" && <AdminProducts />}
+                    {currentPage === "products" && <AdminProducts setCurrentPage={setCurrentPage} />}
                     {currentPage === "memberships" && <AdminMemberships />}
                     {currentPage === "customers" && <AdminCustomers />}
                     {currentPage === "orders" && <AdminOrders />}
