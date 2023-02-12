@@ -1,4 +1,4 @@
-import { GET_ALL_USERS, CREATE_USER, EDIT_USER, CREATE_ADDRESS, EDIT_ADDRESS, DELETE_USER } from "./allActions";
+import { GET_ALL_USERS, CREATE_USER, EDIT_USER, CREATE_ADDRESS, EDIT_ADDRESS, DELETE_USER, POST_USER_INFO } from "./allActions";
 import axios from "axios";
 
 const headers = {
@@ -33,6 +33,17 @@ const headers = {
           }    
         };
       };
+
+      export function postUserInfo (payload) {
+        return async function () {
+          try {
+            let data = await axios.post('http://localhost:3001/users/auth', payload);
+            return data;
+          } catch (error) {
+            console.log("ERROR", error)
+          }    
+        };
+      };    
 
  export function editUserInfo (id, payload) {
     return async function (dispatch) {

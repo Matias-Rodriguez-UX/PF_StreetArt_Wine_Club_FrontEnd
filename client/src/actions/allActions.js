@@ -15,7 +15,7 @@ export const EDIT_USER = 'EDIT_USER';
 export const CREATE_ADDRESS = 'CREATE_ADDRESS';
 export const EDIT_ADDRESS = 'EDIT_ADDRESS';
 export const DELETE_USER = 'DELETE_USER';
-export const GET_USER_BY_ID = 'GET_USER_BY_ID'
-
+export const GET_USER_BY_ID = 'GET_USER_BY_ID';
+export const POST_USER_INFO = 'POST_USER_INFO';
 
 

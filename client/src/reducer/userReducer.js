@@ -1,8 +1,9 @@
-import { GET_ALL_USERS, CREATE_USER, EDIT_USER, CREATE_ADDRESS, EDIT_ADDRESS, DELETE_USER } from "./allActions";
+import { GET_ALL_USERS, CREATE_USER, EDIT_USER, CREATE_ADDRESS, EDIT_ADDRESS, DELETE_USER, POST_USER_INFO } from "./allActions";
 
 const initialState = {
     users: [],
     allUsers: [],
+    userInfo: [],
 };
 
 export default function rootReducer (state = initialState, action){
@@ -28,6 +29,10 @@ export default function rootReducer (state = initialState, action){
             return{
                 ...state
             };
+            case POST_USER_INFO:
+                return{
+                    ...state
+                };
         
         default:
             return {...state}
