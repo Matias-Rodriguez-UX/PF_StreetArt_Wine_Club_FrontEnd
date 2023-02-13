@@ -119,19 +119,36 @@ export function getProductByName(payload) {
 export function postProduct(payload) {
   return async function () {
     try {
-      let info = await axios.post("http://localhost:3001/products", payload);
-      return info;
+      let info = await axios.post('http://localhost:3001/products', payload);
+      return (info.status)
+
     } catch (error) {
       console.log("ERROR", error);
     }
+
   };
 }
 
-export function addToCart(id, cartQuantity) {
-  return {
-    type: ADD_TO_CART,
-    payload: { id, cartQuantity: parseInt(cartQuantity) },
-  };
+export function deleteProduct(id) {
+  return async function () {
+    try {
+      let info = await axios.delete(`http://localhost:3001/products/${id}`);
+      return (info.status)
+    } catch (error) {
+      console.log("ERROR", error)
+    }
+  }
+}
+
+export function updateProduct(id, body) {
+  return async function () {
+    try {
+      let info = await axios.put(`http://localhost:3001/products/${id}`, body);
+      return (info.status)
+    } catch (error) {
+      console.log("ERROR", error)
+    }
+  }
 }
 
 export function getTypes() {
@@ -223,4 +240,13 @@ export function removeCartQuantity(id) {
     type: REMOVE_CART_QUANTITY,
     payload: id,
   };
+}
+
+export function addToCart(id, cartQuantity) {
+  return {
+    type: ADD_TO_CART,
+    payload: { id, cartQuantity: parseInt(cartQuantity) },
+  };
+
+  }
 }
