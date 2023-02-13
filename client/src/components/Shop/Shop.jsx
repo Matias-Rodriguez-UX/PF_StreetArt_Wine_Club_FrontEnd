@@ -82,23 +82,22 @@ export default function Shop() {
 
 
     useEffect(() => {
-        dispatch(loadingAction(true))
-        dispatch(getProducts());
-
-    }, []);
+            dispatch(loadingAction(true))
+            dispatch(getProducts());
+    }, [dispatch]);
 
     return (
         <>
             <Banner />
             <NavigationBar />
-            <SearchBar />
             <Sort
                 handleClick={handleClick}
                 setSort={setSort}
                 setCurrentPage={setCurrentPage}
             />
-            <div className="row g-3">
-                <div className="col-3 col-sm-3 col-lg-3" >
+            <SearchBar />
+            <div className="row g-3 py-2">
+                <div className="col-3 col-sm-3 col-lg-3 py-4" >
                     <Filters
                         grapes={grapes}
                         states={states}
@@ -125,12 +124,12 @@ export default function Shop() {
                             )
                         }) : <h1>Wines not Found</h1>}
                     </div>}
-                <WebPagination
-                    winesPerPage={winesPerPage}
-                    numberOfWines={Products.length}
-                    currentPage={currentPage}
-                    setCurrentPage={setCurrentPage}
-                    pagination={pagination} />
+                    <WebPagination
+                    winesPerPage = {winesPerPage}
+                    numberOfWines = { Products.length }
+                    currentPage = {currentPage}
+                    setCurrentPage = {setCurrentPage}
+                    pagination = { pagination }/>
             </div>
 
             <Footer />

@@ -9,7 +9,7 @@ const headers = {
 
   export function getAllUsers () {
     return async function (dispatch) {
-        try {
+
             let users = await axios.get("http://localhost:3001/users");
             return (
             dispatch({
@@ -17,9 +17,6 @@ const headers = {
                 payload: users.data,
             })
         )
-        } catch (error) {
-            return error;
-        }
     };
   };
 

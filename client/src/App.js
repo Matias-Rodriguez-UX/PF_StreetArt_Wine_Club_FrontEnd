@@ -9,8 +9,10 @@ import Memberships from "./components/Memberships";
 import UserProfile from "./components/UserProfile/UserProfile";
 import AdminProfile from "./components/Admin/AdminProfile";
 import PrivateRoute from "./Helpers/PrivateRoutes";
+import EditUserProfileCard from './components/UserProfile/EditUserProfileCard/EditUserProfileCard';
 import AlertPage from "./Helpers/AlertPage";
 import { useAuth0 } from "@auth0/auth0-react";
+import Cart from "./components/Shop/Cart/Cart";
 
 function App() {
   return (
@@ -22,6 +24,7 @@ function App() {
         <Route exact path={"/shop"} component={Shop} />
         <Route path={"/shop/:id"} component={Detail} />
         <Route path={"/userprofile"} component={UserProfile} />
+        <Route path={"/cart"} component={Cart} />
         <Route exact path={"/alertPage"} component={AlertPage} />
         <PrivateRoute exact path={"/admin"} component={AdminProfile} />
       </Switch>

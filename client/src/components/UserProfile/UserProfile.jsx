@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useDispatch, useSelector} from 'react-redux';
-import { createUser, editUserInfo } from "../../actions/userActions";
+import axios from "axios";
+import { getAllUsers, createUser, editUserInfo } from "../../actions/userActions";
 import { Link } from "react-router-dom";
 import Footer from "../Footer";
 import Banner from "../Home/Banner";
@@ -10,7 +11,11 @@ import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import LoginButton from "../Login/LoginButton";
 import UserSideBar from "./UserSideBar/UserSideBar";
-import UserProfileCard from "./UserProfileCard/UserProfileCard";
+import UserInfo from "./UserInfo";
+import UserOrders from "./UserOrders/UserOrders";
+import UserMemberships from "./UserMemberships/UserMemberships";
+import EditUserProfileCard from "./EditUserProfileCard/EditUserProfileCard";
+import Wishlist from "./Wishlist/Wishlist";
 import { Loader } from "../Loader";
 
 
@@ -18,29 +23,45 @@ import { Loader } from "../Loader";
 export default function UserProfile() {
     const dispatch = useDispatch();
     const users = useSelector ((state) => state.users );
-    console.log(users);
+    console.log(users)
 
     const [loading, setLoading] = useState(true)
     const [isAuthenticated, setIsAuthenticated] = useState(false);
-    const { isLoading, isAuthenticated: auth, user } = useAuth0();
-    const emailAdmin = 'artstreetwineclub@gmail.com'
+    const [userInfo, setUserInfo] = useState(null);
+    const [currentPage, setCurrentPage] = useState('home');
+
+    const { isLoading, isAuthenticated: auth, user, getIdTokenClaims, getTokenSilently } = useAuth0();
+    const emailAdmin = 'artstreetwineclub@gmail.com';
+
+    
 
     useEffect(() => {
+        dispatch(getAllUsers());
         setLoading(isLoading);
         setIsAuthenticated(auth);
-    }, [isLoading, auth]);
+    }, [dispatch, isLoading, auth, user]);
+
+
 
     if (loading) {
         return <Loader />;
-    }
+    };
 
     return (
         isAuthenticated ? (
             <div className="row" >
                 <Banner />
                 <NavigationBar />
-                <UserSideBar className='col-3' userName={user.name} userPicture={user.picture} />
-                <UserProfileCard className='col-3' userName={user.name} userPicture={user.picture} userEmail={user.email}/>
+                <UserSideBar className='col-3' userName={user.name} userPicture={user.picture}  setCurrentPage={setCurrentPage} />
+
+                <div className="container col-9">
+                    {currentPage === "userinfo" && <UserInfo setCurrentPage={setCurrentPage} />}
+                    {currentPage === "changeinfo" && <EditUserProfileCard setCurrentPage={setCurrentPage} />}
+                    {currentPage === "orders" && <UserOrders />}
+                    {currentPage === "memberships" && <UserMemberships />}
+                    {currentPage === "wishlist" && <Wishlist />}
+                </div>
+
                 <Card style={{ width: '18rem' }}>
                     <Card.Body>
 
@@ -123,3 +144,26 @@ export default function UserProfile() {
 //         </>
 //     );
 // };
+
+// export default Profile;
+
+
+
+        // const axiosUserInfo = async () => {
+        //     try {
+        //       const accessToken = await getTokenSilently();
+        //       const response = await axios.get('dev-142tko5ud5c6ozuq.us.auth0.com/userinfo', {
+        //         headers: {
+        //           Authorization: `Bearer ${accessToken}`
+        //         }
+        //       });
+        //       const userInfo = response.data;
+        //       console.log(userInfo)
+        //       setUserInfo(userInfo);
+        //     } catch (error) {
+        //       console.error(error);
+        //     }
+                // axiosUserInfo();
+        //  dispatch(createUser());
+    // }, [isLoading, auth, user, getTokenSilently]);
+        // };
