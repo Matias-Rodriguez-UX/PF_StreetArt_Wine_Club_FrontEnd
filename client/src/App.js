@@ -9,6 +9,7 @@ import Memberships from "./components/Memberships";
 import UserProfile from "./components/UserProfile/UserProfile";
 import AdminProfile from "./components/Admin/AdminProfile";
 import PrivateRoute from "./Helpers/PrivateRoutes";
+import EditUserProfileCard from './components/UserProfile/EditUserProfileCard/EditUserProfileCard';
 import AlertPage from "./Helpers/AlertPage";
 import { useAuth0 } from "@auth0/auth0-react";
 
