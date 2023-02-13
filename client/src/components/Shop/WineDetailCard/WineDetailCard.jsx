@@ -1,18 +1,16 @@
 import React from "react";
-import {useEffect} from 'react';
+import {useEffect, useState} from 'react';
 import {Link } from "react-router-dom";
 import {useDispatch, useSelector} from 'react-redux';
 import '../WineDetailCard/WineDetailCard.css';
 import NavigationBar from "../../Navbar/index";
 import Banner from '../../Home/Banner/index';
 import Footer from '../../Footer/index'
-/* import {videogameDetail} from '../../actions/index'; */
-
-/* import Loading from "../Loading/Loading.jsx"; */
-import { getDetail } from "../../../actions";
+import Swal from 'sweetalert2';
+import { getDetail, addToCart } from "../../../actions";
 
 export default function Detail(props){
-
+     const [cartQuantity, setCartQuantity] = useState(1);
      const dispatch = useDispatch()
 
     useEffect(() => {
@@ -20,10 +18,24 @@ export default function Detail(props){
       }, []);
 
     const wine = useSelector((state) => state.wineDetail);
- 
-      return(
-        
-
+    
+    const addAlert =(cartQuantity, name) =>{
+      Swal.fire({
+        title: "YOUR PRODUCT WAS ADDED",
+        text: `You add ${name} \n Quantity Box ${cartQuantity}`,
+        icon: 'success',
+        timer: '4000',
+        timerProgressBar: true,
+        allowOutsideClick: true,
+        confirmButtonColor: '#ffc107'
+      })
+    }
+    const handleClick = (id, cartQuantity, name) => {
+      dispatch(addToCart(id, cartQuantity));
+      addAlert(cartQuantity, name);
+    };
+    
+      return(   
         <>
           {wine.name ? (<div className="container-fluid">
           <div><Banner /></div>
@@ -53,8 +65,9 @@ export default function Detail(props){
                   <li>Quantity: {wine.quantity}</li>
               </ul>
               <div className="input-cart">
-                <input type="number" id="typeNumber" class="form-control"/>
-                <button type="button" id="button-cart" className="btn btn-warning btn-sm">Add to cart <i class="bi bi-cart-check-fill"></i></button>
+                <label class="form-label" for="typeNumber">Number of boxes</label>
+                <input type="number" id="typeNumber" class="form-control" placeholder="1" value={cartQuantity} onChange={e => setCartQuantity(e.target.value)}/> 
+                <button type="button" id="button-cart" className="btn btn-warning btn-sm" onClick={() => handleClick(wine.id, cartQuantity, wine.name )}>Add to cart <i class="bi bi-cart-check-fill"></i></button>
                 
               </div>
             </div>

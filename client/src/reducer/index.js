@@ -5,11 +5,15 @@ import {
   ORDER_BY_PRICE,
   ORDER_A_TO_Z,
   GET_PRODUCT_BY_NAME,
+  ADD_TO_CART,
+  DELETE_FROM_CART,
   LOADING_ACTION,
   GET_TYPES,
   GET_REGIONS,
   GET_STATES,
   GET_GRAPES,
+  ADD_CART_QUANTITY,
+  REMOVE_CART_QUANTITY,
 } from "../actions/allActions";
 
 const initialState = {
@@ -18,6 +22,8 @@ const initialState = {
   allProducts: [],
   filtersActive: false,
   showLoading: false,
+  cart: [],
+  totalCart: 0,
   types: [],
   regions: [],
   states: [],
@@ -45,11 +51,6 @@ function sortArrayZtoA(x, y) {
 
 export default function reducer(state = initialState, action) {
   switch (action.type) {
-    case LOADING_ACTION:
-      return {
-        ...state,
-        showLoading: action.payload
-      }
     case GET_PRODUCT_BY_ID:
       return {
         ...state,
@@ -97,31 +98,80 @@ export default function reducer(state = initialState, action) {
           action.payload === ""
             ? state.allProducts
             : state.allProducts.filter((el) =>
-              el.name
-                .split(" ")
-                .some((el) => el.includes(action.payload.split(" ")[0]))
-            ),
+                el.name
+                  .split(" ")
+                  .some((el) => el.includes(action.payload.split(" ")[0]))
+              ),
+      };
+
+    case ADD_TO_CART:
+      let { id, cartQuantity } = action.payload;
+      let newProduct = state.allProducts.find((product) => product.id === id);
+      let addWineBox = { ...newProduct, cartQuantity };
+      if (state.cart.some((product) => product.id === id)) {
+        let existingProduct = state.cart.find((product) => product.id === id);
+        let updatedProduct = {
+          ...existingProduct,
+          cartQuantity: existingProduct.cartQuantity + cartQuantity,
+        };
+        return {
+          ...state,
+          cart: state.cart.map((product) =>
+            product.id === id ? updatedProduct : product
+          ),
+        };
+      }
+      return {
+        ...state,
+        cart: [...state.cart, addWineBox],
+      };
+
+    case DELETE_FROM_CART:
+      return {
+        ...state,
+        cart: state.cart.filter((product) => product.id !== action.payload),
       };
     case GET_TYPES:
       return {
         ...state,
-        types: action.payload
-      }
+        types: action.payload,
+      };
     case GET_REGIONS:
       return {
         ...state,
-        regions: action.payload
-      }
+        regions: action.payload,
+      };
     case GET_STATES:
       return {
         ...state,
-        states: action.payload
-      }
+        states: action.payload,
+      };
     case GET_GRAPES:
       return {
         ...state,
-        grapes: action.payload
-      }
+        grapes: action.payload,
+      };
+
+    case ADD_CART_QUANTITY:
+      return {
+        ...state,
+        cart: state.cart.map((product) =>
+          product.id === action.payload
+            ? { ...product, cartQuantity: product.cartQuantity + 1 }
+            : product
+        ),
+      };
+
+    case REMOVE_CART_QUANTITY:
+      return {
+        ...state,
+        cart: state.cart.map((product) =>
+          product.id === action.payload && product.cartQuantity > 0
+            ? { ...product, cartQuantity: product.cartQuantity - 1 }
+            : product
+        ),
+      };
+
     default:
       return state; //!
   }

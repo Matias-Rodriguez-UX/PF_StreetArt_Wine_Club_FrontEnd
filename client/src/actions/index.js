@@ -7,10 +7,15 @@ import {
   ORDER_BY_PRICE,
   ORDER_A_TO_Z,
   GET_PRODUCT_BY_NAME,
+  GET_FILTER_QUANTITIES,
+  ADD_TO_CART,
   GET_TYPES,
   GET_REGIONS,
   GET_STATES,
   GET_GRAPES,
+  DELETE_FROM_CART,
+  ADD_CART_QUANTITY,
+  REMOVE_CART_QUANTITY,
 } from "./allActions";
 
 const headers = {
@@ -84,6 +89,12 @@ export function getFilterProducts(filters, quantity) {
   };
 }
 
+export function getFilterQuantities(payload) {
+  return {
+    type: GET_FILTER_QUANTITIES,
+    payload,
+  };
+}
 export function orderAtoZ(payload) {
   return {
     type: ORDER_A_TO_Z,
@@ -110,10 +121,12 @@ export function postProduct(payload) {
     try {
       let info = await axios.post('http://localhost:3001/products', payload);
       return (info.status)
+
     } catch (error) {
-      console.log("ERROR", error)
+      console.log("ERROR", error);
     }
-  }
+
+  };
 }
 
 export function deleteProduct(id) {
@@ -203,4 +216,37 @@ export function getGrapes() {
       return error;
     }
   };
+}
+
+export function deleteFromCart(id) {
+  console.log(id);
+  return {
+    type: DELETE_FROM_CART,
+    payload: id,
+  };
+}
+
+export function addCartQuantity(id) {
+  console.log(id);
+  return {
+    type: ADD_CART_QUANTITY,
+    payload: id,
+  };
+}
+
+export function removeCartQuantity(id) {
+  console.log(id);
+  return {
+    type: REMOVE_CART_QUANTITY,
+    payload: id,
+  };
+}
+
+export function addToCart(id, cartQuantity) {
+  return {
+    type: ADD_TO_CART,
+    payload: { id, cartQuantity: parseInt(cartQuantity) },
+  };
+
+  }
 }
