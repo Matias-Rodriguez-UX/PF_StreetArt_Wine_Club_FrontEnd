@@ -6,8 +6,8 @@ import { useAuth0 } from "@auth0/auth0-react";
 
 export default function RegisterModal() {
     const { isAuthenticated } = useAuth0();
-    const [show, setShow] = useState(false);
-    const handleClose = () => setShow(true);
+    const [show, setShow] = useState(true);
+    const handleClose = () => setShow(false);
 
     return (<>
         <Modal
