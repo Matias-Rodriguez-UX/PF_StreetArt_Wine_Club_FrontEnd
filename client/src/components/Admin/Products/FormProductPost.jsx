@@ -6,14 +6,12 @@ import { useHistory } from "react-router-dom";
 import { getGrapes, getRegions, getStates, getTypes, postProduct } from "../../../actions";
 
 
-export default function FormProductsPost({ setShowModalPost, setShowModalConfirm }) {
+export default function FormProductsPost({ setShowModalPost, setShowModalConfirm, setMessage }) {
     const dispatch = useDispatch()
     const types = useSelector((state) => state.types)
     const grapes = useSelector((state) => state.grapes)
     const states = useSelector((state) => state.states)
     const regions = useSelector((state) => state.regions)
-
-    const history = useHistory()
 
     const [numControls, setNumControls] = useState(1);
     const [postSuccess, setPostSuccess] = useState(false);
@@ -112,13 +110,11 @@ export default function FormProductsPost({ setShowModalPost, setShowModalConfirm
             grapes: grape
         })
         setVisible(true)
-        console.log(input)
     }
     const handleSubmit = async (e) => {
         e.preventDefault()
         try {
             const response = dispatch(postProduct(input));
-            console.log(response)
             if (response === 200) {
                 setPostSuccess(true);
             }
@@ -141,6 +137,7 @@ export default function FormProductsPost({ setShowModalPost, setShowModalConfirm
             grapes: [],
         })
         setTimeout(() => setShowModalPost(false), 500)
+        setMessage("Created")
         setTimeout(() => {
             setShowModalConfirm(true)
             window.location.reload()
@@ -306,12 +303,12 @@ export default function FormProductsPost({ setShowModalPost, setShowModalConfirm
                     </Badge>
                 ))}
                 <div className="d-flex flex-row-reverse justify-content-evenly mt-3">
-                    {visible ? <Button variant="success" type="submit" onClick={e => handleSubmit(e)}>
+                    {visible && !activeButton ? <Button variant="success" type="submit" onClick={e => handleSubmit(e)} style={{ width: '60%' }}>
                         Send
                     </Button> : null}
-                    <Button variant="warning" type="button" disabled={activeButton} onClick={e => handleCreate(e)}>
+                    {!visible || activeButton ? <Button variant="warning" type="button" disabled={activeButton} onClick={e => handleCreate(e)} style={{ width: '60%' }} >
                         Create
-                    </Button>
+                    </Button> : null}
                 </div>
             </Form>
 

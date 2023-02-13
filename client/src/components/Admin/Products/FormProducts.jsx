@@ -4,7 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { deleteProduct, getGrapes, getRegions, getStates, getTypes, updateProduct } from "../../../actions";
 
 
-export default function FormProducts({ selectedData, setShowModalEdit }) {
+
+export default function FormProducts({ selectedData, setShowModalEdit, setMessage, setShowModalConfirm }) {
     const dispatch = useDispatch()
 
     const types = useSelector((state) => state.types)
@@ -68,14 +69,20 @@ export default function FormProducts({ selectedData, setShowModalEdit }) {
     function handleConfirmDelete() {
         dispatch(deleteProduct(productToDelete))
         setShowModalEdit(false)
+        setMessage("Deleted")
+        setTimeout(() => {
+            setShowModalConfirm(true)
+            window.location.reload()
+        }, 2000)
     }
     function handleConfirmUpdate() {
         dispatch(updateProduct(productToUpdate, input))
         setShowModalEdit(false)
+        setMessage("Updated")
         setTimeout(() => {
             setShowModalConfirm(true)
             window.location.reload()
-        }, 1000)
+        }, 2000)
     }
 
     function handleChanges(e) {
@@ -310,31 +317,31 @@ export default function FormProducts({ selectedData, setShowModalEdit }) {
                 </div>
 
             </Form>
-            <Modal show={showModal} onHide={() => setShowModal(false)}>
+            <Modal show={showModal} onHide={() => setShowModal(false)} className="bg-dark">
                 <Modal.Header closeButton>
                     <Modal.Title>Eliminar producto</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>Are you sure you want to delete this product?</Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={() => setShowModal(false)}>
+                    <Button variant="warning" onClick={() => setShowModal(false)}>
                         No
                     </Button>
-                    <Button variant="danger" onClick={handleConfirmDelete}>
+                    <Button variant="outline-danger" onClick={handleConfirmDelete} >
                         Yes
                     </Button>
                 </Modal.Footer>
             </Modal>
-            <Modal show={showModalUpdate} onHide={() => setShowModalUpdate(false)}>
+            <Modal show={showModalUpdate} onHide={() => setShowModalUpdate(false)} className="bg-dark">
                 <Modal.Header closeButton>
                     <Modal.Title>Eliminar producto</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>Are you sure about the changes you are going to make?</Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={() => setShowModalUpdate(false)}>
+                    <Button variant="warning" onClick={() => setShowModalUpdate(false)}>
                         No
                     </Button>
-                    <Button variant="danger" onClick={handleConfirmUpdate}>
-                        yes
+                    <Button variant="outline-success" onClick={handleConfirmUpdate} >
+                        Yes
                     </Button>
                 </Modal.Footer>
             </Modal>

@@ -5,6 +5,7 @@ import FormProducts from './FormProducts';
 import './Style.css'
 
 function TableProducts({ currentWines }) {
+    const [message, setMessage] = useState("")
     const [showModalEdit, setShowModalEdit] = useState(false);
     const [showModalPost, setShowModalPost] = useState(false);
     const [showModalConfirm, setShowModalConfirm] = useState(false);
@@ -52,12 +53,12 @@ function TableProducts({ currentWines }) {
                     ))}
                 </tbody>
             </Table>
-            <Modal show={showModalEdit} onHide={() => setShowModalEdit(false)}>
+            <Modal show={showModalEdit} onHide={() => setShowModalEdit(false)} >
                 <Modal.Header closeButton>
                     <Modal.Title>Edit Product</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <FormProducts selectedData={selectedData} setShowModalEdit={setShowModalEdit} />
+                    <FormProducts selectedData={selectedData} setShowModalEdit={setShowModalEdit} setMessage={setMessage} setShowModalConfirm={setShowModalConfirm} />
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={() => setShowModalEdit(false)}>
@@ -65,12 +66,12 @@ function TableProducts({ currentWines }) {
                     </Button>
                 </Modal.Footer>
             </Modal>
-            <Modal show={showModalPost} onHide={() => setShowModalPost(false)}>
+            <Modal show={showModalPost} onHide={() => setShowModalPost(false)} >
                 <Modal.Header closeButton>
-                    <Modal.Title>Edit Product</Modal.Title>
+                    <Modal.Title>Create Product</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <FormProductsPost setShowModalPost={setShowModalPost} setShowModalConfirm={setShowModalConfirm} />
+                    <FormProductsPost setShowModalPost={setShowModalPost} setShowModalConfirm={setShowModalConfirm} setMessage={setMessage} />
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={() => setShowModalPost(false)}>
@@ -79,8 +80,11 @@ function TableProducts({ currentWines }) {
                 </Modal.Footer>
             </Modal>
             <Modal show={showModalConfirm} onHide={() => setShowModalConfirm(false)} className="d-flex align-items-center">
-                <Alert variant="success" >
-                    Created or Updated Product !!!
+                <Alert variant={message === "Deleted" ? "danger" : "success"} >
+                    <Alert.Heading>Hey, you have {message} the Product !!!</Alert.Heading>
+                    <p>
+                        You can see the changes in the products section
+                    </p>
                 </Alert>
             </Modal>
         </>
