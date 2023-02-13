@@ -11,7 +11,9 @@ import { getDetail, addToCart } from "../../../actions";
 
 export default function Detail(props){
      const [cartQuantity, setCartQuantity] = useState(1);
+     const cart = useSelector(state => state.cart)
      const dispatch = useDispatch()
+
 
     useEffect(() => {
         dispatch(getDetail(props.match.params.id));
@@ -35,6 +37,10 @@ export default function Detail(props){
       addAlert(cartQuantity, name);
     };
     
+    useEffect(() => {
+      localStorage.setItem('cart', JSON.stringify(cart));
+    }, [cart]);
+
       return(   
         <>
           {wine.name ? (<div className="container-fluid">

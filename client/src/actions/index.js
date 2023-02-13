@@ -16,6 +16,7 @@ import {
   DELETE_FROM_CART,
   ADD_CART_QUANTITY,
   REMOVE_CART_QUANTITY,
+  ADD_CART_TO_LOCALSTORAGE,
 } from "./allActions";
 
 const headers = {
@@ -222,5 +223,12 @@ export function removeCartQuantity(id) {
   return {
     type: REMOVE_CART_QUANTITY,
     payload: id,
+  };
+}
+
+export function addCartToLs(payload) {
+  return {
+    type: ADD_CART_TO_LOCALSTORAGE,
+    payload,
   };
 }
