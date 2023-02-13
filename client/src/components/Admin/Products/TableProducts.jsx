@@ -80,7 +80,7 @@ function TableProducts({ currentWines }) {
             </Modal>
             <Modal show={showModalConfirm} onHide={() => setShowModalConfirm(false)} className="d-flex align-items-center">
                 <Alert variant="success" >
-                    Product created!!!
+                    Created or Updated Product !!!
                 </Alert>
             </Modal>
         </>

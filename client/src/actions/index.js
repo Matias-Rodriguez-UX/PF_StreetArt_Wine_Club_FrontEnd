@@ -127,6 +127,17 @@ export function deleteProduct(id) {
   }
 }
 
+export function updateProduct(id, body) {
+  return async function () {
+    try {
+      let info = await axios.put(`http://localhost:3001/products/${id}`, body);
+      return (info.status)
+    } catch (error) {
+      console.log("ERROR", error)
+    }
+  }
+}
+
 export function getTypes() {
   return async function (dispatch) {
     try {
