@@ -247,7 +247,7 @@ export default function FormProductsPost({ setShowModalPost, setShowModalConfirm
                     </InputGroup>
                 </Form.Group>
                 {grape?.map((option) => (
-                    <Badge key={option} pill variant="warning" className="mb-2 mr-2 mt-2">
+                    <Badge key={option} pill bg="warning" text="dark" className="mb-2 mr-2 mt-2">
                         {option} <span onClick={() => handleOptionRemove(option, setGrape, grape)}>X</span>
                     </Badge>
                 ))}
@@ -264,7 +264,7 @@ export default function FormProductsPost({ setShowModalPost, setShowModalConfirm
                     </InputGroup>
                 </Form.Group>
                 {state?.map((option) => (
-                    <Badge key={option} pill variant="warning" className="mb-2 mr-2 mt-2">
+                    <Badge key={option} pill bg="warning" text="dark" className="mb-2 mr-2 mt-2">
                         {option} <span onClick={() => handleOptionRemove(option, setState, state)}>X</span>
                     </Badge>
                 ))}
@@ -281,7 +281,7 @@ export default function FormProductsPost({ setShowModalPost, setShowModalConfirm
                     </InputGroup>
                 </Form.Group>
                 {region?.map((option) => (
-                    <Badge key={option} pill variant="warning" className="mb-2 mr-2 mt-2">
+                    <Badge key={option} pill bg="warning" text="dark" className="mb-2 mr-2 mt-2">
                         {option} <span onClick={() => handleOptionRemove(option, setRegion, region)}>X</span>
                     </Badge>
                 ))}

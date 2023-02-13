@@ -15,9 +15,7 @@ export default function Home() {
 
     return (
         <>
-            <RegisterModal
-
-            />
+            <RegisterModal />
 
             <Banner></Banner>
             <NavigationBar></NavigationBar>

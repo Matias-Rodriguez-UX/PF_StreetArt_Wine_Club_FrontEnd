@@ -249,7 +249,7 @@ export default function FormProducts({ selectedData, setShowModalEdit, setMessag
                     </InputGroup>
                 </Form.Group>
                 {grape?.map((option, index) => (
-                    <Badge key={option} pill variant="warning" className="mb-2 mr-2 mt-2" onClick={() => handleOptionRemove(option, setGrape, grape)}>
+                    <Badge key={option} pill bg="warning" text="dark" className="mb-2 mr-2 mt-2" onClick={() => handleOptionRemove(option, setGrape, grape)}>
                         {option}  X
                     </Badge>
                 ))}
@@ -266,7 +266,7 @@ export default function FormProducts({ selectedData, setShowModalEdit, setMessag
                     </InputGroup>
                 </Form.Group>
                 {state?.map((option) => (
-                    <Badge key={option} pill variant="warning" className="mb-2 mr-2 mt-2" onClick={() => handleOptionRemove(option, setState, state)}>
+                    <Badge key={option} pill bg="warning" text="dark" className="mb-2 mr-2 mt-2" onClick={() => handleOptionRemove(option, setState, state)}>
                         {option}   X
                     </Badge>
                 ))}
@@ -283,7 +283,7 @@ export default function FormProducts({ selectedData, setShowModalEdit, setMessag
                     </InputGroup>
                 </Form.Group>
                 {region?.map((option) => (
-                    <Badge key={option} pill variant="warning" className="mb-2 mr-2 mt-2" onClick={() => handleOptionRemove(option, setRegion, region)}>
+                    <Badge key={option} pill bg="warning" text="dark" className="mb-2 mr-2 mt-2" onClick={() => handleOptionRemove(option, setRegion, region)}>
                         {option}  X
                     </Badge>
                 ))}
@@ -300,7 +300,7 @@ export default function FormProducts({ selectedData, setShowModalEdit, setMessag
                     </InputGroup>
                 </Form.Group>
                 {type?.map((option) => (
-                    <Badge key={option} pill variant="warning" className="mb-2 mr-2 mt-2" onClick={() => handleOptionRemove(option, setType, type)}>
+                    <Badge key={option} pill bg="warning" text="dark" className="mb-2 mr-2 mt-2" onClick={() => handleOptionRemove(option, setType, type)}>
                         {option}   X
                     </Badge>
                 ))}
@@ -348,57 +348,3 @@ export default function FormProducts({ selectedData, setShowModalEdit, setMessag
         </>
     )
 }
-
-// {
-//     "id": 1,
-//     "name": "C215",
-//     "price": 6500,
-//     "image": "https://res.cloudinary.com/dom9fvn1q/image/upload/v1675445853/ImagesStreetArt/5_hp7hkk.png",
-//     "volume": 750,
-//     "quantity": 4,
-//     "stock": 19,
-//     "details": "tanins, blueberry, spices",
-//     "winery": [
-//         "Revancha",
-//         "Gauchezco"
-//     ],
-//     "grapes": [
-//         {
-//             "id": 8,
-//             "name": "Cabernet Franc",
-//             "Product_Grape": {
-//                 "productId": 1,
-//                 "grapeId": 8
-//             }
-//         },
-//         {
-//             "id": 22,
-//             "name": "Malbec",
-//             "Product_Grape": {
-//                 "productId": 1,
-//                 "grapeId": 22
-//             }
-//         }
-//     ],
-//     "states": [
-//         {
-//             "id": 50,
-//             "name": "Mendoza",
-//             "Product_State": {
-//                 "productId": 1,
-//                 "stateId": 50
-//             }
-//         }
-//     ],
-//     "regions": [],
-//     "types": [
-//         {
-//             "id": 1,
-//             "name": "red",
-//             "Product_Type": {
-//                 "productId": 1,
-//                 "typeId": 1
-//             }
-//         }
-//     ]
-// }
