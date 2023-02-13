@@ -43,10 +43,10 @@ function TableProducts({ currentWines }) {
                             {headers.map((header, subIndex) => (
                                 (typeof item[header] !== "object") ?
                                     <td key={subIndex} className="ellipsis">{item[header]}</td> :
-                                    <td key={subIndex} className="ellipsis"> {item[header].map(el =>
+                                    <td key={subIndex} className="ellipsis"> {item[header].map((el, index) =>
                                         (typeof el !== 'object') ?
-                                            <li style={{ listStyleType: 'none' }}>{el}</li> :
-                                            <li style={{ listStyleType: 'none' }}>{el.name}</li>
+                                            <li key={index} style={{ listStyleType: 'none' }}>{el}</li> :
+                                            <li key={index} style={{ listStyleType: 'none' }}>{el.name}</li>
                                     )}</td>
                             ))}
                         </tr>

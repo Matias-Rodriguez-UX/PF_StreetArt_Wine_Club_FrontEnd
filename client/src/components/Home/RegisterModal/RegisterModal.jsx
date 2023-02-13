@@ -2,12 +2,14 @@ import React, { useState } from "react";
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { Form } from "react-bootstrap";
+import { useAuth0 } from "@auth0/auth0-react";
 
 export default function RegisterModal() {
-    const [show, setShow] = useState(true);
-    const handleClose = () => setShow(false);
+    const { isAuthenticated } = useAuth0();
+    const [show, setShow] = useState(false);
+    const handleClose = () => setShow(true);
 
-    return (
+    return (<>
         <Modal
             show={show} onHide={handleClose}
             size="lg"
@@ -35,5 +37,6 @@ export default function RegisterModal() {
                 <Button variant="warning" onClick={handleClose}>Join!</Button>
             </Modal.Footer>
         </Modal>
+    </>
     );
 }
