@@ -298,7 +298,7 @@ export default function FormProductsPost({ setShowModalPost, setShowModalConfirm
                     </InputGroup>
                 </Form.Group>
                 {type?.map((option) => (
-                    <Badge key={option} pill variant="warning" className="mb-2 mr-2 mt-2">
+                    <Badge key={option} pill bg="warning" text="dark" className="mb-2 mr-2 mt-2">
                         {option} <span onClick={() => handleOptionRemove(option, setType, type)}>X</span>
                     </Badge>
                 ))}
