@@ -1,14 +1,83 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
+import { useDispatch, useSelector} from 'react-redux';
+import { createUser, getUserInfo, editUserInfo } from "../../../actions/userActions";
+import axios from "axios";
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import {Image} from "react-bootstrap";
-import { useDispatch } from "react-redux";
-import { createUser, editUserInfo } from "../../../actions/userActions";
 
 
-export default function EditUserProfileCard({ userName, userPicture, userEmail, setCurrentPage }) {
+
+
+export default function EditUserProfileCard({ userName, userPicture, setCurrentPage }) {
     const { user } = useAuth0();
+    const dispatch = useDispatch();
+    const userInfo = ((state) => state.userInfo);
+
+    const [loading, setLoading] = useState(false);
+    const [input, setInput] = useState({
+        avatar: user.picture,
+        fullname: '',
+        email:'',
+        phone:0,
+        mobile:0,
+        address:'',
+        state:'',
+        city:'',
+        zipCode: 0,
+        profile:''
+    });
+
+    const userEmail= user.email;
+
+    // useEffect(() => {
+    //     dispatch(getUserInfo(userEmail))
+    // }, [dispatch, user])
+
+
+    //Método para cargar las imágenes a cloudinary
+    const uploadImage = async (event) => {
+        event.preventDefault();
+        const file = event.target.files[0];
+        const formData = new FormData();
+        formData.append("file", file);
+        console.log(file);
+        formData.append("upload_preset", "user_profile_pictures");
+        formData.append('api_key', 757917398541782);
+        setLoading(true);
+        const res = await fetch("https://api.cloudinary.com/v1_1/dom9fvn1q/image/upload",{
+            method: "POST",
+            body: formData
+        })
+
+        const resFile = await res.json();
+        console.log(res);
+        let uploadedUrl = resFile.secure_url;
+        console.log(uploadedUrl)
+        setLoading(false)
+        setInput({
+            ...input,
+            avatar: uploadedUrl
+        });
+        console.log(input.avatar)
+    };
+
+
+        //Modificar inputs
+        const handleChange = (e) => {
+            setInput({
+                ...input,
+                [e.target.name]: e.target.value
+            });
+            console.log(input);
+        };
+
+        //Send info to change db
+        const handleSubmit = (e) => {
+
+        }
+
     return(
         <div  className="container col py-5 mt-5" display='flex'>
         <div class="col-lg-8">
@@ -19,7 +88,10 @@ export default function EditUserProfileCard({ userName, userPicture, userEmail, 
 									<h6 class="mb-0">Image</h6>
 								</div>
 								<div class="col-sm-9 text-secondary">
-									<input type="file" class="form-control" value=""/>
+									<input type="file" class="form-control" name='avatar' onChange={(event) => {uploadImage(event)}}/>
+								</div>
+                                <div class="col-sm-9 text-secondary">
+									{loading ? (<p>Loading image</p>) : (<Image src={input.avatar} width='100px' height='100px' />)}
 								</div>
 							</div>
 							<div class="row mb-3">
@@ -27,7 +99,7 @@ export default function EditUserProfileCard({ userName, userPicture, userEmail, 
 									<h6 class="mb-0">Full Name</h6>
 								</div>
 								<div class="col-sm-9 text-secondary">
-									<input type="text" class="form-control" value={user.name}/>
+									<input type="text" class="form-control" name='fullname' value={input.fullname} onChange={(e) => handleChange(e)}/>
 								</div>
 							</div>
 							<div class="row mb-3">
@@ -35,7 +107,7 @@ export default function EditUserProfileCard({ userName, userPicture, userEmail, 
 									<h6 class="mb-0">Email</h6>
 								</div>
 								<div class="col-sm-9 text-secondary">
-									<input type="text" class="form-control" value={user.email}/>
+									<input type="text" class="form-control" name='email' value={input.email} onChange={(e) => handleChange(e)}/>
 								</div>
 							</div>
 							<div class="row mb-3">
@@ -43,7 +115,7 @@ export default function EditUserProfileCard({ userName, userPicture, userEmail, 
 									<h6 class="mb-0">Phone</h6>
 								</div>
 								<div class="col-sm-9 text-secondary">
-									<input type="text" class="form-control" value="(239) 816-9029"/>
+									<input type="text" class="form-control" name='phone' value={input.phone} onChange={(e) => handleChange(e)}/>
 								</div>
 							</div>
 							<div class="row mb-3">
@@ -51,7 +123,7 @@ export default function EditUserProfileCard({ userName, userPicture, userEmail, 
 									<h6 class="mb-0">Mobile</h6>
 								</div>
 								<div class="col-sm-9 text-secondary">
-									<input type="text" class="form-control" value="(320) 380-4539"/>
+									<input type="text" class="form-control" name='mobile' value={input.mobile} onChange={(e) => handleChange(e)}/>
 								</div>
 							</div>
 							<div class="row mb-3">
@@ -59,7 +131,7 @@ export default function EditUserProfileCard({ userName, userPicture, userEmail, 
 									<h6 class="mb-0">Address</h6>
 								</div>
 								<div class="col-sm-9 text-secondary">
-									<input type="text" class="form-control" value="Bay Area, San Francisco, CA"/>
+									<input type="text" class="form-control" name='address' value={input.address} onChange={(e) => handleChange(e)}/>
 								</div>
 							</div>
                             <div class="row mb-3">
@@ -67,7 +139,7 @@ export default function EditUserProfileCard({ userName, userPicture, userEmail, 
 									<h6 class="mb-0">State</h6>
 								</div>
 								<div class="col-sm-9 text-secondary">
-									<input type="text" class="form-control" value="Mendoza"/>
+									<input type="text" class="form-control" name='state' value={input.state} onChange={(e) => handleChange(e)}/>
 								</div>
 							</div>
                             <div class="row mb-3">
@@ -75,7 +147,7 @@ export default function EditUserProfileCard({ userName, userPicture, userEmail, 
 									<h6 class="mb-0">City</h6>
 								</div>
 								<div class="col-sm-9 text-secondary">
-									<input type="text" class="form-control" value="Valle de Uco"/>
+									<input type="text" class="form-control" name='city' value={input.city} onChange={(e) => handleChange(e)}/>
 								</div>
 							</div>
                             <div class="row mb-3">
@@ -83,7 +155,7 @@ export default function EditUserProfileCard({ userName, userPicture, userEmail, 
 									<h6 class="mb-0">ZIP code</h6>
 								</div>
 								<div class="col-sm-9 text-secondary">
-									<input type="text" class="form-control" value="5000"/>
+									<input type="text" class="form-control" name='zipCode' value={input.zipCode} onChange={(e) => handleChange(e)}/>
 								</div>
 							</div>
                             <div class="row mb-3">
@@ -91,13 +163,13 @@ export default function EditUserProfileCard({ userName, userPicture, userEmail, 
 									<h6 class="mb-0">About you</h6>
 								</div>
 								<div class="col-sm-9 text-secondary">
-									<input type="text" class="form-control" value="Winery Boutique from Uco's Valley"/>
+									<input type="text" class="form-control" name='profile' value={input.profile} onChange={(e) => handleChange(e)}/>
 								</div>
 							</div>
 							<div class="row">
 								<div class="col-sm-3"></div>
 								<div class="col-sm-9 text-secondary">
-									<input type="button" class="btn btn-warning btn-sm" value="Save Changes"/>
+									<input type="button" class="btn btn-warning btn-sm" value="Save Changes" />
 								</div>
 							</div>
 						</div>
@@ -105,7 +177,7 @@ export default function EditUserProfileCard({ userName, userPicture, userEmail, 
                 </div>
             </div>
     )
-}
+};
 
 // export default function UserProfileCard({ userName, userPicture, userEmail, setCurrentPage }) {
 //     const dispatch = useDispatch();

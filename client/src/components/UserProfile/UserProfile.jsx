@@ -30,10 +30,26 @@ export default function UserProfile() {
     const [userInfo, setUserInfo] = useState(null);
     const [currentPage, setCurrentPage] = useState('home');
 
-    const { isLoading, isAuthenticated: auth, user, getIdTokenClaims, getTokenSilently } = useAuth0();
+    const { isLoading, isAuthenticated: auth, user } = useAuth0();
     const emailAdmin = 'artstreetwineclub@gmail.com';
+    let userDb = {};
 
-    
+   console.log(isAuthenticated);
+
+   if(auth){
+    userDb = {
+        email:user.email,
+        name: user.name,
+        picture:user.picture
+    }
+    console.log(userDb)
+   };
+
+    useEffect(() => {
+        if(userDb.email){
+        dispatch(createUser(userDb))
+        }
+    }, [user, dispatch])
 
     useEffect(() => {
         dispatch(getAllUsers());
