@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { useAuth0 } from "@auth0/auth0-react";
 import { useDispatch, useSelector} from 'react-redux';
+import { useAuth0 } from "@auth0/auth0-react";
 import axios from "axios";
-import { getAllUsers, createUser, editUserInfo } from "../../actions/userActions";
+import { getAllUsers, getUser, createUser, editUserInfo } from "../../actions/userActions";
 import { Link } from "react-router-dom";
 import Footer from "../Footer";
 import Banner from "../Home/Banner";
@@ -22,26 +22,41 @@ import { Loader } from "../Loader";
 
 export default function UserProfile() {
     const dispatch = useDispatch();
-    const users = useSelector ((state) => state.users );
-    console.log(users)
+    const { isLoading, isAuthenticated: auth, user } = useAuth0();
+    const authUser = useSelector ((state) => state.authUser);
+    const users = useSelector ((state) => state.users);
+    // console.log(user)
+
 
     const [loading, setLoading] = useState(true)
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [userInfo, setUserInfo] = useState(null);
     const [currentPage, setCurrentPage] = useState('home');
 
-    const { isLoading, isAuthenticated: auth, user, getIdTokenClaims, getTokenSilently } = useAuth0();
     const emailAdmin = 'artstreetwineclub@gmail.com';
-
     
+    const persona = user;
+
+    useEffect (() => {
+        dispatch(createUser(user));
+    }, [user]);
+
+    useEffect (() => {
+        dispatch(getUser(email));
+    }, [isAuthenticated]);
 
     useEffect(() => {
         dispatch(getAllUsers());
-        setLoading(isLoading);
         setIsAuthenticated(auth);
-    }, [dispatch, isLoading, auth, user]);
+    }, [dispatch, auth]);
+
+    useEffect(() => {
+        setLoading(isLoading); 
+    }, [ isLoading, auth])
 
 
+    console.log(authUser);
+    console.log(users);
 
     if (loading) {
         return <Loader />;

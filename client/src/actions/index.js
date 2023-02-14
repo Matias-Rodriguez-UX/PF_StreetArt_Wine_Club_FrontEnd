@@ -249,4 +249,4 @@ export function addToCart(id, cartQuantity) {
   };
 
   }
-}
+
