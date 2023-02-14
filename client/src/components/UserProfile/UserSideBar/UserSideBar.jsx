@@ -16,7 +16,7 @@ export default function UserSideBar({userName, userPicture, setCurrentPage}) {
                 </a>
                 <hr />
                 <div className="mb-2">
-                    <a href="#" className="d-flex align-items-center text-black text-decoration-none mb-3" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                    <a href="#" className="d-flex align-items-center justify-content-center text-black text-decoration-none mb-3" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
                         <img src={userPicture} alt="user profile picture" width="100" height="100" className="rounded-circle" />
                     </a>
                     <ul className="list-unstyled" aria-labelledby="dropdownUser1">
