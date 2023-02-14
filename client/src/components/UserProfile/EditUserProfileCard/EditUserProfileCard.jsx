@@ -16,9 +16,8 @@ export default function EditUserProfileCard({ userName, userPicture, setCurrentP
     const userInfo = ((state) => state.userInfo);
 
     const [loading, setLoading] = useState(false);
-    const [imageSelected, setImageSelected] = useState('');
     const [input, setInput] = useState({
-        avatar: '',
+        avatar: user.picture,
         fullname: '',
         email:'',
         phone:0,
@@ -92,7 +91,7 @@ export default function EditUserProfileCard({ userName, userPicture, setCurrentP
 									<input type="file" class="form-control" name='avatar' onChange={(event) => {uploadImage(event)}}/>
 								</div>
                                 <div class="col-sm-9 text-secondary">
-									{loading ? (<p>Loading image</p>) : (<Image src={input.avatar} width='80px' height='80px' />)}
+									{loading ? (<p>Loading image</p>) : (<Image src={input.avatar} width='100px' height='100px' />)}
 								</div>
 							</div>
 							<div class="row mb-3">

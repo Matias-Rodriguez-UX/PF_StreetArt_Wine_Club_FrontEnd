@@ -36,7 +36,7 @@ const headers = {
   export function createUser (payload) {
         return async function () {
           try {
-            let user = await axios.post('http://localhost:3001/users', payload);
+            let user = await axios.post('http://localhost:3001/users/auth', payload);
             return user;
           } catch (error) {
             console.log("ERROR", error)
