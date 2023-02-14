@@ -14,6 +14,7 @@ import {
   GET_GRAPES,
   ADD_CART_QUANTITY,
   REMOVE_CART_QUANTITY,
+  ADD_CART_TO_LOCALSTORAGE,
 } from "../actions/allActions";
 
 const initialState = {
@@ -131,6 +132,22 @@ export default function reducer(state = initialState, action) {
         ...state,
         cart: state.cart.filter((product) => product.id !== action.payload),
       };
+
+    case ADD_CART_TO_LOCALSTORAGE:
+      if (state.cart.some((el) => el.id === action.payload.id)) {
+        let updateProduct = state.cart.find(
+          (el) => el.id === action.payload.id
+        );
+        return {
+          ...state,
+          cart: [...state.cart],
+        };
+      }
+      return {
+        ...state,
+        cart: [...state.cart, action.payload],
+      };
+
     case GET_TYPES:
       return {
         ...state,

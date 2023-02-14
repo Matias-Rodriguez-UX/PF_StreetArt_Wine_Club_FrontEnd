@@ -16,6 +16,7 @@ import {
   DELETE_FROM_CART,
   ADD_CART_QUANTITY,
   REMOVE_CART_QUANTITY,
+  ADD_CART_TO_LOCALSTORAGE,
 } from "./allActions";
 
 const headers = {
@@ -119,13 +120,11 @@ export function getProductByName(payload) {
 export function postProduct(payload) {
   return async function () {
     try {
-      let info = await axios.post('http://localhost:3001/products', payload);
-      return (info.status)
-
+      let info = await axios.post("http://localhost:3001/products", payload);
+      return info.status;
     } catch (error) {
       console.log("ERROR", error);
     }
-
   };
 }
 
@@ -133,22 +132,22 @@ export function deleteProduct(id) {
   return async function () {
     try {
       let info = await axios.delete(`http://localhost:3001/products/${id}`);
-      return (info.status)
+      return info.status;
     } catch (error) {
-      console.log("ERROR", error)
+      console.log("ERROR", error);
     }
-  }
+  };
 }
 
 export function updateProduct(id, body) {
   return async function () {
     try {
       let info = await axios.put(`http://localhost:3001/products/${id}`, body);
-      return (info.status)
+      return info.status;
     } catch (error) {
-      console.log("ERROR", error)
+      console.log("ERROR", error);
     }
-  }
+  };
 }
 
 export function getTypes() {
@@ -242,11 +241,17 @@ export function removeCartQuantity(id) {
   };
 }
 
+export function addCartToLs(payload) {
+  return {
+    type: ADD_CART_TO_LOCALSTORAGE,
+    payload,
+  };
+}
+
 export function addToCart(id, cartQuantity) {
   return {
     type: ADD_TO_CART,
     payload: { id, cartQuantity: parseInt(cartQuantity) },
   };
-
   }
 

@@ -6,13 +6,14 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Loader } from "../Loader";
-import { getProducts, loadingAction } from "../../actions";
+import { getProducts, loadingAction, addToCart } from "../../actions";
 import Winecards from "./WineCard/WineCard";
 import './shop.css'
 import Filters from "./Filters/Filters";
 import Sort from "./Sorts";
 import WebPagination from "./Pagination/Pagination";
 import SearchBar from "./SearchBar";
+import Swal from 'sweetalert2';
 
 
 export default function Shop() {
@@ -74,6 +75,23 @@ export default function Shop() {
         return result
     }
 
+    const addAlert =(cartQuantity, name) =>{
+        Swal.fire({
+          title: "YOUR PRODUCT WAS ADDED",
+          text: `You add ${name} \n Quantity Box ${cartQuantity}`,
+          icon: 'success',
+          timer: '4000',
+          timerProgressBar: true,
+          allowOutsideClick: true,
+          confirmButtonColor: '#ffc107'
+        })
+      }
+
+    const addCart = (id, cartQuantity, name) => {
+        dispatch(addToCart(id, cartQuantity));
+        addAlert(cartQuantity, name);
+    }
+
     const grapes = allGrapes()
     const states = allStates()
     const types = allTypes()
@@ -112,15 +130,15 @@ export default function Shop() {
                     <div className="Cards container col py-5">
                         {currentWines.length ? currentWines?.map((el) => {
                             return (
-                                <Link style={{ textDecoration: 'none' }} to={"/shop/" + el.id}>
-                                    <Winecards
-                                        image={el.image}
-                                        name={el.name}
-                                        winery={el.winery}
-                                        price={el.price}
-                                        id={el.id}
-                                    />
-                                </Link>
+                                <Winecards
+                                    image={el.image}
+                                    name={el.name}
+                                    winery={el.winery}
+                                    price={el.price}
+                                    id={el.id}
+                                    addCart={addCart}
+                                />
+                               
                             )
                         }) : <h1>Wines not Found</h1>}
                     </div>}
