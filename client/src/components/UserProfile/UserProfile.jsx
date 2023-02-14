@@ -25,17 +25,16 @@ export default function UserProfile() {
     const [loading, setLoading] = useState(true)
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const { isLoading, isAuthenticated: auth, user, getIdTokenClaims } = useAuth0();
-    const [userInfo, setUserInfo] = useState({
+   /*  const [userInfo, setUserInfo] = useState({
         token: "",
         email: "",
         role: "",
         fullname: ""
-    })
+    }) */
     const emailAdmin = 'artstreetwineclub@gmail.com'
 
     
-
-     const handleTokenRetrieval = async () => {
+     /* const handleTokenRetrieval = async () => {
         
             
         
@@ -59,11 +58,11 @@ export default function UserProfile() {
         console.log("SOY EL ESTADO ", userInfo)
         
      };
-
+ */
     
 
 
-    useEffect(async ()  => {
+    useEffect(()  => {
         setLoading(isLoading);
         setIsAuthenticated(auth);
          /* if(isAuthenticated === true){
@@ -73,14 +72,24 @@ export default function UserProfile() {
         }  */
     }, [isLoading, auth]);
     console.log("SOY EL USER", user); 
-    
-    /* const flag = false
-    if(!flag){ //si lo hago asi queda en bucle
-        handleTokenRetrieval()
-        flag = true
-    } */
 
+    const handleInfo = async () => {
+if(user)
+   { const dbUser = {
+        email: user.email,
+        token: 'soyeltoken',
+        role: user.AssigRoles[0],
+        fullname: user.name,
+      };
 
+      console.log(dbUser)
+      return dispatch(postUserInfo(dbUser)).then(()  =>  console.log(dbUser))}
+    }
+
+    useEffect(()  => {
+       
+        handleInfo()
+    },[user])
     if (loading) {
         return <Loader />;
     }
@@ -125,55 +134,3 @@ export default function UserProfile() {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// import { useEffect, useState } from "react";
-
-// const Profile = () => {
-//     const [userInfo, setUserInfo] = useState(null);
-//     const { user, loading, getIdTokenClaims } = useAuth0();
-
-//     useEffect(() => {
-//         if (user && !loading) {
-//             getIdTokenClaims().then(({ __raw: idToken }) => {
-//                 setUserInfo(JSON.parse(atob(idToken.split(".")[1])));
-//             });
-//         }
-//     }, [user, loading, getIdTokenClaims]);
-
-//     if (loading || !user) {
-//         return <div>Loading...</div>;
-//     }
-
-//     return (
-//         <>
-//             <img src={user.picture} alt="Profile" />
-
-//             <h2>{user.name}</h2>
-//             <p>{user.email}</p>
-//             <code>{JSON.stringify(userInfo, null, 2)}</code>
-//         </>
-//     );
-// };

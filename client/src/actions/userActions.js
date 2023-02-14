@@ -34,7 +34,7 @@ const headers = {
         };
       };
 
-      export function postUserInfo (payload) {
+     /*  export function postUserInfo (payload) {
         return async function () {
           try {
             let data = await axios.post('http://localhost:3001/users/auth', payload);
@@ -43,7 +43,16 @@ const headers = {
             console.log("ERROR", error)
           }    
         };
-      };    
+      };     */
+
+      export const postUserInfo = payload => async dispatch => {
+        try {
+          const res = await axios.post('http://localhost:3001/users/auth', payload);
+          dispatch({ type: POST_USER_INFO, payload: res.data });
+        } catch (error) {
+          console.log("ERROR", error)
+        }
+      };
 
  export function editUserInfo (id, payload) {
     return async function (dispatch) {
