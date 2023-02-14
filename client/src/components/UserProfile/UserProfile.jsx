@@ -71,6 +71,7 @@ export default function UserProfile() {
                 <UserSideBar className='col-3' userName={user.name} userPicture={user.picture}  setCurrentPage={setCurrentPage} />
 
                 <div className="container col-9">
+                    {currentPage === "home" && <UserInfo setCurrentPage={setCurrentPage} />}    
                     {currentPage === "userinfo" && <UserInfo setCurrentPage={setCurrentPage} />}
                     {currentPage === "changeinfo" && <EditUserProfileCard setCurrentPage={setCurrentPage} />}
                     {currentPage === "orders" && <UserOrders />}
