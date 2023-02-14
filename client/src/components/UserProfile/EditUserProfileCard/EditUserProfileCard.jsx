@@ -11,7 +11,7 @@ import {Image} from "react-bootstrap";
 
 
 export default function EditUserProfileCard({ userName, userPicture, setCurrentPage }) {
-    const { user } = useAuth0();
+    const { isAuthenticated: auth, user } = useAuth0();
     const dispatch = useDispatch();
     const userInfo = ((state) => state.userInfo);
 
@@ -29,11 +29,15 @@ export default function EditUserProfileCard({ userName, userPicture, setCurrentP
         profile:''
     });
 
-    const userEmail= user.email;
+    let userEmail = '';
 
-    // useEffect(() => {
-    //     dispatch(getUserInfo(userEmail))
-    // }, [dispatch, user])
+    if(auth){
+        userEmail = user.email
+    };
+
+    useEffect(() => {
+        dispatch(getUserInfo(userEmail))
+    }, [dispatch, user])
 
 
     //Método para cargar las imágenes a cloudinary
@@ -75,8 +79,22 @@ export default function EditUserProfileCard({ userName, userPicture, setCurrentP
 
         //Send info to change db
         const handleSubmit = (e) => {
-
-        }
+            e.preventDefault();
+            console.log(input);
+            dispatch(editUserInfo(input));
+            alert('Info modified!');
+            setInput({
+                fullname: '',
+                email:'',
+                phone:0,
+                mobile:0,
+                address:'',
+                state:'',
+                city:'',
+                zipCode: 0,
+                profile:''
+            })
+        };
 
     return(
         <div  className="container col py-5 mt-5" display='flex'>
@@ -169,7 +187,7 @@ export default function EditUserProfileCard({ userName, userPicture, setCurrentP
 							<div class="row">
 								<div class="col-sm-3"></div>
 								<div class="col-sm-9 text-secondary">
-									<input type="button" class="btn btn-warning btn-sm" value="Save Changes" />
+									<input type="button" class="btn btn-warning btn-sm" value="Save Changes" onClick={(e) => handleSubmit(e)}/>
 								</div>
 							</div>
 						</div>
