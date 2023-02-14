@@ -29,9 +29,8 @@ export default function AdminProducts() {
         dispatch(loadingAction(true))
         dispatch(getProducts());
 
-    }, []);
+    }, [dispatch]);
 
-    console.log(currentWines)
     return (
         <><div>
             {showLoading ? <div className="container col py-5 mt-5"> <Loader /> </div> :
