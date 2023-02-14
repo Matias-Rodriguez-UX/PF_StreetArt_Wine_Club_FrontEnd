@@ -20,6 +20,19 @@ const headers = {
     };
   };
 
+  export function getUserInfo () {
+    return async function (dispatch, email) {
+
+            let userInfo = await axios.get(`http://localhost:3001/users/${email}`);
+            return (
+            dispatch({
+                type: GET_USER_INFO,
+                payload: userInfo.data,
+            })
+        )
+    };
+  };
+
   export function createUser (payload) {
         return async function () {
           try {
@@ -32,13 +45,10 @@ const headers = {
       };
 
  export function editUserInfo (id, payload) {
-    return async function (dispatch) {
+    return async function () {
         try{
             let updatedUser = await axios.put(`http://localhost:3001/users/${id}`, payload);
-            dispatch({
-                type: EDIT_USER,
-                payload: updatedUser.data
-            });
+            return updatedUser.status
         } catch (e) {
             console.log("Error", e)
         }

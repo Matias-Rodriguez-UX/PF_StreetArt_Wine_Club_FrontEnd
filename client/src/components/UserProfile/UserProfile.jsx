@@ -23,17 +23,26 @@ import { Loader } from "../Loader";
 export default function UserProfile() {
     const dispatch = useDispatch();
     const users = useSelector ((state) => state.users );
-    console.log(users)
+    // console.log(users)
 
     const [loading, setLoading] = useState(true)
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [userInfo, setUserInfo] = useState(null);
     const [currentPage, setCurrentPage] = useState('home');
 
-    const { isLoading, isAuthenticated: auth, user, getIdTokenClaims, getTokenSilently } = useAuth0();
+    const { isLoading, isAuthenticated: auth, user } = useAuth0();
     const emailAdmin = 'artstreetwineclub@gmail.com';
 
-    
+    // const userToDb = {
+    //     email: user.email,
+    //     name: user.name,
+    //     picture: user.picture
+    // };
+    // console.log(userToDb)
+
+    // useEffect(() => {
+    //     dispatch(createUser(user))
+    // }, [dispatch, user])
 
     useEffect(() => {
         dispatch(getAllUsers());
