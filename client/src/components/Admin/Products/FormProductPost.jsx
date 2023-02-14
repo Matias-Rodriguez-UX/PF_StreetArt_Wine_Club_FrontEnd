@@ -123,7 +123,6 @@ export default function FormProductsPost({ setShowModalPost }) {
         } catch (error) {
             console.error(error);
         }
-        dispatch(getProducts())
         setInput({
             name: "",
             price: 0,

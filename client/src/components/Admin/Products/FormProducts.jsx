@@ -91,7 +91,6 @@ export default function FormProducts({ selectedData, setShowModalEdit }) {
 
     function handleConfirmDelete(name) {
         dispatch(deleteProduct(productToDelete))
-        dispatch(getProducts())
         addAlertDelete(name);
         setShowModalEdit(false)
         window.location.href = window.location.pathname + window.location.search + '#products';
@@ -101,7 +100,6 @@ export default function FormProducts({ selectedData, setShowModalEdit }) {
 
     function handleConfirmUpdate(name) {
         dispatch(updateProduct(productToUpdate, input))
-        dispatch(getProducts())
         addAlertUpdate(name);
         setShowModalEdit(false)
         window.location.href = window.location.pathname + window.location.search + '#products';
