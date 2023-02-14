@@ -1,0 +1,22 @@
+.img-size-cart{
+   max-width: 100px;
+   max-height:100px
+}
+
+.btn-cart-detail{
+    width:30px;
+    height:30px;
+    text-align: center;
+    padding:0;
+    margin:0;
+    border:none;
+    background-color: #FFC200;;
+}
+
+.btn-cart-detail:hover{
+    cursor:pointer;
+}
+
+.shadow-table{
+    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.15);
+}

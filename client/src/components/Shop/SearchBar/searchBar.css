@@ -1,0 +1,65 @@
+.pos-btn{
+  left:66%
+}
+
+.autocomplete-cont{
+    height: max-content;
+    align-items: center;
+
+}
+
+.option-list{
+    top:160px;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sugerencia{
+    padding: 5px;
+  }
+
+  .react-autosuggest__suggestions-container{
+    width:100%;
+  }
+
+  .react-autosuggest__input{
+    width:100%;
+    padding: 6px;
+    border-radius: 5px;
+    border: none;
+  }
+
+  .react-autosuggest__container {
+    align-items: center;
+    width:30%;
+  }
+
+
+  .react-autosuggest__suggestions-container--open {
+    display: block;
+    position: absolute;
+    width: 30%;
+    border: 1px solid #aaa;
+    background-color: #fff;
+    font-family: Helvetica, sans-serif;
+    font-weight: 300;
+    font-size: 16px;
+    border-radius: 4px;
+    z-index: 2;
+    max-height: max-content;
+    overflow: auto;
+
+  }
+  
+  .react-autosuggest__suggestions-list{
+    list-style: none;
+    margin-bottom: 0px;
+    padding-left: 0px;
+    cursor: pointer;
+  }
+
+  
+  .react-autosuggest__suggestion--highlighted {
+    background-color: #ddd;
+  }

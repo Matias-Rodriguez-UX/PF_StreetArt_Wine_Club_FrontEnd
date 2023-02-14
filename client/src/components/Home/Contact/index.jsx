@@ -4,11 +4,11 @@ import { Form, Button } from 'react-bootstrap';
 
 export default function Contact() {
     return (
-        <>
-            <div className="container">
+        <section id='contact'>
+            <div className="container mb-4">
                 <h1>Contact</h1>
                 <div className="row">
-                    <div className="col-6">
+                    <div className="col-6 me-4">
                         <Form>
                             <Form.Group controlId='formBasicName'>
                                 <Form.Label>Name</Form.Label>
@@ -29,7 +29,7 @@ export default function Contact() {
                             </div>
                         </Form>
                     </div>
-                    <div className="col-4">
+                    <div className="col-4" style={{ justifyContent: 'center' }}>
                         <img
                             width={'70%'}
                             src={"https://images.unsplash.com/photo-1619810490925-e27ba7623459?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80"}
@@ -41,6 +41,6 @@ export default function Contact() {
 
 
             </div>
-        </>
+        </section>
     )
 }

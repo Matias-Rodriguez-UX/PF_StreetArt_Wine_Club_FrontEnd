@@ -1,0 +1,35 @@
+#detail {
+    padding-top: 50px;
+}
+
+.input-cart {
+    line-height: 60px;
+    display: inline-block;
+}
+
+#typeNumber {
+    width: 4em;
+}
+
+#description {
+    margin-top: 30px;
+    text-align: center;
+}
+
+#review {
+    text-align: center;
+}
+
+.avatar-image {
+    border-radius: 50%;
+    width: 65px;
+    height: 65px;
+    object-fit: cover;
+    background-size: 100% auto;
+    background-position: 50%;
+}
+
+#img-detail {
+    width: 400px; 
+    height: 400px; 
+}

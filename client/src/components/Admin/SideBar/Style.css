@@ -1,0 +1,16 @@
+.active {
+    background-color: #ffbb33 !important;
+    color: black !important;
+    text-decoration: none !important;
+    font-weight: 800 !important;
+}
+
+.inactive {
+    color: white !important;
+    font-weight: 500 !important;
+    text-decoration: none !important;
+}
+
+.inactive:hover {
+    color: #ffbb33 !important;
+}

@@ -1,0 +1,11 @@
+.container-footer{
+    background-color: #212529;
+    position: relative;
+    width: 100%;
+    height: 284px;
+}
+
+.link-foot:hover{
+    cursor:pointer;
+    color:blue;
+}
