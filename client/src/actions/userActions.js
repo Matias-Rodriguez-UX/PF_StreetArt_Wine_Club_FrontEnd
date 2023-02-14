@@ -1,4 +1,4 @@
-import { GET_ALL_USERS, CREATE_USER, EDIT_USER, CREATE_ADDRESS, EDIT_ADDRESS, DELETE_USER } from "./allActions";
+import { GET_ALL_USERS, GET_USER_INFO, CREATE_USER, EDIT_USER, CREATE_ADDRESS, EDIT_ADDRESS, DELETE_USER } from "./allActions";
 import axios from "axios";
 
 const headers = {
@@ -20,35 +20,42 @@ const headers = {
     };
   };
 
-  export function getUserInfo () {
-    return async function (dispatch, email) {
+  export function getUserInfo (email) {
+    return async function (dispatch) {
 
-            let userInfo = await axios.get(`http://localhost:3001/users/${email}`);
+            let user = await axios.get(`http://localhost:3001/users/${email}`);
             return (
             dispatch({
                 type: GET_USER_INFO,
-                payload: userInfo.data,
+                payload: user.data,
             })
         )
     };
   };
 
+
   export function createUser (payload) {
-        return async function () {
+        return async function (dispatch) {
           try {
             let user = await axios.post('http://localhost:3001/users/auth', payload);
-            return user;
+            return dispatch ({
+              type: CREATE_USER,
+              payload: user.data
+            });
           } catch (error) {
             console.log("ERROR", error)
           }    
         };
       };
 
- export function editUserInfo (id, payload) {
-    return async function () {
+ export function editUserInfo (payload) {
+    return async function (dispatch) {
         try{
-            let updatedUser = await axios.put(`http://localhost:3001/users/${id}`, payload);
-            return updatedUser.status
+            let updatedUser = await axios.put(`http://localhost:3001/users`, payload);
+            dispatch({
+                type: EDIT_USER,
+                payload: updatedUser.data
+            });
         } catch (e) {
             console.log("Error", e)
         }
