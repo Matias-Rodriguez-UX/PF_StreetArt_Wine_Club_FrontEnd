@@ -1,3 +1,4 @@
+
 import axios from "axios";
 import {
   GET_PRODUCTS,
@@ -254,4 +255,3 @@ export function addToCart(id, cartQuantity) {
     payload: { id, cartQuantity: parseInt(cartQuantity) },
   };
 }
-
