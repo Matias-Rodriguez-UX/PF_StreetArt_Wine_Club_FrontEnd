@@ -16,8 +16,8 @@ import ReviewsTemplate from "./Reviews/ReviewTemplate";
 export default function Detail(props) {
   const { isLoading, isAuthenticated: auth, user } = useAuth0();
   const [cartQuantity, setCartQuantity] = useState(1);
-  const cart = useSelector(state => state.cart)
-  const reviews = useSelector(state => state.reviews)
+  const cart = useSelector(state => state.products.cart)
+  const reviews = useSelector(state => state.products.reviews)
   const dispatch = useDispatch()
   const idProduct = props.match.params.id
 
@@ -28,7 +28,7 @@ export default function Detail(props) {
     dispatch(getReviews(idProduct));
   }, []);
 
-  const wine = useSelector((state) => state.wineDetail);
+  const wine = useSelector((state) => state.products.wineDetail);
 
   const addAlert = (cartQuantity, name) => {
     Swal.fire({
