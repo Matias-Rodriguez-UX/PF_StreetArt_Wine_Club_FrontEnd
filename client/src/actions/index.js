@@ -38,6 +38,7 @@ export function getProducts() {
   return async function (dispatch) {
     try {
       let products = await axios.get("http://localhost:3001/products", headers);
+      console.log(products)
       return (
         dispatch({
           type: GET_PRODUCTS,
@@ -220,7 +221,6 @@ export function getGrapes() {
 }
 
 export function deleteFromCart(id) {
-  console.log(id);
   return {
     type: DELETE_FROM_CART,
     payload: id,
@@ -228,7 +228,6 @@ export function deleteFromCart(id) {
 }
 
 export function addCartQuantity(id) {
-  console.log(id);
   return {
     type: ADD_CART_QUANTITY,
     payload: id,
@@ -236,7 +235,6 @@ export function addCartQuantity(id) {
 }
 
 export function removeCartQuantity(id) {
-  console.log(id);
   return {
     type: REMOVE_CART_QUANTITY,
     payload: id,

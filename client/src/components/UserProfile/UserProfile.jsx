@@ -22,8 +22,9 @@ import { Loader } from "../Loader";
 
 export default function UserProfile() {
     const dispatch = useDispatch();
+
+
     const users = useSelector((state) => state.users.users);
-    console.log(users)
 
     const [loading, setLoading] = useState(true)
     const [isAuthenticated, setIsAuthenticated] = useState(false);

@@ -24,7 +24,7 @@ const initialState = {
   allProducts: [],
   filtersActive: false,
   showLoading: false,
-  // cart: [],
+  cart: [],
   totalCart: 0,
   types: [],
   regions: [],
@@ -100,28 +100,32 @@ export default function productsReducer(state = initialState, action) {
       let { id, cartQuantity } = action.payload;
       let newProduct = state.allProducts.find((product) => product.id === id);
       let addWineBox = { ...newProduct, cartQuantity };
-      if (state.cart.some((product) => product.id === id)) {
-        let existingProduct = state.cart.find((product) => product.id === id);
+      if (state.cart?.some((product) => product.id === id)) {
+        let existingProduct = state.cart?.find((product) => product.id === id);
         let updatedProduct = {
           ...existingProduct,
           cartQuantity: existingProduct.cartQuantity + cartQuantity,
         };
+        let upDate = state.cart.map((product) =>
+          product.id === id ? updatedProduct : product
+        )
+
         return {
           ...state,
-          cart: state.cart.map((product) =>
-            product.id === id ? updatedProduct : product
-          ),
+          cart: upDate
         };
       }
+      const resto = [...state.cart, addWineBox]
       return {
         ...state,
-        cart: [...state.cart, addWineBox],
+        cart: resto
       };
 
     case DELETE_FROM_CART:
+      const deletFromCart = state.cart.filter((product) => product.id !== action.payload)
       return {
         ...state,
-        cart: state.cart.filter((product) => product.id !== action.payload),
+        cart: deletFromCart
       };
 
     case ADD_CART_TO_LOCALSTORAGE:
@@ -129,14 +133,16 @@ export default function productsReducer(state = initialState, action) {
         let updateProduct = state.cart.find(
           (el) => el.id === action.payload.id
         );
+        const lcSto = [...state.cart]
         return {
           ...state,
-          cart: [...state.cart],
+          cart: lcSto
         };
       }
+      const rest2 = [...state.cart, action.payload]
       return {
         ...state,
-        cart: [...state.cart, action.payload],
+        cart: rest2
       };
 
     case GET_TYPES:
@@ -161,23 +167,25 @@ export default function productsReducer(state = initialState, action) {
       };
 
     case ADD_CART_QUANTITY:
+      const addProd = state.cart.map((product) =>
+        product.id === action.payload
+          ? { ...product, cartQuantity: product.cartQuantity + 1 }
+          : product
+      )
       return {
         ...state,
-        cart: state.cart.map((product) =>
-          product.id === action.payload
-            ? { ...product, cartQuantity: product.cartQuantity + 1 }
-            : product
-        ),
+        cart: addProd
       };
 
     case REMOVE_CART_QUANTITY:
+      const remProd = state.cart.map((product) =>
+        product.id === action.payload && product.cartQuantity > 0
+          ? { ...product, cartQuantity: product.cartQuantity - 1 }
+          : product
+      )
       return {
         ...state,
-        cart: state.cart.map((product) =>
-          product.id === action.payload && product.cartQuantity > 0
-            ? { ...product, cartQuantity: product.cartQuantity - 1 }
-            : product
-        ),
+        cart: remProd
       };
     case GET_REVIEWS:
       return {

@@ -17,8 +17,6 @@ import Swal from 'sweetalert2';
 
 
 export default function Shop() {
-    const global = useSelector(state => state)
-    console.log(global)
     const dispatch = useDispatch()
     const showLoading = useSelector((state) => state.products.showLoading)
     const allProducts = useSelector((state) => state.products.allProducts)
