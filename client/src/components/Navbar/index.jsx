@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { Link, useLocation } from 'react-router-dom';
 import Container from 'react-bootstrap/Container';
@@ -8,8 +8,9 @@ import LoginButton from "../Login/LoginButton";
 import LogOutButton from "../Login/LogOutButton";
 import SignupButton from "../Login/Signup";
 import { NavDropdown } from "react-bootstrap";
-import { useSelector } from "react-redux"
+import { useSelector, useDispatch } from "react-redux"
 import "./navbar.css"
+import { addCartToLs } from "../../actions";
 
 
 export default function NavigationBar() {
@@ -17,6 +18,14 @@ export default function NavigationBar() {
 
   let location = useLocation();
   const cart = useSelector(state => state.products.cart)
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    if(cart.length === 0){
+      const storedCart = JSON.parse(localStorage.getItem('cart')) || [];
+      storedCart.forEach(item => dispatch(addCartToLs(item)));
+    }
+  }, [dispatch]);
 
   return (
     <Navbar collapseOnSelect expand="lg" bg="light" variant="light" style={{ boxShadow: 'rgba(0, 0, 0, 0.1) 0px 4px 8px' }}>

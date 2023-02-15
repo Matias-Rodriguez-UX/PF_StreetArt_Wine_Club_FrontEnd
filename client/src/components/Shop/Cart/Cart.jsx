@@ -1,15 +1,14 @@
 import React from "react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import { deleteFromCart, removeCartQuantity, addCartQuantity, addCartToLs } from '../../../actions';
 import NavigationBar from "../../Navbar/index";
 import Banner from '../../Home/Banner/index';
 import Footer from '../../Footer/index';
 import "./Cart.css"
-import useLocalStorage from '../../../useLocalStorage';
+import { useAuth0 } from "@auth0/auth0-react";
 
 export default function Cart() {
-  const [storedCart, setStoredCart] = useLocalStorage("cart", []);
   const cart = useSelector((state) => state.products.cart);
 
   const total = cart.reduce((acc, product) => {
@@ -17,19 +16,16 @@ export default function Cart() {
   }, 0);
 
   const dispatch = useDispatch();
-
-  // useEffect(() => {
-  //   if (storedCart.length === 0 && cart.length > 0) {
-  //     setStoredCart(cart);
-  //   } else if (storedCart.length > 0 && cart.length === 0) {
-  //     cart.forEach(item => dispatch(addCartToLs(item)));
-  //   }
-  // }, [dispatch, cart, storedCart, setStoredCart]);
+  
+  const { isAuthenticated } = useAuth0();
 
   useEffect(() => {
-    const storedCart = JSON.parse(localStorage.getItem('cart')) || [];
-    storedCart.forEach(item => dispatch(addCartToLs(item)));
-  }, [dispatch]);
+    if(cart.length === 0 && !isAuthenticated){
+      console.log(isAuthenticated)
+      const storedCart = JSON.parse(localStorage.getItem('cart')) || [];
+      storedCart.forEach(item => dispatch(addCartToLs(item)));
+    }
+  }, [dispatch, isAuthenticated]);
 
   useEffect(() => {
     localStorage.setItem('cart', JSON.stringify(cart));
