@@ -5,7 +5,7 @@ import { getMemberships } from "../../../actions/membershipsActions";
 
 export default function AdminMemberships() {
     const dispatch = useDispatch()
-    const allMemberships = useSelector((state) => state.allMemberships)
+    const allMemberships = useSelector((state) => state.memberships.allMemberships)
     const [membershipList, setmembershipList] = useState(allMemberships);
 
     useEffect(() => {

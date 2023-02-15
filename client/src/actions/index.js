@@ -18,6 +18,7 @@ import {
   ADD_CART_QUANTITY,
   REMOVE_CART_QUANTITY,
   ADD_CART_TO_LOCALSTORAGE,
+  GET_REVIEWS,
 } from "./allActions";
 
 const headers = {
@@ -263,6 +264,26 @@ export function postReview(id, payload) {
       return info.status;
     } catch (error) {
       console.log("ERROR", error);
+    }
+  };
+}
+
+export function getReviews(id) {
+  return async function (dispatch) {
+    try {
+      var detail = await axios.get(
+        `http://localhost:3001/products/${id}/review`,
+        headers
+      );
+      return (
+        dispatch({
+          type: GET_REVIEWS,
+          payload: detail.data,
+        }),
+        dispatch(loadingAction(false))
+      );
+    } catch (error) {
+      console.log("Error", error);
     }
   };
 }

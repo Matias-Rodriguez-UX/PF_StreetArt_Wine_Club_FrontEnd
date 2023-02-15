@@ -8,10 +8,10 @@ import Swal from 'sweetalert2';
 export default function FormProducts({ selectedData, setShowModalEdit }) {
     const dispatch = useDispatch()
 
-    const types = useSelector((state) => state.types)
-    const grapes = useSelector((state) => state.grapes)
-    const states = useSelector((state) => state.states)
-    const regions = useSelector((state) => state.regions)
+    const types = useSelector((state) => state.products.types)
+    const grapes = useSelector((state) => state.products.grapes)
+    const states = useSelector((state) => state.products.states)
+    const regions = useSelector((state) => state.products.regions)
 
     const [showModal, setShowModal] = useState(false);
     const [showModalUpdate, setShowModalUpdate] = useState(false);

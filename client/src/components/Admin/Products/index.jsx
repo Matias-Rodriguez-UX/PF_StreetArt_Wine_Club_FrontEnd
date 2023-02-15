@@ -11,8 +11,8 @@ export default function AdminProducts() {
 
     const dispatch = useDispatch()
 
-    const showLoading = useSelector((state) => state.showLoading)
-    const allProducts = useSelector((state) => state.allProducts)
+    const showLoading = useSelector((state) => state.products.showLoading)
+    const allProducts = useSelector((state) => state.products.allProducts)
 
 
     const [currentPage, setCurrentPage] = useState(1);

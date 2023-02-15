@@ -8,19 +8,24 @@ import Banner from '../../Home/Banner/index';
 import Footer from '../../Footer/index'
 import { Loader } from '../../Loader/index'
 import Swal from 'sweetalert2';
-import { getDetail, addToCart } from "../../../actions";
+import { getDetail, addToCart, getReviews, loadingAction } from "../../../actions";
 import ReviewsForm from "./Reviews/ReviewsForm";
 import { useAuth0 } from "@auth0/auth0-react";
+import ReviewsTemplate from "./Reviews/ReviewTemplate";
 
 export default function Detail(props) {
   const { isLoading, isAuthenticated: auth, user } = useAuth0();
   const [cartQuantity, setCartQuantity] = useState(1);
   const cart = useSelector(state => state.cart)
+  const reviews = useSelector(state => state.reviews)
   const dispatch = useDispatch()
   const idProduct = props.match.params.id
 
   useEffect(() => {
-    dispatch(getDetail(idProduct));
+    dispatch(loadingAction(true))
+    dispatch(getDetail(idProduct))
+    dispatch(loadingAction(true))
+    dispatch(getReviews(idProduct));
   }, []);
 
   const wine = useSelector((state) => state.wineDetail);
@@ -44,7 +49,7 @@ export default function Detail(props) {
   useEffect(() => {
     localStorage.setItem('cart', JSON.stringify(cart));
   }, [cart]);
-  console.log(wine)
+
   return (
     <>
       {wine.name ? (<div className="container-fluid">
@@ -109,20 +114,9 @@ export default function Detail(props) {
             </div>
           </div>
         </div>
-        <div class=" d-flex mt-3 mb-4 align-items-center justify-content-center">
-          <div className="img-avatar">
-            <img src="https://res.cloudinary.com/dom9fvn1q/image/upload/v1675202276/samples/people/smiling-man.jpg" className="avatar-image" alt="image" />
-          </div>
-          <div class="ms-3">
-            <h6 class="mb-1">Jack</h6>
-            <p class="mb-0">Kind Heart Charity is the most supportive organization. This is Bootstrap 5 HTML CSS template for everyone. Thank you.</p>
-            <div class="d-flex mt-2">
-              <a href="#" class=" me-3">Like</a>
-
-              <a href="#" class="">Reply</a>
-            </div>
-          </div>
-        </div>
+        {
+          reviews?.map((review, index) => <ReviewsTemplate key={review.id} review={review} />)
+        }
         <div className="col col-12">
           <Footer />
         </div>

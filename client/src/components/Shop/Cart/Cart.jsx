@@ -10,7 +10,7 @@ import useLocalStorage from '../../../useLocalStorage';
 
 export default function Cart() {
   const [storedCart, setStoredCart] = useLocalStorage("cart", []);
-  const cart = useSelector((state) => state.cart);
+  const cart = useSelector((state) => state.products.cart);
 
   const total = cart.reduce((acc, product) => {
     return acc + product.price * product.cartQuantity;
