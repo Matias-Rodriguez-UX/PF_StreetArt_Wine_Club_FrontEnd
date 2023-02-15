@@ -255,3 +255,14 @@ export function addToCart(id, cartQuantity) {
     payload: { id, cartQuantity: parseInt(cartQuantity) },
   };
 }
+
+export function postReview(id, payload) {
+  return async function () {
+    try {
+      let info = await axios.post(`http://localhost:3001/products/${id}/review`, payload);
+      return info.status;
+    } catch (error) {
+      console.log("ERROR", error);
+    }
+  };
+}
