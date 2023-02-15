@@ -18,18 +18,15 @@ export default function ReviewsTemplate({ review }) {
         dispatch(getUserInfo(review.userEmail))
         console.log(userInfo)
     }, [])
-    let srcImg = ""
-    // if (userInfo.avatar) {
-    //     srcImg = userInfo.avatar
-    // }
+
     return (
         <>
-            <div class=" d-flex mt-3 mb-4 align-items-center justify-content-center">
+            <div class="container d-flex mt-3 mb-4 align-items-center justify-content-center">
                 <div className="img-avatar">
-                    <img src="" className="avatar-image" alt="image" />
+                    <img src={userInfo.avatar} className="avatar-image" alt="image" />
                 </div>
                 <div class="ms-3">
-                    {/* <h6 class="mb-1">{userInfo.fullname}</h6> */}
+                    <h6 class="mb-1">{userInfo.fullname}</h6>
                     <p class="mb-0">{review.review}</p>
                     <div class="d-flex mt-2">
                         <Rating name='rating' max={5} value={review.rating} readOnly />
