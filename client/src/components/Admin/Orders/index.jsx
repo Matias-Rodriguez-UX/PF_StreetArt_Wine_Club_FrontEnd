@@ -5,7 +5,7 @@ import { getOrders } from "../../../actions/ordersAction";
 
 export default function AdminOrders() {
     const dispatch = useDispatch()
-    const allOrders = useSelector((state) => state.allOrders)
+    const allOrders = useSelector((state) => state.orders.allOrders)
     const [orders, setOrders] = useState(allOrders);
 
     useEffect(() => {

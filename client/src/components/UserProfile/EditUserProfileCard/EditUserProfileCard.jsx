@@ -13,7 +13,7 @@ import {Image} from "react-bootstrap";
 export default function EditUserProfileCard({ userName, userPicture, setCurrentPage }) {
     const { isAuthenticated: auth, user } = useAuth0();
     const dispatch = useDispatch();
-    const userInfo = ((state) => state.userInfo);
+    const userInfo = ((state) => state.users.userInfo);
 
     const [loading, setLoading] = useState(false);
     const [input, setInput] = useState({

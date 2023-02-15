@@ -15,6 +15,7 @@ import {
   ADD_CART_QUANTITY,
   REMOVE_CART_QUANTITY,
   ADD_CART_TO_LOCALSTORAGE,
+  GET_REVIEWS
 } from "../actions/allActions";
 
 const initialState = {
@@ -23,34 +24,19 @@ const initialState = {
   allProducts: [],
   filtersActive: false,
   showLoading: false,
-  cart: [],
+  // cart: [],
   totalCart: 0,
   types: [],
   regions: [],
   states: [],
   grapes: [],
+  reviews: []
 };
 
-function sortArrayAtoZ(x, y) {
-  if (x.name < y.name) {
-    return -1;
-  }
-  if (x.name > y.name) {
-    return 1;
-  }
-  return 0;
-}
-function sortArrayZtoA(x, y) {
-  if (x.name > y.name) {
-    return -1;
-  }
-  if (x.name < y.name) {
-    return 1;
-  }
-  return 0;
-}
 
-export default function reducer(state = initialState, action) {
+
+export default function productsReducer(state = initialState, action) {
+
   switch (action.type) {
     case LOADING_ACTION:
       return {
@@ -193,8 +179,31 @@ export default function reducer(state = initialState, action) {
             : product
         ),
       };
+    case GET_REVIEWS:
+      return {
+        ...state,
+        reviews: action.payload
+      }
 
     default:
-      return state; //!
+      return { ...state }; //!
   }
+}
+function sortArrayAtoZ(x, y) {
+  if (x.name < y.name) {
+    return -1;
+  }
+  if (x.name > y.name) {
+    return 1;
+  }
+  return 0;
+}
+function sortArrayZtoA(x, y) {
+  if (x.name > y.name) {
+    return -1;
+  }
+  if (x.name < y.name) {
+    return 1;
+  }
+  return 0;
 }

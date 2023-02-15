@@ -6,7 +6,7 @@ import { getAllUsers } from "../../../actions/userActions";
 
 export default function AdminCustomers() {
     const dispatch = useDispatch()
-    const allUsers = useSelector((state) => state.allUsers)
+    const allUsers = useSelector((state) => state.users.allUsers)
     const [userList, setUserList] = useState(allUsers);
 
     useEffect(() => {

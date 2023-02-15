@@ -16,7 +16,7 @@ export default function NavigationBar() {
   const { user, isAuthenticated } = useAuth0();
 
   let location = useLocation();
-  const cart = useSelector(state => state.cart)
+  const cart = useSelector(state => state.products.cart)
 
   return (
     <Navbar collapseOnSelect expand="lg" bg="light" variant="light" style={{ boxShadow: 'rgba(0, 0, 0, 0.1) 0px 4px 8px' }}>

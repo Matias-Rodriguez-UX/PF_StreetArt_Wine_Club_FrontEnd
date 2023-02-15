@@ -17,12 +17,12 @@ import Swal from 'sweetalert2';
 
 
 export default function Shop() {
-
+    const global = useSelector(state => state)
+    console.log(global)
     const dispatch = useDispatch()
-
-    const showLoading = useSelector((state) => state.showLoading)
-    const allProducts = useSelector((state) => state.allProducts)
-    const Products = useSelector((state) => state.products)
+    const showLoading = useSelector((state) => state.products.showLoading)
+    const allProducts = useSelector((state) => state.products.allProducts)
+    const Products = useSelector((state) => state.products.products)
     const [sort, setSort] = useState('')
 
     const [currentPage, setCurrentPage] = useState(1);
@@ -75,17 +75,17 @@ export default function Shop() {
         return result
     }
 
-    const addAlert =(cartQuantity, name) =>{
+    const addAlert = (cartQuantity, name) => {
         Swal.fire({
-          title: "YOUR PRODUCT WAS ADDED",
-          text: `You add ${name} \n Quantity Box ${cartQuantity}`,
-          icon: 'success',
-          timer: '4000',
-          timerProgressBar: true,
-          allowOutsideClick: true,
-          confirmButtonColor: '#ffc107'
+            title: "YOUR PRODUCT WAS ADDED",
+            text: `You add ${name} \n Quantity Box ${cartQuantity}`,
+            icon: 'success',
+            timer: '4000',
+            timerProgressBar: true,
+            allowOutsideClick: true,
+            confirmButtonColor: '#ffc107'
         })
-      }
+    }
 
     const addCart = (id, cartQuantity, name) => {
         dispatch(addToCart(id, cartQuantity));
@@ -100,8 +100,8 @@ export default function Shop() {
 
 
     useEffect(() => {
-            dispatch(loadingAction(true))
-            dispatch(getProducts());
+        dispatch(loadingAction(true))
+        dispatch(getProducts());
     }, [dispatch]);
 
     return (
@@ -138,16 +138,16 @@ export default function Shop() {
                                     id={el.id}
                                     addCart={addCart}
                                 />
-                               
+
                             )
                         }) : <h1>Wines not Found</h1>}
                     </div>}
-                    <WebPagination
-                    winesPerPage = {winesPerPage}
-                    numberOfWines = { Products.length }
-                    currentPage = {currentPage}
-                    setCurrentPage = {setCurrentPage}
-                    pagination = { pagination }/>
+                <WebPagination
+                    winesPerPage={winesPerPage}
+                    numberOfWines={Products.length}
+                    currentPage={currentPage}
+                    setCurrentPage={setCurrentPage}
+                    pagination={pagination} />
             </div>
 
             <Footer />
