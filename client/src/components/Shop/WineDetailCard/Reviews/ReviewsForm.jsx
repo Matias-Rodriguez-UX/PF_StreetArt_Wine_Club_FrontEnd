@@ -33,6 +33,7 @@ export default function ReviewsForm({ idProduct }) {
     function handleSubmit(e) {
         e.preventDefault()
         dispatch(postReview(idProduct, review))
+        window.location.reload();
     }
 
     useEffect(() => {
