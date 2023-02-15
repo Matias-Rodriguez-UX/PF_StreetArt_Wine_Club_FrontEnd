@@ -10,14 +10,14 @@ import { getUserInfo } from "../../../../actions/userActions";
 
 export default function ReviewsTemplate({ review }) {
     const dispatch = useDispatch()
-    const userInfo = useSelector((state) => state.userInfo)
+    const userInfo = useSelector((state) => state.users.userInfo)
     const [infoUsr, setInfoUsr] = useState({})
     console.log(review)
     useEffect(() => {
         dispatch(loadingAction(true))
         dispatch(getUserInfo(review.userEmail))
         console.log(userInfo)
-    }, [userInfo])
+    }, [])
     let srcImg = ""
     // if (userInfo.avatar) {
     //     srcImg = userInfo.avatar
