@@ -15,6 +15,7 @@ import {
   ADD_CART_QUANTITY,
   REMOVE_CART_QUANTITY,
   ADD_CART_TO_LOCALSTORAGE,
+  GET_REVIEW
 } from "../actions/allActions";
 
 const initialState = {
@@ -29,6 +30,7 @@ const initialState = {
   regions: [],
   states: [],
   grapes: [],
+  reviews: []
 };
 
 function sortArrayAtoZ(x, y) {
@@ -193,6 +195,11 @@ export default function reducer(state = initialState, action) {
             : product
         ),
       };
+    case GET_REVIEW:
+      return {
+        ...state,
+        reviews: action.payload
+      }
 
     default:
       return state; //!
