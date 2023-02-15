@@ -45,7 +45,7 @@ export default function ReviewsForm({ idProduct }) {
 
     return (
         <>{auth ?
-            <div className='border border-3 rounded p-4 bg-light' style={{ height: '290px' }} >
+            <div className='border border-3 rounded p-4 bg-light' style={{ height: '272px' }} >
                 <Form onSubmit={e => handleSubmit(e)} >
                     <FormGroup>
                         <FormLabel className="fs-4 fw-bold">Review</FormLabel>
