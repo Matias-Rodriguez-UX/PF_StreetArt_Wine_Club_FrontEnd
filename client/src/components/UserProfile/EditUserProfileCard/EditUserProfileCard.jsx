@@ -19,7 +19,6 @@ export default function EditUserProfileCard() {
 
     const [loading, setLoading] = useState(false);
     const [input, setInput] = useState({
-		email: userInfo.email,
 		fullname: userInfo.fullname,
 		profile: '',
         avatar: userInfo.avatar,
@@ -32,6 +31,7 @@ export default function EditUserProfileCard() {
         zipCode: 0,
     });
 	input.id=userId;
+	input.email=userInfo.email;
 	// console.log(input.id);
     let userEmail = '';
 
@@ -130,7 +130,7 @@ export default function EditUserProfileCard() {
 									<h6 class="mb-0">Email</h6>
 								</div>
 								<div class="col-sm-9 text-secondary">
-									<input type="text" class="form-control" name='email' value={input.email} onChange={(e) => handleChange(e)}/>
+									<input type="text" readonly class="form-control" name='email' value={input.email} onChange={(e) => handleChange(e)}/>
 								</div>
 							</div>
 							<div class="row mb-3">
