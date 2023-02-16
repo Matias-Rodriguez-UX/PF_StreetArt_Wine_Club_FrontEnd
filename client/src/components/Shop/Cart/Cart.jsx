@@ -1,4 +1,6 @@
 import React from "react";
+import ReactDOM from "react-dom";
+import { useAuth0 } from "@auth0/auth0-react";
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import { deleteFromCart, removeCartQuantity, addCartQuantity, addCartToLs } from '../../../actions';
@@ -7,16 +9,29 @@ import Banner from '../../Home/Banner/index';
 import Footer from '../../Footer/index';
 import "./Cart.css"
 import useLocalStorage from  '../../../useLocalStorage';
-
+const PayPalButton = window.paypal.Buttons.driver("react", { React, ReactDOM });
 export default function Cart(){
-  
+  const { user, isAuthenticated } = useAuth0();
   const [storedCart, setStoredCart] = useLocalStorage("cart", []);
   const cart = useSelector((state) => state.cart);
 
   const total = cart.reduce((acc, product) => {
     return acc + product.price * product.cartQuantity;
   }, 0);
-
+  const createOrder = (data, actions) => {
+    return actions.order.create({
+      purchase_units: [
+        {
+          amount: {
+            value: total,
+          },
+        },
+      ],
+    });
+  }
+  const onApprove = (data, actions) => {
+    return actions.order.capture();
+  }
   const dispatch = useDispatch();
 
   // useEffect(() => {
@@ -93,7 +108,25 @@ export default function Cart(){
             <p>
             <strong>Total: ${total}</strong>
             </p>
-          </div>      
+          </div>
+          <div className="col col-12">
+            {isAuthenticated ?
+                (
+                  <div className="col col-12">
+                    <h1>{total}</h1>
+                    <PayPalButton
+                      createOrder={(data, actions) => createOrder(data, actions)}
+                      onApprove={(data, actions) => onApprove(data, actions)}
+                    />
+                  </div>
+                ) :
+                (
+                  <div className="col col-12">
+                    <button type="button" className="btn btn-warning btn-sm">Register</button>
+                  </div>
+                )
+              }      
+          </div>
       <div className="col col-12">
           <Footer />
         </div>
