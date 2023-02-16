@@ -1,6 +1,6 @@
 import { GET_ALL_USERS, GET_USER_INFO, CREATE_USER, EDIT_USER, CREATE_ADDRESS, EDIT_ADDRESS, DELETE_USER } from "./allActions";
 import axios from "axios";
-import { loadingAction } from ".";
+import { loadingAction } from "./index";
 
 const headers = {
   headers: {
@@ -16,7 +16,8 @@ export function getAllUsers() {
       dispatch({
         type: GET_ALL_USERS,
         payload: users.data,
-      })
+      }),
+      loadingAction(false)
     )
   };
 };
