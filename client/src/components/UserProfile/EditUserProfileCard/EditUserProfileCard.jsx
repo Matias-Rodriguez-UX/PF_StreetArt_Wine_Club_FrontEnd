@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useDispatch, useSelector} from 'react-redux';
-import { createUser, getUserInfo, editUserInfo } from "../../../actions/userActions";
-import axios from "axios";
+import { getUserInfo, editUserInfo } from "../../../actions/userActions";
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import {Image} from "react-bootstrap";
@@ -10,25 +9,30 @@ import {Image} from "react-bootstrap";
 
 
 
-export default function EditUserProfileCard({ userName, userPicture, setCurrentPage }) {
+export default function EditUserProfileCard() {
     const { isAuthenticated: auth, user } = useAuth0();
     const dispatch = useDispatch();
-    const userInfo = ((state) => state.users.userInfo);
+    const userInfo = useSelector((state) => state.users.userInfo);
+	console.log(userInfo);
+	const userId = userInfo.id;
+	console.log(userId)
 
     const [loading, setLoading] = useState(false);
     const [input, setInput] = useState({
-        avatar: user.picture,
-        fullname: '',
-        email:'',
+		email: userInfo.email,
+		fullname: userInfo.fullname,
+		profile: '',
+        avatar: userInfo.avatar,
+		status: 'active',
         phone:0,
         mobile:0,
         address:'',
         state:'',
         city:'',
         zipCode: 0,
-        profile:''
     });
-
+	input.id=userId;
+	// console.log(input.id);
     let userEmail = '';
 
     if(auth){
@@ -81,6 +85,7 @@ export default function EditUserProfileCard({ userName, userPicture, setCurrentP
         const handleSubmit = (e) => {
             e.preventDefault();
             console.log(input);
+
             dispatch(editUserInfo(input));
             alert('Info modified!');
             setInput({
