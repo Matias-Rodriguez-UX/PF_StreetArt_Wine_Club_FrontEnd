@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
-import { useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import axios from "axios";
-import { getAllUsers, createUser, editUserInfo } from "../../actions/userActions";
+import { getAllUsers, createUser, editUserInfo, getUserInfo } from "../../actions/userActions";
 import { Link } from "react-router-dom";
 import Footer from "../Footer";
 import Banner from "../Home/Banner";
@@ -22,21 +22,39 @@ import { Loader } from "../Loader";
 
 export default function UserProfile() {
     const dispatch = useDispatch();
-    const users = useSelector ((state) => state.users );
-    console.log(users)
+
+
+    const users = useSelector((state) => state.users.users);
+    const userInfo = useSelector((state) => state.users.userInfo);
 
     const [loading, setLoading] = useState(true)
     const [isAuthenticated, setIsAuthenticated] = useState(false);
-    const [userInfo, setUserInfo] = useState(null);
     const [currentPage, setCurrentPage] = useState('home');
 
-    const { isLoading, isAuthenticated: auth, user, getIdTokenClaims, getTokenSilently } = useAuth0();
+    const { isLoading, isAuthenticated: auth, user } = useAuth0();
     const emailAdmin = 'artstreetwineclub@gmail.com';
+    let userDb = {};
 
-    
+    console.log(isAuthenticated);
+
+    if (auth) {
+        userDb = {
+            email: user.email,
+            name: user.name,
+            picture: user.picture
+        }
+        console.log(users)
+    };
+
+    useEffect(() => {
+        if (userDb.email) {
+            dispatch(createUser(userDb))
+        }
+    }, [user, dispatch]);
 
     useEffect(() => {
         dispatch(getAllUsers());
+        dispatch(getUserInfo(userDb.email));
         setLoading(isLoading);
         setIsAuthenticated(auth);
     }, [dispatch, isLoading, auth, user]);
@@ -52,9 +70,10 @@ export default function UserProfile() {
             <div className="row" >
                 <Banner />
                 <NavigationBar />
-                <UserSideBar className='col-3' userName={user.name} userPicture={user.picture}  setCurrentPage={setCurrentPage} />
+                <UserSideBar className='col-3' userName={userInfo.name} userPicture={userInfo.avatar} setCurrentPage={setCurrentPage} />
 
                 <div className="container col-9">
+                    {currentPage === "home" && <UserInfo userName={userInfo.name} setCurrentPage={setCurrentPage} />}
                     {currentPage === "userinfo" && <UserInfo setCurrentPage={setCurrentPage} />}
                     {currentPage === "changeinfo" && <EditUserProfileCard setCurrentPage={setCurrentPage} />}
                     {currentPage === "orders" && <UserOrders />}
@@ -62,17 +81,19 @@ export default function UserProfile() {
                     {currentPage === "wishlist" && <Wishlist />}
                 </div>
 
-                <Card style={{ width: '18rem' }}>
-                    <Card.Body>
 
-                        {user.email === emailAdmin ?
-                            <Link to='/admin'>
-                                <Button type="button" className="btn btn-warning btn-sm">Admin profile</Button>
-                            </Link> : <Link to='/shop'>
-                                <Button type="button" className="btn btn-warning btn-sm">Go shopping</Button>
-                            </Link>}
-                    </Card.Body>
-                </Card>
+                {user.email === emailAdmin ?
+                    <div className="m-4 d-flex align-items-center">
+                        <Link to='/admin' className="">
+                            <Button type="button" className="btn btn-warning btn-lg">Admin profile</Button>
+                        </Link>
+                    </div> :
+                    <div className="m-4 d-flex align-items-center">
+                        <Link to='/shop'>
+                            <Button type="button" className="btn btn-warning btn-lg">Go shopping</Button>
+                        </Link>
+                    </div>}
+
                 <Footer />
             </div >
         ) : (

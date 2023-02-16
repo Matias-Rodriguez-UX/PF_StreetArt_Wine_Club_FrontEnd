@@ -8,10 +8,10 @@ import Swal from 'sweetalert2';
 export default function FormProducts({ selectedData, setShowModalEdit }) {
     const dispatch = useDispatch()
 
-    const types = useSelector((state) => state.types)
-    const grapes = useSelector((state) => state.grapes)
-    const states = useSelector((state) => state.states)
-    const regions = useSelector((state) => state.regions)
+    const types = useSelector((state) => state.products.types)
+    const grapes = useSelector((state) => state.products.grapes)
+    const states = useSelector((state) => state.products.states)
+    const regions = useSelector((state) => state.products.regions)
 
     const [showModal, setShowModal] = useState(false);
     const [showModalUpdate, setShowModalUpdate] = useState(false);
@@ -91,7 +91,6 @@ export default function FormProducts({ selectedData, setShowModalEdit }) {
 
     function handleConfirmDelete(name) {
         dispatch(deleteProduct(productToDelete))
-        dispatch(getProducts())
         addAlertDelete(name);
         setShowModalEdit(false)
         window.location.href = window.location.pathname + window.location.search + '#products';
@@ -101,7 +100,6 @@ export default function FormProducts({ selectedData, setShowModalEdit }) {
 
     function handleConfirmUpdate(name) {
         dispatch(updateProduct(productToUpdate, input))
-        dispatch(getProducts())
         addAlertUpdate(name);
         setShowModalEdit(false)
         window.location.href = window.location.pathname + window.location.search + '#products';
@@ -358,7 +356,7 @@ export default function FormProducts({ selectedData, setShowModalEdit }) {
             </Form>
             <Modal show={showModal} onHide={() => setShowModal(false)} className="bg-dark">
                 <Modal.Header closeButton>
-                    <Modal.Title>Eliminar producto</Modal.Title>
+                    <Modal.Title>Delete Product</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>Are you sure you want to delete this product?</Modal.Body>
                 <Modal.Footer>
@@ -372,7 +370,7 @@ export default function FormProducts({ selectedData, setShowModalEdit }) {
             </Modal>
             <Modal show={showModalUpdate} onHide={() => setShowModalUpdate(false)} className="bg-dark">
                 <Modal.Header closeButton>
-                    <Modal.Title>Eliminar producto</Modal.Title>
+                    <Modal.Title>Update Product</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>Are you sure about the changes you are going to make?</Modal.Body>
                 <Modal.Footer>

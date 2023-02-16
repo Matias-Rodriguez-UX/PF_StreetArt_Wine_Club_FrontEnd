@@ -14,7 +14,8 @@ const headers = {
 export function getMemberships() {
     return async function (dispatch) {
         try {
-            let memberships = await axios.get("http://localhost:3001/memberships", headers);
+
+            let memberships = await axios.get("/memberships", headers);
             return (
                 dispatch({
                     type: GET_MEMBERSHIPS,
@@ -27,3 +28,42 @@ export function getMemberships() {
         }
     };
 }
+
+export function postMemberships(body) {
+    return async function () {
+        try {
+            let memberships = await axios.post("http://localhost:3001/users/membership", body);
+            return (
+                memberships.status
+            );
+        } catch (error) {
+            return error, console.log(error);
+        }
+    };
+}
+
+export function updateMemberships(id, body) {
+    return async function () {
+        try {
+            let memberships = await axios.put(`http://localhost:3001/users/membership/${id}`, body);
+            return (
+                memberships.status
+            );
+        } catch (error) {
+            return error, console.log(error);
+        }
+    };
+}
+export function deleteMemberships(id) {
+    return async function () {
+        try {
+            let memberships = await axios.delete(`http://localhost:3001/users/membership/${id}`, headers);
+            return (
+                memberships.status
+            );
+        } catch (error) {
+            return error, console.log(error);
+        }
+    };
+}
+

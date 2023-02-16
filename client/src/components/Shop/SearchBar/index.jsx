@@ -11,7 +11,7 @@ export default function SearchBar() {
     const [value, setValue]= useState("");
     const [selection, setSelection]= useState([]);
 
-    const allProducts = useSelector(state => state.allProducts)
+    const allProducts = useSelector(state => state.products.allProducts)
     const dispatch = useDispatch()
     
     const nameConverter = (str) => {
