@@ -11,7 +11,7 @@ const headers = {
 export function getAllUsers() {
   return async function (dispatch) {
 
-    let users = await axios.get("http://localhost:3001/users");
+    let users = await axios.get("/users");
     return (
       dispatch({
         type: GET_ALL_USERS,
@@ -24,7 +24,7 @@ export function getAllUsers() {
 export function getUserInfo(email) {
   return async function (dispatch) {
 
-    let user = await axios.get(`http://localhost:3001/users/?email=${email}`);
+    let user = await axios.get(`/users/?email=${email}`);
     return (
       dispatch({
         type: GET_USER_INFO,
@@ -39,7 +39,7 @@ export function getUserInfo(email) {
 export function createUser(payload) {
   return async function (dispatch) {
     try {
-      let user = await axios.post('http://localhost:3001/users/auth', payload);
+      let user = await axios.post('/users/auth', payload);
       return dispatch({
         type: CREATE_USER,
         payload: user.data
@@ -53,7 +53,7 @@ export function createUser(payload) {
 export function editUserInfo(payload) {
   return async function (dispatch) {
     try {
-      let updatedUser = await axios.put(`http://localhost:3001/users`, payload);
+      let updatedUser = await axios.put(`/users`, payload);
       dispatch({
         type: EDIT_USER,
         payload: updatedUser.data
