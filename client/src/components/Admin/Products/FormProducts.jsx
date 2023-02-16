@@ -356,7 +356,7 @@ export default function FormProducts({ selectedData, setShowModalEdit }) {
             </Form>
             <Modal show={showModal} onHide={() => setShowModal(false)} className="bg-dark">
                 <Modal.Header closeButton>
-                    <Modal.Title>Eliminar producto</Modal.Title>
+                    <Modal.Title>Delete Product</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>Are you sure you want to delete this product?</Modal.Body>
                 <Modal.Footer>
@@ -370,7 +370,7 @@ export default function FormProducts({ selectedData, setShowModalEdit }) {
             </Modal>
             <Modal show={showModalUpdate} onHide={() => setShowModalUpdate(false)} className="bg-dark">
                 <Modal.Header closeButton>
-                    <Modal.Title>Eliminar producto</Modal.Title>
+                    <Modal.Title>Update Product</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>Are you sure about the changes you are going to make?</Modal.Body>
                 <Modal.Footer>

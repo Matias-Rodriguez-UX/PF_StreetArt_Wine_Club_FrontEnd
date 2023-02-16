@@ -19,6 +19,7 @@ import {
   REMOVE_CART_QUANTITY,
   ADD_CART_TO_LOCALSTORAGE,
   GET_REVIEWS,
+  UPDATE_REVIEWS,
 } from "./allActions";
 
 const headers = {
@@ -280,6 +281,34 @@ export function getReviews(id) {
         }),
         dispatch(loadingAction(false))
       );
+    } catch (error) {
+      console.log("Error", error);
+    }
+  };
+}
+
+export function updateReviews(idProduct, idReview, info) {
+
+  return async function (dispatch) {
+    try {
+      var detail = await axios.put(
+        `http://localhost:3001/products/${idProduct}/review/${idReview}`, info
+      );
+      return detail.data
+    } catch (error) {
+      console.log("Error", error);
+    }
+  };
+}
+
+export function deleteReviews(idProduct, idReview,) {
+
+  return async function (dispatch) {
+    try {
+      var detail = await axios.delete(
+        `http://localhost:3001/products/${idProduct}/review/${idReview}`,
+      );
+      return detail.data
     } catch (error) {
       console.log("Error", error);
     }
