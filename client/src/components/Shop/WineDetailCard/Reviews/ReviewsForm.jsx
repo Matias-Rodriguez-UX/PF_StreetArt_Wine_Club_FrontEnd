@@ -41,6 +41,7 @@ export default function ReviewsForm({ idProduct }) {
         } else {
             setShowModalWarning(true)
         }
+
     }
 
     useEffect(() => {
@@ -53,34 +54,32 @@ export default function ReviewsForm({ idProduct }) {
 
     return (
         <>
-            {auth ?
-                <div className='border border-3 rounded p-4 bg-light' style={{ height: '272px' }} >
-                    <Form onSubmit={e => handleSubmit(e)} >
-                        <FormGroup>
-                            <FormLabel className="fs-4 fw-bold">Review</FormLabel>
-                            <FormControl name='review' as="textarea" rows={3} placeholder="It's a great wine..." onChange={(e) => handleRating(e)} />
-                        </FormGroup>
-                        <FormGroup className="d-flex align-items-center mt-3">
-                            <FormLabel className="me-4 fs-5 fw-normal">Rating</FormLabel>
-                            <Rating name='rating' max={5} defaultValue={3} onChange={(e) => handleRating(e)} />
-                        </FormGroup>
-                        <Button variant="warning" type="submit" className="float-end" >Send</Button>
-                    </Form>
-                    <Modal show={showModalWarning} onHide={() => setShowModalWarning(false)} >
-                        <Modal.Header closeButton>
-                            <Modal.Title>We can't post the review</Modal.Title>
-                        </Modal.Header>
-                        <Modal.Body>
-                            You must complete the review and rating
-                        </Modal.Body>
-                        <Modal.Footer>
-                            <Button variant="secondary" onClick={() => setShowModalWarning(false)}>
-                                Close
-                            </Button>
-                        </Modal.Footer>
-                    </Modal>
-                </div>
-                : <Loader />}
+            <div className='border border-3 rounded p-4 bg-light' style={{ height: '272px' }} >
+                <Form onSubmit={e => handleSubmit(e)} >
+                    <FormGroup>
+                        <FormLabel className="fs-4 fw-bold">Review</FormLabel>
+                        <FormControl name='review' as="textarea" rows={3} placeholder="It's a great wine..." onChange={(e) => handleRating(e)} />
+                    </FormGroup>
+                    <FormGroup className="d-flex align-items-center mt-3">
+                        <FormLabel className="me-4 fs-5 fw-normal">Rating</FormLabel>
+                        <Rating name='rating' max={5} defaultValue={3} onChange={(e) => handleRating(e)} />
+                    </FormGroup>
+                    <Button variant="warning" type="submit" className="float-end" >Send</Button>
+                </Form>
+                <Modal show={showModalWarning} onHide={() => setShowModalWarning(false)} >
+                    <Modal.Header closeButton>
+                        <Modal.Title>We can't post the review</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        You must complete the review and rating
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={() => setShowModalWarning(false)}>
+                            Close
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
+            </div>
 
         </>
     )

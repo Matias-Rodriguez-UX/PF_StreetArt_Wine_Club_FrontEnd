@@ -15,6 +15,7 @@ import ReviewsTemplate from "./Reviews/ReviewTemplate";
 import { Button, Modal } from "react-bootstrap";
 import ReviewsEdit from "./Reviews/ReviewEdit";
 import { Rating } from "@mui/material";
+import LoginButton from "../../Login/LoginButton";
 
 export default function Detail(props) {
   const { isLoading, isAuthenticated: auth, user } = useAuth0();
@@ -91,7 +92,7 @@ export default function Detail(props) {
           <div className="col col-6">
             <div className="d-flex align-items-center justify-content-between">
               <h1>{wine.name}</h1>
-              <h2 className="me-4"><span>${wine.price}</span></h2>
+              <h2 className="me-4"><span>${wine.price}.00-</span></h2>
             </div>
             <div className="d-flex row align-items-stretch mt-2">
               <Rating value={medRating} readOnly precision={0.1} className="col-3" /> <h6 className="col-3 text-muted mt-1">{medRating} from <a className="text-muted" style={{ textDecoration: 'none', color: '#292b2c' }} >{reviews.length} reviews</a></h6>
@@ -109,7 +110,6 @@ export default function Detail(props) {
                 <label class="form-label" for="typeNumber">Number of boxes</label>
                 <input type="number" id="typeNumber" class="form-control" placeholder="1" value={cartQuantity} onChange={e => setCartQuantity(e.target.value)} />
                 <button type="button" id="button-cart" className="btn btn-warning btn-sm" onClick={() => handleClick(wine.id, cartQuantity, wine.name)}>Add to cart <i class="bi bi-cart-check-fill"></i></button>
-
               </div>
             </div>
           </div>
@@ -121,7 +121,10 @@ export default function Detail(props) {
         <div className="container">
           {auth ?
             <ReviewsForm idProduct={idProduct} />
-            : <h3>You must be login to make a review</h3>}
+            : <div className='d-flex flex-column align-items-center gap-3 border border-3 rounded p-4 bg-light' style={{ height: '150px' }}  >
+              <h3 className="">You must be login to make a review</h3>
+              <LoginButton />
+            </div>}
         </div>
         <div className="col col-12 p-5" id="review">
           <h3 id="reviews">REVIEWS</h3>

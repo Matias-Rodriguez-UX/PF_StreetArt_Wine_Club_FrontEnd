@@ -289,7 +289,7 @@ export function getReviews(id) {
 
 export function updateReviews(idProduct, idReview, info) {
 
-  return async function (dispatch) {
+  return async function () {
     try {
       var detail = await axios.put(
         `http://localhost:3001/products/${idProduct}/review/${idReview}`, info
@@ -303,7 +303,7 @@ export function updateReviews(idProduct, idReview, info) {
 
 export function deleteReviews(idProduct, idReview,) {
 
-  return async function (dispatch) {
+  return async function () {
     try {
       var detail = await axios.delete(
         `http://localhost:3001/products/${idProduct}/review/${idReview}`,
