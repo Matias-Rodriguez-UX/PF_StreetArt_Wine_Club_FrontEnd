@@ -6,38 +6,37 @@ const initialState = {
     userInfo: {}
 };
 
-export default function userReducer(state = initialState, action) {
-    switch (action.type) {
+export default function rootReducer (state = initialState, action){
+    switch (action.type){
         case GET_ALL_USERS:
-            return {
+            return{
                 ...state,
                 users: action.payload,
                 allUsers: action.payload
             };
 
         case GET_USER_INFO:
-            console.log(action.payload)
-            return {
+            return{
                 ...state,
                 userInfo: action.payload
             };
 
         case CREATE_USER:
-            return {
+            return{
                 ...state
             };
 
         case EDIT_USER:
-            return {
+            return{
                 ...state,
             }
 
         case CREATE_ADDRESS:
-            return {
+            return{
                 ...state
             };
-
+        
         default:
-            return { ...state }
+            return {...state}
     };
 };

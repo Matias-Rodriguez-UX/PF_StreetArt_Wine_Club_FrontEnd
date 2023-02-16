@@ -1,11 +1,25 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
+import { useDispatch, useSelector} from 'react-redux';
 import { Nav } from "react-bootstrap";
 import './Style.css'
+import { getUserInfo } from "../../../actions/userActions";
 
 
 export default function UserSideBar({ userName, userPicture, setCurrentPage }) {
-    const { logout } = useAuth0();
+    const dispatch = useDispatch();
+    const { logout, user, isAuthenticated:auth } = useAuth0();
+    const userInfo = useSelector((state) => state.users.userInfo);
+
+    let userEmail = '';
+
+    if(auth){
+        userEmail = user.email
+    };
+
+    useEffect(() => {
+        dispatch(getUserInfo(userEmail))
+    }, [dispatch, user]);
 
     return (
         <>
@@ -17,7 +31,7 @@ export default function UserSideBar({ userName, userPicture, setCurrentPage }) {
                 <hr />
                 <div className="mb-2">
                     <a href="#" className="d-flex align-items-center justify-content-center text-black text-decoration-none mb-3" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src={userPicture} alt="user profile picture" width="100" height="100" className="rounded-circle" />
+                        <img src={userInfo.avatar} alt="user profile picture" width="100" height="100" className="rounded-circle" />
                     </a>
                     <ul className="list-unstyled" aria-labelledby="dropdownUser1">
 

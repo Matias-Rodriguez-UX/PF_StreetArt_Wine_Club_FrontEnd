@@ -14,8 +14,8 @@ const headers = {
 export function getMemberships() {
     return async function (dispatch) {
         try {
-            let memberships = await axios.get("http://localhost:3001/memberships", headers);
-            console.log(memberships.data)
+
+            let memberships = await axios.get("/memberships", headers);
             return (
                 dispatch({
                     type: GET_MEMBERSHIPS,
