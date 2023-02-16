@@ -14,6 +14,10 @@ import Sort from "./Sorts";
 import WebPagination from "./Pagination/Pagination";
 import SearchBar from "./SearchBar";
 import Swal from 'sweetalert2';
+import { getUserCart } from "../../actions/userActions";
+import { useAuth0 } from "@auth0/auth0-react";
+import { addUserCart } from "../../actions/userActions";
+import { useBootstrapBreakpoints } from "react-bootstrap/esm/ThemeProvider";
 
 
 export default function Shop() {
@@ -21,7 +25,10 @@ export default function Shop() {
     const showLoading = useSelector((state) => state.products.showLoading)
     const allProducts = useSelector((state) => state.products.allProducts)
     const Products = useSelector((state) => state.products.products)
+    const cart = useSelector((state) => state.products.cart)
     const [sort, setSort] = useState('')
+
+    const { user, isAuthenticated } = useAuth0();
 
     const [currentPage, setCurrentPage] = useState(1);
     const [winesPerPage, setWinesPerPage] = useState(4);
@@ -38,6 +45,7 @@ export default function Shop() {
         dispatch(getProducts())
     }
 
+    
 
     const allGrapes = () => {
         let grapes = []
@@ -85,9 +93,18 @@ export default function Shop() {
         })
     }
 
-    const addCart = (id, cartQuantity, name) => {
-        dispatch(addToCart(id, cartQuantity));
-        addAlert(cartQuantity, name);
+    const addCart = (id, cartQuantity, name, price) => {
+        if(isAuthenticated){
+            dispatch(addUserCart({
+              totalPrice: price,
+              quantity:1,
+              email: user.email,
+              productId: id,
+            }))
+          } else {
+            dispatch(addToCart(id, cartQuantity));
+            addAlert(cartQuantity, name);
+          }
     }
 
     const grapes = allGrapes()
@@ -101,6 +118,12 @@ export default function Shop() {
         dispatch(loadingAction(true))
         dispatch(getProducts());
     }, [dispatch]);
+
+    useEffect(() => {
+        if(isAuthenticated){
+            dispatch(getUserCart(id, user.email))
+        }
+    }, [dispatch, cart])
 
     return (
         <>

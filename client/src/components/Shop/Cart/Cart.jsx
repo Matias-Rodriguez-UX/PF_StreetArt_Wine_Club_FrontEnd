@@ -20,15 +20,16 @@ export default function Cart() {
   const { isAuthenticated } = useAuth0();
 
   useEffect(() => {
-    if(cart.length === 0 && !isAuthenticated){
-      console.log(isAuthenticated)
+    if(cart.length === 0){
       const storedCart = JSON.parse(localStorage.getItem('cart')) || [];
       storedCart.forEach(item => dispatch(addCartToLs(item)));
     }
-  }, [dispatch, isAuthenticated]);
+  }, [dispatch]);
 
   useEffect(() => {
-    localStorage.setItem('cart', JSON.stringify(cart));
+    if(!isAuthenticated){
+      localStorage.setItem('cart', JSON.stringify(cart));
+    }
   }, [cart]);
 
 
