@@ -53,7 +53,7 @@ export default function NavigationBar() {
             {isAuthenticated ?
               (
                 <>
-                  <Nav.Link href="/userprofile">{user.name}</Nav.Link>
+                  <Link to="/userprofile" className="d-flex text-reset align-items-center justify-content-center m-0 p-0 text-decoration-none border border-0 bg-transparent me-5" >{user.name}</Link>
                   <LogOutButton />
                 </>
               ) :
