@@ -25,7 +25,6 @@ export function getUserInfo(email) {
   return async function (dispatch) {
 
     let user = await axios.get(`http://localhost:3001/users/?email=${email}`);
-    console.log(user.data)
     return (
       dispatch({
         type: GET_USER_INFO,
