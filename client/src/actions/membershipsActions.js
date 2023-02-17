@@ -32,7 +32,7 @@ export function getMemberships() {
 export function postMemberships(body) {
     return async function () {
         try {
-            let memberships = await axios.post("http://localhost:3001/users/membership", body);
+            let memberships = await axios.post("/users/membership", body);
             return (
                 memberships.status
             );
