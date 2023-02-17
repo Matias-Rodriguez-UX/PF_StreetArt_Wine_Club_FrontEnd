@@ -16,7 +16,9 @@ export default function NavigationBar() {
   const { user, isAuthenticated } = useAuth0();
 
   let location = useLocation();
-  const cart = useSelector(state => state.products.cart)
+  const cart = useSelector(state => state.products.cart);
+  const userInfo = useSelector (state => state.users.userInfo);
+  console.log(userInfo)
 
   return (
     <Navbar collapseOnSelect expand="lg" bg="light" variant="light" style={{ boxShadow: 'rgba(0, 0, 0, 0.1) 0px 4px 8px' }}>
@@ -53,7 +55,7 @@ export default function NavigationBar() {
             {isAuthenticated ?
               (
                 <>
-                  <Link to="/userprofile" className="d-flex text-reset align-items-center justify-content-center m-0 p-0 text-decoration-none border border-0 bg-transparent me-5" >{user.name}</Link>
+                  <Link to="/userprofile" className="d-flex text-reset align-items-center justify-content-center m-0 p-0 text-decoration-none border border-0 bg-transparent me-5" >Hello, {userInfo.fullname}</Link>
                   <LogOutButton />
                 </>
               ) :
