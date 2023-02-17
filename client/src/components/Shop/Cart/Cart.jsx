@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from 'react-redux';
+import {Link } from "react-router-dom";
 import { deleteFromCart, removeCartQuantity, addCartQuantity, addCartToLs } from '../../../actions';
 import NavigationBar from "../../Navbar/index";
 import Banner from '../../Home/Banner/index';
@@ -118,11 +119,18 @@ export default function Cart(){
                       createOrder={(data, actions) => createOrder(data, actions)}
                       onApprove={(data, actions) => onApprove(data, actions)}
                     />
+                    <Link to={"/payment"}><button type="button" class="btn btn-warning btn-lg">BUY PRODUCT</button></Link> 
                   </div>
                 ) :
                 (
                   <div className="col col-12">
                     <button type="button" className="btn btn-warning btn-sm">Register</button>
+                    <PayPalButton
+                      createOrder={(data, actions) => createOrder(data, actions)}
+                      onApprove={(data, actions) => onApprove(data, actions)}
+                    />
+                    <Link to={"/payment"}><button type="button" class="btn btn-warning btn-lg">BUY PRODUCT</button></Link> 
+              
                   </div>
                 )
               }      
