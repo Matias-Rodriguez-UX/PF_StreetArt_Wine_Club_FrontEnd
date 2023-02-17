@@ -130,7 +130,7 @@ export default function EditUserProfileCard() {
 									<h6 class="mb-0">Email</h6>
 								</div>
 								<div class="col-sm-9 text-secondary">
-									<input type="text" readonly class="form-control" name='email' value={input.email} onChange={(e) => handleChange(e)}/>
+									<input type="text" readOnly class="form-control" name='email' value={input.email} onChange={(e) => handleChange(e)}/>
 								</div>
 							</div>
 							<div class="row mb-3">
