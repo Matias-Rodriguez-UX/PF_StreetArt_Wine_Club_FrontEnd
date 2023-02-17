@@ -1,13 +1,13 @@
 import {
     GET_ORDERS
-} from "./allActions";
+} from "../actions/allActions";
 
 const initialState = {
     orders: [],
     allOrders: [],
 };
 
-export default function rootReducer(state = initialState, action) {
+export default function ordersReducer(state = initialState, action) {
     switch (action.type) {
         case GET_ORDERS:
             return {

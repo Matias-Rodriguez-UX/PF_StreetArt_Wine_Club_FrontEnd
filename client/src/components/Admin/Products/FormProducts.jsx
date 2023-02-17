@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { Modal, Button, Form, InputGroup, Badge, Image } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteProduct, getGrapes, getRegions, getStates, getTypes, updateProduct } from "../../../actions";
+import { deleteProduct, getGrapes, getProducts, getRegions, getStates, getTypes, updateProduct } from "../../../actions";
+import Swal from 'sweetalert2';
 
 
-
-export default function FormProducts({ selectedData, setShowModalEdit, setMessage, setShowModalConfirm }) {
+export default function FormProducts({ selectedData, setShowModalEdit }) {
     const dispatch = useDispatch()
 
-    const types = useSelector((state) => state.types)
-    const grapes = useSelector((state) => state.grapes)
-    const states = useSelector((state) => state.states)
-    const regions = useSelector((state) => state.regions)
+    const types = useSelector((state) => state.products.types)
+    const grapes = useSelector((state) => state.products.grapes)
+    const states = useSelector((state) => state.products.states)
+    const regions = useSelector((state) => state.products.regions)
 
     const [showModal, setShowModal] = useState(false);
     const [showModalUpdate, setShowModalUpdate] = useState(false);
@@ -19,13 +19,10 @@ export default function FormProducts({ selectedData, setShowModalEdit, setMessag
     const [productToUpdate, setProductToUpdate] = useState(null);
 
     const [numControls, setNumControls] = useState(selectedData.winery.length);
-    const [postSuccess, setPostSuccess] = useState(false);
-    const [error, setError] = useState({})
     const [grape, setGrape] = useState(selectedData.grapes.map(el => el.name))
     const [state, setState] = useState(selectedData.states.map(el => el.name))
     const [region, setRegion] = useState(selectedData.regions.map(el => el.name))
     const [type, setType] = useState(selectedData.types.map(el => el.name))
-    const [visible, setVisible] = useState(false)
     const [winery, setWinery] = useState(selectedData.winery)
     const [loading, setLoading] = useState(false)
     const [input, setInput] = useState({
@@ -43,10 +40,36 @@ export default function FormProducts({ selectedData, setShowModalEdit, setMessag
         grapes: selectedData.grapes.map(el => el.name)
     });
     let uploadedUrl
+    const vols = [187, 375, 750, 1500, 3000, 6000]
+    const boxsQ = [1, 2, 3, 4, 6, 12, 18, 24]
 
     function handleDelete(id) {
         setProductToDelete(id)
         setShowModal(true)
+    }
+
+    const addAlertUpdate = (name) => {
+        Swal.fire({
+            title: "YOUR PRODUCT WAS UPDATE",
+            text: `You modified the product ${name}`,
+            icon: 'success',
+            timer: '3000',
+            timerProgressBar: true,
+            allowOutsideClick: true,
+            confirmButtonColor: '#ffc107'
+        })
+    }
+
+    const addAlertDelete = (name) => {
+        Swal.fire({
+            title: "YOUR PRODUCT WAS DELETE",
+            text: `You delete the product ${name}`,
+            icon: 'error',
+            timer: '3000',
+            timerProgressBar: true,
+            allowOutsideClick: true,
+            confirmButtonColor: '#ffc107'
+        })
     }
 
     function handleUpdate(id) {
@@ -66,23 +89,23 @@ export default function FormProducts({ selectedData, setShowModalEdit, setMessag
         setShowModalUpdate(true)
     }
 
-    function handleConfirmDelete() {
+    function handleConfirmDelete(name) {
         dispatch(deleteProduct(productToDelete))
+        addAlertDelete(name);
         setShowModalEdit(false)
-        setMessage("Deleted")
-        setTimeout(() => {
-            setShowModalConfirm(true)
-            window.location.reload()
-        }, 2000)
+        setTimeout(function () {
+            dispatch(getProducts());
+        }, 2000);
+
     }
-    function handleConfirmUpdate() {
+
+    function handleConfirmUpdate(name) {
         dispatch(updateProduct(productToUpdate, input))
+        addAlertUpdate(name);
         setShowModalEdit(false)
-        setMessage("Updated")
-        setTimeout(() => {
-            setShowModalConfirm(true)
-            window.location.reload()
-        }, 2000)
+        setTimeout(function () {
+            dispatch(getProducts());
+        }, 2000);
     }
 
     function handleChanges(e) {
@@ -162,7 +185,9 @@ export default function FormProducts({ selectedData, setShowModalEdit, setMessag
 
     function handleSelectOption(e, set, ele) {
         e.preventDefault()
-        set([...ele, e.target.value]);
+        if (ele.indexOf(e.target.value) < 0) {
+            set([...ele, e.target.value])
+        }
     }
 
     const handleOptionRemove = (option, set, ele) => {
@@ -196,17 +221,31 @@ export default function FormProducts({ selectedData, setShowModalEdit, setMessag
                 <Form.Group controlId="formVolume">
                     <Form.Label>Volume</Form.Label>
                     <InputGroup className="mb-3">
-                        <Form.Control type="number" name="volume" value={input.volume} defaultValue={750} placeholder="750" onChange={e => handleChanges(e)} required />
+                        <Form.Control
+                            name="volume"
+                            as="select"
+                            defaultValue={input.quantity}
+                            onChange={e => handleChanges(e)}>
+                            <option value="">Enter the volume</option>
+                            {vols.map((el, index) => <option key={index} value={el}>{el}</option>)}
+                        </Form.Control>
                         <InputGroup.Text>ml</InputGroup.Text>
                     </InputGroup>
                 </Form.Group>
                 <Form.Group controlId="formQuantity">
                     <Form.Label>Quantity of Bottles</Form.Label>
-                    <Form.Control type="number" name="quantity" value={input.quantity} onChange={e => handleChanges(e)} required />
+                    <Form.Control
+                        name="quantity"
+                        as="select"
+                        defaultValue={input.quantity}
+                        onChange={e => handleChanges(e)}>
+                        <option value="">Enter the size of the box</option>
+                        {boxsQ.map((el, index) => <option key={index} value={el}>{el}</option>)}
+                    </Form.Control>
                 </Form.Group>
                 <Form.Group controlId="formStock">
                     <Form.Label>Stock available</Form.Label>
-                    <Form.Control type="number" name="stock" defaultValue={1} value={input.stock} onChange={e => handleChanges(e)} required />
+                    <Form.Control min={0} max={1000} type="number" name="stock" defaultValue={1} value={input.stock} onChange={e => handleChanges(e)} required />
                 </Form.Group>
                 <Form.Group controlId="formDetails">
                     <Form.Label>Details</Form.Label>
@@ -249,12 +288,12 @@ export default function FormProducts({ selectedData, setShowModalEdit, setMessag
                     </InputGroup>
                 </Form.Group>
                 {grape?.map((option, index) => (
-                    <Badge key={option} pill bg="warning" text="dark" className="mb-2 mr-2 mt-2" onClick={() => handleOptionRemove(option, setGrape, grape)}>
+                    <Badge style={{ cursor: 'pointer' }} key={option} pill bg="warning" text="dark" className="mb-2 mr-2 mt-2" onClick={() => handleOptionRemove(option, setGrape, grape)}>
                         {option}  X
                     </Badge>
                 ))}
                 <Form.Group controlId="formStates">
-                    <Form.Label>Sates</Form.Label>
+                    <Form.Label>States</Form.Label>
                     <InputGroup>
                         <Form.Control
                             name="states"
@@ -266,7 +305,7 @@ export default function FormProducts({ selectedData, setShowModalEdit, setMessag
                     </InputGroup>
                 </Form.Group>
                 {state?.map((option) => (
-                    <Badge key={option} pill bg="warning" text="dark" className="mb-2 mr-2 mt-2" onClick={() => handleOptionRemove(option, setState, state)}>
+                    <Badge style={{ cursor: 'pointer' }} key={option} pill bg="warning" text="dark" className="mb-2 mr-2 mt-2" onClick={() => handleOptionRemove(option, setState, state)}>
                         {option}   X
                     </Badge>
                 ))}
@@ -283,7 +322,7 @@ export default function FormProducts({ selectedData, setShowModalEdit, setMessag
                     </InputGroup>
                 </Form.Group>
                 {region?.map((option) => (
-                    <Badge key={option} pill bg="warning" text="dark" className="mb-2 mr-2 mt-2" onClick={() => handleOptionRemove(option, setRegion, region)}>
+                    <Badge style={{ cursor: 'pointer' }} key={option} pill bg="warning" text="dark" className="mb-2 mr-2 mt-2" onClick={() => handleOptionRemove(option, setRegion, region)}>
                         {option}  X
                     </Badge>
                 ))}
@@ -300,7 +339,7 @@ export default function FormProducts({ selectedData, setShowModalEdit, setMessag
                     </InputGroup>
                 </Form.Group>
                 {type?.map((option) => (
-                    <Badge key={option} pill bg="warning" text="dark" className="mb-2 mr-2 mt-2" onClick={() => handleOptionRemove(option, setType, type)}>
+                    <Badge style={{ cursor: 'pointer' }} key={option} pill bg="warning" text="dark" className="mb-2 mr-2 mt-2" onClick={() => handleOptionRemove(option, setType, type)}>
                         {option}   X
                     </Badge>
                 ))}
@@ -308,7 +347,7 @@ export default function FormProducts({ selectedData, setShowModalEdit, setMessag
                     <Button variant="warning" type="button" onClick={() => handleUpdate(selectedData.id)} disabled={activeButton} >
                         Save the change
                     </Button>
-                    <Button variant="outline-dark" type="submit" onClick={() => setShowModalEdit(false)}>
+                    <Button variant="outline-dark" type="button" onClick={() => setShowModalEdit(false)}>
                         Cancel
                     </Button>
                     <Button variant="outline-danger" type="button" onClick={() => handleDelete(selectedData.id)}>
@@ -319,28 +358,28 @@ export default function FormProducts({ selectedData, setShowModalEdit, setMessag
             </Form>
             <Modal show={showModal} onHide={() => setShowModal(false)} className="bg-dark">
                 <Modal.Header closeButton>
-                    <Modal.Title>Eliminar producto</Modal.Title>
+                    <Modal.Title>Delete Product</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>Are you sure you want to delete this product?</Modal.Body>
                 <Modal.Footer>
                     <Button variant="warning" onClick={() => setShowModal(false)}>
                         No
                     </Button>
-                    <Button variant="outline-danger" onClick={handleConfirmDelete} >
+                    <Button variant="outline-danger" type="button" onClick={() => handleConfirmDelete(input.name)} >
                         Yes
                     </Button>
                 </Modal.Footer>
             </Modal>
             <Modal show={showModalUpdate} onHide={() => setShowModalUpdate(false)} className="bg-dark">
                 <Modal.Header closeButton>
-                    <Modal.Title>Eliminar producto</Modal.Title>
+                    <Modal.Title>Update Product</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>Are you sure about the changes you are going to make?</Modal.Body>
                 <Modal.Footer>
                     <Button variant="warning" onClick={() => setShowModalUpdate(false)}>
                         No
                     </Button>
-                    <Button variant="outline-success" onClick={handleConfirmUpdate} >
+                    <Button variant="outline-success" type="button" onClick={() => handleConfirmUpdate(input.name)} >
                         Yes
                     </Button>
                 </Modal.Footer>

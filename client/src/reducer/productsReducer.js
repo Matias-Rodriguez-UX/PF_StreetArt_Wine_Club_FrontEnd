@@ -15,6 +15,13 @@ import {
   ADD_CART_QUANTITY,
   REMOVE_CART_QUANTITY,
   ADD_CART_TO_LOCALSTORAGE,
+  GET_REVIEWS,
+  POST_PRODUCTS,
+  DELETE_PRODUCTS,
+  UPDATE_PRODUCTS,
+  DELETE_REVIEW,
+  POST_REVIEW,
+  UPDATE_REVIEW
 } from "../actions/allActions";
 
 const initialState = {
@@ -29,29 +36,19 @@ const initialState = {
   regions: [],
   states: [],
   grapes: [],
+  reviews: []
 };
 
-function sortArrayAtoZ(x, y) {
-  if (x.name < y.name) {
-    return -1;
-  }
-  if (x.name > y.name) {
-    return 1;
-  }
-  return 0;
-}
-function sortArrayZtoA(x, y) {
-  if (x.name > y.name) {
-    return -1;
-  }
-  if (x.name < y.name) {
-    return 1;
-  }
-  return 0;
-}
 
-export default function reducer(state = initialState, action) {
+
+export default function productsReducer(state = initialState, action) {
+
   switch (action.type) {
+    case LOADING_ACTION:
+      return {
+        ...state,
+        showLoading: action.payload
+      }
     case GET_PRODUCT_BY_ID:
       return {
         ...state,
@@ -99,38 +96,42 @@ export default function reducer(state = initialState, action) {
           action.payload === ""
             ? state.allProducts
             : state.allProducts.filter((el) =>
-                el.name
-                  .split(" ")
-                  .some((el) => el.includes(action.payload.split(" ")[0]))
-              ),
+              el.name
+                .split(" ")
+                .some((el) => el.includes(action.payload.split(" ")[0]))
+            ),
       };
 
     case ADD_TO_CART:
       let { id, cartQuantity } = action.payload;
       let newProduct = state.allProducts.find((product) => product.id === id);
       let addWineBox = { ...newProduct, cartQuantity };
-      if (state.cart.some((product) => product.id === id)) {
-        let existingProduct = state.cart.find((product) => product.id === id);
+      if (state.cart?.some((product) => product.id === id)) {
+        let existingProduct = state.cart?.find((product) => product.id === id);
         let updatedProduct = {
           ...existingProduct,
           cartQuantity: existingProduct.cartQuantity + cartQuantity,
         };
+        let upDate = state.cart.map((product) =>
+          product.id === id ? updatedProduct : product
+        )
+
         return {
           ...state,
-          cart: state.cart.map((product) =>
-            product.id === id ? updatedProduct : product
-          ),
+          cart: upDate
         };
       }
+      const resto = [...state.cart, addWineBox]
       return {
         ...state,
-        cart: [...state.cart, addWineBox],
+        cart: resto
       };
 
     case DELETE_FROM_CART:
+      const deletFromCart = state.cart.filter((product) => product.id !== action.payload)
       return {
         ...state,
-        cart: state.cart.filter((product) => product.id !== action.payload),
+        cart: deletFromCart
       };
 
     case ADD_CART_TO_LOCALSTORAGE:
@@ -138,14 +139,16 @@ export default function reducer(state = initialState, action) {
         let updateProduct = state.cart.find(
           (el) => el.id === action.payload.id
         );
+        const lcSto = [...state.cart]
         return {
           ...state,
-          cart: [...state.cart],
+          cart: lcSto
         };
       }
+      const rest2 = [...state.cart, action.payload]
       return {
         ...state,
-        cart: [...state.cart, action.payload],
+        cart: rest2
       };
 
     case GET_TYPES:
@@ -170,26 +173,77 @@ export default function reducer(state = initialState, action) {
       };
 
     case ADD_CART_QUANTITY:
+      const addProd = state.cart.map((product) =>
+        product.id === action.payload
+          ? { ...product, cartQuantity: product.cartQuantity + 1 }
+          : product
+      )
       return {
         ...state,
-        cart: state.cart.map((product) =>
-          product.id === action.payload
-            ? { ...product, cartQuantity: product.cartQuantity + 1 }
-            : product
-        ),
+        cart: addProd
       };
 
     case REMOVE_CART_QUANTITY:
+      const remProd = state.cart.map((product) =>
+        product.id === action.payload && product.cartQuantity > 0
+          ? { ...product, cartQuantity: product.cartQuantity - 1 }
+          : product
+      )
       return {
         ...state,
-        cart: state.cart.map((product) =>
-          product.id === action.payload && product.cartQuantity > 0
-            ? { ...product, cartQuantity: product.cartQuantity - 1 }
-            : product
-        ),
+        cart: remProd
       };
+    case GET_REVIEWS:
+      return {
+        ...state,
+        reviews: action.payload
+      }
+    case POST_PRODUCTS:
+      return {
+        ...state
+      }
+    case DELETE_PRODUCTS:
+      return {
+        ...state
+      }
+    case UPDATE_PRODUCTS:
+      return {
+        ...state
+      }
+    case DELETE_REVIEW:
+      return {
+        ...state
+      }
+    case POST_REVIEW:
+      return {
+        ...state
+      }
+    case UPDATE_REVIEW:
+      return {
+        ...state
+      }
 
     default:
-      return state; //!
+      return { ...state }; //!
   }
+}
+
+
+function sortArrayAtoZ(x, y) {
+  if (x.name < y.name) {
+    return -1;
+  }
+  if (x.name > y.name) {
+    return 1;
+  }
+  return 0;
+}
+function sortArrayZtoA(x, y) {
+  if (x.name > y.name) {
+    return -1;
+  }
+  if (x.name < y.name) {
+    return 1;
+  }
+  return 0;
 }

@@ -11,8 +11,8 @@ export default function AdminProducts() {
 
     const dispatch = useDispatch()
 
-    const showLoading = useSelector((state) => state.showLoading)
-    const allProducts = useSelector((state) => state.allProducts)
+    const showLoading = useSelector((state) => state.products.showLoading)
+    const allProducts = useSelector((state) => state.products.allProducts)
 
 
     const [currentPage, setCurrentPage] = useState(1);
@@ -29,9 +29,8 @@ export default function AdminProducts() {
         dispatch(loadingAction(true))
         dispatch(getProducts());
 
-    }, []);
+    }, [dispatch]);
 
-    console.log(currentWines)
     return (
         <><div>
             {showLoading ? <div className="container col py-5 mt-5"> <Loader /> </div> :

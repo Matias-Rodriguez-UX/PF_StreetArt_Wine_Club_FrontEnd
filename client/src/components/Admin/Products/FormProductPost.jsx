@@ -3,19 +3,18 @@ import React, { useEffect, useState } from "react";
 import { Badge, Button, Form, Image, InputGroup } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { getGrapes, getRegions, getStates, getTypes, postProduct } from "../../../actions";
+import { getGrapes, getProducts, getRegions, getStates, getTypes, postProduct } from "../../../actions";
+import Swal from 'sweetalert2';
 
-
-export default function FormProductsPost({ setShowModalPost, setShowModalConfirm, setMessage }) {
+export default function FormProductsPost({ setShowModalPost }) {
     const dispatch = useDispatch()
-    const types = useSelector((state) => state.types)
-    const grapes = useSelector((state) => state.grapes)
-    const states = useSelector((state) => state.states)
-    const regions = useSelector((state) => state.regions)
+    const types = useSelector((state) => state.products.types)
+    const grapes = useSelector((state) => state.products.grapes)
+    const states = useSelector((state) => state.products.states)
+    const regions = useSelector((state) => state.products.regions)
 
     const [numControls, setNumControls] = useState(1);
     const [postSuccess, setPostSuccess] = useState(false);
-    const [error, setError] = useState({})
     const [grape, setGrape] = useState([])
     const [state, setState] = useState([])
     const [region, setRegion] = useState([])
@@ -38,7 +37,8 @@ export default function FormProductsPost({ setShowModalPost, setShowModalConfirm
         grapes: [],
     });
     let uploadedUrl
-
+    const vols = [187, 375, 750, 1500, 3000, 6000]
+    const boxsQ = [1, 2, 3, 4, 6, 12, 18, 24]
 
     const [activeButton, setActiveButton] = useState(true)
 
@@ -87,7 +87,9 @@ export default function FormProductsPost({ setShowModalPost, setShowModalConfirm
 
     function handleSelectOption(e, set, ele) {
         e.preventDefault()
-        set([...ele, e.target.value]);
+        if (ele.indexOf(e.target.value) < 0) {
+            set([...ele, e.target.value])
+        }
     }
 
     const handleOptionRemove = (option, set, ele) => {
@@ -111,7 +113,7 @@ export default function FormProductsPost({ setShowModalPost, setShowModalConfirm
         })
         setVisible(true)
     }
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e, name) => {
         e.preventDefault()
         try {
             const response = dispatch(postProduct(input));
@@ -121,7 +123,6 @@ export default function FormProductsPost({ setShowModalPost, setShowModalConfirm
         } catch (error) {
             console.error(error);
         }
-
         setInput({
             name: "",
             price: 0,
@@ -136,14 +137,24 @@ export default function FormProductsPost({ setShowModalPost, setShowModalConfirm
             regions: [],
             grapes: [],
         })
-        setTimeout(() => setShowModalPost(false), 500)
-        setMessage("Created")
-        setTimeout(() => {
-            setShowModalConfirm(true)
-            window.location.reload()
-        }, 2000)
+        addAlertCreate(name)
+        setShowModalPost(false)
+        setTimeout(function () {
+            dispatch(getProducts());
+        }, 3000);
     }
 
+    const addAlertCreate = (name) => {
+        Swal.fire({
+            title: "YOUR PRODUCT WAS CREATE",
+            text: `You created the product ${name}`,
+            icon: 'success',
+            timer: '3000',
+            timerProgressBar: true,
+            allowOutsideClick: true,
+            confirmButtonColor: '#ffc107'
+        })
+    }
 
 
     const upLoadImage = async (e) => {
@@ -200,17 +211,31 @@ export default function FormProductsPost({ setShowModalPost, setShowModalConfirm
                 <Form.Group controlId="formVolume">
                     <Form.Label>Volume</Form.Label>
                     <InputGroup className="mb-3">
-                        <Form.Control type="number" name="volume" value={input.volume} defaultValue={750} placeholder="750" onChange={e => handleChanges(e)} required />
+                        <Form.Control
+                            name="volume"
+                            as="select"
+                            defaultValue={input.quantity}
+                            onChange={e => handleChanges(e)}>
+                            <option value="">Enter the volume</option>
+                            {vols.map((el, index) => <option key={index} value={el}>{el}</option>)}
+                        </Form.Control>
                         <InputGroup.Text>ml</InputGroup.Text>
                     </InputGroup>
                 </Form.Group>
                 <Form.Group controlId="formQuantity">
                     <Form.Label>Quantity of Bottles</Form.Label>
-                    <Form.Control type="number" name="quantity" value={input.quantity} onChange={e => handleChanges(e)} required />
+                    <Form.Control
+                        name="quantity"
+                        as="select"
+                        defaultValue={750}
+                        onChange={e => handleChanges(e)}>
+                        <option value="">Enter the size of the box</option>
+                        {boxsQ.map((el, index) => <option key={index} value={el}>{el}</option>)}
+                    </Form.Control>
                 </Form.Group>
                 <Form.Group controlId="formStock">
                     <Form.Label>Stock available</Form.Label>
-                    <Form.Control type="number" name="stock" defaultValue={1} value={input.stock} onChange={e => handleChanges(e)} required />
+                    <Form.Control min={0} max={1000} type="number" name="stock" defaultValue={1} value={input.stock} onChange={e => handleChanges(e)} required />
                 </Form.Group>
                 <Form.Group controlId="formDetails">
                     <Form.Label>Details</Form.Label>
@@ -247,12 +272,12 @@ export default function FormProductsPost({ setShowModalPost, setShowModalConfirm
                     </InputGroup>
                 </Form.Group>
                 {grape?.map((option) => (
-                    <Badge key={option} pill bg="warning" text="dark" className="mb-2 mr-2 mt-2">
-                        {option} <span onClick={() => handleOptionRemove(option, setGrape, grape)}>X</span>
+                    <Badge style={{ cursor: 'pointer' }} key={option} pill bg="warning" text="dark" className="mb-2 mr-2 mt-2" onClick={() => handleOptionRemove(option, setGrape, grape)}>
+                        {option}  X
                     </Badge>
                 ))}
                 <Form.Group controlId="formStates">
-                    <Form.Label>Sates</Form.Label>
+                    <Form.Label>States</Form.Label>
                     <InputGroup>
                         <Form.Control
                             name="states"
@@ -264,8 +289,8 @@ export default function FormProductsPost({ setShowModalPost, setShowModalConfirm
                     </InputGroup>
                 </Form.Group>
                 {state?.map((option) => (
-                    <Badge key={option} pill bg="warning" text="dark" className="mb-2 mr-2 mt-2">
-                        {option} <span onClick={() => handleOptionRemove(option, setState, state)}>X</span>
+                    <Badge style={{ cursor: 'pointer' }} key={option} pill bg="warning" text="dark" className="mb-2 mr-2 mt-2" onClick={() => handleOptionRemove(option, setState, state)}>
+                        {option}  X
                     </Badge>
                 ))}
                 <Form.Group controlId="formRegions">
@@ -281,8 +306,8 @@ export default function FormProductsPost({ setShowModalPost, setShowModalConfirm
                     </InputGroup>
                 </Form.Group>
                 {region?.map((option) => (
-                    <Badge key={option} pill bg="warning" text="dark" className="mb-2 mr-2 mt-2">
-                        {option} <span onClick={() => handleOptionRemove(option, setRegion, region)}>X</span>
+                    <Badge style={{ cursor: 'pointer' }} key={option} pill bg="warning" text="dark" className="mb-2 mr-2 mt-2" onClick={() => handleOptionRemove(option, setRegion, region)}>
+                        {option}  X
                     </Badge>
                 ))}
                 <Form.Group controlId="formTypes">
@@ -298,12 +323,12 @@ export default function FormProductsPost({ setShowModalPost, setShowModalConfirm
                     </InputGroup>
                 </Form.Group>
                 {type?.map((option) => (
-                    <Badge key={option} pill bg="warning" text="dark" className="mb-2 mr-2 mt-2">
-                        {option} <span onClick={() => handleOptionRemove(option, setType, type)}>X</span>
+                    <Badge style={{ cursor: 'pointer' }} key={option} pill bg="warning" text="dark" className="mb-2 mr-2 mt-2" onClick={() => handleOptionRemove(option, setType, type)}>
+                        {option}  X
                     </Badge>
                 ))}
                 <div className="d-flex flex-row-reverse justify-content-evenly mt-3">
-                    {visible && !activeButton ? <Button variant="success" type="submit" onClick={e => handleSubmit(e)} style={{ width: '60%' }}>
+                    {visible && !activeButton ? <Button variant="success" type="submit" onClick={e => handleSubmit(e, input.name)} style={{ width: '60%' }}>
                         Send
                     </Button> : null}
                     {!visible || activeButton ? <Button variant="warning" type="button" disabled={activeButton} onClick={e => handleCreate(e)} style={{ width: '60%' }} >

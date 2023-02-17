@@ -1,7 +1,10 @@
 import axios from "axios";
 import { loadingAction } from ".";
 import {
-    GET_MEMBERSHIPS
+    DELETE_MEMBERSHIPS,
+    GET_MEMBERSHIPS,
+    POST_MEMBERSHIP,
+    UPDATE_MEMBERSHIPS
 } from "./allActions";
 
 const headers = {
@@ -14,7 +17,7 @@ const headers = {
 export function getMemberships() {
     return async function (dispatch) {
         try {
-            let memberships = await axios.get("http://localhost:3001/memberships", headers);
+            let memberships = await axios.get("/memberships", headers);
             return (
                 dispatch({
                     type: GET_MEMBERSHIPS,
@@ -27,3 +30,51 @@ export function getMemberships() {
         }
     };
 }
+
+export function postMemberships(body) {
+    return async function () {
+        try {
+            let memberships = await axios.post("/users/membership", body);
+            return (
+                dispatch({
+                    type: POST_MEMBERSHIP,
+                    payload: memberships.data,
+                })
+            );
+        } catch (error) {
+            return error, console.log(error);
+        }
+    };
+}
+
+export function updateMemberships(id, body) {
+    return async function () {
+        try {
+            let memberships = await axios.put(`/users/membership/${id}`, body);
+            return (
+                dispatch({
+                    type: UPDATE_MEMBERSHIPS,
+                    payload: memberships.data,
+                })
+            );
+        } catch (error) {
+            return error, console.log(error);
+        }
+    };
+}
+export function deleteMemberships(id) {
+    return async function () {
+        try {
+            let memberships = await axios.delete(`/users/membership/${id}`, headers);
+            return (
+                dispatch({
+                    type: DELETE_MEMBERSHIPS,
+                    payload: memberships.data,
+                })
+            );
+        } catch (error) {
+            return error, console.log(error);
+        }
+    };
+}
+

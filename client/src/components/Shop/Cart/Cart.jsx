@@ -14,7 +14,7 @@ const PayPalButton = window.paypal.Buttons.driver("react", { React, ReactDOM });
 export default function Cart(){
   const { user, isAuthenticated } = useAuth0();
   const [storedCart, setStoredCart] = useLocalStorage("cart", []);
-  const cart = useSelector((state) => state.cart);
+  const cart = useSelector((state) => state.products.cart);
 
   const total = cart.reduce((acc, product) => {
     return acc + product.price * product.cartQuantity;
@@ -51,28 +51,27 @@ export default function Cart(){
   useEffect(() => {
     localStorage.setItem('cart', JSON.stringify(cart));
   }, [cart]);
-  
-  
+
 
   return (
     <>
-          <Banner />
-          <NavigationBar />
-          <div className="container d-flex align-items-center">
-          <table className="shadow-table table align-middle table-striped m-5">
-            <thead >
-              <tr>
-                <th className="text-center">Product</th>
-                <th className="text-center">Name</th>
-                <th className="text-center">Unit Price</th>
-                <th className="text-center">Delete Quantity</th>
-                <th className="text-center">Quantity Boxes</th>
-                <th className="text-center">Add Quantity</th>
-                <th className="text-center">Subtotal</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody >
+      <Banner />
+      <NavigationBar />
+      <div className="container d-flex align-items-center">
+        <table className="shadow-table table align-middle table-striped m-5">
+          <thead >
+            <tr>
+              <th className="text-center">Product</th>
+              <th className="text-center">Name</th>
+              <th className="text-center">Unit Price</th>
+              <th className="text-center">Delete Quantity</th>
+              <th className="text-center">Quantity Boxes</th>
+              <th className="text-center">Add Quantity</th>
+              <th className="text-center">Subtotal</th>
+              <th className="text-center">Delete</th>
+            </tr>
+          </thead>
+          <tbody >
             {cart.map(product => (
                 <tr key={product.id} >
                   <th scope="col" className="text-center">
@@ -136,8 +135,8 @@ export default function Cart(){
               }      
           </div>
       <div className="col col-12">
-          <Footer />
-        </div>
+        <Footer />
+      </div>
     </>
   );
 };
