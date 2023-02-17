@@ -13,6 +13,7 @@ import LoginButton from "../Login/LoginButton";
 import UserSideBar from "./UserSideBar/UserSideBar";
 import UserInfo from "./UserInfo";
 import UserOrders from "./UserOrders/UserOrders";
+import UserAddress from "./UserAddress/UserAddress";
 import UserMemberships from "./UserMemberships/UserMemberships";
 import EditUserProfileCard from "./EditUserProfileCard/EditUserProfileCard";
 import Wishlist from "./Wishlist/Wishlist";
@@ -70,13 +71,14 @@ export default function UserProfile() {
             <div className="row" >
                 <Banner />
                 <NavigationBar />
-                <UserSideBar className='col-3' userName={userInfo.name} userPicture={userInfo.avatar} setCurrentPage={setCurrentPage} />
+                <UserSideBar className='col-3' userName={userInfo.fullname} userPicture={userInfo.avatar} setCurrentPage={setCurrentPage} />
 
-                <div className="container col-9">
-                    {currentPage === "home" && <UserInfo userName={userInfo.name} setCurrentPage={setCurrentPage} />}
+                <div className="container col-8">
+                    {currentPage === "home" && <UserInfo userName={userInfo.fullname} setCurrentPage={setCurrentPage} />}
                     {currentPage === "userinfo" && <UserInfo setCurrentPage={setCurrentPage} />}
                     {currentPage === "changeinfo" && <EditUserProfileCard setCurrentPage={setCurrentPage} />}
                     {currentPage === "orders" && <UserOrders />}
+                    {currentPage === "addresses" && <UserAddress />}
                     {currentPage === "memberships" && <UserMemberships />}
                     {currentPage === "wishlist" && <Wishlist />}
                 </div>
