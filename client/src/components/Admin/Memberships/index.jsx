@@ -57,7 +57,7 @@ export default function AdminMemberships() {
                             </tr>
                         ))}
                     </tbody>
-                </Table> : <h2>Not user to see</h2>}
+                </Table> : <h2>Not memberships to see</h2>}
             </div>
             <Modal show={showModalPost} onHide={() => setShowModalPost(false)} >
                 <Modal.Header closeButton>

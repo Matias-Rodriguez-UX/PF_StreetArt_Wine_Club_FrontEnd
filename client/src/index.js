@@ -8,8 +8,8 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import axios from "axios";
 
-// axios.defaults.baseURL= 'http://localhost:3001';
-axios.defaults.baseURL = 'https://pfstreetartwineclubbackend-production.up.railway.app';
+axios.defaults.baseURL = 'http://localhost:3001';
+// axios.defaults.baseURL = 'https://pfstreetartwineclubbackend-production.up.railway.app';
 
 const domain = "dev-142tko5ud5c6ozuq.us.auth0.com";
 const clientId = "1gLC55ZNHYDtZnf38LU2Zlc1UMUqoEXT";
@@ -21,7 +21,7 @@ ReactDOM.render(
         domain={domain}
         clientId={clientId}
         authorizationParams={{
-          redirect_uri: 'https://pf-street-art-wine-club-front-en-git-bb3b74-matias-rodriguez-ux.vercel.app/userprofile'
+          redirect_uri: 'http://localhost:3000/userprofile'
         }}>
         <App />
       </Auth0Provider>

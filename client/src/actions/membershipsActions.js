@@ -1,7 +1,10 @@
 import axios from "axios";
 import { loadingAction } from ".";
 import {
-    GET_MEMBERSHIPS
+    DELETE_MEMBERSHIPS,
+    GET_MEMBERSHIPS,
+    POST_MEMBERSHIP,
+    UPDATE_MEMBERSHIPS
 } from "./allActions";
 
 const headers = {
@@ -34,7 +37,10 @@ export function postMemberships(body) {
         try {
             let memberships = await axios.post("/users/membership", body);
             return (
-                memberships.status
+                dispatch({
+                    type: POST_MEMBERSHIP,
+                    payload: memberships.data,
+                })
             );
         } catch (error) {
             return error, console.log(error);
@@ -47,7 +53,10 @@ export function updateMemberships(id, body) {
         try {
             let memberships = await axios.put(`/users/membership/${id}`, body);
             return (
-                memberships.status
+                dispatch({
+                    type: UPDATE_MEMBERSHIPS,
+                    payload: memberships.data,
+                })
             );
         } catch (error) {
             return error, console.log(error);
@@ -59,7 +68,10 @@ export function deleteMemberships(id) {
         try {
             let memberships = await axios.delete(`/users/membership/${id}`, headers);
             return (
-                memberships.status
+                dispatch({
+                    type: DELETE_MEMBERSHIPS,
+                    payload: memberships.data,
+                })
             );
         } catch (error) {
             return error, console.log(error);

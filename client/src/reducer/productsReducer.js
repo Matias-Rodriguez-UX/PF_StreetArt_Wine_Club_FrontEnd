@@ -15,7 +15,13 @@ import {
   ADD_CART_QUANTITY,
   REMOVE_CART_QUANTITY,
   ADD_CART_TO_LOCALSTORAGE,
-  GET_REVIEWS
+  GET_REVIEWS,
+  POST_PRODUCTS,
+  DELETE_PRODUCTS,
+  UPDATE_PRODUCTS,
+  DELETE_REVIEW,
+  POST_REVIEW,
+  UPDATE_REVIEW
 } from "../actions/allActions";
 
 const initialState = {
@@ -192,11 +198,37 @@ export default function productsReducer(state = initialState, action) {
         ...state,
         reviews: action.payload
       }
+    case POST_PRODUCTS:
+      return {
+        ...state
+      }
+    case DELETE_PRODUCTS:
+      return {
+        ...state
+      }
+    case UPDATE_PRODUCTS:
+      return {
+        ...state
+      }
+    case DELETE_REVIEW:
+      return {
+        ...state
+      }
+    case POST_REVIEW:
+      return {
+        ...state
+      }
+    case UPDATE_REVIEW:
+      return {
+        ...state
+      }
 
     default:
       return { ...state }; //!
   }
 }
+
+
 function sortArrayAtoZ(x, y) {
   if (x.name < y.name) {
     return -1;
