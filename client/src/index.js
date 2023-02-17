@@ -21,7 +21,7 @@ ReactDOM.render(
         domain={domain}
         clientId={clientId}
         authorizationParams={{
-          redirect_uri: 'https://pf-street-art-wine-club-front-qjiqzfbhb-matias-rodriguez-ux.vercel.app/userprofile'
+          redirect_uri: 'pf-street-art-wine-club-front-en-git-bb3b74-matias-rodriguez-ux.vercel.app/userprofile'
         }}>
         <App />
       </Auth0Provider>
