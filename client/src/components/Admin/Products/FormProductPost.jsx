@@ -139,8 +139,9 @@ export default function FormProductsPost({ setShowModalPost }) {
         })
         addAlertCreate(name)
         setShowModalPost(false)
-        window.location.href = window.location.pathname + window.location.search + '#products';
-        window.location.reload();
+        setTimeout(function () {
+            dispatch(getProducts());
+        }, 3000);
     }
 
     const addAlertCreate = (name) => {

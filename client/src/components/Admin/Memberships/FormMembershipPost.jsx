@@ -3,7 +3,7 @@ import { Badge, Button, Form, Image, InputGroup } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { } from "../../../actions";
 import Swal from 'sweetalert2';
-import { postMemberships } from "../../../actions/membershipsActions";
+import { getMemberships, postMemberships } from "../../../actions/membershipsActions";
 
 export default function FormMembershipPost({ setShowModalPost, setmembershipList, membershipList }) {
     const dispatch = useDispatch()
@@ -73,7 +73,9 @@ export default function FormMembershipPost({ setShowModalPost, setmembershipList
         })
         addAlertCreate(name)
         setShowModalPost(false)
-        window.location.reload();
+        setTimeout(function () {
+            dispatch(getMemberships());
+        }, 1000);
     }
 
     const addAlertCreate = (name) => {
