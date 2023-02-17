@@ -43,10 +43,8 @@ export function loadingAction(payload) {
 
 export function getProducts() {
   return async function (dispatch) {
-    console.log("HOLA")
     try {
       let products = await axios.get("/products", headers);
-      console.log(products)
       return (
         dispatch({
           type: GET_PRODUCTS,
