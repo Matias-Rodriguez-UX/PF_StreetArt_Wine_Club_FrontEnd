@@ -70,20 +70,15 @@ export function editUserInfo(payload) {
   };
 }
 
+//USER CART
+
 export function addUserCart(payload) {
   return async function (dispatch) {
-    console.log("PAYLOAD: ", payload);
     try {
-      let userCart = await axios.post(
-        `http://localhost:3001/users/${payload.productId}/cart`,
+      await axios.post(
+        `http://localhost:3001/users/${payload.userId}/cart`,
         payload
       );
-
-      console.log("RESULTS: ", userCart.data);
-      dispatch({
-        type: ADD_TO_CART,
-        payload: userCart,
-      });
     } catch (error) {
       console.log("Error", error);
     }
@@ -93,10 +88,9 @@ export function addUserCart(payload) {
 export function getUserCart(id) {
   return async function (dispatch) {
     let userCart = await axios.get(`http://localhost:3001/users/${id}/cart`);
-    console.log(userCart);
     return dispatch({
       type: GET_USER_CART,
-      payload: userCart.data,
+      payload: userCart.data.products,
     });
   };
 }

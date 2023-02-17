@@ -7,9 +7,11 @@ import Banner from '../../Home/Banner/index';
 import Footer from '../../Footer/index';
 import "./Cart.css"
 import { useAuth0 } from "@auth0/auth0-react";
+import { getUserCart, getUserInfo } from "../../../actions/userActions";
 
 export default function Cart() {
   const cart = useSelector((state) => state.products.cart);
+  const currentUser = useSelector((state) => state.users.userInfo)
 
   const total = cart.reduce((acc, product) => {
     return acc + product.price * product.cartQuantity;
@@ -17,12 +19,15 @@ export default function Cart() {
 
   const dispatch = useDispatch();
   
-  const { isAuthenticated } = useAuth0();
+  const { user, isAuthenticated } = useAuth0();
 
   useEffect(() => {
     if(cart.length === 0){
       const storedCart = JSON.parse(localStorage.getItem('cart')) || [];
       storedCart.forEach(item => dispatch(addCartToLs(item)));
+    }
+    if(isAuthenticated && cart.length === 0){
+      dispatch(getUserCart(currentUser.id, currentUser.email))
     }
   }, [dispatch]);
 
@@ -32,6 +37,14 @@ export default function Cart() {
     }
   }, [cart]);
 
+  useEffect(() => {
+    if(!currentUser.id && isAuthenticated){
+        dispatch(getUserInfo(user.email))
+    }
+    if(currentUser.id && isAuthenticated){
+        dispatch(getUserCart(currentUser.id, currentUser.email))
+    }
+}, [dispatch, isAuthenticated, currentUser.id])
 
   return (
     <>

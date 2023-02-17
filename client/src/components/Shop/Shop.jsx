@@ -14,10 +14,9 @@ import Sort from "./Sorts";
 import WebPagination from "./Pagination/Pagination";
 import SearchBar from "./SearchBar";
 import Swal from 'sweetalert2';
-import { getUserCart } from "../../actions/userActions";
+import { getUserCart, getUserInfo } from "../../actions/userActions";
 import { useAuth0 } from "@auth0/auth0-react";
 import { addUserCart } from "../../actions/userActions";
-import { useBootstrapBreakpoints } from "react-bootstrap/esm/ThemeProvider";
 
 
 export default function Shop() {
@@ -26,6 +25,7 @@ export default function Shop() {
     const allProducts = useSelector((state) => state.products.allProducts)
     const Products = useSelector((state) => state.products.products)
     const cart = useSelector((state) => state.products.cart)
+    const currentUser = useSelector((state) => state.users.userInfo)
     const [sort, setSort] = useState('')
 
     const { user, isAuthenticated } = useAuth0();
@@ -95,13 +95,16 @@ export default function Shop() {
 
     const addCart = (id, cartQuantity, name, price) => {
         if(isAuthenticated){
-            dispatch(addUserCart({
+             dispatch(addUserCart({
+              userId: currentUser.id,
               totalPrice: price,
               quantity:1,
               email: user.email,
               productId: id,
             }))
-          } else {
+          } 
+          if(!isAuthenticated) {
+            console.log('here')
             dispatch(addToCart(id, cartQuantity));
             addAlert(cartQuantity, name);
           }
@@ -120,10 +123,13 @@ export default function Shop() {
     }, [dispatch]);
 
     useEffect(() => {
-        if(isAuthenticated){
-            dispatch(getUserCart(id, user.email))
+        if(!currentUser.id && isAuthenticated){
+            dispatch(getUserInfo(user.email))
         }
-    }, [dispatch, cart])
+        if(currentUser.id && isAuthenticated){
+            dispatch(getUserCart(currentUser.id, currentUser.email))
+        }
+    }, [dispatch, isAuthenticated, currentUser.id])
 
     return (
         <>
@@ -152,6 +158,7 @@ export default function Shop() {
                         {currentWines.length ? currentWines?.map((el) => {
                             return (
                                 <Winecards
+                                    key={el.id++ *26}
                                     image={el.image}
                                     name={el.name}
                                     winery={el.winery}
