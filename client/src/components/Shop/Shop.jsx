@@ -31,6 +31,11 @@ export default function Shop() {
     const pagination = (pageNumber) => {
         setCurrentPage(pageNumber)
     };
+    
+    useEffect(() => {
+        dispatch(loadingAction(true))
+        dispatch(getProducts());
+    }, [dispatch]);
 
     function handleClick(e) {
         e.preventDefault()
@@ -97,10 +102,7 @@ export default function Shop() {
     const prices = allPrices()
 
 
-    useEffect(() => {
-        dispatch(loadingAction(true))
-        dispatch(getProducts());
-    }, [dispatch]);
+    
 
     return (
         <>
