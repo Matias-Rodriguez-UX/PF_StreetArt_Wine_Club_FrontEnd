@@ -45,7 +45,7 @@ export function postMemberships(body) {
 export function updateMemberships(id, body) {
     return async function () {
         try {
-            let memberships = await axios.put(`http://localhost:3001/users/membership/${id}`, body);
+            let memberships = await axios.put(`/users/membership/${id}`, body);
             return (
                 memberships.status
             );
@@ -57,7 +57,7 @@ export function updateMemberships(id, body) {
 export function deleteMemberships(id) {
     return async function () {
         try {
-            let memberships = await axios.delete(`http://localhost:3001/users/membership/${id}`, headers);
+            let memberships = await axios.delete(`/users/membership/${id}`, headers);
             return (
                 memberships.status
             );
