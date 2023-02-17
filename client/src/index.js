@@ -21,7 +21,7 @@ ReactDOM.render(
         domain={domain}
         clientId={clientId}
         authorizationParams={{
-          redirect_uri: '/userprofile'
+          redirect_uri: 'https://pfstreetartwineclubbackend-production.up.railway.app/userprofile'
         }}>
         <App />
       </Auth0Provider>
