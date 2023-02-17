@@ -37,26 +37,28 @@ export default function AdminCustomers() {
     return (
         <>
             <h1>Customers</h1>
-            <div>
-                {allUsers?.length ? <Table striped bordered hover responsive>
-                    <thead>
-                        <tr>
-                            {headers.map((header, index) => (
-                                <th key={index}>{header}</th>
-                            ))}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {allUsers.map((item, index) => (
-                            <tr key={index} onClick={() => handleClick(item)} style={{ cursor: 'pointer' }}>
-                                {headers.map((header, subIndex) => (
-                                    <td key={subIndex} className="ellipsis">{item[header]}</td>
+            {isLoading ? <Loader /> :
+                <div>
+                    {allUsers?.length ? <Table striped bordered hover responsive>
+                        <thead>
+                            <tr>
+                                {headers.map((header, index) => (
+                                    <th key={index}>{header}</th>
                                 ))}
                             </tr>
-                        ))}
-                    </tbody>
-                </Table> : <h2>Not user to see</h2>}
-            </div>
+                        </thead>
+                        <tbody>
+                            {allUsers.map((item, index) => (
+                                <tr key={index} onClick={() => handleClick(item)} style={{ cursor: 'pointer' }}>
+                                    {headers.map((header, subIndex) => (
+                                        <td key={subIndex} className="ellipsis">{item[header]}</td>
+                                    ))}
+                                </tr>
+                            ))}
+                        </tbody>
+                    </Table> : <h2>Not user to see</h2>}
+                </div>
+            }
             <Modal show={showModalEdit} onHide={() => setShowModalEdit(false)} >
                 <Modal.Header closeButton>
                     <Modal.Title>Edit Product</Modal.Title>
@@ -71,5 +73,6 @@ export default function AdminCustomers() {
                 </Modal.Footer>
             </Modal>
         </>
+
     )
 }
