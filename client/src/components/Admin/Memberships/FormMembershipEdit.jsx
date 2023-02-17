@@ -3,7 +3,7 @@ import { Badge, Button, Form, Image, InputGroup, Modal } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { } from "../../../actions";
 import Swal from 'sweetalert2';
-import { postMemberships, updateMemberships } from "../../../actions/membershipsActions";
+import { deleteMemberships, getMemberships, postMemberships, updateMemberships } from "../../../actions/membershipsActions";
 
 export default function FormMembershipEdit({ selectedData, setShowModalEdit }) {
     const dispatch = useDispatch()
@@ -57,15 +57,18 @@ export default function FormMembershipEdit({ selectedData, setShowModalEdit }) {
         }
         addAlertCreate(name)
         setShowModalEdit(false)
-        window.location.reload();
+        setTimeout(function () {
+            dispatch(getMemberships());
+        }, 1000);
     }
 
     function handleConfirmDelete(name) {
-        dispatch(deleteMembership(input.id))
+        dispatch(deleteMemberships(input.id))
         addAlertDelete(name);
         setShowModalEdit(false)
-        window.location.reload();
-
+        setTimeout(function () {
+            dispatch(getMemberships());
+        }, 1000);
     }
 
     const addAlertCreate = (name) => {

@@ -20,6 +20,12 @@ import {
   ADD_CART_TO_LOCALSTORAGE,
   GET_REVIEWS,
   UPDATE_REVIEWS,
+  POST_PRODUCTS,
+  DELETE_PRODUCTS,
+  UPDATE_PRODUCTS,
+  POST_REVIEW,
+  UPDATE_REVIEW,
+  DELETE_REVIEW,
 } from "./allActions";
 
 const headers = {
@@ -37,6 +43,7 @@ export function loadingAction(payload) {
 
 export function getProducts() {
   return async function (dispatch) {
+    console.log("HOLA")
     try {
       let products = await axios.get("/products", headers);
       console.log(products)
@@ -122,10 +129,13 @@ export function getProductByName(payload) {
 }
 
 export function postProduct(payload) {
-  return async function () {
+  return async function (dispatch) {
     try {
       let info = await axios.post("/products", payload);
-      return info.status;
+      return (dispatch({
+        type: POST_PRODUCTS,
+        payload: info.data,
+      }));
     } catch (error) {
       console.log("ERROR", error);
     }
@@ -136,7 +146,10 @@ export function deleteProduct(id) {
   return async function () {
     try {
       let info = await axios.delete(`/products/${id}`);
-      return info.status;
+      return (dispatch({
+        type: DELETE_PRODUCTS,
+        payload: info.data,
+      }));
     } catch (error) {
       console.log("ERROR", error);
     }
@@ -147,7 +160,10 @@ export function updateProduct(id, body) {
   return async function () {
     try {
       let info = await axios.put(`/products/${id}`, body);
-      return info.status;
+      return (dispatch({
+        type: UPDATE_PRODUCTS,
+        payload: info.data,
+      }))
     } catch (error) {
       console.log("ERROR", error);
     }
@@ -260,7 +276,10 @@ export function postReview(id, payload) {
   return async function () {
     try {
       let info = await axios.post(`/products/${id}/review`, payload);
-      return info.status;
+      return (dispatch({
+        type: POST_REVIEW,
+        payload: info.data,
+      }))
     } catch (error) {
       console.log("ERROR", error);
     }
@@ -294,7 +313,10 @@ export function updateReviews(idProduct, idReview, info) {
       var detail = await axios.put(
         `/products/${idProduct}/review/${idReview}`, info
       );
-      return detail.data
+      return (dispatch({
+        type: UPDATE_REVIEW,
+        payload: detail.data,
+      }))
     } catch (error) {
       console.log("Error", error);
     }
@@ -308,7 +330,10 @@ export function deleteReviews(idProduct, idReview,) {
       var detail = await axios.delete(
         `/products/${idProduct}/review/${idReview}`,
       );
-      return detail.data
+      return (dispatch({
+        type: DELETE_REVIEW,
+        payload: detail.data,
+      }))
     } catch (error) {
       console.log("Error", error);
     }

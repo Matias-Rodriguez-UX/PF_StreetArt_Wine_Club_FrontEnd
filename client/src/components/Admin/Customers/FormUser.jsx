@@ -3,7 +3,7 @@ import { Badge, Button, Form, Image, InputGroup } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { } from "../../../actions";
 import Swal from 'sweetalert2';
-import { editUserInfo } from "../../../actions/userActions";
+import { editUserInfo, getAllUsers } from "../../../actions/userActions";
 
 export default function FormUser({ selectedData, setShowModalEdit }) {
     const dispatch = useDispatch()
@@ -38,7 +38,9 @@ export default function FormUser({ selectedData, setShowModalEdit }) {
         }
         addAlertModified(name)
         setShowModalEdit(false)
-        window.location.reload();
+        setTimeout(function () {
+            dispatch(getAllUsers());
+        }, 1000);
     }
 
     const addAlertModified = (name) => {

@@ -93,8 +93,9 @@ export default function FormProducts({ selectedData, setShowModalEdit }) {
         dispatch(deleteProduct(productToDelete))
         addAlertDelete(name);
         setShowModalEdit(false)
-        window.location.href = window.location.pathname + window.location.search + '#products';
-        window.location.reload();
+        setTimeout(function () {
+            dispatch(getProducts());
+        }, 2000);
 
     }
 
@@ -102,8 +103,9 @@ export default function FormProducts({ selectedData, setShowModalEdit }) {
         dispatch(updateProduct(productToUpdate, input))
         addAlertUpdate(name);
         setShowModalEdit(false)
-        window.location.href = window.location.pathname + window.location.search + '#products';
-        window.location.reload();
+        setTimeout(function () {
+            dispatch(getProducts());
+        }, 2000);
     }
 
     function handleChanges(e) {
