@@ -1,6 +1,6 @@
 import { GET_ALL_USERS, GET_USER_INFO, CREATE_USER, EDIT_USER, CREATE_ADDRESS, EDIT_ADDRESS, DELETE_USER } from "./allActions";
 import axios from "axios";
-import { loadingAction } from "./index";
+import { loadingAction } from ".";
 
 const headers = {
   headers: {
@@ -10,15 +10,19 @@ const headers = {
 
 export function getAllUsers() {
   return async function (dispatch) {
+    try {
+      let users = await axios.get("/users");
+      return (
+        dispatch({
+          type: GET_ALL_USERS,
+          payload: users.data,
+        }),
+        loadingAction(false)
+      )
+    } catch (error) {
+      console.log(error)
+    }
 
-    let users = await axios.get("/users");
-    return (
-      dispatch({
-        type: GET_ALL_USERS,
-        payload: users.data,
-      }),
-      loadingAction(false)
-    )
   };
 };
 
@@ -44,7 +48,8 @@ export function createUser(payload) {
       return dispatch({
         type: CREATE_USER,
         payload: user.data
-      });
+      }),
+        loadingAction(false)
     } catch (error) {
       console.log("ERROR", error)
     }
@@ -58,7 +63,8 @@ export function editUserInfo(payload) {
       dispatch({
         type: EDIT_USER,
         payload: updatedUser.data
-      });
+      }),
+        loadingAction(false)
     } catch (e) {
       console.log("Error", e)
     }
