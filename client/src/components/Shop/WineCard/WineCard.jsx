@@ -6,9 +6,11 @@ import { postFavourite } from '../../../actions/userActions';
 import FavButton from '../../UserProfile/Wishlist/FavouriteButton';
 import './Card.css'
 
-const Winecards = ({ name, winery, price, image, id, addCart, handleAgregarFavorito, userEmail, handleQuitarFavorito, favorito }) => {
+const Winecards = ({ name, winery, price, image, id, addCart, handleAgregarFavorito, userEmail,favorito }) => {
 
  const dispatch = useDispatch();
+
+ console.log(favorito)
 
   return (
     <Card className="cardWine" style={{ width: '18rem', height: '32rem' }}>
@@ -23,8 +25,7 @@ const Winecards = ({ name, winery, price, image, id, addCart, handleAgregarFavor
         <Card.Text className="text-center mt-2" style={{ fontWeight: 'bold', fontSize: '16px' }}>
           ${price},00.-
         </Card.Text>
-        <button onClick={favorito ? () => handleAgregarFavorito(id, userEmail) : () => handleQuitarFavorito(id, userEmail)}>
-          
+        <button onClick={() => handleAgregarFavorito(id, userEmail)}>
           <i class={favorito?"bi bi-heart-fill"  : "bi bi-heart"}></i>  
         </button>
         <button type="button" class="btn btn-warning btn-lg" onClick={() => addCart(id, 1, name)}>

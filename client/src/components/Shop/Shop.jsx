@@ -14,7 +14,7 @@ import Sort from "./Sorts";
 import WebPagination from "./Pagination/Pagination";
 import SearchBar from "./SearchBar";
 import Swal from 'sweetalert2';
-import { deleteFavourite, postFavourite } from "../../actions/userActions";
+import { deleteFavourite, getUserWishlist, postFavourite } from "../../actions/userActions";
 
 
 export default function Shop() {
@@ -32,11 +32,22 @@ export default function Shop() {
     const pagination = (pageNumber) => {
         setCurrentPage(pageNumber)
     };
+    const userInfo = useSelector((state) => state.users.userInfo);
+    const favourites = useSelector((state) => state.users.userWishlist);
+    const ids = favourites?.products.map(el => el.id)
+    const [favorito, setFavorito] = useState(false);
+    console.log(ids)
     
+
     useEffect(() => {
         dispatch(loadingAction(true))
         dispatch(getProducts());
+        
     }, [dispatch]);
+
+    useEffect(() => {
+        dispatch(getUserWishlist(userInfo.email))
+    }, [favorito]);
 
     function handleClick(e) {
         e.preventDefault()
@@ -102,24 +113,25 @@ export default function Shop() {
     const quantities = allQuantity()
     const prices = allPrices()
 
-    const userInfo = useSelector((state) => state.users.userInfo);
-    const favourites = useSelector((state) => state.users.userWishlist);
-    const [favorito, setFavorito] = useState(false);
-    
+   
+   
 
   const userEmail = {
     email: userInfo.email
   }
 
     async function handleAgregarFavorito(id, userEmail ) {
-         dispatch(postFavourite(id, userEmail ))
-        setFavorito(true)      
+        await ids.includes(id) ?
+        dispatch(deleteFavourite(id, userEmail)).then(setFavorito(false)):
+        dispatch(postFavourite(id, userEmail )).then(setFavorito(true))
+         
+         
       } 
 
-      async function handleQuitarFavorito(id, userEmail ) {          
+     /*  async function handleQuitarFavorito(id, userEmail ) {          
              dispatch(deleteFavourite(id, userEmail))
            setFavorito(false)
-       } 
+       }  */
 
     return (
         <>
@@ -155,7 +167,7 @@ export default function Shop() {
                                     id={el.id}
                                     addCart={addCart}
                                     handleAgregarFavorito={handleAgregarFavorito}
-                                    handleQuitarFavorito={handleQuitarFavorito}
+                                    favorito={favorito}
                                     userEmail={userEmail}
                                 />
 
