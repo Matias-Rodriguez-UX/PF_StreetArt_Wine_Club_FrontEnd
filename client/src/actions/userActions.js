@@ -1,4 +1,4 @@
-import { GET_ALL_STATES, GET_ALL_CITIES, GET_ALL_USERS, GET_USER_INFO, CREATE_USER, EDIT_USER, GET_USER_ADDRESSES, CREATE_USER_ADDRESS, EDIT_USER_ADDRESS,DELETE_USER_ADDRESS, DELETE_USER } from "./allActions";
+import { GET_ALL_STATES, GET_ALL_CITIES, GET_ALL_USERS, GET_USER_INFO, CREATE_USER, EDIT_USER, GET_USER_ADDRESSES, CREATE_USER_ADDRESS, EDIT_USER_ADDRESS,DELETE_USER_ADDRESS, DELETE_USER, GET_WISHLIST, POST_WISHLIST } from "./allActions";
 import axios from "axios";
 import { loadingAction } from ".";
 
@@ -144,6 +144,34 @@ export function editUserAddress(payload) {
       });
     } catch (e) {
       console.log("Error", e)
+    }
+  };
+};
+
+export function getUserWishlist(email){
+  return async function (dispatch) {
+    try {
+      let wishlist = await axios.get(`http://localhost:3001/users/favourites/${email}`)
+      dispatch({
+        type: GET_WISHLIST,
+        payload: wishlist.data
+      })
+    } catch (e) {
+      console.log("Error", e)
+    }
+  }
+}
+
+export function postFavourite (id, body){
+  return async function (dispatch) {
+    try {
+      let wishlist = await axios.post(`http://localhost:3001/users/fav/${id}`, body);
+      return dispatch({
+        type: POST_WISHLIST,
+        payload: wishlist.data
+      });
+    } catch (error) {
+      console.log("ERROR", error)
     }
   };
 };

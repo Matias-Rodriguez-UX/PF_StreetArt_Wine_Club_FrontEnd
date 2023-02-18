@@ -8,7 +8,6 @@ export default function UserInfo({ userName, setCurrentPage }) {
   const dispatch = useDispatch();
   const { isAuthenticated: auth, user } = useAuth0();
   const userInfo = useSelector((state) => state.users.userInfo);
-  console.log(userInfo)
 
   let userEmail = '';
   if(auth){

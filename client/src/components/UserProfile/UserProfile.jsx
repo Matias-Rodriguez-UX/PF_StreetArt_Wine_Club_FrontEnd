@@ -36,15 +36,12 @@ export default function UserProfile() {
     const emailAdmin = 'artstreetwineclub@gmail.com';
     let userDb = {};
 
-    console.log(isAuthenticated);
-
     if (auth) {
         userDb = {
             email: user.email,
             name: user.name,
             picture: user.picture
         }
-        console.log(users)
     };
 
     useEffect(() => {
