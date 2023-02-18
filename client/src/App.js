@@ -14,7 +14,6 @@ import AlertPage from "./Helpers/AlertPage";
 import { useAuth0 } from "@auth0/auth0-react";
 import Cart from "./components/Shop/Cart/Cart";
 import Payment from "./components/Shop/Payment/Payment"
-import Paypal from "./components/Shop/Payment/Paypal"
 
 function App() {
   return (
@@ -28,7 +27,6 @@ function App() {
         <Route path={"/userprofile"} component={UserProfile} />
         <Route path={"/cart"} component={Cart} />
         <Route path={"/payment"} component={Payment} />
-        <Route path={"/paypal"} component={Paypal} />
         <Route exact path={"/alertPage"} component={AlertPage} />
         <PrivateRoute exact path={"/admin"} component={AdminProfile} />
       </Switch>

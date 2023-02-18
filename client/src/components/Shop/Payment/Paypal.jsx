@@ -12,7 +12,7 @@ const PayPalButton = window.paypal.Buttons.driver("react", { React, ReactDOM });
 export default function Paypal(){
     const { user, isAuthenticated } = useAuth0();
     const [storedCart, setStoredCart] = useLocalStorage("cart", []);
-    const cart = useSelector((state) => state.cart);
+    const cart = useSelector((state) => state.products.cart);
     const dispatch = useDispatch();
   
     const total = cart.reduce((acc, product) => {

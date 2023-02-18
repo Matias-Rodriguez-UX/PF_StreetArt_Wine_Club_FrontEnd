@@ -123,11 +123,7 @@ export default function Cart(){
                 ) :
                 (
                   <div className="col col-12">
-                    <button type="button" className="btn btn-warning btn-sm">Register</button>
-                    <PayPalButton
-                      createOrder={(data, actions) => createOrder(data, actions)}
-                      onApprove={(data, actions) => onApprove(data, actions)}
-                    />
+                    <button type="button" className="btn btn-warning btn-lg">Register</button>
                     <Link to={"/payment"}><button type="button" class="btn btn-warning btn-lg">BUY PRODUCT</button></Link> 
               
                   </div>
