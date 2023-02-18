@@ -12,7 +12,7 @@ const Winecards = ({ name, winery, price, image, id, addCart }) => {
       <Card.Body className="d-flex flex-column align-items-center justify-content-evenly">
         <Card.Title style={{ fontSize: "24px" }}><strong>{name}</strong></Card.Title>
         {winery.map(wine => (
-          <Card.Text key={id++} className="text-center mb-0" style={{ fontSize: '12px' }}>
+          <Card.Text className="text-center mb-0" style={{ fontSize: '12px' }}>
             {wine}
           </Card.Text>))}
         <Card.Text className="text-center mt-2" style={{ fontWeight: 'bold', fontSize: '16px' }}>

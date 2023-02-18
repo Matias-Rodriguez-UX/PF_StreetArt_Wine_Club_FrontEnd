@@ -14,7 +14,7 @@ import Sort from "./Sorts";
 import WebPagination from "./Pagination/Pagination";
 import SearchBar from "./SearchBar";
 import Swal from 'sweetalert2';
-import { getUserCart, getUserInfo } from "../../actions/userActions";
+import { getUserCart, getUserInfo, updateUserCart } from "../../actions/userActions";
 import { useAuth0 } from "@auth0/auth0-react";
 import { addUserCart } from "../../actions/userActions";
 
@@ -95,6 +95,17 @@ export default function Shop() {
 
     const addCart = (id, cartQuantity, name, price) => {
         if(isAuthenticated){
+            if(cart.some(el => el.id === id)){
+                let updateWine = cart.find(el => el.id === id)
+                dispatch(updateUserCart({
+                    userId: currentUser.id,
+                    totalPrice: price,
+                    quantity: updateWine.cartQuantity + 1,
+                    email: user.email,
+                    productId: id,
+                }))
+                return addAlert(cartQuantity, name);
+            }
              dispatch(addUserCart({
               userId: currentUser.id,
               totalPrice: price,
@@ -102,9 +113,9 @@ export default function Shop() {
               email: user.email,
               productId: id,
             }))
+            addAlert(cartQuantity, name);
           } 
           if(!isAuthenticated) {
-            console.log('here')
             dispatch(addToCart(id, cartQuantity));
             addAlert(cartQuantity, name);
           }
@@ -158,7 +169,7 @@ export default function Shop() {
                         {currentWines.length ? currentWines?.map((el) => {
                             return (
                                 <Winecards
-                                    key={el.id++ *26}
+                                    key={el.id}
                                     image={el.image}
                                     name={el.name}
                                     winery={el.winery}

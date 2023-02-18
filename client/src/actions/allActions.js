@@ -27,3 +27,4 @@ export const GET_MEMBERSHIPS = "GET_MEMBERSHIPS";
 export const GET_ORDERS = "GET_ORDERS";
 export const GET_REVIEWS = "GET_REVIEWS";
 export const GET_USER_CART = "GET_USER_CART";
+export const RESET_CART_LOG_OUT = "RESET_CART_LOG_OUT";

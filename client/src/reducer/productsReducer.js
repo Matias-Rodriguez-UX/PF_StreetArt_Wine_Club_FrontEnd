@@ -17,6 +17,7 @@ import {
   ADD_CART_TO_LOCALSTORAGE,
   GET_REVIEWS,
   GET_USER_CART,
+  RESET_CART_LOG_OUT,
 } from "../actions/allActions";
 
 const initialState = {
@@ -158,6 +159,12 @@ export default function productsReducer(state = initialState, action) {
             price: el.price,
           };
         }),
+      };
+
+    case RESET_CART_LOG_OUT:
+      return {
+        ...state,
+        cart: [],
       };
 
     case GET_TYPES:

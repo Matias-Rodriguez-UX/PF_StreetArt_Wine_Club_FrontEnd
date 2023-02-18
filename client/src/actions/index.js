@@ -1,4 +1,3 @@
-
 import axios from "axios";
 import {
   GET_PRODUCTS,
@@ -19,6 +18,7 @@ import {
   REMOVE_CART_QUANTITY,
   ADD_CART_TO_LOCALSTORAGE,
   GET_REVIEWS,
+  RESET_CART_LOG_OUT,
 } from "./allActions";
 
 const headers = {
@@ -38,7 +38,7 @@ export function getProducts() {
   return async function (dispatch) {
     try {
       let products = await axios.get("http://localhost:3001/products", headers);
-      console.log(products)
+      console.log(products);
       return (
         dispatch({
           type: GET_PRODUCTS,
@@ -255,10 +255,19 @@ export function addToCart(id, cartQuantity) {
   };
 }
 
+export function resetCart() {
+  return {
+    type: RESET_CART_LOG_OUT,
+  };
+}
+
 export function postReview(id, payload) {
   return async function () {
     try {
-      let info = await axios.post(`http://localhost:3001/products/${id}/review`, payload);
+      let info = await axios.post(
+        `http://localhost:3001/products/${id}/review`,
+        payload
+      );
       return info.status;
     } catch (error) {
       console.log("ERROR", error);

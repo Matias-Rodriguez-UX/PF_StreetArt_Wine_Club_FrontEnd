@@ -73,7 +73,8 @@ export function editUserInfo(payload) {
 //USER CART
 
 export function addUserCart(payload) {
-  return async function (dispatch) {
+  return async function () {
+    console.log("PAYLOAD: ", payload);
     try {
       await axios.post(
         `http://localhost:3001/users/${payload.userId}/cart`,
@@ -88,9 +89,23 @@ export function addUserCart(payload) {
 export function getUserCart(id) {
   return async function (dispatch) {
     let userCart = await axios.get(`http://localhost:3001/users/${id}/cart`);
+    console.log("GET: ", userCart);
     return dispatch({
       type: GET_USER_CART,
       payload: userCart.data.products,
     });
+  };
+}
+
+export function updateUserCart(payload) {
+  return async function () {
+    try {
+      await axios.put(
+        `http://localhost:3001/users/${payload.userId}/cart`,
+        payload
+      );
+    } catch (error) {
+      console.log("Error", error);
+    }
   };
 }
