@@ -19,6 +19,13 @@ import {
   ADD_CART_TO_LOCALSTORAGE,
   GET_REVIEWS,
   RESET_CART_LOG_OUT,
+  UPDATE_REVIEWS,
+  POST_PRODUCTS,
+  DELETE_PRODUCTS,
+  UPDATE_PRODUCTS,
+  POST_REVIEW,
+  UPDATE_REVIEW,
+  DELETE_REVIEW,
 } from "./allActions";
 
 const headers = {
@@ -37,8 +44,7 @@ export function loadingAction(payload) {
 export function getProducts() {
   return async function (dispatch) {
     try {
-      let products = await axios.get("http://localhost:3001/products", headers);
-      console.log(products);
+      let products = await axios.get("/products", headers);
       return (
         dispatch({
           type: GET_PRODUCTS,
@@ -55,10 +61,7 @@ export function getProducts() {
 export function getDetail(id) {
   return async function (dispatch) {
     try {
-      var detail = await axios.get(
-        `http://localhost:3001/products/${id}`,
-        headers
-      );
+      var detail = await axios.get(`/products/${id}`, headers);
 
       return (
         dispatch({
@@ -78,7 +81,7 @@ export function getFilterProducts(filters, quantity) {
   return async function (dispatch) {
     try {
       let info = await axios.get(
-        `http://localhost:3001/products/filters?filter=${json}&quantity=${quantity}`
+        `/products/filters?filter=${json}&quantity=${quantity}`
       );
       return (
         dispatch({
@@ -121,10 +124,13 @@ export function getProductByName(payload) {
 }
 
 export function postProduct(payload) {
-  return async function () {
+  return async function (dispatch) {
     try {
-      let info = await axios.post("http://localhost:3001/products", payload);
-      return info.status;
+      let info = await axios.post("/products", payload);
+      return dispatch({
+        type: POST_PRODUCTS,
+        payload: info.data,
+      });
     } catch (error) {
       console.log("ERROR", error);
     }
@@ -134,8 +140,11 @@ export function postProduct(payload) {
 export function deleteProduct(id) {
   return async function () {
     try {
-      let info = await axios.delete(`http://localhost:3001/products/${id}`);
-      return info.status;
+      let info = await axios.delete(`/products/${id}`);
+      return dispatch({
+        type: DELETE_PRODUCTS,
+        payload: info.data,
+      });
     } catch (error) {
       console.log("ERROR", error);
     }
@@ -145,8 +154,11 @@ export function deleteProduct(id) {
 export function updateProduct(id, body) {
   return async function () {
     try {
-      let info = await axios.put(`http://localhost:3001/products/${id}`, body);
-      return info.status;
+      let info = await axios.put(`/products/${id}`, body);
+      return dispatch({
+        type: UPDATE_PRODUCTS,
+        payload: info.data,
+      });
     } catch (error) {
       console.log("ERROR", error);
     }
@@ -156,7 +168,7 @@ export function updateProduct(id, body) {
 export function getTypes() {
   return async function (dispatch) {
     try {
-      let types = await axios.get("http://localhost:3001/types", headers);
+      let types = await axios.get("/types", headers);
       return (
         dispatch({
           type: GET_TYPES,
@@ -173,7 +185,7 @@ export function getTypes() {
 export function getRegions() {
   return async function (dispatch) {
     try {
-      let regions = await axios.get("http://localhost:3001/regions", headers);
+      let regions = await axios.get("/regions", headers);
       return (
         dispatch({
           type: GET_REGIONS,
@@ -189,7 +201,7 @@ export function getRegions() {
 export function getStates() {
   return async function (dispatch) {
     try {
-      let states = await axios.get("http://localhost:3001/states", headers);
+      let states = await axios.get("/states", headers);
       return (
         dispatch({
           type: GET_STATES,
@@ -206,7 +218,7 @@ export function getStates() {
 export function getGrapes() {
   return async function (dispatch) {
     try {
-      let grapes = await axios.get("http://localhost:3001/grapes", headers);
+      let grapes = await axios.get("/grapes", headers);
       return (
         dispatch({
           type: GET_GRAPES,
@@ -264,11 +276,11 @@ export function resetCart() {
 export function postReview(id, payload) {
   return async function () {
     try {
-      let info = await axios.post(
-        `http://localhost:3001/products/${id}/review`,
-        payload
-      );
-      return info.status;
+      let info = await axios.post(`/products/${id}/review`, payload);
+      return dispatch({
+        type: POST_REVIEW,
+        payload: info.data,
+      });
     } catch (error) {
       console.log("ERROR", error);
     }
@@ -278,10 +290,7 @@ export function postReview(id, payload) {
 export function getReviews(id) {
   return async function (dispatch) {
     try {
-      var detail = await axios.get(
-        `http://localhost:3001/products/${id}/review`,
-        headers
-      );
+      var detail = await axios.get(`/products/${id}/review`, headers);
       return (
         dispatch({
           type: GET_REVIEWS,
@@ -289,6 +298,39 @@ export function getReviews(id) {
         }),
         dispatch(loadingAction(false))
       );
+    } catch (error) {
+      console.log("Error", error);
+    }
+  };
+}
+
+export function updateReviews(idProduct, idReview, info) {
+  return async function () {
+    try {
+      var detail = await axios.put(
+        `/products/${idProduct}/review/${idReview}`,
+        info
+      );
+      return dispatch({
+        type: UPDATE_REVIEW,
+        payload: detail.data,
+      });
+    } catch (error) {
+      console.log("Error", error);
+    }
+  };
+}
+
+export function deleteReviews(idProduct, idReview) {
+  return async function () {
+    try {
+      var detail = await axios.delete(
+        `/products/${idProduct}/review/${idReview}`
+      );
+      return dispatch({
+        type: DELETE_REVIEW,
+        payload: detail.data,
+      });
     } catch (error) {
       console.log("Error", error);
     }

@@ -1,24 +1,27 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import React, { useEffect, useState } from "react";
-import { Form, FormGroup, FormControl, FormLabel, Button } from 'react-bootstrap';
+import { Form, FormGroup, FormControl, FormLabel, Button, Modal } from 'react-bootstrap';
 import { useDispatch, useSelector } from "react-redux";
 import Rating from '@mui/material/Rating'
 import { postReview } from "../../../../actions";
 import { Loader } from "../../../Loader";
+import { getUserInfo } from "../../../../actions/userActions";
 
 
 
 export default function ReviewsForm({ idProduct }) {
     const { isLoading, isAuthenticated: auth, user } = useAuth0();
     const dispatch = useDispatch()
+    const userInfo = useSelector((state) => state.users.userInfo)
+    const [showModalWarning, setShowModalWarning] = useState(false);
 
     const [review, setReview] = useState({
         review: "",
         rating: 0,
         email: "",
     })
-    let userName = ""
     let userEmail = ""
+
     function handleRating(event) {
         const target = event.target;
         const value = target.type === 'checkbox' ? target.checked : target.value;
@@ -32,20 +35,25 @@ export default function ReviewsForm({ idProduct }) {
 
     function handleSubmit(e) {
         e.preventDefault()
-        dispatch(postReview(idProduct, review))
-        window.location.reload();
+        if (review.rating > 0 && review.review) {
+            dispatch(postReview(idProduct, review))
+            window.location.reload();
+        } else {
+            setShowModalWarning(true)
+        }
+
     }
 
     useEffect(() => {
         if (auth) {
-            userName = user.name
-            userEmail = user.email
+            getUserInfo(user.email)
+            userEmail = userInfo?.email
         }
-        console.log("este es el review", review)
-    }, [review, userName, userEmail])
+    }, [review, userEmail])
+
 
     return (
-        <>{auth ?
+        <>
             <div className='border border-3 rounded p-4 bg-light' style={{ height: '272px' }} >
                 <Form onSubmit={e => handleSubmit(e)} >
                     <FormGroup>
@@ -58,8 +66,20 @@ export default function ReviewsForm({ idProduct }) {
                     </FormGroup>
                     <Button variant="warning" type="submit" className="float-end" >Send</Button>
                 </Form>
+                <Modal show={showModalWarning} onHide={() => setShowModalWarning(false)} >
+                    <Modal.Header closeButton>
+                        <Modal.Title>We can't post the review</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        You must complete the review and rating
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={() => setShowModalWarning(false)}>
+                            Close
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
             </div>
-            : <Loader />}
 
         </>
     )

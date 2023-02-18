@@ -1,9 +1,23 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
+import { useDispatch, useSelector } from 'react-redux';
+import { getUserInfo } from "../../../actions/userActions";
 
 
-export default function UserInfo({ setCurrentPage }) {
-  const { user } = useAuth0();
+export default function UserInfo({ userName, setCurrentPage }) {
+  const dispatch = useDispatch();
+  const { isAuthenticated: auth, user } = useAuth0();
+  const userInfo = useSelector((state) => state.users.userInfo);
+  console.log(userInfo)
+
+  let userEmail = '';
+  if(auth){
+    userEmail = user.email
+  };
+
+  useEffect(() => {
+    dispatch(getUserInfo(userEmail))
+}, [dispatch, user]);
 
   return (
     <div className="container col py-5 mt-5" display='flex'>
@@ -15,7 +29,7 @@ export default function UserInfo({ setCurrentPage }) {
                 <h6 class="mb-0">Full Name</h6>
               </div>
               <div class="col-sm-9 text-secondary">
-                {user && user.name}
+                {userInfo.fullname}
               </div>
             </div>
             <hr />
@@ -24,7 +38,7 @@ export default function UserInfo({ setCurrentPage }) {
                 <h6 class="mb-0">Email</h6>
               </div>
               <div class="col-sm-9 text-secondary">
-                {user && user.email}
+                {userInfo.email}
               </div>
             </div>
             <hr />

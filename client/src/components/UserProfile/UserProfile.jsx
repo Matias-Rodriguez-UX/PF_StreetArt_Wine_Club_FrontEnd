@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useDispatch, useSelector } from 'react-redux';
 import axios from "axios";
-import { getAllUsers, createUser, editUserInfo } from "../../actions/userActions";
+import { getAllUsers, createUser, editUserInfo, getUserInfo } from "../../actions/userActions";
 import { Link } from "react-router-dom";
 import Footer from "../Footer";
 import Banner from "../Home/Banner";
@@ -13,6 +13,7 @@ import LoginButton from "../Login/LoginButton";
 import UserSideBar from "./UserSideBar/UserSideBar";
 import UserInfo from "./UserInfo";
 import UserOrders from "./UserOrders/UserOrders";
+import UserAddress from "./UserAddress/UserAddress";
 import UserMemberships from "./UserMemberships/UserMemberships";
 import EditUserProfileCard from "./EditUserProfileCard/EditUserProfileCard";
 import Wishlist from "./Wishlist/Wishlist";
@@ -25,10 +26,10 @@ export default function UserProfile() {
 
 
     const users = useSelector((state) => state.users.users);
+    const userInfo = useSelector((state) => state.users.userInfo);
 
     const [loading, setLoading] = useState(true)
     const [isAuthenticated, setIsAuthenticated] = useState(false);
-    const [userInfo, setUserInfo] = useState(null);
     const [currentPage, setCurrentPage] = useState('home');
 
     const { isLoading, isAuthenticated: auth, user } = useAuth0();
@@ -43,17 +44,18 @@ export default function UserProfile() {
             name: user.name,
             picture: user.picture
         }
-        console.log(userDb)
+        console.log(users)
     };
 
     useEffect(() => {
         if (userDb.email) {
             dispatch(createUser(userDb))
         }
-    }, [user, dispatch])
+    }, [user, dispatch]);
 
     useEffect(() => {
         dispatch(getAllUsers());
+        dispatch(getUserInfo(userDb.email));
         setLoading(isLoading);
         setIsAuthenticated(auth);
     }, [dispatch, isLoading, auth, user]);
@@ -69,13 +71,14 @@ export default function UserProfile() {
             <div className="row" >
                 <Banner />
                 <NavigationBar />
-                <UserSideBar className='col-3' userName={user.name} userPicture={user.picture} setCurrentPage={setCurrentPage} />
+                <UserSideBar className='col-3' userName={userInfo.fullname} userPicture={userInfo.avatar} setCurrentPage={setCurrentPage} />
 
-                <div className="container col-9">
-                    {currentPage === "home" && <UserInfo setCurrentPage={setCurrentPage} />}
+                <div className="container col-8">
+                    {currentPage === "home" && <UserInfo userName={userInfo.fullname} setCurrentPage={setCurrentPage} />}
                     {currentPage === "userinfo" && <UserInfo setCurrentPage={setCurrentPage} />}
                     {currentPage === "changeinfo" && <EditUserProfileCard setCurrentPage={setCurrentPage} />}
                     {currentPage === "orders" && <UserOrders />}
+                    {currentPage === "addresses" && <UserAddress />}
                     {currentPage === "memberships" && <UserMemberships />}
                     {currentPage === "wishlist" && <Wishlist />}
                 </div>

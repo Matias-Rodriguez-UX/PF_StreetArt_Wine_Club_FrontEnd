@@ -11,7 +11,7 @@ const headers = {
 export function getOrders() {
   return async function (dispatch) {
     try {
-      let orders = await axios.get("http://localhost:3001/orders", headers);
+      let orders = await axios.get("/orders", headers);
       return (
         dispatch({
           type: GET_ORDERS,

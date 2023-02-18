@@ -8,11 +8,15 @@ import Banner from '../../Home/Banner/index';
 import Footer from '../../Footer/index'
 import { Loader } from '../../Loader/index'
 import Swal from 'sweetalert2';
-import { getDetail, addToCart, getReviews, loadingAction } from "../../../actions";
+import { getDetail, addToCart, getReviews, loadingAction, deleteReviews } from "../../../actions";
 import ReviewsForm from "./Reviews/ReviewsForm";
 import { useAuth0 } from "@auth0/auth0-react";
 import ReviewsTemplate from "./Reviews/ReviewTemplate";
 import { addUserCart, updateUserCart } from "../../../actions/userActions";
+import { Button, Modal } from "react-bootstrap";
+import ReviewsEdit from "./Reviews/ReviewEdit";
+import { Rating } from "@mui/material";
+import LoginButton from "../../Login/LoginButton";
 
 export default function Detail(props) {
   const { isLoading, isAuthenticated: auth, user, isAuthenticated } = useAuth0();
@@ -21,6 +25,9 @@ export default function Detail(props) {
   const reviews = useSelector(state => state.products.reviews)
   const dispatch = useDispatch()
   const idProduct = props.match.params.id
+  const [showModalEdit, setShowModalEdit] = useState(false);
+  const [showModalDelete, setShowModalDelete] = useState(false);
+  const [selectedReview, setSelectedReview] = useState({});
   const currentUser = useSelector((state) => state.users.userInfo)
 
   useEffect(() => {
@@ -28,8 +35,8 @@ export default function Detail(props) {
     dispatch(getDetail(idProduct))
     dispatch(loadingAction(true))
     dispatch(getReviews(idProduct));
-  }, []);
-
+  }, [selectedReview]);
+  console.log(reviews)
   const wine = useSelector((state) => state.products.wineDetail);
 
   const addAlert = (cartQuantity, name) => {
@@ -71,37 +78,26 @@ export default function Detail(props) {
     }
   };
 
-//   const addCart = (id, cartQuantity, name, price) => {
-//     if(isAuthenticated){
-//         if(cart.some(el => el.id === id)){
-//             let updateWine = cart.find(el => el.id === id)
-//             dispatch(updateUserCart({
-//                 userId: currentUser.id,
-//                 totalPrice: price,
-//                 quantity: updateWine.cartQuantity + 1,
-//                 email: user.email,
-//                 productId: id,
-//             }))
-//             return addAlert(cartQuantity, name);
-//         }
-//          dispatch(addUserCart({
-//           userId: currentUser.id,
-//           totalPrice: price,
-//           quantity:1,
-//           email: user.email,
-//           productId: id,
-//         }))
-//         addAlert(cartQuantity, name);
-//       } 
-//       if(!isAuthenticated) {
-//         dispatch(addToCart(id, cartQuantity));
-//         addAlert(cartQuantity, name);
-//       }
-// }
-
   useEffect(() => {
     localStorage.setItem('cart', JSON.stringify(cart));
   }, [cart]);
+
+  const handleClickEditReview = (item) => {
+    setSelectedReview(item);
+    setShowModalEdit(true);
+  };
+  const handleClickDeleteReview = () => {
+    dispatch(deleteReviews(idProduct, selectedReview.id))
+    window.location.reload();
+  }
+  let medRating = 0
+  if (reviews.length) {
+    for (const review of reviews) {
+      medRating += review.rating
+    }
+    medRating = medRating / reviews.length
+  }
+
 
   return (
     <>
@@ -119,9 +115,12 @@ export default function Detail(props) {
             </div>
           </div>
           <div className="col col-6">
-            <h1>{wine.name}</h1>
-            <div className="product-price">
-              <h2>Price: <span>${wine.price}</span></h2>
+            <div className="d-flex align-items-center justify-content-between">
+              <h1>{wine.name}</h1>
+              <h2 className="me-4"><span>${wine.price}.00-</span></h2>
+            </div>
+            <div className="d-flex row align-items-stretch mt-2">
+              <Rating value={medRating} readOnly precision={0.1} className="col-3" /> <h6 className="col-3 text-muted mt-1">{medRating} from <a className="text-muted" style={{ textDecoration: 'none', color: '#292b2c' }} >{reviews.length} reviews</a></h6>
             </div>
             <div className="product-description">
               <ul>
@@ -148,13 +147,45 @@ export default function Detail(props) {
         <div className="container">
           {auth ?
             <ReviewsForm idProduct={idProduct} />
-            : <h3>You must be login to make a review</h3>}
+            : <div className='d-flex flex-column align-items-center gap-3 border border-3 rounded p-4 bg-light' style={{ height: '150px' }}  >
+              <h3 className="">You must be login to make a review</h3>
+              <LoginButton />
+            </div>}
         </div>
         <div className="col col-12 p-5" id="review">
-          <h3>REVIEWS</h3>
+          <h3 id="reviews">REVIEWS</h3>
+          <Modal show={showModalEdit} onHide={() => setShowModalEdit(false)} >
+            <Modal.Header closeButton>
+              <Modal.Title>Edit Review</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <ReviewsEdit selectedReview={selectedReview} setShowModalEdit={setShowModalEdit} />
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={() => setShowModalEdit(false)}>
+                Close
+              </Button>
+            </Modal.Footer>
+          </Modal>
+          <Modal show={showModalDelete} onHide={() => setShowModalDelete(false)} >
+            <Modal.Header closeButton>
+              <Modal.Title>Delete Review</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              You really want to delete the review
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="warning" onClick={() => setShowModalDelete(false)}>
+                No
+              </Button>
+              <Button variant="outline-danger" type="button" onClick={(e) => handleClickDeleteReview(e)} >
+                Yes
+              </Button>
+            </Modal.Footer>
+          </Modal>
         </div>
         {
-          reviews?.map((review, index) => <ReviewsTemplate key={review.id} review={review} />)
+          reviews?.map((review) => <ReviewsTemplate key={review.id} review={review} handleClickEditReview={handleClickEditReview} setShowModalDelete={setShowModalDelete} setSelectedReview={setSelectedReview} />)
         }
         <div className="col col-12">
           <Footer />
