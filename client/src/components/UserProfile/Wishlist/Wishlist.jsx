@@ -8,6 +8,7 @@ import FavButton from "./FavouriteButton";
 export default function Wishlist() {
   const dispatch = useDispatch();
   const favourites = useSelector((state) => state.users.userWishlist);
+  console.log(favourites)
   const userInfo = useSelector((state) => state.users.userInfo);
   //const showLoading = useSelector((state) => state.products.showLoading)
 

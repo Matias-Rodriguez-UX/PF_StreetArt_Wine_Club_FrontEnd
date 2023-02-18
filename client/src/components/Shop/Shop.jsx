@@ -14,6 +14,7 @@ import Sort from "./Sorts";
 import WebPagination from "./Pagination/Pagination";
 import SearchBar from "./SearchBar";
 import Swal from 'sweetalert2';
+import { deleteFavourite, postFavourite } from "../../actions/userActions";
 
 
 export default function Shop() {
@@ -101,8 +102,24 @@ export default function Shop() {
     const quantities = allQuantity()
     const prices = allPrices()
 
-
+    const userInfo = useSelector((state) => state.users.userInfo);
+    const favourites = useSelector((state) => state.users.userWishlist);
+    const [favorito, setFavorito] = useState(false);
     
+
+  const userEmail = {
+    email: userInfo.email
+  }
+
+    async function handleAgregarFavorito(id, userEmail ) {
+         dispatch(postFavourite(id, userEmail ))
+        setFavorito(true)      
+      } 
+
+      async function handleQuitarFavorito(id, userEmail ) {          
+             dispatch(deleteFavourite(id, userEmail))
+           setFavorito(false)
+       } 
 
     return (
         <>
@@ -137,6 +154,9 @@ export default function Shop() {
                                     price={el.price}
                                     id={el.id}
                                     addCart={addCart}
+                                    handleAgregarFavorito={handleAgregarFavorito}
+                                    handleQuitarFavorito={handleQuitarFavorito}
+                                    userEmail={userEmail}
                                 />
 
                             )
