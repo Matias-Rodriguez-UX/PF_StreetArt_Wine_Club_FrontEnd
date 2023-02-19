@@ -51,7 +51,7 @@ export default function Shop() {
 
     useEffect(() => {
         dispatch(getUserWishlist(userInfo.email))
-    }, [dispatch]);
+    }, [favorito]);
 
     function handleClick(e) {
         e.preventDefault()
