@@ -16,12 +16,14 @@ import {
   REMOVE_CART_QUANTITY,
   ADD_CART_TO_LOCALSTORAGE,
   GET_REVIEWS,
+  GET_USER_CART,
+  RESET_CART_LOG_OUT,
   POST_PRODUCTS,
   DELETE_PRODUCTS,
   UPDATE_PRODUCTS,
   DELETE_REVIEW,
   POST_REVIEW,
-  UPDATE_REVIEW
+  UPDATE_REVIEW,
 } from "../actions/allActions";
 
 const initialState = {
@@ -36,19 +38,16 @@ const initialState = {
   regions: [],
   states: [],
   grapes: [],
-  reviews: []
+  reviews: [],
 };
 
-
-
 export default function productsReducer(state = initialState, action) {
-
   switch (action.type) {
     case LOADING_ACTION:
       return {
         ...state,
-        showLoading: action.payload
-      }
+        showLoading: action.payload,
+      };
     case GET_PRODUCT_BY_ID:
       return {
         ...state,
@@ -96,10 +95,10 @@ export default function productsReducer(state = initialState, action) {
           action.payload === ""
             ? state.allProducts
             : state.allProducts.filter((el) =>
-              el.name
-                .split(" ")
-                .some((el) => el.includes(action.payload.split(" ")[0]))
-            ),
+                el.name
+                  .split(" ")
+                  .some((el) => el.includes(action.payload.split(" ")[0]))
+              ),
       };
 
     case ADD_TO_CART:
@@ -114,24 +113,26 @@ export default function productsReducer(state = initialState, action) {
         };
         let upDate = state.cart.map((product) =>
           product.id === id ? updatedProduct : product
-        )
+        );
 
         return {
           ...state,
-          cart: upDate
+          cart: upDate,
         };
       }
-      const resto = [...state.cart, addWineBox]
+      const resto = [...state.cart, addWineBox];
       return {
         ...state,
-        cart: resto
+        cart: resto,
       };
 
     case DELETE_FROM_CART:
-      const deletFromCart = state.cart.filter((product) => product.id !== action.payload)
+      const deletFromCart = state.cart.filter(
+        (product) => product.id !== action.payload
+      );
       return {
         ...state,
-        cart: deletFromCart
+        cart: deletFromCart,
       };
 
     case ADD_CART_TO_LOCALSTORAGE:
@@ -139,16 +140,37 @@ export default function productsReducer(state = initialState, action) {
         let updateProduct = state.cart.find(
           (el) => el.id === action.payload.id
         );
-        const lcSto = [...state.cart]
+        const lcSto = [...state.cart];
         return {
           ...state,
-          cart: lcSto
+          cart: lcSto,
         };
       }
-      const rest2 = [...state.cart, action.payload]
+      const rest2 = [...state.cart, action.payload];
       return {
         ...state,
-        cart: rest2
+        cart: rest2,
+      };
+
+    case GET_USER_CART:
+      if (!action.payload) return { ...state };
+      return {
+        ...state,
+        cart: action.payload.map((el) => {
+          return {
+            id: el.id,
+            name: el.name,
+            image: el.image,
+            cartQuantity: el.shoppingCart.quantity,
+            price: el.price,
+          };
+        }),
+      };
+
+    case RESET_CART_LOG_OUT:
+      return {
+        ...state,
+        cart: [],
       };
 
     case GET_TYPES:
@@ -177,10 +199,10 @@ export default function productsReducer(state = initialState, action) {
         product.id === action.payload
           ? { ...product, cartQuantity: product.cartQuantity + 1 }
           : product
-      )
+      );
       return {
         ...state,
-        cart: addProd
+        cart: addProd,
       };
 
     case REMOVE_CART_QUANTITY:
@@ -188,46 +210,45 @@ export default function productsReducer(state = initialState, action) {
         product.id === action.payload && product.cartQuantity > 0
           ? { ...product, cartQuantity: product.cartQuantity - 1 }
           : product
-      )
+      );
       return {
         ...state,
-        cart: remProd
+        cart: remProd,
       };
     case GET_REVIEWS:
       return {
         ...state,
-        reviews: action.payload
-      }
+        reviews: action.payload,
+      };
     case POST_PRODUCTS:
       return {
-        ...state
-      }
+        ...state,
+      };
     case DELETE_PRODUCTS:
       return {
-        ...state
-      }
+        ...state,
+      };
     case UPDATE_PRODUCTS:
       return {
-        ...state
-      }
+        ...state,
+      };
     case DELETE_REVIEW:
       return {
-        ...state
-      }
+        ...state,
+      };
     case POST_REVIEW:
       return {
-        ...state
-      }
+        ...state,
+      };
     case UPDATE_REVIEW:
       return {
-        ...state
-      }
+        ...state,
+      };
 
     default:
       return { ...state }; //!
   }
 }
-
 
 function sortArrayAtoZ(x, y) {
   if (x.name < y.name) {
