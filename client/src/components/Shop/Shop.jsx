@@ -15,7 +15,7 @@ import WebPagination from "./Pagination/Pagination";
 import SearchBar from "./SearchBar";
 import Swal from 'sweetalert2';
 import { deleteFavourite, getUserWishlist, postFavourite } from "../../actions/userActions";
-import { deleteFavourite, getUserWishlist, postFavourite } from "../../actions/userActions";
+
 
 
 export default function Shop() {
