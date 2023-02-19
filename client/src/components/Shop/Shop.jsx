@@ -28,6 +28,8 @@ export default function Shop() {
     const currentUser = useSelector((state) => state.users.userInfo)
     const [sort, setSort] = useState('')
 
+    const [getSwitch, setGetSwitch] = useState(false)
+
     const { user, isAuthenticated } = useAuth0();
 
     const [currentPage, setCurrentPage] = useState(1);
@@ -43,6 +45,16 @@ export default function Shop() {
         dispatch(loadingAction(true))
         dispatch(getProducts());
     }, [dispatch]);
+
+    useEffect(() => {
+        if(getSwitch){
+            dispatch(getUserCart(currentUser.id))
+            return setGetSwitch(false)
+        }
+        if(!isAuthenticated){
+            localStorage.setItem('cart', JSON.stringify(cart));
+        }
+    }, [dispatch, getSwitch, cart])
 
     function handleClick(e) {
         e.preventDefault()
@@ -89,7 +101,7 @@ export default function Shop() {
     const addAlert = (cartQuantity, name) => {
         Swal.fire({
             title: "YOUR PRODUCT WAS ADDED",
-            text: `You add ${name} \n Quantity Box ${cartQuantity}`,
+            text: `You have added ${cartQuantity} ${name} Box`,
             icon: 'success',
             timer: '4000',
             timerProgressBar: true,
@@ -109,6 +121,7 @@ export default function Shop() {
                     email: user.email,
                     productId: id,
                 }))
+                setGetSwitch(true)
                 return addAlert(cartQuantity, name);
             }
              dispatch(addUserCart({
@@ -118,6 +131,7 @@ export default function Shop() {
               email: user.email,
               productId: id,
             }))
+            setGetSwitch(true)
             addAlert(cartQuantity, name);
           } 
           if(!isAuthenticated) {

@@ -12,7 +12,7 @@ import { getDetail, addToCart, getReviews, loadingAction, deleteReviews } from "
 import ReviewsForm from "./Reviews/ReviewsForm";
 import { useAuth0 } from "@auth0/auth0-react";
 import ReviewsTemplate from "./Reviews/ReviewTemplate";
-import { addUserCart, updateUserCart } from "../../../actions/userActions";
+import { addUserCart, getUserCart, updateUserCart } from "../../../actions/userActions";
 import { Button, Modal } from "react-bootstrap";
 import ReviewsEdit from "./Reviews/ReviewEdit";
 import { Rating } from "@mui/material";
@@ -21,6 +21,8 @@ import LoginButton from "../../Login/LoginButton";
 export default function Detail(props) {
   const { isLoading, isAuthenticated: auth, user, isAuthenticated } = useAuth0();
   const [cartQuantity, setCartQuantity] = useState(1);
+  const [getSwitch, setGetSwitch] = useState(false)
+
   const cart = useSelector(state => state.products.cart)
   const reviews = useSelector(state => state.products.reviews)
   const dispatch = useDispatch()
@@ -36,7 +38,11 @@ export default function Detail(props) {
     dispatch(loadingAction(true))
     dispatch(getReviews(idProduct));
   }, [selectedReview]);
-  console.log(reviews)
+
+  useEffect(() => {
+    if(getSwitch) dispatch(getUserCart(currentUser.id))
+  })
+
   const wine = useSelector((state) => state.products.wineDetail);
 
   const addAlert = (cartQuantity, name) => {
@@ -65,6 +71,7 @@ export default function Detail(props) {
                 email: user.email,
                 productId: id,
             }))
+            setGetSwitch(true)
             return addAlert(cartQuantity, name);
       }
       dispatch(addUserCart({
@@ -74,12 +81,13 @@ export default function Detail(props) {
           email: user.email,
           productId: id,
       }))
+      setGetSwitch(true)
       addAlert(cartQuantity, name);
     }
   };
 
   useEffect(() => {
-    localStorage.setItem('cart', JSON.stringify(cart));
+    if(!isAuthenticated) localStorage.setItem('cart', JSON.stringify(cart));
   }, [cart]);
 
   const handleClickEditReview = (item) => {

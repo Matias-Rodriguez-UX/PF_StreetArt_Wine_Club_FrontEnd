@@ -11,6 +11,7 @@ import { NavDropdown } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux"
 import "./navbar.css"
 import { addCartToLs } from "../../actions";
+import { getUserCart } from "../../actions/userActions";
 
 
 export default function NavigationBar() {
@@ -20,13 +21,16 @@ export default function NavigationBar() {
   const cart = useSelector(state => state.products.cart)
   const dispatch = useDispatch()
   const userInfo = useSelector (state => state.users.userInfo);
-
+  
   useEffect(() => {
-    if(cart.length === 0){
+    if(cart.length === 0 && !isAuthenticated){
       const storedCart = JSON.parse(localStorage.getItem('cart')) || [];
       storedCart.forEach(item => dispatch(addCartToLs(item)));
     }
-  }, [dispatch]);
+    if(isAuthenticated && userInfo.id){
+      dispatch(getUserCart(userInfo.id))
+    }
+  }, [dispatch, userInfo.id]);
 
   return (
     <Navbar collapseOnSelect expand="lg" bg="light" variant="light" style={{ boxShadow: 'rgba(0, 0, 0, 0.1) 0px 4px 8px' }}>

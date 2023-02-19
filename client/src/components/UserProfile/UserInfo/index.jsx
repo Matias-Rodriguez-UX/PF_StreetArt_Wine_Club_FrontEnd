@@ -15,10 +15,6 @@ export default function UserInfo({ userName, setCurrentPage }) {
     userEmail = user.email
   };
 
-  useEffect(() => {
-    dispatch(getUserInfo(userEmail))
-}, [dispatch, user]);
-
   return (
     <div className="container col py-5 mt-5" display='flex'>
       <div class="col-md-8">
