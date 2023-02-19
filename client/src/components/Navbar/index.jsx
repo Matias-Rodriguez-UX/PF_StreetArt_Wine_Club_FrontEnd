@@ -29,6 +29,8 @@ export default function NavigationBar() {
     }
     if(isAuthenticated && userInfo.id){
       dispatch(getUserCart(userInfo.id))
+      const userJson = JSON.stringify(userInfo.email);
+    sessionStorage.setItem('user', userJson);
     }
   }, [dispatch, userInfo.id]);
 

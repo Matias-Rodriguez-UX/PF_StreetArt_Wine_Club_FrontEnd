@@ -10,6 +10,7 @@ export default function LogOutButton () {
 
     const logOutHandleClick = () => {
       dispatch(resetCart())
+      sessionStorage.removeItem('user');
       logout()
     }
 
