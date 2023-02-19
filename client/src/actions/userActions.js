@@ -1,18 +1,7 @@
-import {
-  GET_ALL_STATES,
-  GET_ALL_CITIES,
-  GET_ALL_USERS,
-  GET_USER_INFO,
-  CREATE_USER,
-  EDIT_USER,
-  GET_USER_ADDRESSES,
-  CREATE_USER_ADDRESS,
-  EDIT_USER_ADDRESS,
-  DELETE_USER_ADDRESS,
-  DELETE_USER,
-  ADD_TO_CART,
-  GET_USER_CART,
-} from "./allActions";
+import { GET_ALL_STATES, GET_ALL_CITIES, GET_ALL_USERS, GET_USER_INFO, CREATE_USER, EDIT_USER, GET_USER_ADDRESSES, CREATE_USER_ADDRESS, EDIT_USER_ADDRESS,DELETE_USER_ADDRESS, 
+DELETE_USER, GET_WISHLIST, POST_WISHLIST, DELETE_FAVOURITE,  ADD_TO_CART,
+  GET_USER_CART, } from "./allActions";
+
 import axios from "axios";
 import { loadingAction } from ".";
 
@@ -206,4 +195,49 @@ export function deleteUserCart(userId, productId) {
       console.log("Error", error);
     }
   };
+
+};
+
+export function getUserWishlist(email){
+  return async function (dispatch) {
+    try {
+      let wishlist = await axios.get(`/users/favourites/${email}`)
+      dispatch({
+        type: GET_WISHLIST,
+        payload: wishlist.data
+      })
+    } catch (e) {
+      console.log("Error", e)
+    }
+  }
 }
+
+export function postFavourite (id, email){
+  return async function (dispatch) {
+    try {
+      console.log(email)
+      let wishlist = await axios.post(`/users/fav/${email}/${id}`);
+      return dispatch({
+        type: POST_WISHLIST,
+        payload: wishlist.data
+      });
+    } catch (error) {
+      console.log("ERROR", error)
+    }
+  };
+};
+
+export function deleteFavourite (id, email){
+ 
+  return async function (dispatch) {
+    try {
+      var wishlist = await axios.delete(`/users/deleteFav/${email}/${id}`);
+      return dispatch({
+        type: DELETE_FAVOURITE,
+        payload:wishlist.data
+     })
+    } catch (error) {
+      console.log("Error", error);
+    }
+  };
+};

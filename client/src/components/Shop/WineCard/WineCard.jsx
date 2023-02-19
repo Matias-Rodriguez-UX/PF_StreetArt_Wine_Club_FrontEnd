@@ -1,15 +1,50 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Card, Button } from 'react-bootstrap';
+import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { getUserWishlist, postFavourite } from '../../../actions/userActions';
+import FavButton from '../../UserProfile/Wishlist/FavouriteButton';
 import './Card.css'
 
+const Winecards = ({ name, winery, price, image, id, addCart, handleAgregarFavorito, userEmail, handleQuitarFavorito, favourites }) => {
+ const dispatch = useDispatch();
+ const [favorito, setFavorito] = useState(false);
+ const userInfo = useSelector((state) => state.users.userInfo);
 
-const Winecards = ({ name, winery, price, image, id, addCart }) => {
+useEffect(() => {
+  if(userInfo){
+  dispatch(getUserWishlist(userInfo.email));
+  }
+}, [dispatch, favorito]);
+
+useEffect(() => {
+  if (favourites && favourites.products.find((e) => e.id === id)) {
+    setFavorito(true);
+  } else {
+    setFavorito(false);
+  }
+}, [favourites, id]);
 
   return (
     <Card className="cardWine" style={{ width: '18rem', height: '32rem' }}>
+      <div className='heart'>
+         <i
+          onClick={() => {
+            if (favorito) {
+              handleQuitarFavorito(id, userEmail);
+              setFavorito(false);
+            } else {
+              handleAgregarFavorito(id, userEmail);
+              setFavorito(true);
+            }
+          }}
+          className={favorito ? 'bi bi-heart-fill' : 'bi bi-heart'}
+        ></i>
+      </div>
+     
       <Link to={"/shop/" + id} ><Card.Img variant="top" src={image} /></Link>
       <Card.Body className="d-flex flex-column align-items-center justify-content-evenly">
+     
         <Card.Title style={{ fontSize: "24px" }}><strong>{name}</strong></Card.Title>
         {winery.map(wine => (
           <Card.Text className="text-center mb-0" style={{ fontSize: '12px' }}>
@@ -24,7 +59,6 @@ const Winecards = ({ name, winery, price, image, id, addCart }) => {
             </svg>
             <strong>Buy</strong>
           </button>
-        
       </Card.Body>
     </Card>
   );

@@ -14,13 +14,18 @@ import Sort from "./Sorts";
 import WebPagination from "./Pagination/Pagination";
 import SearchBar from "./SearchBar";
 import Swal from 'sweetalert2';
+import { deleteFavourite, getUserWishlist, postFavourite } from "../../actions/userActions";
 import { getUserCart, getUserInfo, updateUserCart } from "../../actions/userActions";
 import { useAuth0 } from "@auth0/auth0-react";
 import { addUserCart } from "../../actions/userActions";
 
 
+
 export default function Shop() {
     const dispatch = useDispatch()
+    const userInfo = useSelector((state) => state.users.userInfo);
+    const favourites = useSelector((state) => state.users.userWishlist);
+
     const showLoading = useSelector((state) => state.products.showLoading)
     const allProducts = useSelector((state) => state.products.allProducts)
     const Products = useSelector((state) => state.products.products)
@@ -42,8 +47,15 @@ export default function Shop() {
     };
     
     useEffect(() => {
+        if(userInfo){
+        dispatch(getUserWishlist(userInfo.email));
+        }
+      }, [dispatch]);
+
+    useEffect(() => {
         dispatch(loadingAction(true))
         dispatch(getProducts());
+        
     }, [dispatch]);
 
     useEffect(() => {
@@ -61,8 +73,6 @@ export default function Shop() {
         dispatch(loadingAction(true))
         dispatch(getProducts())
     }
-
-    
 
     const allGrapes = () => {
         let grapes = []
@@ -146,8 +156,22 @@ export default function Shop() {
     const quantities = allQuantity()
     const prices = allPrices()
 
-
     
+   
+    
+if(userInfo){
+    userEmail: userInfo.email
+}
+
+   function handleAgregarFavorito(id, userEmail ) {
+         dispatch(postFavourite(id, userEmail ))
+         
+      } 
+
+    function handleQuitarFavorito(id, userEmail ) {          
+             dispatch(deleteFavourite(id, userEmail))
+             
+       } 
 
     useEffect(() => {
         if(!currentUser.id && isAuthenticated){
@@ -192,6 +216,12 @@ export default function Shop() {
                                     price={el.price}
                                     id={el.id}
                                     addCart={addCart}
+                                    handleAgregarFavorito={handleAgregarFavorito}
+                                    handleQuitarFavorito={handleQuitarFavorito}
+                                    // favorito={favorito}
+                                    userEmail={userInfo.email}
+                                    favourites={favourites}
+                                    key={el.id}
                                 />
 
                             )

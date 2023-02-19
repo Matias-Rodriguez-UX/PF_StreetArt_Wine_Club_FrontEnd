@@ -1,26 +1,18 @@
-import {
-  GET_ALL_USERS,
-  GET_USER_ADDRESSES,
-  GET_USER_INFO,
-  CREATE_USER,
-  EDIT_USER,
-  CREATE_USER_ADDRESS,
-  EDIT_ADDRESS,
-  DELETE_USER_ADDRESS,
-  GET_ALL_STATES,
-  GET_ALL_CITIES,
-  EDIT_USER_ADDRESS,
-} from "../actions/allActions";
+
+import { GET_ALL_USERS, GET_USER_ADDRESSES, GET_USER_INFO, CREATE_USER, EDIT_USER, 
+CREATE_USER_ADDRESS, EDIT_ADDRESS, DELETE_USER_ADDRESS, GET_ALL_STATES, GET_ALL_CITIES, 
+EDIT_USER_ADDRESS, GET_WISHLIST, POST_WISHLIST, DELETE_FAVOURITE } from "../actions/allActions";
 
 const initialState = {
-  states: [],
-  cities: [],
-  users: [],
-  allUsers: [],
-  userInfo: {},
-  userAddresses: [],
-};
+    states: [],
+    cities:[],
+    users: [],
+    allUsers: [],
+    userInfo: {},
+    userAddresses: [],
+    userWishlist: []
 
+}
 export default function rootReducer(state = initialState, action) {
   switch (action.type) {
     case GET_ALL_STATES:
@@ -73,13 +65,26 @@ export default function rootReducer(state = initialState, action) {
       return {
         ...state,
       };
+        case EDIT_USER_ADDRESS:
+            return{
+                ...state
+             };
+        case GET_WISHLIST:
+            return{
+                ...state,
+                userWishlist: action.payload
+            }
+        case POST_WISHLIST:
+            return{
+                ...state
+            }
+        case DELETE_FAVOURITE:
+            return{
+                ...state
+            }
+        
+        default:
+            return {...state}
+    };
+};
 
-    case EDIT_USER_ADDRESS:
-      return {
-        ...state,
-      };
-
-    default:
-      return { ...state };
-  }
-}

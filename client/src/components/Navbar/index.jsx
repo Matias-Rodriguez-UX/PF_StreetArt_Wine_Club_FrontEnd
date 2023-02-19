@@ -21,7 +21,7 @@ export default function NavigationBar() {
   const cart = useSelector(state => state.products.cart)
   const dispatch = useDispatch()
   const userInfo = useSelector (state => state.users.userInfo);
-  
+
   useEffect(() => {
     if(cart.length === 0 && !isAuthenticated){
       const storedCart = JSON.parse(localStorage.getItem('cart')) || [];
