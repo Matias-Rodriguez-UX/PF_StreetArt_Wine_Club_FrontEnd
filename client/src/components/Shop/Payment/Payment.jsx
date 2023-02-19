@@ -14,6 +14,7 @@ export default function Paypal(){
     const { user, isAuthenticated } = useAuth0();
     const [storedCart, setStoredCart] = useLocalStorage("cart", []);
     const cart = useSelector((state) => state.products.cart);
+    const userInfo = useSelector((state) => state.users.userInfo);
     const dispatch = useDispatch();
   
     const total = cart.reduce((acc, product) => {
@@ -34,10 +35,6 @@ export default function Paypal(){
       return actions.order.capture(handlePay(total));
     }
     
-    function handlePay() {
-      console.log("el pago ha sido exitoso desde la we");
-    }
-
     function handlePay (total) {
       Swal.fire({
         title: `Your purchase by ${total},00 It was successful!`,
@@ -47,6 +44,7 @@ export default function Paypal(){
         allowOutsideClick: true,
         confirmButtonColor: '#ffc107'
       })
+
     }
     // useEffect(() => {
     //   if (storedCart.length === 0 && cart.length > 0) {
@@ -99,40 +97,25 @@ export default function Paypal(){
           <h4 className="mb-3">Billing address</h4>
           <form className="needs-validation" novalidate>
             <div className="row">
-              <div className="col-md-6 mb-3">
-                <label for="firstName">First name</label>
-                <input type="text" className="form-control" id="firstName" placeholder="" value="" required/>
+              <div className="mb-3">
+                <label for="firstName">Full name</label>
+                <input type="text" className="form-control" id="firstName" placeholder="" value={userInfo.fullname} required/>
                 <div className="invalid-feedback">
-                  Valid first name is required.
-                </div>
-              </div>
-              <div className="col-md-6 mb-3">
-                <label for="lastName">Last name</label>
-                <input type="text" className="form-control" id="lastName" placeholder="" value="" required/>
-                <div className="invalid-feedback">
-                  Valid last name is required.
+                  Valid full name is required.
                 </div>
               </div>
             </div>
     
             <div className="mb-3">
-              <label for="username">Username</label>
+              <label for="username">Email</label>
               <div className="input-group">
                 <div className="input-group-prepend">
                   <span className="input-group-text">@</span>
                 </div>
-                <input type="text" className="form-control" id="username" placeholder="Username" required/>
+                <input type="text" className="form-control" id="username" value={userInfo.email} required/>
                 <div className="invalid-feedback">
                   Your username is required.
                 </div>
-              </div>
-            </div>
-    
-            <div className="mb-3">
-              <label for="email">Email <span className="text-muted">(Optional)</span></label>
-              <input type="email" className="form-control" id="email" placeholder="you@example.com"/>
-              <div className="invalid-feedback">
-                Please enter a valid email address for shipping updates.
               </div>
             </div>
     

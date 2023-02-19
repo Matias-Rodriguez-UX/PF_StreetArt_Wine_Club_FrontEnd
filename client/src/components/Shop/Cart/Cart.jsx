@@ -10,7 +10,6 @@ import Banner from '../../Home/Banner/index';
 import Footer from '../../Footer/index';
 import "./Cart.css"
 import useLocalStorage from  '../../../useLocalStorage';
-const PayPalButton = window.paypal.Buttons.driver("react", { React, ReactDOM });
 export default function Cart(){
   const { user, isAuthenticated } = useAuth0();
   const [storedCart, setStoredCart] = useLocalStorage("cart", []);
@@ -19,20 +18,7 @@ export default function Cart(){
   const total = cart.reduce((acc, product) => {
     return acc + product.price * product.cartQuantity;
   }, 0);
-  const createOrder = (data, actions) => {
-    return actions.order.create({
-      purchase_units: [
-        {
-          amount: {
-            value: total,
-          },
-        },
-      ],
-    });
-  }
-  const onApprove = (data, actions) => {
-    return actions.order.capture();
-  }
+
   const dispatch = useDispatch();
 
   // useEffect(() => {
@@ -112,19 +98,13 @@ export default function Cart(){
           <div className="col col-12">
             {isAuthenticated ?
                 (
-                  <div className="col col-12">
-                    <h1>{total}</h1>
-                    <PayPalButton
-                      createOrder={(data, actions) => createOrder(data, actions)}
-                      onApprove={(data, actions) => onApprove(data, actions)}
-                    />
+                  <div className="container d-flex align-items-center">
                     <Link to={"/payment"}><button type="button" class="btn btn-warning btn-lg">BUY PRODUCT</button></Link> 
                   </div>
                 ) :
                 (
-                  <div className="col col-12">
-                    <button type="button" className="btn btn-warning btn-lg">Register</button>
-                    <Link to={"/payment"}><button type="button" class="btn btn-warning btn-lg">BUY PRODUCT</button></Link> 
+                  <div className="container d-flex align-items-center">
+                    <button type="button" className="btn btn-warning btn-lg">Register</button> 
               
                   </div>
                 )
