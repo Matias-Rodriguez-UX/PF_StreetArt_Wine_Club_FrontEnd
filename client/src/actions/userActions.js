@@ -1,9 +1,12 @@
+import { useAuth0 } from "@auth0/auth0-react";
+// const { isLoading, isAuthenticated: auth, user } = useAuth0();
 import { GET_ALL_STATES, GET_ALL_CITIES, GET_ALL_USERS, GET_USER_INFO, CREATE_USER, EDIT_USER, GET_USER_ADDRESSES, CREATE_USER_ADDRESS, EDIT_USER_ADDRESS,DELETE_USER_ADDRESS, 
 DELETE_USER, GET_WISHLIST, POST_WISHLIST, DELETE_FAVOURITE,  ADD_TO_CART,
   GET_USER_CART, } from "./allActions";
 
 import axios from "axios";
 import { loadingAction } from ".";
+import {instance} from '../axiosInstance.jsx';
 
 const headers = {
   headers: {
