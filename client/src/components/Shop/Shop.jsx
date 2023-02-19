@@ -15,6 +15,7 @@ import WebPagination from "./Pagination/Pagination";
 import SearchBar from "./SearchBar";
 import Swal from 'sweetalert2';
 import { deleteFavourite, getUserWishlist, postFavourite } from "../../actions/userActions";
+import { deleteFavourite, getUserWishlist, postFavourite } from "../../actions/userActions";
 
 
 export default function Shop() {
@@ -45,7 +46,12 @@ export default function Shop() {
     useEffect(() => {
         dispatch(loadingAction(true))
         dispatch(getProducts());
+        
     }, [dispatch]);
+
+    useEffect(() => {
+        dispatch(getUserWishlist(userInfo.email))
+    }, [favorito]);
 
     function handleClick(e) {
         e.preventDefault()
@@ -161,7 +167,7 @@ export default function Shop() {
                                     id={el.id}
                                     addCart={addCart}
                                     handleAgregarFavorito={handleAgregarFavorito}
-                                    handleQuitarFavorito={handleQuitarFavorito}
+                                    favorito={favorito}
                                     userEmail={userEmail}
                                     favourites={favourites}
                                     key={el.id}
