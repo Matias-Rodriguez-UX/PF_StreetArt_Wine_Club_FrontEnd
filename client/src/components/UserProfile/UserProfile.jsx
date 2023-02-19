@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useDispatch, useSelector } from 'react-redux';
 import axios from "axios";
-import { getAllUsers, createUser, editUserInfo, getUserInfo } from "../../actions/userActions";
+import { getAllUsers, createUser, editUserInfo, getUserInfo, getUserWishlist } from "../../actions/userActions";
 import { Link } from "react-router-dom";
 import Footer from "../Footer";
 import Banner from "../Home/Banner";
@@ -27,7 +27,7 @@ export default function UserProfile() {
 
     const users = useSelector((state) => state.users.users);
     const userInfo = useSelector((state) => state.users.userInfo);
-
+    const favourites = useSelector((state) => state.users.userWishlist);
     const [loading, setLoading] = useState(true)
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [currentPage, setCurrentPage] = useState('home');
@@ -46,10 +46,11 @@ export default function UserProfile() {
 
     useEffect(() => {
         if (userDb.email) {
-            dispatch(createUser(userDb))
+            dispatch(createUser(userDb));
+            dispatch(getUserWishlist(userDb.email));
         }
     }, [user, dispatch]);
-
+     
     useEffect(() => {
         dispatch(getAllUsers());
         dispatch(getUserInfo(userDb.email));
@@ -77,7 +78,7 @@ export default function UserProfile() {
                     {currentPage === "orders" && <UserOrders />}
                     {currentPage === "addresses" && <UserAddress />}
                     {currentPage === "memberships" && <UserMemberships />}
-                    {currentPage === "wishlist" && <Wishlist />}
+                    {currentPage === "wishlist" && <Wishlist favourites={favourites} />}
                 </div>
 
 

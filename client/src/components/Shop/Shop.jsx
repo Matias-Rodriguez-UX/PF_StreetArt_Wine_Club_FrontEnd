@@ -14,11 +14,14 @@ import Sort from "./Sorts";
 import WebPagination from "./Pagination/Pagination";
 import SearchBar from "./SearchBar";
 import Swal from 'sweetalert2';
-import { deleteFavourite, postFavourite } from "../../actions/userActions";
+import { deleteFavourite, getUserWishlist, postFavourite } from "../../actions/userActions";
 
 
 export default function Shop() {
     const dispatch = useDispatch()
+    const userInfo = useSelector((state) => state.users.userInfo);
+    const favourites = useSelector((state) => state.users.userWishlist);
+
     const showLoading = useSelector((state) => state.products.showLoading)
     const allProducts = useSelector((state) => state.products.allProducts)
     const Products = useSelector((state) => state.products.products)
@@ -33,6 +36,12 @@ export default function Shop() {
         setCurrentPage(pageNumber)
     };
     
+    useEffect(() => {
+        if(userInfo){
+        dispatch(getUserWishlist(userInfo.email));
+        }
+      }, [dispatch]);
+
     useEffect(() => {
         dispatch(loadingAction(true))
         dispatch(getProducts());
@@ -102,23 +111,20 @@ export default function Shop() {
     const quantities = allQuantity()
     const prices = allPrices()
 
-    const userInfo = useSelector((state) => state.users.userInfo);
-    const favourites = useSelector((state) => state.users.userWishlist);
-    const [favorito, setFavorito] = useState(false);
+    
+   
     
 
   const userEmail = {
     email: userInfo.email
   }
 
-    async function handleAgregarFavorito(id, userEmail ) {
+   function handleAgregarFavorito(id, userEmail ) {
          dispatch(postFavourite(id, userEmail ))
-        setFavorito(true)      
       } 
 
-      async function handleQuitarFavorito(id, userEmail ) {          
+    function handleQuitarFavorito(id, userEmail ) {          
              dispatch(deleteFavourite(id, userEmail))
-           setFavorito(false)
        } 
 
     return (
@@ -157,6 +163,8 @@ export default function Shop() {
                                     handleAgregarFavorito={handleAgregarFavorito}
                                     handleQuitarFavorito={handleQuitarFavorito}
                                     userEmail={userEmail}
+                                    favourites={favourites}
+                                    key={el.id}
                                 />
 
                             )

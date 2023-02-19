@@ -1,30 +1,32 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { loadingAction } from "../../../actions";
-import { getUserWishlist, postFavourite } from "../../../actions/userActions";
+import { deleteFavourite, getUserWishlist, postFavourite } from "../../../actions/userActions";
 import Winecards from "../../Shop/WineCard/WineCard";
 import FavButton from "./FavouriteButton";
 
-export default function Wishlist() {
+export default function Wishlist({favourites}) {
   const dispatch = useDispatch();
-  const favourites = useSelector((state) => state.users.userWishlist);
+  // const favourites = useSelector((state) => state.users.userWishlist);
   console.log(favourites)
   const userInfo = useSelector((state) => state.users.userInfo);
   //const showLoading = useSelector((state) => state.products.showLoading)
 
-  /* const [favorito, setFavorito] = useState(false); */
-
-  /* function handleAgregarFavorito(e) {
-    setFavorito(true);
-    // Aquí se podría agregar el producto a una lista de favoritos en el estado de la aplicación
-    dispatch(postFavourite(favourites.products.id, userInfo.email))
-  } */
-
 
   useEffect(() => {
-    dispatch(loadingAction(true))
+    if(userInfo){
+      dispatch(loadingAction(true))
     dispatch(getUserWishlist(userInfo.email));
+    }
   }, [dispatch]);
+
+  function handleAgregarFavorito(id, userEmail ) {
+    dispatch(postFavourite(id, userEmail ))
+ } 
+
+function handleQuitarFavorito(id, userEmail ) {          
+        dispatch(deleteFavourite(id, userEmail))
+  } 
 
   return (
     <>
@@ -33,11 +35,17 @@ export default function Wishlist() {
           {favourites.products.map((el) => {
               return (
                   <Winecards
-                  image={el.image}
-                  name={el.name}
-                  winery={el.winery}
-                  price={el.price}
-                  id={el.id}
+                                    image={el.image}
+                                    name={el.name}
+                                    winery={el.winery}
+                                    price={el.price}
+                                    id={el.id}
+                                    // addCart={addCart}
+                                    handleAgregarFavorito={handleAgregarFavorito}
+                                    handleQuitarFavorito={handleQuitarFavorito}
+                                    userEmail={userInfo.email}
+                                    favourites={favourites}
+                                    key={el.id}
                   />
             );
           })}
