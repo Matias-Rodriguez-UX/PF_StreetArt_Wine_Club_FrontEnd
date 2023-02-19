@@ -9,6 +9,7 @@ import NavigationBar from "../../Navbar/index";
 import Banner from '../../Home/Banner/index';
 import Footer from '../../Footer/index';
 import useLocalStorage from  '../../../useLocalStorage';
+import { statusCart, deleteCart } from "../../../actions/userActions";
 const PayPalButton = window.paypal.Buttons.driver("react", { React, ReactDOM });
 export default function Paypal(){
     const { user, isAuthenticated } = useAuth0();
@@ -44,7 +45,13 @@ export default function Paypal(){
         allowOutsideClick: true,
         confirmButtonColor: '#ffc107'
       })
-
+      dispatch(statusCart({
+        email: userInfo.email,
+        status: 'processing shipping'
+      }))
+      /* dispatch(deleteCart(
+         userInfo.id,
+      )) */
     }
     // useEffect(() => {
     //   if (storedCart.length === 0 && cart.length > 0) {

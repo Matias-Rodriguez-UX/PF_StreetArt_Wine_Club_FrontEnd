@@ -9,8 +9,7 @@ import NavigationBar from "../../Navbar/index";
 import Banner from '../../Home/Banner/index';
 import Footer from '../../Footer/index';
 import "./Cart.css"
-import { useAuth0 } from "@auth0/auth0-react";
-import { deleteUserCart, getUserCart, getUserInfo, updateUserCart } from "../../../actions/userActions";
+import { deleteUserCart, getUserCart, getUserInfo, updateUserCart, statusCart } from "../../../actions/userActions";
 
 export default function Cart() {
   const cart = useSelector((state) => state.products.cart);
@@ -90,6 +89,16 @@ export default function Cart() {
       setGetSwitch(true)
     }
   }
+  
+  const statusOrder = 'processing payment';
+  const emailUser = currentUser.email;
+  console.log(statusOrder, emailUser);
+  const handleStatus = () => {
+    dispatch(statusCart({
+      email: currentUser.email,
+      status: 'processing payment'
+    }))
+  }
 
   return (
     <>
@@ -151,7 +160,7 @@ export default function Cart() {
             {isAuthenticated ?
                 (
                   <div className="container d-flex align-items-center">
-                    <Link to={"/payment"}><button type="button" class="btn btn-warning btn-lg">BUY PRODUCT</button></Link> 
+                    <Link to={"/payment"}><button type="button" class="btn btn-warning btn-lg" onClick={handleStatus}>BUY PRODUCT</button></Link> 
                   </div>
                 ) :
                 (

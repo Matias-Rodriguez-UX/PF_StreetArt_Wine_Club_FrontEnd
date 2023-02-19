@@ -160,7 +160,7 @@ export function editUserAddress(payload) {
 
 export function addUserCart(payload) {
   return async function () {
-    console.log("PAYLOAD: ", payload);
+    /* console.log("PAYLOAD: ", payload); */
     try {
       await axios.post(
         `http://localhost:3001/users/${payload.userId}/cart`,
@@ -200,6 +200,34 @@ export function deleteUserCart(userId, productId) {
     try {
       let result = await axios.delete(
         `http://localhost:3001/users/${userId}/cart/${productId}`
+      );
+      console.log(result);
+    } catch (error) {
+      console.log("Error", error);
+    }
+  };
+}
+
+export function statusCart(payload) {
+  return async function () {
+    console.log("PAYLOAD: ", payload);
+    try {
+      let result = await axios.put(
+        `http://localhost:3001/orders/checkout`,payload 
+      );
+      console.log(result);
+    } catch (error) {
+      console.log("Error", error);
+    }
+  };
+}
+
+export function deleteCart(userId) {
+  return async function () {
+    console.log("PAYLOAD: ", userId);
+    try {
+      let result = await axios.delete(
+        `http://localhost:3001/users/${userId}/cart`
       );
       console.log(result);
     } catch (error) {
