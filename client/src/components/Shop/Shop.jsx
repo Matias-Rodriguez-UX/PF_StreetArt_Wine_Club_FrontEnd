@@ -221,7 +221,6 @@ if(userInfo){
                                     // favorito={favorito}
                                     userEmail={userInfo.email}
                                     favourites={favourites}
-                                    key={el.id}
                                 />
 
                             )
