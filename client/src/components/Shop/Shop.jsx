@@ -51,7 +51,7 @@ export default function Shop() {
 
     useEffect(() => {
         dispatch(getUserWishlist(userInfo.email))
-    }, [favorito]);
+    }, [dispatch]);
 
     function handleClick(e) {
         e.preventDefault()
@@ -59,7 +59,7 @@ export default function Shop() {
         dispatch(getProducts())
     }
 
-
+console.log(favourites)
     const allGrapes = () => {
         let grapes = []
         grapes = allProducts.map(product => product.grapes?.map(grape => grape.name))
@@ -120,10 +120,9 @@ export default function Shop() {
     
    
     
-
-  const userEmail = {
-    email: userInfo.email
-  }
+if(userInfo){
+    userEmail: userInfo.email
+}
 
    function handleAgregarFavorito(id, userEmail ) {
          dispatch(postFavourite(id, userEmail ))
@@ -167,8 +166,9 @@ export default function Shop() {
                                     id={el.id}
                                     addCart={addCart}
                                     handleAgregarFavorito={handleAgregarFavorito}
-                                    favorito={favorito}
-                                    userEmail={userEmail}
+                                    handleQuitarFavorito={handleQuitarFavorito}
+                                    // favorito={favorito}
+                                    userEmail={userInfo.email}
                                     favourites={favourites}
                                     key={el.id}
                                 />

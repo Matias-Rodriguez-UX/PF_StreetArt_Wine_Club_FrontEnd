@@ -12,15 +12,22 @@ const Winecards = ({ name, winery, price, image, id, addCart, handleAgregarFavor
  const userInfo = useSelector((state) => state.users.userInfo);
 console.log(favourites)
 console.log(id)
+
+
 useEffect(() => {
   if(userInfo){
   dispatch(getUserWishlist(userInfo.email));
   }
-}, [dispatch]);
+}, [dispatch, favorito]);
 // console.log(favourites.products.find(e=>e.id ===id))
 useEffect(() => {
-  favourites?.products.find(e=>e.id ===id)?
+  if(favourites){
+    favourites.products.find(e=>e.id ===id)?
     setFavorito(true):setFavorito(false)
+  }else{
+    setFavorito(false)
+  }
+  
 }, [dispatch]);
 
 

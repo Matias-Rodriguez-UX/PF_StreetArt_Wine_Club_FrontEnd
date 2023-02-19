@@ -165,7 +165,8 @@ export function getUserWishlist(email){
 export function postFavourite (id, email){
   return async function (dispatch) {
     try {
-      let wishlist = await axios.post(`/users/fav/${id}`, email);
+      console.log(email)
+      let wishlist = await axios.post(`/users/fav/${email}/${id}`);
       return dispatch({
         type: POST_WISHLIST,
         payload: wishlist.data
@@ -177,9 +178,10 @@ export function postFavourite (id, email){
 };
 
 export function deleteFavourite (id, email){
+ 
   return async function (dispatch) {
     try {
-      var wishlist = await axios.delete(`/users/deleteFav/${id}`, email);
+      var wishlist = await axios.delete(`/users/deleteFav/${email}/${id}`);
       return dispatch({
         type: DELETE_FAVOURITE,
         payload:wishlist.data
