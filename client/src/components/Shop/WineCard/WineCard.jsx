@@ -19,8 +19,11 @@ useEffect(() => {
 }, [dispatch]);
 // console.log(favourites.products.find(e=>e.id ===id))
 useEffect(() => {
-  favourites?.products.find(e=>e.id ===id)?
+  if(favourites){
+    favourites.products.find(e=>e.id ===id)?
     setFavorito(true):setFavorito(false)
+  }
+  
 }, [dispatch]);
 
 
