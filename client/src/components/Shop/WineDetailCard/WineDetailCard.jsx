@@ -12,14 +12,17 @@ import { getDetail, addToCart, getReviews, loadingAction, deleteReviews } from "
 import ReviewsForm from "./Reviews/ReviewsForm";
 import { useAuth0 } from "@auth0/auth0-react";
 import ReviewsTemplate from "./Reviews/ReviewTemplate";
+import { addUserCart, getUserCart, updateUserCart } from "../../../actions/userActions";
 import { Button, Modal } from "react-bootstrap";
 import ReviewsEdit from "./Reviews/ReviewEdit";
 import { Rating } from "@mui/material";
 import LoginButton from "../../Login/LoginButton";
 
 export default function Detail(props) {
-  const { isLoading, isAuthenticated: auth, user } = useAuth0();
+  const { isLoading, isAuthenticated: auth, user, isAuthenticated } = useAuth0();
   const [cartQuantity, setCartQuantity] = useState(1);
+  const [getSwitch, setGetSwitch] = useState(false)
+
   const cart = useSelector(state => state.products.cart)
   const reviews = useSelector(state => state.products.reviews)
   const dispatch = useDispatch()
@@ -27,6 +30,7 @@ export default function Detail(props) {
   const [showModalEdit, setShowModalEdit] = useState(false);
   const [showModalDelete, setShowModalDelete] = useState(false);
   const [selectedReview, setSelectedReview] = useState({});
+  const currentUser = useSelector((state) => state.users.userInfo)
 
   useEffect(() => {
     dispatch(loadingAction(true))
@@ -34,7 +38,11 @@ export default function Detail(props) {
     dispatch(loadingAction(true))
     dispatch(getReviews(idProduct));
   }, [selectedReview]);
-  console.log(reviews)
+
+  useEffect(() => {
+    if(getSwitch) dispatch(getUserCart(currentUser.id))
+  })
+
   const wine = useSelector((state) => state.products.wineDetail);
 
   const addAlert = (cartQuantity, name) => {
@@ -48,13 +56,38 @@ export default function Detail(props) {
       confirmButtonColor: '#ffc107'
     })
   }
-  const handleClick = (id, cartQuantity, name) => {
-    dispatch(addToCart(id, cartQuantity));
-    addAlert(cartQuantity, name);
+  const handleClick = (id, cartQuantity, name, price) => {
+    if(!isAuthenticated) {
+      dispatch(addToCart(id, cartQuantity));
+      addAlert(cartQuantity, name);
+    }
+    if(isAuthenticated) {
+      if(cart.some(el => el.id === id)){
+        let updateWine = cart.find(el => el.id === id)
+            dispatch(updateUserCart({
+                userId: currentUser.id,
+                totalPrice: price,
+                quantity: updateWine.cartQuantity + parseInt(cartQuantity),
+                email: user.email,
+                productId: id,
+            }))
+            setGetSwitch(true)
+            return addAlert(cartQuantity, name);
+      }
+      dispatch(addUserCart({
+          userId: currentUser.id,
+          totalPrice: price,
+          quantity:cartQuantity,
+          email: user.email,
+          productId: id,
+      }))
+      setGetSwitch(true)
+      addAlert(cartQuantity, name);
+    }
   };
 
   useEffect(() => {
-    localStorage.setItem('cart', JSON.stringify(cart));
+    if(!isAuthenticated) localStorage.setItem('cart', JSON.stringify(cart));
   }, [cart]);
 
   const handleClickEditReview = (item) => {
@@ -109,7 +142,8 @@ export default function Detail(props) {
               <div className="input-cart">
                 <label class="form-label" for="typeNumber">Number of boxes</label>
                 <input type="number" id="typeNumber" class="form-control" placeholder="1" value={cartQuantity} onChange={e => setCartQuantity(e.target.value)} />
-                <button type="button" id="button-cart" className="btn btn-warning btn-sm" onClick={() => handleClick(wine.id, cartQuantity, wine.name)}>Add to cart <i class="bi bi-cart-check-fill"></i></button>
+                <button type="button" id="button-cart" className="btn btn-warning btn-sm" onClick={() => handleClick(wine.id, cartQuantity, wine.name, wine.price)}>Add to cart <i class="bi bi-cart-check-fill"></i></button>
+
               </div>
             </div>
           </div>

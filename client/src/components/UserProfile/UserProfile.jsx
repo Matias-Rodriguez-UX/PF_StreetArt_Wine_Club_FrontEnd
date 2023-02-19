@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useDispatch, useSelector } from 'react-redux';
 import axios from "axios";
-import { getAllUsers, createUser, editUserInfo, getUserInfo, getUserWishlist } from "../../actions/userActions";
+import { getAllUsers, createUser, editUserInfo, getUserInfo, getUserWishlist, getUserCart } from "../../actions/userActions";
 import { Link } from "react-router-dom";
 import Footer from "../Footer";
 import Banner from "../Home/Banner";
@@ -35,7 +35,7 @@ export default function UserProfile() {
     const { isLoading, isAuthenticated: auth, user } = useAuth0();
     const emailAdmin = 'artstreetwineclub@gmail.com';
     let userDb = {};
-
+    
     if (auth) {
         userDb = {
             email: user.email,
@@ -56,7 +56,14 @@ export default function UserProfile() {
         dispatch(getUserInfo(userDb.email));
         setLoading(isLoading);
         setIsAuthenticated(auth);
+        localStorage.clear()
     }, [dispatch, isLoading, auth, user]);
+
+    useEffect(() => {
+        if(userInfo?.shoppingCart?.length > 0){
+            dispatch(getUserCart(userInfo.id))
+        }
+    }, [userInfo])
 
 
 

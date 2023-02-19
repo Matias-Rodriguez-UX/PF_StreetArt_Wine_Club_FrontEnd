@@ -4,9 +4,10 @@ import ReactDOM from "react-dom";
 import App from "./App";
 import { Provider } from "react-redux";
 import { store } from "./store";
-import 'bootstrap/dist/css/bootstrap.css';
-import 'bootstrap-icons/font/bootstrap-icons.css';
+import "bootstrap/dist/css/bootstrap.css";
+import "bootstrap-icons/font/bootstrap-icons.css";
 import axios from "axios";
+
 
 axios.defaults.baseURL = 'http://localhost:3001';
 //axios.defaults.baseURL = 'https://pfstreetartwineclubbackend-production.up.railway.app';
@@ -21,8 +22,9 @@ ReactDOM.render(
         domain={domain}
         clientId={clientId}
         authorizationParams={{
-          redirect_uri: 'http://localhost:3000/userprofile'
-        }}>
+          redirect_uri: "http://localhost:3000/userprofile",
+        }}
+      >
         <App />
       </Auth0Provider>
     </React.StrictMode>

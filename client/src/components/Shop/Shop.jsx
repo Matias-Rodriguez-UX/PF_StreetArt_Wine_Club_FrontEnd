@@ -15,6 +15,9 @@ import WebPagination from "./Pagination/Pagination";
 import SearchBar from "./SearchBar";
 import Swal from 'sweetalert2';
 import { deleteFavourite, getUserWishlist, postFavourite } from "../../actions/userActions";
+import { getUserCart, getUserInfo, updateUserCart } from "../../actions/userActions";
+import { useAuth0 } from "@auth0/auth0-react";
+import { addUserCart } from "../../actions/userActions";
 
 
 
@@ -26,7 +29,13 @@ export default function Shop() {
     const showLoading = useSelector((state) => state.products.showLoading)
     const allProducts = useSelector((state) => state.products.allProducts)
     const Products = useSelector((state) => state.products.products)
+    const cart = useSelector((state) => state.products.cart)
+    const currentUser = useSelector((state) => state.users.userInfo)
     const [sort, setSort] = useState('')
+
+    const [getSwitch, setGetSwitch] = useState(false)
+
+    const { user, isAuthenticated } = useAuth0();
 
     const [currentPage, setCurrentPage] = useState(1);
     const [winesPerPage, setWinesPerPage] = useState(4);
@@ -49,9 +58,15 @@ export default function Shop() {
         
     }, [dispatch]);
 
-    /* useEffect(() => {
-        dispatch(getUserWishlist(userInfo.email))
-    }, [favorito]); */
+    useEffect(() => {
+        if(getSwitch){
+            dispatch(getUserCart(currentUser.id))
+            return setGetSwitch(false)
+        }
+        if(!isAuthenticated){
+            localStorage.setItem('cart', JSON.stringify(cart));
+        }
+    }, [dispatch, getSwitch, cart])
 
     function handleClick(e) {
         e.preventDefault()
@@ -59,7 +74,6 @@ export default function Shop() {
         dispatch(getProducts())
     }
 
-console.log(favourites)
     const allGrapes = () => {
         let grapes = []
         grapes = allProducts.map(product => product.grapes?.map(grape => grape.name))
@@ -97,7 +111,7 @@ console.log(favourites)
     const addAlert = (cartQuantity, name) => {
         Swal.fire({
             title: "YOUR PRODUCT WAS ADDED",
-            text: `You add ${name} \n Quantity Box ${cartQuantity}`,
+            text: `You have added ${cartQuantity} ${name} Box`,
             icon: 'success',
             timer: '4000',
             timerProgressBar: true,
@@ -106,9 +120,34 @@ console.log(favourites)
         })
     }
 
-    const addCart = (id, cartQuantity, name) => {
-        dispatch(addToCart(id, cartQuantity));
-        addAlert(cartQuantity, name);
+    const addCart = (id, cartQuantity, name, price) => {
+        if(isAuthenticated){
+            if(cart.some(el => el.id === id)){
+                let updateWine = cart.find(el => el.id === id)
+                dispatch(updateUserCart({
+                    userId: currentUser.id,
+                    totalPrice: price,
+                    quantity: updateWine.cartQuantity + 1,
+                    email: user.email,
+                    productId: id,
+                }))
+                setGetSwitch(true)
+                return addAlert(cartQuantity, name);
+            }
+             dispatch(addUserCart({
+              userId: currentUser.id,
+              totalPrice: price,
+              quantity:1,
+              email: user.email,
+              productId: id,
+            }))
+            setGetSwitch(true)
+            addAlert(cartQuantity, name);
+          } 
+          if(!isAuthenticated) {
+            dispatch(addToCart(id, cartQuantity));
+            addAlert(cartQuantity, name);
+          }
     }
 
     const grapes = allGrapes()
@@ -133,6 +172,15 @@ if(userInfo){
              dispatch(deleteFavourite(id, userEmail))
              
        } 
+
+    useEffect(() => {
+        if(!currentUser.id && isAuthenticated){
+            dispatch(getUserInfo(user.email))
+        }
+        if(currentUser.id && isAuthenticated){
+            dispatch(getUserCart(currentUser.id, currentUser.email))
+        }
+    }, [dispatch, isAuthenticated, currentUser.id])
 
     return (
         <>
@@ -161,6 +209,7 @@ if(userInfo){
                         {currentWines.length ? currentWines?.map((el) => {
                             return (
                                 <Winecards
+                                    key={el.id}
                                     image={el.image}
                                     name={el.name}
                                     winery={el.winery}
