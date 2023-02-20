@@ -2,16 +2,23 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { loadingAction } from "../../../actions";
 import { deleteFavourite, getUserWishlist, postFavourite } from "../../../actions/userActions";
+import WebPagination from "../../Shop/Pagination/Pagination";
 import Winecards from "../../Shop/WineCard/WineCard";
 import FavButton from "./FavouriteButton";
 
 export default function Wishlist({favourites}) {
   const dispatch = useDispatch();
-  // const favourites = useSelector((state) => state.users.userWishlist);
-  console.log(favourites)
+  const wishlist = useSelector((state) => state.users.userWishlist);
   const userInfo = useSelector((state) => state.users.userInfo);
   //const showLoading = useSelector((state) => state.products.showLoading)
-
+  const [currentPage, setCurrentPage] = useState(1);
+    const [winesPerPage, setWinesPerPage] = useState(4);
+    const indexOfLastWine = currentPage * winesPerPage;
+    const indexOfFirstWine = indexOfLastWine - winesPerPage;
+    const currentWines = wishlist.products.slice(indexOfFirstWine, indexOfLastWine);
+    const pagination = (pageNumber) => {
+        setCurrentPage(pageNumber)
+    };
 
   useEffect(() => {
     if(userInfo){
@@ -30,9 +37,9 @@ function handleQuitarFavorito(id, userEmail ) {
 
   return (
     <>
-      {favourites.products ? (
+      {currentWines ? (
         <div className="Cards container col py-5">
-          {favourites.products.map((el) => {
+          {currentWines.map((el) => {
               return (
                   <Winecards
                                     image={el.image}
@@ -53,6 +60,12 @@ function handleQuitarFavorito(id, userEmail ) {
       ) : (
         <h1>You haven't added any products yet!</h1>
       )}
+      <WebPagination
+                    winesPerPage={winesPerPage}
+                    numberOfWines={wishlist.length}
+                    currentPage={currentPage}
+                    setCurrentPage={setCurrentPage}
+                    pagination={pagination} />
     </>
   );
 }
