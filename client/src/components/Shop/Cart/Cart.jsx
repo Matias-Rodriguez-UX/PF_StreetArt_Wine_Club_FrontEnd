@@ -50,7 +50,7 @@ export default function Cart() {
         let updateWine = cart.find(el => el.id === id)
         dispatch(updateUserCart({
           userId: currentUser.id,
-          totalPrice: price,
+          totalPrice: price * (updateWine.cartQuantity + 1),
           quantity: updateWine.cartQuantity + 1,
           email: user.email,
           productId: id,
@@ -65,9 +65,10 @@ export default function Cart() {
   const restProductQuantity = (id, price) => {
     if(isAuthenticated){
         let updateWine = cart.find(el => el.id === id)
+
         dispatch(updateUserCart({
           userId: currentUser.id,
-          totalPrice: price,
+          totalPrice: price * (updateWine.cartQuantity - 1),
           quantity: updateWine.cartQuantity - 1,
           email: user.email,
           productId: id,
@@ -104,7 +105,7 @@ export default function Cart() {
     <>
       <Banner />
       <NavigationBar />
-      <div className="container d-flex align-items-center">
+      <div className="container d-flex align-items-center" >
         <table className="shadow-table table align-middle table-striped m-5">
           <thead >
             <tr>
@@ -128,14 +129,14 @@ export default function Cart() {
                 <td className="text-center">{product.name}</td>
                 <td className="text-center">${product.price},00-</td>
                 <td className="text-center">
-                  <button disabled={product.cartQuantity === 1 ? true : false} className="bg-transparent fs-5 border border-0 fw-bolder text-primary" onClick={() => restProductQuantity(currentUser.id, product.id)}><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#ffbb33" class="bi bi-cart-dash-fill" viewBox="0 0 16 16">
+                  <button disabled={product.cartQuantity === 1 ? true : false} className="bg-transparent fs-5 border border-0 fw-bolder text-primary" onClick={() => restProductQuantity(product.id, product.price)}><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#ffbb33" class="bi bi-cart-dash-fill" viewBox="0 0 16 16">
                     <path d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1H.5zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0zM6.5 7h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1 0-1z" />
                   </svg>
                   </button>
                 </td>
                 <td className="text-center">{product.cartQuantity}</td>
                 <td className="text-center">
-                  <button className="bg-transparent fs-5 border fw-bolder border-0 text-primary" onClick={() => addProductQuantity(product.id, product.name, product.price)}><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#ffbb33" class="bi bi-cart-plus-fill" viewBox="0 0 16 16">
+                  <button className="bg-transparent fs-5 border fw-bolder border-0 text-primary" onClick={() => addProductQuantity(product.id, product.price)}><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#ffbb33" class="bi bi-cart-plus-fill" viewBox="0 0 16 16">
                     <path d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1H.5zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0zM9 5.5V7h1.5a.5.5 0 0 1 0 1H9v1.5a.5.5 0 0 1-1 0V8H6.5a.5.5 0 0 1 0-1H8V5.5a.5.5 0 0 1 1 0z" />
                   </svg>
                   </button>
@@ -156,18 +157,13 @@ export default function Cart() {
           <strong>Total: ${total},00-</strong>
         </p>
       </div>
-      <div className="col col-12">
+      <div className="container w-75 d-flex align-items-center justify-content-end  mt-1 mb-5" >
             {isAuthenticated ?
                 (
-                  <div className="container d-flex align-items-center">
-                    <Link to={"/payment"}><button type="button" class="btn btn-warning btn-lg" onClick={handleStatus}>BUY PRODUCT</button></Link> 
-                  </div>
+                    <Link to={"/payment"}><button type="button" class="btn btn-warning btn-sm" onClick={handleStatus}>Buy Product</button></Link> 
                 ) :
                 (
-                  <div className="container d-flex align-items-center">
-                    <button type="button" className="btn btn-warning btn-lg">Register</button> 
-              
-                  </div>
+                    <button type="button" className="btn btn-warning btn-sm">Register</button> 
                 )
               }      
           </div>

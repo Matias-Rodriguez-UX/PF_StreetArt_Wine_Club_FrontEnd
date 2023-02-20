@@ -67,8 +67,14 @@ export default function Paypal(){
       <>
           <Banner />
           <NavigationBar />
-          <div className="container d-flex align-items-center"> 
-        <div className="col-md-4 order-md-2 mb-4">
+          <div className="container d-flex flex-wrap col align-items-center gap-2 mt-4">
+          <div className="container-fluid w-100 d-flex align-items-center">
+            <Link to={"/cart"} className='text-decoration-none text-reset'><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-arrow-left me-2" viewBox="0 0 16 16">
+              <path fillRule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+                </svg>Back to Cart</Link>
+          </div>
+          <div className="container d-flex align-items-center gap-5 mt-4">
+          <div className="col-md-4 order-md-2 mb-4">
           <h4 className="d-flex justify-content-between align-items-center mb-3">
             <span className="text-muted">Your cart</span>
             <span className="badge badge-secondary badge-pill">3</span>
@@ -83,8 +89,6 @@ export default function Paypal(){
               <span className="text-muted">${product.price},00-</span>
             </li>
            ))}
-            
-            
             <li className="list-group-item d-flex justify-content-between">
               <span>Total</span>
               <strong>${total},00</strong>
@@ -152,17 +156,15 @@ export default function Paypal(){
           </div>
           <div className="container d-flex align-items-center"> 
             <div className="col col-12">
-              <h1>{total}</h1>
+              <h1>${total},00.-</h1>
               <PayPalButton
                 createOrder={(data, actions) => createOrder(data, actions)}
                 onApprove={(data, actions) => onApprove(data, actions)}
               />
-              <Link to={"/cart"}><button type="button" className="btn btn-warning btn-lg">Back to Cart</button></Link>
             </div>   
           </div>
-          <div className="col col-12">
-            <Footer />
           </div>
+            <Footer />
       </>
     );
   };
