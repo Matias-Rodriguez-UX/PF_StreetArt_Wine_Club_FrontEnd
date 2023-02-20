@@ -27,9 +27,15 @@ console.log(userActive)
             <Card.Text>
             {userActive.membership.description}
             </Card.Text>
-            <Button className="btn btn-warning btn-lg">Update</Button>
+            <Button className="btn btn-warning btn-lg">Select membership</Button>
           </Card.Body>
-          <Card.Footer className="text-muted">{userActive.email} tu membresia está vigente desde el {userActive.membership.purchaseDate}</Card.Footer>
-        </Card>): <div> Aun no tienes membresias</div>}</div>
+          <Card.Footer className="text-muted">{userActive.email}, your membership is valid from {userActive.membership.purchaseDate}</Card.Footer>
+        </Card>): <div className="text-center">
+            <div className='notMembership'> You do not have current memberships yet </div>
+        <Button className="btn btn-warning btn-lg">Select membership</Button>
+            </div>
+        
+        }
+        </div>
       );
 };
