@@ -5,18 +5,17 @@ import { useDispatch, useSelector } from "react-redux";
 import Rating from '@mui/material/Rating'
 import { getReviews, postReview, updateReviews } from "../../../../actions";
 import { Loader } from "../../../Loader";
+import Swal from 'sweetalert2';
 
 
 
-export default function ReviewsEdit({ selectedReview, setShowModalEdit }) {
-    const { isLoading, isAuthenticated: auth, user } = useAuth0();
+export default function ReviewsEdit({ selectedReview, setShowModalEdit, userEmail }) {
+
     const dispatch = useDispatch()
 
     const [review, setReview] = useState(selectedReview)
     const [disable, setDisable] = useState(false)
 
-    let userName = ""
-    let userEmail = ""
     function handleRating(event) {
         const target = event.target;
         const value = target.type === 'checkbox' ? target.checked : target.value;
@@ -30,26 +29,39 @@ export default function ReviewsEdit({ selectedReview, setShowModalEdit }) {
 
     function handleSubmit(e) {
         e.preventDefault()
-        dispatch(updateReviews(review.idProduct, review.id, review))
-        setShowModalEdit(false)
-        dispatch(getReviews(review.idProduct))
+        dispatch(updateReviews(review.productId, review.id, review)).then(() => {
+            dispatch(getReviews(review.productId)).then(() => {
+                changeReview()
+            })
+        }).then(() => {
+            setShowModalEdit(false)
+        })
+    }
+    const changeReview = () => {
+        Swal.fire({
+            title: "YOU CHANGED THE REVIEW",
+            text: 'Your opinion is very valuable to us',
+            icon: 'success',
+            timer: '3000',
+            timerProgressBar: true,
+            allowOutsideClick: true,
+            confirmButtonColor: '#ffc107'
+        })
     }
 
     useEffect(() => {
-        if (auth) {
-            userName = user.name
-            userEmail = user.email
-        }
         if (review.rating <= 0 || !review.review) {
             setDisable(true)
         } else {
             setDisable(false)
         }
-        console.log("este es el review", review)
+
+        review.rating = parseInt(review.rating, 10)
+
     }, [review, disable])
 
     return (
-        <>{auth ?
+        <>
             <div className='border border-3 rounded p-4 bg-light' style={{ height: '272px' }} >
                 <Form onSubmit={e => handleSubmit(e)} >
                     <FormGroup>
@@ -63,8 +75,6 @@ export default function ReviewsEdit({ selectedReview, setShowModalEdit }) {
                     <Button variant="warning" type="submit" className="float-end" disabled={disable}>Change</Button>
                 </Form>
             </div>
-            : <Loader />}
-
         </>
     )
 }

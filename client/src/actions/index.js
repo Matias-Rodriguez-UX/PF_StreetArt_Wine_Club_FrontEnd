@@ -289,6 +289,7 @@ export function postReview(id, payload) {
 
 export function getReviews(id) {
   return async function (dispatch) {
+    console.log(id)
     try {
       var detail = await axios.get(`/products/${id}/review`, headers);
       return (

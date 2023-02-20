@@ -18,7 +18,6 @@ export default function ReviewsTemplate({ review, handleClickEditReview, setShow
     useEffect(() => {
         dispatch(loadingAction(true))
         dispatch(getUserInfo(review.userEmail))
-
     }, [auth, user, author])
 
     function handleDeletButton() {
