@@ -16,6 +16,7 @@ import { Button, Modal } from "react-bootstrap";
 import ReviewsEdit from "./Reviews/ReviewEdit";
 import { Rating } from "@mui/material";
 import LoginButton from "../../Login/LoginButton";
+import IconButtonWhish from "./Wish/Whishbutton";
 
 export default function Detail(props) {
   const { isLoading, isAuthenticated: auth, user } = useAuth0();
@@ -106,10 +107,11 @@ export default function Detail(props) {
                 <li>State: {wine.states.map(e => e.name + ("  "))}</li>
                 <li>Quantity: {wine.quantity}</li>
               </ul>
-              <div className="input-cart">
+              <IconButtonWhish product={wine} />
+              <div className="ms-4 input-cart">
                 <label class="form-label" for="typeNumber">Number of boxes</label>
                 <input type="number" id="typeNumber" class="form-control" placeholder="1" value={cartQuantity} onChange={e => setCartQuantity(e.target.value)} />
-                <button type="button" id="button-cart" className="btn btn-warning btn-sm" onClick={() => handleClick(wine.id, cartQuantity, wine.name)}>Add to cart <i class="bi bi-cart-check-fill"></i></button>
+                <button type="button" id="button-cart" className="btn btn-warning" onClick={() => handleClick(wine.id, cartQuantity, wine.name)}>Add to cart <i class="bi bi-cart-check-fill"></i></button>
               </div>
             </div>
           </div>

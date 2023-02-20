@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Form, FormGroup, FormControl, FormLabel, Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from "react-redux";
 import Rating from '@mui/material/Rating'
-import { postReview, updateReviews } from "../../../../actions";
+import { getReviews, postReview, updateReviews } from "../../../../actions";
 import { Loader } from "../../../Loader";
 
 
@@ -32,7 +32,7 @@ export default function ReviewsEdit({ selectedReview, setShowModalEdit }) {
         e.preventDefault()
         dispatch(updateReviews(review.idProduct, review.id, review))
         setShowModalEdit(false)
-        window.location.reload();
+        dispatch(getReviews(review.idProduct))
     }
 
     useEffect(() => {

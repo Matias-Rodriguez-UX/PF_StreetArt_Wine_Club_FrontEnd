@@ -32,7 +32,7 @@ export function getMemberships() {
 }
 
 export function postMemberships(body) {
-    return async function () {
+    return async function (dispatch) {
         try {
             let memberships = await axios.post("/users/membership", body);
             return (
@@ -48,7 +48,7 @@ export function postMemberships(body) {
 }
 
 export function updateMemberships(id, body) {
-    return async function () {
+    return async function (dispatch) {
         try {
             let memberships = await axios.put(`/users/membership/${id}`, body);
             return (
@@ -63,7 +63,7 @@ export function updateMemberships(id, body) {
     };
 }
 export function deleteMemberships(id) {
-    return async function () {
+    return async function (dispatch) {
         try {
             let memberships = await axios.delete(`/users/membership/${id}`, headers);
             return (

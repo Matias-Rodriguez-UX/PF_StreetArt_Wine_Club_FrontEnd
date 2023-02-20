@@ -1,4 +1,4 @@
-import { GET_ALL_STATES, GET_ALL_CITIES, GET_ALL_USERS, GET_USER_INFO, CREATE_USER, EDIT_USER, GET_USER_ADDRESSES, CREATE_USER_ADDRESS, EDIT_USER_ADDRESS,DELETE_USER_ADDRESS, DELETE_USER } from "./allActions";
+import { GET_ALL_STATES, GET_ALL_CITIES, GET_ALL_USERS, GET_USER_INFO, CREATE_USER, EDIT_USER, GET_USER_ADDRESSES, CREATE_USER_ADDRESS, EDIT_USER_ADDRESS, DELETE_USER_ADDRESS, DELETE_USER } from "./allActions";
 import axios from "axios";
 import { loadingAction } from ".";
 
@@ -8,10 +8,10 @@ const headers = {
   },
 };
 
-export function getAllStates(){
+export function getAllStates() {
   return async function (dispatch) {
     let states = await axios.get('/allStates');
-    return(
+    return (
       dispatch({
         type: GET_ALL_STATES,
         payload: states.data
@@ -20,10 +20,10 @@ export function getAllStates(){
   }
 };
 
-export function getAllCities(){
-  return async function (dispatch){
+export function getAllCities() {
+  return async function (dispatch) {
     let cities = await axios.get('cities');
-    return(
+    return (
       dispatch({
         type: GET_ALL_CITIES,
         payload: cities.data,
@@ -95,7 +95,7 @@ export function editUserInfo(payload) {
   };
 };
 
-export function getUserAddresses(email){
+export function getUserAddresses(email) {
   return async function (dispatch) {
     let addresses = await axios.get(`/users/?email=${email}`);
     dispatch({
@@ -106,7 +106,7 @@ export function getUserAddresses(email){
   };
 };
 
-export function createUserAddress (payload){
+export function createUserAddress(payload) {
   return async function (dispatch) {
     try {
       let address = await axios.post('/users', payload);
@@ -120,14 +120,14 @@ export function createUserAddress (payload){
   };
 };
 
-export function deleteUserAddress (addressId, userId){
+export function deleteUserAddress(addressId, userId) {
   return async function () {
     try {
       var address = await axios.delete(`/users/${addressId}`);
       return dispatch({
         type: DELETE_USER_ADDRESS,
-        payload:address.data
-     })
+        payload: address.data
+      })
     } catch (error) {
       console.log("Error", error);
     }
@@ -137,7 +137,7 @@ export function deleteUserAddress (addressId, userId){
 export function editUserAddress(payload) {
   return async function (dispatch) {
     try {
-      let updatedAddress = await axios.put(`/users/${addressId}`);
+      let updatedAddress = await axios.put(`/users/${payload}`);
       dispatch({
         type: EDIT_USER_ADDRESS,
         payload: updatedAddress.data

@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Form, FormGroup, FormControl, FormLabel, Button, Modal } from 'react-bootstrap';
 import { useDispatch, useSelector } from "react-redux";
 import Rating from '@mui/material/Rating'
-import { postReview } from "../../../../actions";
+import { getReviews, postReview } from "../../../../actions";
 import { Loader } from "../../../Loader";
 import { getUserInfo } from "../../../../actions/userActions";
 
@@ -37,7 +37,7 @@ export default function ReviewsForm({ idProduct }) {
         e.preventDefault()
         if (review.rating > 0 && review.review) {
             dispatch(postReview(idProduct, review))
-            window.location.reload();
+            dispatch(getReviews(idProduct))
         } else {
             setShowModalWarning(true)
         }
