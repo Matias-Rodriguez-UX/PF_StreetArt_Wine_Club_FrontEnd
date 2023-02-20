@@ -13,9 +13,9 @@ export default function EditUserProfileCard() {
     const { isAuthenticated: auth, user } = useAuth0();
     const dispatch = useDispatch();
     const userInfo = useSelector((state) => state.users.userInfo);
-	console.log(userInfo);
+	// console.log(userInfo);
 	const userId = userInfo.id;
-	console.log(userId)
+	// console.log(userId)
 
     const [loading, setLoading] = useState(false);
     const [input, setInput] = useState({
@@ -60,7 +60,7 @@ export default function EditUserProfileCard() {
         })
 
         const resFile = await res.json();
-        console.log(res);
+        // console.log(res);
         let uploadedUrl = resFile.secure_url;
         console.log(uploadedUrl)
         setLoading(false)
@@ -68,7 +68,7 @@ export default function EditUserProfileCard() {
             ...input,
             avatar: uploadedUrl
         });
-        console.log(input.avatar)
+        // console.log(input.avatar)
     };
 
 

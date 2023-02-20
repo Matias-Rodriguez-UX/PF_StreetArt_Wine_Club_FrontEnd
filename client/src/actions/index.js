@@ -1,4 +1,3 @@
-
 import axios from "axios";
 import {
   GET_PRODUCTS,
@@ -19,6 +18,7 @@ import {
   REMOVE_CART_QUANTITY,
   ADD_CART_TO_LOCALSTORAGE,
   GET_REVIEWS,
+  RESET_CART_LOG_OUT,
   UPDATE_REVIEWS,
   POST_PRODUCTS,
   DELETE_PRODUCTS,
@@ -61,10 +61,7 @@ export function getProducts() {
 export function getDetail(id) {
   return async function (dispatch) {
     try {
-      var detail = await axios.get(
-        `/products/${id}`,
-        headers
-      );
+      var detail = await axios.get(`/products/${id}`, headers);
 
       return (
         dispatch({
@@ -130,10 +127,10 @@ export function postProduct(payload) {
   return async function (dispatch) {
     try {
       let info = await axios.post("/products", payload);
-      return (dispatch({
+      return dispatch({
         type: POST_PRODUCTS,
         payload: info.data,
-      }));
+      });
     } catch (error) {
       console.log("ERROR", error);
     }
@@ -144,10 +141,10 @@ export function deleteProduct(id) {
   return async function (dispatch) {
     try {
       let info = await axios.delete(`/products/${id}`);
-      return (dispatch({
+      return dispatch({
         type: DELETE_PRODUCTS,
         payload: info.data,
-      }));
+      });
     } catch (error) {
       console.log("ERROR", error);
     }
@@ -158,10 +155,10 @@ export function updateProduct(id, body) {
   return async function () {
     try {
       let info = await axios.put(`/products/${id}`, body);
-      return (dispatch({
+      return dispatch({
         type: UPDATE_PRODUCTS,
         payload: info.data,
-      }))
+      });
     } catch (error) {
       console.log("ERROR", error);
     }
@@ -270,14 +267,20 @@ export function addToCart(id, cartQuantity) {
   };
 }
 
+export function resetCart() {
+  return {
+    type: RESET_CART_LOG_OUT,
+  };
+}
+
 export function postReview(id, payload) {
   return async function (dispatch) {
     try {
       let info = await axios.post(`/products/${id}/review`, payload);
-      return (dispatch({
+      return dispatch({
         type: POST_REVIEW,
         payload: info.data,
-      }))
+      });
     } catch (error) {
       console.log("ERROR", error);
     }
@@ -287,10 +290,7 @@ export function postReview(id, payload) {
 export function getReviews(id) {
   return async function (dispatch) {
     try {
-      var detail = await axios.get(
-        `/products/${id}/review`,
-        headers
-      );
+      var detail = await axios.get(`/products/${id}/review`, headers);
       return (
         dispatch({
           type: GET_REVIEWS,
@@ -305,33 +305,36 @@ export function getReviews(id) {
 }
 
 export function updateReviews(idProduct, idReview, info) {
-
   return async function (dispatch) {
+
     try {
       var detail = await axios.put(
-        `/products/${idProduct}/review/${idReview}`, info
+        `/products/${idProduct}/review/${idReview}`,
+        info
       );
-      return (dispatch({
+      return dispatch({
         type: UPDATE_REVIEW,
         payload: detail.data,
-      }))
+      });
     } catch (error) {
       console.log("Error", error);
     }
   };
 }
 
+
 export function deleteReviews(idProduct, idReview,) {
 
   return async function (dispatch) {
+
     try {
       var detail = await axios.delete(
-        `/products/${idProduct}/review/${idReview}`,
+        `/products/${idProduct}/review/${idReview}`
       );
-      return (dispatch({
+      return dispatch({
         type: DELETE_REVIEW,
         payload: detail.data,
-      }))
+      });
     } catch (error) {
       console.log("Error", error);
     }

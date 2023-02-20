@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useDispatch, useSelector } from 'react-redux';
 import axios from "axios";
-import { getAllUsers, createUser, editUserInfo, getUserInfo } from "../../actions/userActions";
+import { getAllUsers, createUser, editUserInfo, getUserInfo, getUserWishlist, getUserCart } from "../../actions/userActions";
 import { Link } from "react-router-dom";
 import Footer from "../Footer";
 import Banner from "../Home/Banner";
@@ -27,7 +27,7 @@ export default function UserProfile() {
 
     const users = useSelector((state) => state.users.users);
     const userInfo = useSelector((state) => state.users.userInfo);
-
+    const favourites = useSelector((state) => state.users.userWishlist);
     const [loading, setLoading] = useState(true)
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [currentPage, setCurrentPage] = useState('home');
@@ -35,30 +35,35 @@ export default function UserProfile() {
     const { isLoading, isAuthenticated: auth, user } = useAuth0();
     const emailAdmin = 'artstreetwineclub@gmail.com';
     let userDb = {};
-
-    console.log(isAuthenticated);
-
+    
     if (auth) {
         userDb = {
             email: user.email,
             name: user.name,
             picture: user.picture
         }
-        console.log(users)
     };
 
     useEffect(() => {
         if (userDb.email) {
-            dispatch(createUser(userDb))
+            dispatch(createUser(userDb));
+            dispatch(getUserWishlist(userDb.email));
         }
     }, [user, dispatch]);
-
+     
     useEffect(() => {
         dispatch(getAllUsers());
         dispatch(getUserInfo(userDb.email));
         setLoading(isLoading);
         setIsAuthenticated(auth);
+        localStorage.clear()
     }, [dispatch, isLoading, auth, user]);
+
+    useEffect(() => {
+        if(userInfo?.shoppingCart?.length > 0){
+            dispatch(getUserCart(userInfo.id))
+        }
+    }, [userInfo])
 
 
 
@@ -80,7 +85,7 @@ export default function UserProfile() {
                     {currentPage === "orders" && <UserOrders />}
                     {currentPage === "addresses" && <UserAddress />}
                     {currentPage === "memberships" && <UserMemberships />}
-                    {currentPage === "wishlist" && <Wishlist />}
+                    {currentPage === "wishlist" && <Wishlist favourites={favourites} />}
                 </div>
 
 
