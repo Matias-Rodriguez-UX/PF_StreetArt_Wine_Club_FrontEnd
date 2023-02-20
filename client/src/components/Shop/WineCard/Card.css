@@ -12,3 +12,13 @@
     transform: translateY(-10px) scale(1.05);
     box-shadow: 0 20px 30px rgba(0, 0, 0, 0.15);
 }
+
+.heart{
+    margin-right: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-top: 10px;
+    margin-bottom: -20px;
+    position: relative;
+}

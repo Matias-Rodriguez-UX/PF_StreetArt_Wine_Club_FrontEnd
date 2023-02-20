@@ -21,7 +21,7 @@ export default function NavigationBar() {
   const cart = useSelector(state => state.products.cart)
   const dispatch = useDispatch()
   const userInfo = useSelector (state => state.users.userInfo);
-  
+
   useEffect(() => {
     if(cart.length === 0 && !isAuthenticated){
       const storedCart = JSON.parse(localStorage.getItem('cart')) || [];
@@ -29,6 +29,8 @@ export default function NavigationBar() {
     }
     if(isAuthenticated && userInfo.id){
       dispatch(getUserCart(userInfo.id))
+      const userJson = JSON.stringify(userInfo.email);
+    sessionStorage.setItem('user', userJson);
     }
   }, [dispatch, userInfo.id]);
 
