@@ -1,10 +1,11 @@
 import {
-    GET_ORDERS
+    GET_ORDERS, GET_USER_ORDER
 } from "../actions/allActions";
 
 const initialState = {
     orders: [],
     allOrders: [],
+    userOrder: []
 };
 
 export default function ordersReducer(state = initialState, action) {
@@ -15,6 +16,11 @@ export default function ordersReducer(state = initialState, action) {
                 orders: action.payload,
                 allOrders: action.payload
             };
+            case GET_USER_ORDER:
+                return {
+                    ...state,
+                    userOrder: action.payload
+                };
         default:
             return { ...state }
     };
