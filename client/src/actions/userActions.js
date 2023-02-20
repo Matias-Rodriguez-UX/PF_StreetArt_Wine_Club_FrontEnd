@@ -22,17 +22,17 @@ export function getAllStates() {
       payload: states.data,
     });
   };
-}
+};
 
-export function getAllCities() {
+export function getAllCities(id) {
   return async function (dispatch) {
-    let cities = await axios.get("cities");
+    let cities = await axios.get(`https://apis.datos.gob.ar/georef/api/municipios?provincia=${id}&campos=id,nombre&max=100`);
     return dispatch({
       type: GET_ALL_CITIES,
       payload: cities.data,
     });
   };
-}
+};
 
 export function getAllUsers() {
   return async function (dispatch) {
