@@ -3,7 +3,7 @@ import Form from 'react-bootstrap/Form';
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { getStates } from "../../../actions";
-import { createUserAddress } from "../../../actions/userActions";
+import { createUserAddress, getAllCities } from "../../../actions/userActions";
 
 export default function UserAddress(){
     const dispatch = useDispatch();
@@ -18,6 +18,7 @@ export default function UserAddress(){
         address: '',
         zipCode:0,
         telephone: 0,
+        stateId: 0,
     });
     // console.log(states);
     input.userEmail = userInfo.email;
@@ -31,7 +32,17 @@ export default function UserAddress(){
         }
         return 0;
     });
-      console.log(orderedStates);
+    //   console.log(orderedStates);
+
+    // if (cities.length !==0) {cities.sort(function(a,b) {
+    //     if (a.name > b.name){
+    //         return 1;
+    //     }
+    //     if (b.name > a.name){
+    //         return -1
+    //     }
+    //     return 0;
+    //     })};
 
     useEffect(() => {
         dispatch(getStates());
@@ -45,14 +56,29 @@ export default function UserAddress(){
         console.log(input);
     };
 
-    const handleSelect = (e) => {
+    const handleSelect =  (e) => {
         if (e.target.name === 'stateId') {
+            console.log(e.target.name);
+            console.log(e.target.value);
+             dispatch(getAllCities(e.target.value));
             setInput({
                 ...input,
-                stateId: e.target.value
-            })
+                [e.target.name] : e.target.value
+            });
         }
     };
+    console.log(cities);
+
+    // const handleCitySelect =  (e) => {
+    //     if (e.target.name === 'regionId') {
+    //         console.log(e.target.name);
+    //         console.log(e.target.value);
+    //         setInput({
+    //             ...input,
+    //             [e.target.name] : e.target.value
+    //         });
+    //     }
+    // };
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -106,12 +132,21 @@ export default function UserAddress(){
     
                                 <div class="row mb-3">
                                     <div class="col-sm-9 text-secondary">
-                                        <Form.Select>
-                                            <option value=''>State</option>
-                                            {orderedStates?.map((el, index) => <option key={index} name='stateId' value={el.id} onSelect={(e) => handleSelect(e)}>{el.name}</option>)}
+                                        <Form.Select name='stateId' onChange={(e) => handleSelect(e)}>
+                                            <option name='stateId'>State</option>
+                                            {orderedStates?.map((el, index) => <option key={index} value={el.id}>{el.name}</option>)}
                                         </Form.Select>
                                     </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <div class="col-sm-9 text-secondary">
+                                        <Form.Select name='regionId' >
+                                            <option>City</option>
+                                            {(cities.municipios ? cities.municipios.map((el, index) => <option key={index} value={el.id}>{el.nombre}</option>) : <div>'Error'</div>)}
+                                        </Form.Select>
                                     </div>
+                                </div>
     
                                 <div class="row mb-3">
                                     <div class="col-sm-3">
