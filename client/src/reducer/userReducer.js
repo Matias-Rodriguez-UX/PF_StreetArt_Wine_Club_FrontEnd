@@ -26,6 +26,7 @@ export default function rootReducer(state = initialState, action) {
         ...state,
         cities: action.payload,
       };
+  
 
     case GET_ALL_USERS:
       return {

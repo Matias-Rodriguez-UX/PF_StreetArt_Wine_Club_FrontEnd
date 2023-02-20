@@ -109,7 +109,7 @@ export function getUserAddresses(email) {
 export function createUserAddress(payload) {
   return async function (dispatch) {
     try {
-      let address = await axios.post("/users", payload);
+      let address = await axios.post('/addresses', payload);
       return dispatch({
         type: CREATE_USER_ADDRESS,
         payload: address.data,
@@ -244,3 +244,4 @@ export function deleteFavourite (id, email){
     }
   };
 };
+
