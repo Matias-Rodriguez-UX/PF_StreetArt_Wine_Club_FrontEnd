@@ -28,7 +28,7 @@ export function getAllStates() {
 
 export function getAllCities(id) {
   return async function (dispatch) {
-    let cities = await axios.get(`https://apis.datos.gob.ar/georef/api/municipios?provincia=${id}&campos=id,nombre&max=100`);
+    let cities = await axios.get(`https://apis.datos.gob.ar/georef/api/municipios?provincia=${id}&campos=id,nombre&max=1000`);
     return dispatch({
       type: GET_ALL_CITIES,
       payload: cities.data,

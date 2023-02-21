@@ -37,13 +37,15 @@ export default function UserProfile() {
     let userDb = {};
     
     if (auth) {
+        // console.log(user.AssigRoles[0])
         userDb = {
             email: user.email,
             name: user.name,
-            picture: user.picture
+            picture: user.picture,
+            role: user.AssigRoles[0]
         }
     };
-
+// console.log(user.AssigRoles[0][0])
     useEffect(() => {
         if (userDb.email) {
             dispatch(createUser(userDb));
