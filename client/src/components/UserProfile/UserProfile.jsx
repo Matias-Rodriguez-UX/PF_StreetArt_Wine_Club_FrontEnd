@@ -48,12 +48,12 @@ export default function UserProfile() {
         if (userDb.email) {
             dispatch(createUser(userDb));
             dispatch(getUserWishlist(userDb.email));
+            dispatch(getUserInfo(user.email));
         }
     }, [user, dispatch]);
      
     useEffect(() => {
         dispatch(getAllUsers());
-        dispatch(getUserInfo(userDb.email));
         setLoading(isLoading);
         setIsAuthenticated(auth);
         localStorage.clear()
