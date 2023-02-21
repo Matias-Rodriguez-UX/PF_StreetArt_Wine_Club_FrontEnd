@@ -1,42 +1,15 @@
-import React, { useEffect } from "react";
-import { useAuth0 } from "@auth0/auth0-react";
-import { useDispatch, useSelector} from 'react-redux';
-import Accordion from 'react-bootstrap/Accordion';
-import { Nav, Button, Card } from "react-bootstrap";
-import './Style.css'
-import { getUserInfo } from "../../../actions/userActions";
-import UserInfo from "../UserInfo";
-
-
-export default function UserSideBar({ userName, userPicture, setCurrentPage }) {
-    const dispatch = useDispatch();
-    const { logout, user, isAuthenticated:auth } = useAuth0();
-    const userInfo = useSelector((state) => state.users.userInfo);
-
-    let userEmail = '';
-
-    if(auth){
-        userEmail = user.email
-    };
-
-    useEffect(() => {
-        dispatch(getUserInfo(userEmail))
-    }, [dispatch, user]);
-
-    return (
-        <>
-<Nav variant="pills" defaultActiveKey={'/'} className="d-flex flex-column flex-shrink-5 p-0 text-white bg-lg" style={{ width: '400px', height: '150vh' }}>
+<Nav variant="pills" defaultActiveKey={'/'} className="d-flex flex-column flex-shrink-5 p-0 text-white bg-lg" style={{ width: '280px', height: '100vh' }}>
                 <a href="/home" className="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-black text-decoration-none">
                     {/* //Idea de que el nombre el usuario se vea al inicio de la sidebar */}
-                    <span className=" fs-4">StreetArt Wine Club</span>
+                    <span className="fs-4">StreetArt Wine Club</span>
                 </a>
                 <hr />
                 <div className="mb-2">
                     <a href="#" className="d-flex align-items-center justify-content-center text-black text-decoration-none mb-3" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
                         <img src={userInfo.avatar} alt="user profile picture" width="100" height="100" className="rounded-circle" />
                     </a>
-                    
                     <ul className="list-unstyled" aria-labelledby="dropdownUser1">
+
                         <li className="mb-2">
                             <a className="text-black text-decoration-none m-4" href="#" onClick={() => setCurrentPage('userinfo')}>
                                 <p className="ms-3">Hello, 
@@ -133,6 +106,122 @@ export default function UserSideBar({ userName, userPicture, setCurrentPage }) {
                 </Nav.Item>
 
             </Nav>
+        </>
+
+
+
+
+
+
+        import React, { useEffect } from "react";
+import { useAuth0 } from "@auth0/auth0-react";
+import { useDispatch, useSelector} from 'react-redux';
+import Accordion from 'react-bootstrap/Accordion';
+import { Nav, Button, Card } from "react-bootstrap";
+import './Style.css'
+import { getUserInfo } from "../../../actions/userActions";
+import UserInfo from "../UserInfo";
+
+
+export default function UserSideBar({ userName, userPicture, setCurrentPage }) {
+    const dispatch = useDispatch();
+    const { logout, user, isAuthenticated:auth } = useAuth0();
+    const userInfo = useSelector((state) => state.users.userInfo);
+
+    let userEmail = '';
+
+    if(auth){
+        userEmail = user.email
+    };
+
+    useEffect(() => {
+        dispatch(getUserInfo(userEmail))
+    }, [dispatch, user]);
+
+    return (
+        <>
+            <div class="container-fluid">
+                <div class="row flex-nowrap">
+                    <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-light">
+                        <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-black min-vh-100">
+                            <a href="/" class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-black text-decoration-none">
+                                <span class="fs-5 d-none d-sm-inline">My account</span>
+                            </a>
+
+                            <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="orders">
+                            <Nav.Item onClick={() => setCurrentPage('orders')}>
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link align-middle px-0 ">
+                                        <i class="fs-4 bi-box-seam"></i> <span class="ms-1 d-none d-sm-inline">Orders</span>
+                                    </a>
+                                </li>
+                                </Nav.Item>
+
+                                <li>
+                                    <a href="#" data-bs-toggle="collapse" class="nav-link px-0 align-middle">
+                                        <i class="fs-4 bi-person"></i> <span class="ms-1 d-none d-sm-inline">Account settings</span>
+                                         </a>
+                                    <ul class="collapse show nav flex-column ms-1" id="userinfo" data-bs-parent="#menu">
+                                    <Nav.Item onClick={() => setCurrentPage('userinfo')}>
+                                        <li class="w-100">
+                                            <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline">My</span> info </a>
+                                        </li>
+                                        </Nav.Item>
+
+                                        <Nav.Item onClick={() => setCurrentPage('changeinfo')}>
+                                        <li>
+                                            <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline">Edit</span> info </a>
+                                        </li>
+                                        </Nav.Item>
+                                    </ul>
+                                </li>
+                                
+                                <Nav.Item onClick={() => setCurrentPage('addresses')}>
+                                <li>
+                                    <a href="#" class="nav-link px-0 align-middle">
+                                        <i class="fs-4 bi-geo-alt"></i> <span class="ms-1 d-none d-sm-inline">My address</span></a>
+                                </li>
+                                </Nav.Item>
+
+                                <Nav.Item onClick={() => setCurrentPage('memberships')}>
+                                <li>
+                                    <a href="#memberships" data-bs-toggle="collapse" class="nav-link px-0 align-middle ">
+                                        <i class="fs-4 bi-star"></i> <span class="ms-1 d-none d-sm-inline">My membership</span></a>
+                                </li>
+                                </Nav.Item>
+
+                                <Nav.Item onClick={() => setCurrentPage('wishlist')}>
+                                <li>
+                                    <a href="#wishlist" data-bs-toggle="collapse" class="nav-link px-0 align-middle">
+                                        <i class="fs-4 bi-bookmark-heart-fill"></i> <span class="ms-1 d-none d-sm-inline">Favs</span> </a>
+                                </li>
+                                </Nav.Item>
+
+                            </ul>
+                            <hr/>
+
+                            <div class="dropdown pb-4">
+                                <a href="#" class="d-flex align-items-center text-black text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <img src={userInfo.avatar} alt="profile picture" width="30" height="30" class="rounded-circle"/>
+                                    <span class="d-none d-sm-inline mx-1">{userName}</span>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
+                                    <li><a class="dropdown-item" href="#">New project...</a></li>
+                                    <li><a class="dropdown-item" href="#">Settings</a></li>
+                                    <li><a class="dropdown-item" href="#">Profile</a></li>
+                                    <li>
+                                        <hr class="dropdown-divider"/>
+                                    </li>
+                                    <li><a class="dropdown-item" href="#">Sign out</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    {/* <div class="col py-3">
+
+                    </div> */}
+                </div>
+            </div> 
         </>
     )
 }

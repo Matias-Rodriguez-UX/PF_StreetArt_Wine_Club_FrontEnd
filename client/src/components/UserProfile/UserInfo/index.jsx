@@ -16,7 +16,7 @@ export default function UserInfo({ userName, setCurrentPage }) {
   };
 
   return (
-    <div className="container col py-5 mt-5" display='flex'>
+    <div className="col py-5">
       <div class="col-md-8">
         <div class="card mb-3">
           <div class="card-body">
