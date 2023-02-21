@@ -102,7 +102,7 @@ export default function EditUserProfileCard() {
         };
 
     return(
-        <div  className="container col py-5 mt-5" display='flex'>
+        <div  className="container col py-3 mt-5" display='flex'>
         <div class="col-lg-8">
 					<div class="card">
 						<div class="card-body">

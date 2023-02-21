@@ -18,7 +18,7 @@ export default function UserAddress(){
         address: '',
         zipCode:0,
         telephone: 0,
-        stateId: 0,
+        state: 0,
     });
     // console.log(states);
     input.userEmail = userInfo.email;
@@ -135,7 +135,7 @@ export default function UserAddress(){
                                     <div class="col-sm-9 text-secondary">
                                         <Form.Select name='stateId' onChange={(e) => handleSelect(e)}>
                                             <option name='stateId'>State</option>
-                                            {orderedStates?.map((el, index) => <option key={index} value={el.id}>{el.name}</option>)}
+                                            {orderedStates?.map((el, index) => <option key={index} value={el.name}>{el.name}</option>)}
                                         </Form.Select>
                                     </div>
                                 </div>
@@ -144,7 +144,7 @@ export default function UserAddress(){
                                     <div class="col-sm-9 text-secondary">
                                         <Form.Select name='regionId' >
                                             <option>City</option>
-                                            {(cities.municipios ? cities.municipios.map((el, index) => <option key={index} value={el.id}>{el.nombre}</option>) : <div>'Error'</div>)}
+                                            {(cities.municipios ? cities.municipios.map((el, index) => <option key={index} value={el.nombre}>{el.nombre}</option>) : <div>'Error'</div>)}
                                         </Form.Select>
                                     </div>
                                 </div>
