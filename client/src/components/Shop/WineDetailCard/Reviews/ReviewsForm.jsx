@@ -3,14 +3,14 @@ import React, { useEffect, useState } from "react";
 import { Form, FormGroup, FormControl, FormLabel, Button, Modal } from 'react-bootstrap';
 import { useDispatch, useSelector } from "react-redux";
 import Rating from '@mui/material/Rating'
-import { postReview } from "../../../../actions";
+import { getReviews, postReview } from "../../../../actions";
 import { Loader } from "../../../Loader";
 import { getUserInfo } from "../../../../actions/userActions";
+import Swal from 'sweetalert2';
 
 
 
-export default function ReviewsForm({ idProduct }) {
-    const { isLoading, isAuthenticated: auth, user } = useAuth0();
+export default function ReviewsForm({ idProduct, userEmail }) {
     const dispatch = useDispatch()
     const userInfo = useSelector((state) => state.users.userInfo)
     const [showModalWarning, setShowModalWarning] = useState(false);
@@ -20,7 +20,7 @@ export default function ReviewsForm({ idProduct }) {
         rating: 0,
         email: "",
     })
-    let userEmail = ""
+
 
     function handleRating(event) {
         const target = event.target;
@@ -31,26 +31,33 @@ export default function ReviewsForm({ idProduct }) {
             [name]: value,
             email: userEmail
         });
+        console.log(review)
     }
 
     function handleSubmit(e) {
         e.preventDefault()
         if (review.rating > 0 && review.review) {
-            dispatch(postReview(idProduct, review))
-            window.location.reload();
+            dispatch(postReview(idProduct, review)).then(() => {
+                dispatch(getReviews(idProduct)).then(() => {
+                    addReview()
+                })
+            })
         } else {
             setShowModalWarning(true)
         }
-
     }
 
-    useEffect(() => {
-        if (auth) {
-            getUserInfo(user.email)
-            userEmail = userInfo?.email
-        }
-    }, [review, userEmail])
-
+    const addReview = () => {
+        Swal.fire({
+            title: "THANKS FOR YOU REVIEW",
+            text: 'Your opinion is very valuable to us',
+            icon: 'success',
+            timer: '3000',
+            timerProgressBar: true,
+            allowOutsideClick: true,
+            confirmButtonColor: '#ffc107'
+        })
+    }
 
     return (
         <>
