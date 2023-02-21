@@ -12,16 +12,17 @@ import { getDetail, addToCart, getReviews, loadingAction, deleteReviews } from "
 import ReviewsForm from "./Reviews/ReviewsForm";
 import { useAuth0 } from "@auth0/auth0-react";
 import ReviewsTemplate from "./Reviews/ReviewTemplate";
-import { addUserCart, getUserCart, updateUserCart } from "../../../actions/userActions";
+import { addUserCart, getUserCart, getUserInfo, updateUserCart } from "../../../actions/userActions";
 import { Button, Modal } from "react-bootstrap";
 import ReviewsEdit from "./Reviews/ReviewEdit";
 import { Rating } from "@mui/material";
 import LoginButton from "../../Login/LoginButton";
 import IconButtonWish from "./Wish/Wishbutton";
+import FavoriteIcon from '@mui/icons-material/Favorite'
 import { deleteFavourite, getUserWishlist, postFavourite } from "../../../actions/userActions";
 
 export default function Detail(props) {
-  const { isLoading, isAuthenticated: auth, user, isAuthenticated } = useAuth0();
+  const { isLoading, user, isAuthenticated } = useAuth0();
   const [cartQuantity, setCartQuantity] = useState(1);
   const [getSwitch, setGetSwitch] = useState(false)
   const favourites = useSelector((state) => state.users.userWishlist);
@@ -33,6 +34,7 @@ export default function Detail(props) {
   const [showModalEdit, setShowModalEdit] = useState(false);
   const [showModalDelete, setShowModalDelete] = useState(false);
   const [selectedReview, setSelectedReview] = useState({});
+  const [userIf, setUserIf] = useState({});
   const currentUser = useSelector((state) => state.users.userInfo)
 
   useEffect(() => {
@@ -41,7 +43,10 @@ export default function Detail(props) {
     dispatch(loadingAction(true))
     dispatch(getReviews(idProduct))
     if (reviews.length) { setAllReviews(reviews) }
-  }, [selectedReview, allReviews]);
+    if (!currentUser.id && isAuthenticated) {
+      dispatch(getUserInfo(user.email))
+    }
+  }, [dispatch, isAuthenticated, currentUser.id, selectedReview, allReviews, userIf]);
 
   useEffect(() => {
     if (getSwitch) dispatch(getUserCart(currentUser.id))
@@ -128,18 +133,22 @@ export default function Detail(props) {
   }
 
   useEffect(() => {
-    if (currentUser) {
+    if (isAuthenticated && currentUser) {
       dispatch(getUserWishlist(currentUser.email));
     }
   }, [dispatch]);
 
   function handleAgregarFavorito(id, userEmail) {
-    dispatch(postFavourite(id, userEmail))
+    dispatch(postFavourite(id, userEmail)).then(() => {
+      getUserWishlist(userEmail)
+    })
 
   }
 
   function handleQuitarFavorito(id, userEmail) {
-    dispatch(deleteFavourite(id, userEmail))
+    dispatch(deleteFavourite(id, userEmail)).then(() => {
+      getUserWishlist(userEmail)
+    })
 
   }
 
@@ -175,7 +184,11 @@ export default function Detail(props) {
                 <li>State: {wine.states.map(e => e.name + ("  "))}</li>
                 <li>Quantity: {wine.quantity}</li>
               </ul>
-              <IconButtonWish product={wine} handleAgregarFavorito={handleAgregarFavorito} handleQuitarFavorito={handleQuitarFavorito} favourites={favourites} />
+              {isAuthenticated && currentUser ?
+                <IconButtonWish product={wine} handleAgregarFavorito={handleAgregarFavorito} handleQuitarFavorito={handleQuitarFavorito} favourites={favourites} userEmail={currentUser.email} /> :
+                <FavoriteIcon className="text-muted" disable />
+              }
+
               <div className="ms-4 input-cart">
                 <label class="form-label" for="typeNumber">Number of boxes</label>
                 <input type="number" id="typeNumber" class="form-control" placeholder="1" value={cartQuantity} onChange={e => setCartQuantity(e.target.value)} />
@@ -189,8 +202,8 @@ export default function Detail(props) {
           </div>
         </div>
         <div className="container">
-          {auth ?
-            <ReviewsForm idProduct={idProduct} userEmail={user.email} />
+          {isAuthenticated ?
+            <ReviewsForm idProduct={idProduct} userEmail={currentUser.email} />
             : <div className='d-flex flex-column align-items-center gap-3 border border-3 rounded p-4 bg-light' style={{ height: '150px' }}  >
               <h3 className="">You must be login to make a review</h3>
               <LoginButton />
@@ -198,7 +211,7 @@ export default function Detail(props) {
         </div>
         <div className="col col-12 p-5" id="review">
           <h3 id="reviews">REVIEWS</h3>{
-            auth ?
+            isAuthenticated ?
               <div>
                 <Modal show={showModalEdit} onHide={() => setShowModalEdit(false)} >
                   <Modal.Header closeButton>

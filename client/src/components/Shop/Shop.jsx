@@ -45,25 +45,27 @@ export default function Shop() {
     const pagination = (pageNumber) => {
         setCurrentPage(pageNumber)
     };
-    
+
     useEffect(() => {
-        if(userInfo){
-        dispatch(getUserWishlist(userInfo.email));
+        if (isAuthenticated && userInfo) {
+            dispatch(getUserWishlist(userInfo.email)).then(() => {
+                console.log(favourites)
+            });
         }
-      }, [dispatch]);
+    }, [dispatch]);
 
     useEffect(() => {
         dispatch(loadingAction(true))
         dispatch(getProducts());
-        
+
     }, [dispatch]);
 
     useEffect(() => {
-        if(getSwitch){
+        if (getSwitch) {
             dispatch(getUserCart(currentUser.id))
             return setGetSwitch(false)
         }
-        if(!isAuthenticated){
+        if (!isAuthenticated) {
             localStorage.setItem('cart', JSON.stringify(cart));
         }
     }, [dispatch, getSwitch, cart])
@@ -121,8 +123,8 @@ export default function Shop() {
     }
 
     const addCart = (id, cartQuantity, name, price) => {
-        if(isAuthenticated){
-            if(cart.some(el => el.id === id)){
+        if (isAuthenticated) {
+            if (cart.some(el => el.id === id)) {
                 let updateWine = cart.find(el => el.id === id)
                 dispatch(updateUserCart({
                     userId: currentUser.id,
@@ -134,20 +136,20 @@ export default function Shop() {
                 setGetSwitch(true)
                 return addAlert(cartQuantity, name);
             }
-             dispatch(addUserCart({
-              userId: currentUser.id,
-              totalPrice: price,
-              quantity:1,
-              email: user.email,
-              productId: id,
+            dispatch(addUserCart({
+                userId: currentUser.id,
+                totalPrice: price,
+                quantity: 1,
+                email: user.email,
+                productId: id,
             }))
             setGetSwitch(true)
             addAlert(cartQuantity, name);
-          } 
-          if(!isAuthenticated) {
+        }
+        if (!isAuthenticated) {
             dispatch(addToCart(id, cartQuantity));
             addAlert(cartQuantity, name);
-          }
+        }
     }
 
     const grapes = allGrapes()
@@ -156,28 +158,28 @@ export default function Shop() {
     const quantities = allQuantity()
     const prices = allPrices()
 
-    
-   
-    
-if(userInfo){
-    userEmail: userInfo.email
-}
 
-   function handleAgregarFavorito(id, userEmail ) {
-         dispatch(postFavourite(id, userEmail ))
-         
-      } 
 
-    function handleQuitarFavorito(id, userEmail ) {          
-             dispatch(deleteFavourite(id, userEmail))
-             
-       } 
+
+    if (userInfo) {
+        userEmail: userInfo.email
+    }
+
+    function handleAgregarFavorito(id, userEmail) {
+        dispatch(postFavourite(id, userEmail))
+
+    }
+
+    function handleQuitarFavorito(id, userEmail) {
+        dispatch(deleteFavourite(id, userEmail))
+
+    }
 
     useEffect(() => {
-        if(!currentUser.id && isAuthenticated){
+        if (!currentUser.id && isAuthenticated) {
             dispatch(getUserInfo(user.email))
         }
-        if(currentUser.id && isAuthenticated){
+        if (currentUser.id && isAuthenticated) {
             dispatch(getUserCart(currentUser.id, currentUser.email))
         }
     }, [dispatch, isAuthenticated, currentUser.id])
