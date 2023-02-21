@@ -9,10 +9,29 @@ import NavigationBar from "../../Navbar/index";
 import Banner from '../../Home/Banner/index';
 import Footer from '../../Footer/index';
 // import useLocalStorage from  '../../../useLocalStorage';
-import { statusCart, getUserInfo } from "../../../actions/userActions";
 import { backToCartOrder } from "../../../actions/ordersAction";
-
+import { statusCart, deleteCart, createUserAddress, getUserInfo } from "../../../actions/userActions";
+import "./Payment.css"
 const PayPalButton = window.paypal.Buttons.driver("react", { React, ReactDOM });
+
+function validate(input) {
+  let errors = {};
+  if (!input.address){
+    errors.address = 'Address is required';
+  } else if(!input.reference){
+    errors.reference = 'Reference is required';
+  } else if (!input.state){
+    errors.state = 'State is required';
+  } else if (!input.region){
+    errors.region = 'Region is required';
+  } else if (!input.telephone){
+    errors.telephone = 'Telephone is required';
+  }else if (!input.zipCode){
+    errors.zipCode = 'ZipCode is required';
+  } 
+  return errors;
+  }
+
 
 export default function Paypal(){
     // const { user, isAuthenticated } = useAuth0();
@@ -20,7 +39,17 @@ export default function Paypal(){
     const cart = useSelector((state) => state.products.cart);
     const userInfo = useSelector((state) => state.users.userInfo);
     const dispatch = useDispatch();
-  
+    const [errors, setErrors] = useState({});
+    const [input, setInput] = useState({
+      reference: "",
+      address: "", 
+      zipCode: "",
+      telephone: "", 
+      userEmail: userInfo.email,
+      state: "",
+      region: "", 
+    })
+    console.log(input);
     const total = cart.reduce((acc, product) => {
       return acc + product.price * product.cartQuantity;
     }, 0);
@@ -38,8 +67,21 @@ export default function Paypal(){
     const onApprove = (data, actions) => {
       return actions.order.capture(handlePay(total));
     }
+
+    function handleChange(e){
+      setInput({
+          ...input,
+          [e.target.id] : e.target.value
+      })
+      setErrors(validate({
+          ...input,
+          [e.target.id] : e.target.value
+      }))
+      console.log(input);
+  }
     
     function handlePay (total) {
+      let addressUser = input;
       Swal.fire({
         title: `Your purchase by ${total},00 It was successful!`,
         icon: 'success',
@@ -55,6 +97,7 @@ export default function Paypal(){
       /* dispatch(deleteCart(
          userInfo.id,
       )) */
+      dispatch(createUserAddress(addressUser))
     }
     useEffect(() => {
       dispatch(getUserInfo(userInfo.email))
@@ -109,10 +152,7 @@ export default function Paypal(){
             <div className="row">
               <div className="mb-3">
                 <label for="firstName">Full name</label>
-                <input type="text" className="form-control" id="firstName" placeholder="" value={userInfo.fullname} required/>
-                <div className="invalid-feedback">
-                  Valid full name is required.
-                </div>
+                <input type="text" className="form-control" id="firstName" placeholder="" value={userInfo.fullname} readOnly />
               </div>
             </div>
     
@@ -122,32 +162,64 @@ export default function Paypal(){
                 <div className="input-group-prepend">
                   <span className="input-group-text">@</span>
                 </div>
-                <input type="text" className="form-control" id="username" value={userInfo.email} required/>
-                <div className="invalid-feedback">
-                  Your username is required.
-                </div>
+                <input type="text" className="form-control" id="username" value={userInfo.email} readOnly />
               </div>
             </div>
     
             <div className="mb-3">
               <label for="address">Address</label>
-              <input type="text" className="form-control" id="address" placeholder="1234 Main St" required/>
+              <input type="text" className="form-control" id="address" placeholder="1234 Main St" value={input.address} onChange={(e) => handleChange(e)}/>
+              {errors.address && (
+                <p className="error">{errors.address}</p>
+                )}
               <div className="invalid-feedback">
                 Please enter your shipping address.
+              </div>
+            </div>
+            <div className="mb-3">
+              <label for="address">Reference</label>
+              <input type="text" className="form-control" id="reference" placeholder="" value={input.reference} onChange={(e) => handleChange(e)}/>
+              {errors.reference && (
+                <div><p className="error">{errors.reference}</p></div>
+                )}
+              <div className="invalid-feedback">
+                Please enter your reference.
+              </div>
+            </div>
+            <div className="row">
+              <div className="col-md-5 mb-3">
+                <label for="phone">State</label>
+                <input type="text" id="state" className="form-control" placeholder="" value={input.state} onChange={(e) => handleChange(e)}/>
+                {errors.state && (
+                <p className="error">{errors.state}</p>
+                )}
+                <div className="invalid-feedback">
+                  State required.
+                </div>
+              </div>
+              <div className="col-md-5 mb-3">
+                <label for="zip">Region</label>
+                <input type="text" className="form-control" id="region" placeholder="" value={input.region} onChange={(e) => handleChange(e)}/>
+                {errors.region && (
+                <p className="error">{errors.region}</p>
+                )}
               </div>
             </div>
     
             <div className="row">
               <div className="col-md-5 mb-3">
                 <label for="phone">Phone number with country code</label>
-                <input type="text" id="phone" className="form-control" placeholder="+48 999-999-999" required/>
+                <input type="text" id="telephone" className="form-control" placeholder="+54 999-999-999" value={input.telephone} onChange={(e) => handleChange(e)}/>
+                {errors.telephone && (
+                <p className="error">{errors.telephone}</p>
+                )}
               </div>
               <div className="col-md-4 mb-3">
                 <label for="zip">ZipCode</label>
-                <input type="text" className="form-control" id="zip" placeholder="" required/>
-                <div className="invalid-feedback">
-                  Zip code required.
-                </div>
+                <input type="text" className="form-control" id="zipCode" placeholder="" value={input.zipCode} onChange={(e) => handleChange(e)}/>
+                {errors.zipCode && (
+                <p className="error">{errors.zipCode}</p>
+                )}
               </div>
             </div>
         </form>
@@ -155,7 +227,7 @@ export default function Paypal(){
           </div>
           <div className="container d-flex align-items-center"> 
             <div className="col col-12">
-              <h1>${total},00.-</h1>
+              <h1>${total},00.</h1>
               <PayPalButton
                 createOrder={(data, actions) => createOrder(data, actions)}
                 onApprove={(data, actions) => onApprove(data, actions)}
