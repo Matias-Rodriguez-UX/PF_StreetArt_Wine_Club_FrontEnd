@@ -258,7 +258,8 @@ function sortArrayAtoZ(x, y) {
     return 1;
   }
   return 0;
-}
+};
+
 function sortArrayZtoA(x, y) {
   if (x.name > y.name) {
     return -1;
@@ -267,4 +268,4 @@ function sortArrayZtoA(x, y) {
     return 1;
   }
   return 0;
-}
+};
