@@ -12,35 +12,44 @@ import { getDetail, addToCart, getReviews, loadingAction, deleteReviews } from "
 import ReviewsForm from "./Reviews/ReviewsForm";
 import { useAuth0 } from "@auth0/auth0-react";
 import ReviewsTemplate from "./Reviews/ReviewTemplate";
-import { addUserCart, getUserCart, updateUserCart } from "../../../actions/userActions";
+import { addUserCart, getUserCart, getUserInfo, updateUserCart } from "../../../actions/userActions";
 import { Button, Modal } from "react-bootstrap";
 import ReviewsEdit from "./Reviews/ReviewEdit";
 import { Rating } from "@mui/material";
 import LoginButton from "../../Login/LoginButton";
+import IconButtonWish from "./Wish/Wishbutton";
+import FavoriteIcon from '@mui/icons-material/Favorite'
+import { deleteFavourite, getUserWishlist, postFavourite } from "../../../actions/userActions";
 
 export default function Detail(props) {
-  const { isLoading, isAuthenticated: auth, user, isAuthenticated } = useAuth0();
+  const { isLoading, user, isAuthenticated } = useAuth0();
   const [cartQuantity, setCartQuantity] = useState(1);
   const [getSwitch, setGetSwitch] = useState(false)
-
+  const favourites = useSelector((state) => state.users.userWishlist);
   const cart = useSelector(state => state.products.cart)
   const reviews = useSelector(state => state.products.reviews)
   const dispatch = useDispatch()
   const idProduct = props.match.params.id
+  const [allReviews, setAllReviews] = useState([])
   const [showModalEdit, setShowModalEdit] = useState(false);
   const [showModalDelete, setShowModalDelete] = useState(false);
   const [selectedReview, setSelectedReview] = useState({});
+  const [userIf, setUserIf] = useState({});
   const currentUser = useSelector((state) => state.users.userInfo)
 
   useEffect(() => {
     dispatch(loadingAction(true))
     dispatch(getDetail(idProduct))
     dispatch(loadingAction(true))
-    dispatch(getReviews(idProduct));
-  }, [selectedReview]);
+    dispatch(getReviews(idProduct))
+    if (reviews.length) { setAllReviews(reviews) }
+    if (!currentUser.id && isAuthenticated) {
+      dispatch(getUserInfo(user.email))
+    }
+  }, [dispatch, isAuthenticated, currentUser.id, selectedReview, allReviews, userIf]);
 
   useEffect(() => {
-    if(getSwitch) dispatch(getUserCart(currentUser.id))
+    if (getSwitch) dispatch(getUserCart(currentUser.id))
   })
 
   const wine = useSelector((state) => state.products.wineDetail);
@@ -56,30 +65,31 @@ export default function Detail(props) {
       confirmButtonColor: '#ffc107'
     })
   }
+
   const handleClick = (id, cartQuantity, name, price) => {
-    if(!isAuthenticated) {
+    if (!isAuthenticated) {
       dispatch(addToCart(id, cartQuantity));
       addAlert(cartQuantity, name);
     }
-    if(isAuthenticated) {
-      if(cart.some(el => el.id === id)){
+    if (isAuthenticated) {
+      if (cart.some(el => el.id === id)) {
         let updateWine = cart.find(el => el.id === id)
-            dispatch(updateUserCart({
-                userId: currentUser.id,
-                totalPrice: price,
-                quantity: updateWine.cartQuantity + parseInt(cartQuantity),
-                email: user.email,
-                productId: id,
-            }))
-            setGetSwitch(true)
-            return addAlert(cartQuantity, name);
-      }
-      dispatch(addUserCart({
+        dispatch(updateUserCart({
           userId: currentUser.id,
           totalPrice: price,
-          quantity:cartQuantity,
+          quantity: updateWine.cartQuantity + parseInt(cartQuantity),
           email: user.email,
           productId: id,
+        }))
+        setGetSwitch(true)
+        return addAlert(cartQuantity, name);
+      }
+      dispatch(addUserCart({
+        userId: currentUser.id,
+        totalPrice: price,
+        quantity: cartQuantity,
+        email: user.email,
+        productId: id,
       }))
       setGetSwitch(true)
       addAlert(cartQuantity, name);
@@ -87,16 +97,32 @@ export default function Detail(props) {
   };
 
   useEffect(() => {
-    if(!isAuthenticated) localStorage.setItem('cart', JSON.stringify(cart));
+    if (!isAuthenticated) localStorage.setItem('cart', JSON.stringify(cart));
   }, [cart]);
+
+  const addAlertDelete = () => {
+    Swal.fire({
+      title: "YOUR REVIEW WAS DELETED",
+      text: `We are sorry that you had to delete your opinion`,
+      icon: 'error',
+      timer: '4000',
+      timerProgressBar: true,
+      allowOutsideClick: true,
+      confirmButtonColor: '#ffc107'
+    })
+  }
 
   const handleClickEditReview = (item) => {
     setSelectedReview(item);
     setShowModalEdit(true);
   };
   const handleClickDeleteReview = () => {
-    dispatch(deleteReviews(idProduct, selectedReview.id))
-    window.location.reload();
+    dispatch(deleteReviews(idProduct, selectedReview.id)).then(() => {
+      dispatch(getReviews(idProduct)).then(() => {
+        setShowModalDelete(false)
+        addAlertDelete()
+      });
+    })
   }
   let medRating = 0
   if (reviews.length) {
@@ -106,6 +132,25 @@ export default function Detail(props) {
     medRating = medRating / reviews.length
   }
 
+  useEffect(() => {
+    if (isAuthenticated && currentUser) {
+      dispatch(getUserWishlist(currentUser.email));
+    }
+  }, [dispatch]);
+
+  function handleAgregarFavorito(id, userEmail) {
+    dispatch(postFavourite(id, userEmail)).then(() => {
+      getUserWishlist(userEmail)
+    })
+
+  }
+
+  function handleQuitarFavorito(id, userEmail) {
+    dispatch(deleteFavourite(id, userEmail)).then(() => {
+      getUserWishlist(userEmail)
+    })
+
+  }
 
   return (
     <>
@@ -139,11 +184,15 @@ export default function Detail(props) {
                 <li>State: {wine.states.map(e => e.name + ("  "))}</li>
                 <li>Quantity: {wine.quantity}</li>
               </ul>
-              <div className="input-cart">
+              {isAuthenticated && currentUser ?
+                <IconButtonWish product={wine} handleAgregarFavorito={handleAgregarFavorito} handleQuitarFavorito={handleQuitarFavorito} favourites={favourites} userEmail={currentUser.email} /> :
+                <FavoriteIcon className="text-muted" disable />
+              }
+
+              <div className="ms-4 input-cart">
                 <label class="form-label" for="typeNumber">Number of boxes</label>
                 <input type="number" id="typeNumber" class="form-control" placeholder="1" value={cartQuantity} onChange={e => setCartQuantity(e.target.value)} />
                 <button type="button" id="button-cart" className="btn btn-warning btn-sm" onClick={() => handleClick(wine.id, cartQuantity, wine.name, wine.price)}>Add to cart <i class="bi bi-cart-check-fill"></i></button>
-
               </div>
             </div>
           </div>
@@ -153,47 +202,52 @@ export default function Detail(props) {
           </div>
         </div>
         <div className="container">
-          {auth ?
-            <ReviewsForm idProduct={idProduct} />
+          {isAuthenticated ?
+            <ReviewsForm idProduct={idProduct} userEmail={currentUser.email} />
             : <div className='d-flex flex-column align-items-center gap-3 border border-3 rounded p-4 bg-light' style={{ height: '150px' }}  >
               <h3 className="">You must be login to make a review</h3>
               <LoginButton />
             </div>}
         </div>
         <div className="col col-12 p-5" id="review">
-          <h3 id="reviews">REVIEWS</h3>
-          <Modal show={showModalEdit} onHide={() => setShowModalEdit(false)} >
-            <Modal.Header closeButton>
-              <Modal.Title>Edit Review</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-              <ReviewsEdit selectedReview={selectedReview} setShowModalEdit={setShowModalEdit} />
-            </Modal.Body>
-            <Modal.Footer>
-              <Button variant="secondary" onClick={() => setShowModalEdit(false)}>
-                Close
-              </Button>
-            </Modal.Footer>
-          </Modal>
-          <Modal show={showModalDelete} onHide={() => setShowModalDelete(false)} >
-            <Modal.Header closeButton>
-              <Modal.Title>Delete Review</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-              You really want to delete the review
-            </Modal.Body>
-            <Modal.Footer>
-              <Button variant="warning" onClick={() => setShowModalDelete(false)}>
-                No
-              </Button>
-              <Button variant="outline-danger" type="button" onClick={(e) => handleClickDeleteReview(e)} >
-                Yes
-              </Button>
-            </Modal.Footer>
-          </Modal>
+          <h3 id="reviews">REVIEWS</h3>{
+            isAuthenticated ?
+              <div>
+                <Modal show={showModalEdit} onHide={() => setShowModalEdit(false)} >
+                  <Modal.Header closeButton>
+                    <Modal.Title>Edit Review</Modal.Title>
+                  </Modal.Header>
+                  <Modal.Body>
+                    <ReviewsEdit selectedReview={selectedReview} setShowModalEdit={setShowModalEdit} userEmail={user.email} />
+                  </Modal.Body>
+                  <Modal.Footer>
+                    <Button variant="secondary" onClick={() => setShowModalEdit(false)}>
+                      Close
+                    </Button>
+                  </Modal.Footer>
+                </Modal>
+                <Modal show={showModalDelete} onHide={() => setShowModalDelete(false)} >
+                  <Modal.Header closeButton>
+                    <Modal.Title>Delete Review</Modal.Title>
+                  </Modal.Header>
+                  <Modal.Body>
+                    You really want to delete the review
+                  </Modal.Body>
+                  <Modal.Footer>
+                    <Button variant="warning" onClick={() => setShowModalDelete(false)}>
+                      No
+                    </Button>
+                    <Button variant="outline-danger" type="button" onClick={(e) => handleClickDeleteReview(e)} >
+                      Yes
+                    </Button>
+                  </Modal.Footer>
+                </Modal>
+              </div> : <Modal />
+          }
+
         </div>
         {
-          reviews?.map((review) => <ReviewsTemplate key={review.id} review={review} handleClickEditReview={handleClickEditReview} setShowModalDelete={setShowModalDelete} setSelectedReview={setSelectedReview} />)
+          reviews.map((review) => <ReviewsTemplate key={review.id} review={review} handleClickEditReview={handleClickEditReview} setShowModalDelete={setShowModalDelete} setSelectedReview={setSelectedReview} />)
         }
         <div className="col col-12">
           <Footer />

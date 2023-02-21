@@ -138,7 +138,7 @@ export function postProduct(payload) {
 }
 
 export function deleteProduct(id) {
-  return async function () {
+  return async function (dispatch) {
     try {
       let info = await axios.delete(`/products/${id}`);
       return dispatch({
@@ -274,7 +274,7 @@ export function resetCart() {
 }
 
 export function postReview(id, payload) {
-  return async function () {
+  return async function (dispatch) {
     try {
       let info = await axios.post(`/products/${id}/review`, payload);
       return dispatch({
@@ -289,6 +289,7 @@ export function postReview(id, payload) {
 
 export function getReviews(id) {
   return async function (dispatch) {
+    console.log(id)
     try {
       var detail = await axios.get(`/products/${id}/review`, headers);
       return (
@@ -305,7 +306,8 @@ export function getReviews(id) {
 }
 
 export function updateReviews(idProduct, idReview, info) {
-  return async function () {
+  return async function (dispatch) {
+
     try {
       var detail = await axios.put(
         `/products/${idProduct}/review/${idReview}`,
@@ -321,8 +323,11 @@ export function updateReviews(idProduct, idReview, info) {
   };
 }
 
-export function deleteReviews(idProduct, idReview) {
-  return async function () {
+
+export function deleteReviews(idProduct, idReview,) {
+
+  return async function (dispatch) {
+
     try {
       var detail = await axios.delete(
         `/products/${idProduct}/review/${idReview}`

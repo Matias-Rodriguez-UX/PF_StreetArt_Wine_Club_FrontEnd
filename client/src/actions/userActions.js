@@ -1,12 +1,14 @@
+
 import { useAuth0 } from "@auth0/auth0-react";
 // const { isLoading, isAuthenticated: auth, user } = useAuth0();
-import { GET_ALL_STATES, GET_ALL_CITIES, GET_ALL_USERS, GET_USER_INFO, CREATE_USER, EDIT_USER, GET_USER_ADDRESSES, CREATE_USER_ADDRESS, EDIT_USER_ADDRESS,DELETE_USER_ADDRESS, 
-DELETE_USER, GET_WISHLIST, POST_WISHLIST, DELETE_FAVOURITE,  ADD_TO_CART,
-  GET_USER_CART, } from "./allActions";
-
+import {
+  GET_ALL_STATES, GET_ALL_CITIES, GET_ALL_USERS, GET_USER_INFO, CREATE_USER, EDIT_USER, GET_USER_ADDRESSES, CREATE_USER_ADDRESS, EDIT_USER_ADDRESS, DELETE_USER_ADDRESS,
+  DELETE_USER, GET_WISHLIST, POST_WISHLIST, DELETE_FAVOURITE, ADD_TO_CART,
+  GET_USER_CART,
+} from "./allActions";
 import axios from "axios";
 import { loadingAction } from ".";
-import {instance} from '../axiosInstance.jsx';
+import { instance } from '../axiosInstance.jsx';
 
 const headers = {
   headers: {
@@ -137,7 +139,7 @@ export function deleteUserAddress(addressId, userId) {
 export function editUserAddress(payload) {
   return async function (dispatch) {
     try {
-      let updatedAddress = await axios.put(`/users/${addressId}`);
+      let updatedAddress = await axios.put(`/users/${payload}`);
       dispatch({
         type: EDIT_USER_ADDRESS,
         payload: updatedAddress.data,
@@ -201,7 +203,7 @@ export function deleteUserCart(userId, productId) {
 
 };
 
-export function getUserWishlist(email){
+export function getUserWishlist(email) {
   return async function (dispatch) {
     try {
       let wishlist = await axios.get(`/users/favourites/${email}`)
@@ -215,7 +217,7 @@ export function getUserWishlist(email){
   }
 }
 
-export function postFavourite (id, email){
+export function postFavourite(id, email) {
   return async function (dispatch) {
     try {
       console.log(email)
@@ -230,15 +232,15 @@ export function postFavourite (id, email){
   };
 };
 
-export function deleteFavourite (id, email){
- 
+export function deleteFavourite(id, email) {
+
   return async function (dispatch) {
     try {
       var wishlist = await axios.delete(`/users/deleteFav/${email}/${id}`);
       return dispatch({
         type: DELETE_FAVOURITE,
-        payload:wishlist.data
-     })
+        payload: wishlist.data
+      })
     } catch (error) {
       console.log("Error", error);
     }
