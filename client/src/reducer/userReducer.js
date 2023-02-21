@@ -2,7 +2,7 @@
 import {
   GET_ALL_USERS, GET_USER_ADDRESSES, GET_USER_INFO, CREATE_USER, EDIT_USER,
   CREATE_USER_ADDRESS, EDIT_ADDRESS, DELETE_USER_ADDRESS, GET_ALL_STATES, GET_ALL_CITIES,
-  EDIT_USER_ADDRESS, GET_WISHLIST, POST_WISHLIST, DELETE_FAVOURITE
+  EDIT_USER_ADDRESS, GET_WISHLIST, POST_WISHLIST, DELETE_FAVOURITE, POST_NEWSLETTER
 } from "../actions/allActions";
 
 const initialState = {
@@ -86,7 +86,11 @@ export default function rootReducer(state = initialState, action) {
       return {
         ...state
       }
-
+      case POST_NEWSLETTER:
+        return {
+          ...state
+        } 
+    
     default:
       return { ...state }
   };
