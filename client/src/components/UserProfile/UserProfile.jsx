@@ -19,8 +19,6 @@ import EditUserProfileCard from "./EditUserProfileCard/EditUserProfileCard";
 import Wishlist from "./Wishlist/Wishlist";
 import { Loader } from "../Loader";
 
-
-
 export default function UserProfile() {
     const dispatch = useDispatch();
 

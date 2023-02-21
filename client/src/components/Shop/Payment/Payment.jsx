@@ -49,7 +49,7 @@ export default function Paypal(){
       state: "",
       region: "", 
     })
-    console.log(input);
+
     const total = cart.reduce((acc, product) => {
       return acc + product.price * product.cartQuantity;
     }, 0);
