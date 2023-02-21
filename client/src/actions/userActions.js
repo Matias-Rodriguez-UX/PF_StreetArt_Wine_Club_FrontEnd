@@ -4,7 +4,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import {
   GET_ALL_STATES, GET_ALL_CITIES, GET_ALL_USERS, GET_USER_INFO, CREATE_USER, EDIT_USER, GET_USER_ADDRESSES, CREATE_USER_ADDRESS, EDIT_USER_ADDRESS, DELETE_USER_ADDRESS,
   DELETE_USER, GET_WISHLIST, POST_WISHLIST, DELETE_FAVOURITE, ADD_TO_CART,
-  GET_USER_CART,
+  GET_USER_CART, POST_NEWSLETTER
 } from "./allActions";
 import axios from "axios";
 import { loadingAction } from ".";
@@ -243,6 +243,21 @@ export function deleteFavourite(id, email) {
       })
     } catch (error) {
       console.log("Error", error);
+    }
+  };
+};
+
+export function postNewsletter(email) {
+  return async function (dispatch) {
+    try {
+      console.log(email)
+      let newsletter = await axios.post('/newsletter', email);
+      return dispatch({
+        type: POST_NEWSLETTER,
+        payload: newsletter.data
+      });
+    } catch (error) {
+      console.log("ERROR", error)
     }
   };
 };
