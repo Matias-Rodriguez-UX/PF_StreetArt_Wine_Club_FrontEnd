@@ -11,6 +11,7 @@ import Footer from '../../Footer/index';
 import "./Cart.css"
 import { deleteUserCart, getUserCart, getUserInfo, updateUserCart, statusCart } from "../../../actions/userActions";
 
+
 export default function Cart() {
   const cart = useSelector((state) => state.products.cart);
   const currentUser = useSelector((state) => state.users.userInfo)
@@ -90,10 +91,7 @@ export default function Cart() {
       setGetSwitch(true)
     }
   }
-  
-  const statusOrder = 'processing payment';
-  const emailUser = currentUser.email;
-  console.log(statusOrder, emailUser);
+
   const handleStatus = () => {
     dispatch(statusCart({
       email: currentUser.email,

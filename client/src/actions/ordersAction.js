@@ -1,6 +1,6 @@
 import axios from "axios";
 import { loadingAction } from ".";
-import { GET_ORDERS } from "./allActions";
+import { GET_ORDERS, GET_ORDER_BY_ID } from "./allActions";
 
 const headers = {
   headers: {
@@ -19,6 +19,17 @@ export function getOrders() {
         }),
         dispatch(loadingAction(false))
       );
+    } catch (error) {
+      return error;
+    }
+  };
+}
+
+export function backToCartOrder(orderId) {
+  return async function () {
+    try {
+      let orders = await axios.put(`/orders/backToCart/${orderId}`, headers);
+      console.log(orders);
     } catch (error) {
       return error;
     }

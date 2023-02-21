@@ -13,15 +13,15 @@ export default function UserSideBar({ userName, userPicture, setCurrentPage }) {
     const { logout, user, isAuthenticated:auth } = useAuth0();
     const userInfo = useSelector((state) => state.users.userInfo);
 
-    let userEmail = '';
+    // let userEmail = '';
 
-    if(auth){
-        userEmail = user.email
-    };
+    // if(auth){
+    //     userEmail = user.email
+    // };
 
-    useEffect(() => {
-        dispatch(getUserInfo(userEmail))
-    }, [dispatch, user]);
+    // useEffect(() => {
+    //     dispatch(getUserInfo(userEmail))
+    // }, [dispatch, user]);
 
     return (
         <>

@@ -25,7 +25,6 @@ export default function Shop() {
     const dispatch = useDispatch()
     const userInfo = useSelector((state) => state.users.userInfo);
     const favourites = useSelector((state) => state.users.userWishlist);
-
     const showLoading = useSelector((state) => state.products.showLoading)
     const allProducts = useSelector((state) => state.products.allProducts)
     const Products = useSelector((state) => state.products.products)
@@ -48,16 +47,15 @@ export default function Shop() {
 
     useEffect(() => {
         if (isAuthenticated && userInfo) {
-            dispatch(getUserWishlist(userInfo.email)).then(() => {
-                console.log(favourites)
-            });
+            dispatch(getUserWishlist(userInfo.email));
         }
     }, [dispatch]);
 
     useEffect(() => {
-        dispatch(loadingAction(true))
-        dispatch(getProducts());
-
+        if(Products.length === 0){
+            dispatch(loadingAction(true))
+            dispatch(getProducts());
+        }
     }, [dispatch]);
 
     useEffect(() => {
@@ -69,6 +67,16 @@ export default function Shop() {
             localStorage.setItem('cart', JSON.stringify(cart));
         }
     }, [dispatch, getSwitch, cart])
+
+    useEffect(() => {
+        if (!currentUser.id && isAuthenticated) {
+            dispatch(getUserInfo(user.email))
+        }
+        if (currentUser.id && isAuthenticated && cart.length === 0) {
+            console.log('getUserCart(): ', currentUser.id)
+            dispatch(getUserCart(currentUser.id))
+        }
+    }, [dispatch, isAuthenticated, currentUser.id])
 
     function handleClick(e) {
         e.preventDefault()
@@ -175,14 +183,7 @@ export default function Shop() {
 
     }
 
-    useEffect(() => {
-        if (!currentUser.id && isAuthenticated) {
-            dispatch(getUserInfo(user.email))
-        }
-        if (currentUser.id && isAuthenticated) {
-            dispatch(getUserCart(currentUser.id, currentUser.email))
-        }
-    }, [dispatch, isAuthenticated, currentUser.id])
+
 
     return (
         <>

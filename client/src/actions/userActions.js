@@ -1,14 +1,26 @@
-
 import { useAuth0 } from "@auth0/auth0-react";
 // const { isLoading, isAuthenticated: auth, user } = useAuth0();
 import {
-  GET_ALL_STATES, GET_ALL_CITIES, GET_ALL_USERS, GET_USER_INFO, CREATE_USER, EDIT_USER, GET_USER_ADDRESSES, CREATE_USER_ADDRESS, EDIT_USER_ADDRESS, DELETE_USER_ADDRESS,
-  DELETE_USER, GET_WISHLIST, POST_WISHLIST, DELETE_FAVOURITE, ADD_TO_CART,
+  GET_ALL_STATES,
+  GET_ALL_CITIES,
+  GET_ALL_USERS,
+  GET_USER_INFO,
+  CREATE_USER,
+  EDIT_USER,
+  GET_USER_ADDRESSES,
+  CREATE_USER_ADDRESS,
+  EDIT_USER_ADDRESS,
+  DELETE_USER_ADDRESS,
+  DELETE_USER,
+  GET_WISHLIST,
+  POST_WISHLIST,
+  DELETE_FAVOURITE,
+  ADD_TO_CART,
   GET_USER_CART,
 } from "./allActions";
 import axios from "axios";
 import { loadingAction } from ".";
-import { instance } from '../axiosInstance.jsx';
+import { instance } from "../axiosInstance.jsx";
 
 const headers = {
   headers: {
@@ -24,17 +36,19 @@ export function getAllStates() {
       payload: states.data,
     });
   };
-};
+}
 
 export function getAllCities(id) {
   return async function (dispatch) {
-    let cities = await axios.get(`https://apis.datos.gob.ar/georef/api/municipios?provincia=${id}&campos=id,nombre&max=100`);
+    let cities = await axios.get(
+      `https://apis.datos.gob.ar/georef/api/municipios?provincia=${id}&campos=id,nombre&max=100`
+    );
     return dispatch({
       type: GET_ALL_CITIES,
       payload: cities.data,
     });
   };
-};
+}
 
 export function getAllUsers() {
   return async function (dispatch) {
@@ -111,7 +125,7 @@ export function getUserAddresses(email) {
 export function createUserAddress(payload) {
   return async function (dispatch) {
     try {
-      let address = await axios.post('/addresses', payload);
+      let address = await axios.post("/addresses", payload);
       return dispatch({
         type: CREATE_USER_ADDRESS,
         payload: address.data,
@@ -169,7 +183,7 @@ export function addUserCart(payload) {
 export function getUserCart(id) {
   return async function (dispatch) {
     let userCart = await axios.get(`http://localhost:3001/users/${id}/cart`);
-    console.log(userCart);
+    console.log(id, userCart);
     return dispatch({
       type: GET_USER_CART,
       payload: userCart.data.products,
@@ -179,7 +193,6 @@ export function getUserCart(id) {
 
 export function updateUserCart(payload) {
   return async function () {
-    console.log(payload);
     try {
       await axios.put(
         `http://localhost:3001/users/${payload.userId}/cart`,
@@ -224,50 +237,47 @@ export function deleteCart(userId) {
       console.log("Error", error);
     }
   };
-
-};
+}
 
 export function getUserWishlist(email) {
   return async function (dispatch) {
     try {
-      let wishlist = await axios.get(`/users/favourites/${email}`)
+      let wishlist = await axios.get(`/users/favourites/${email}`);
       dispatch({
         type: GET_WISHLIST,
-        payload: wishlist.data
-      })
+        payload: wishlist.data,
+      });
     } catch (e) {
-      console.log("Error", e)
+      console.log("Error", e);
     }
-  }
+  };
 }
 
 export function postFavourite(id, email) {
   return async function (dispatch) {
     try {
-      console.log(email)
+      console.log(email);
       let wishlist = await axios.post(`/users/fav/${email}/${id}`);
       return dispatch({
         type: POST_WISHLIST,
-        payload: wishlist.data
+        payload: wishlist.data,
       });
     } catch (error) {
-      console.log("ERROR", error)
+      console.log("ERROR", error);
     }
   };
-};
+}
 
 export function deleteFavourite(id, email) {
-
   return async function (dispatch) {
     try {
       var wishlist = await axios.delete(`/users/deleteFav/${email}/${id}`);
       return dispatch({
         type: DELETE_FAVOURITE,
-        payload: wishlist.data
-      })
+        payload: wishlist.data,
+      });
     } catch (error) {
       console.log("Error", error);
     }
   };
-};
-
+}
