@@ -16,13 +16,14 @@ export default function UserAddress(){
     const [ input, setInput ] = useState({
         reference: '',
         address: '',
-        zipCode:0,
-        telephone: 0,
-        state: 0,
+        zipCode:"",
+        telephone: "",
+        state: "",
+        region: ""
     });
     // console.log(states);
     input.userEmail = userInfo.email;
-
+console.log(input);
     let orderedStates = states.sort(function(a,b) {
         if (a.name > b.name){
             return 1;
@@ -32,17 +33,18 @@ export default function UserAddress(){
         }
         return 0;
     });
-    //   console.log(orderedStates);
+    // console.log(orderedStates);
 
-    // if (cities.length !==0) {cities.sort(function(a,b) {
-    //     if (a.name > b.name){
-    //         return 1;
-    //     }
-    //     if (b.name > a.name){
-    //         return -1
-    //     }
-    //     return 0;
-    //     })};
+
+      let orderedCities = cities.municipios.sort(function(a,b) {
+        if (a.nombre > b.nombre){
+            return 1;
+        }
+        if (b.nombre > a.nombre){
+            return -1
+        }
+        return 0;
+        });
 
     useEffect(() => {
         dispatch(getStates());
@@ -53,11 +55,11 @@ export default function UserAddress(){
             ...input,
             [e.target.name]: e.target.value
         });
-        console.log(input);
+        // console.log(input);
     };
 
     const handleSelect =  (e) => {
-        if (e.target.name === 'stateId') {
+        if (e.target.name) {
             console.log(e.target.name);
             console.log(e.target.value);
              dispatch(getAllCities(e.target.value));
@@ -67,18 +69,17 @@ export default function UserAddress(){
             });
         }
     };
-    console.log(cities);
-
-    // const handleCitySelect =  (e) => {
-    //     if (e.target.name === 'regionId') {
-    //         console.log(e.target.name);
-    //         console.log(e.target.value);
-    //         setInput({
-    //             ...input,
-    //             [e.target.name] : e.target.value
-    //         });
-    //     }
-    // };
+  
+    const handleCitySelect =  (e) => {
+        if (e.target.name) {
+            console.log(e.target.name);
+            console.log(e.target.value);
+            setInput({
+                ...input,
+                [e.target.name] : e.target.value
+            });
+        }
+    };
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -91,8 +92,8 @@ export default function UserAddress(){
         setInput({
             reference: '',
             address: '',
-            zipCode: 0,
-            telephone: 0
+            zipCode: "",
+            telephone: ""
         });
         history.push('/userprofile');
     };
@@ -133,8 +134,8 @@ export default function UserAddress(){
     
                                 <div class="row mb-3">
                                     <div class="col-sm-9 text-secondary">
-                                        <Form.Select name='stateId' onChange={(e) => handleSelect(e)}>
-                                            <option name='stateId'>State</option>
+                                        <Form.Select name='state' onChange={(e) => handleSelect(e)}>
+                                            <option name='state'>State</option>
                                             {orderedStates?.map((el, index) => <option key={index} value={el.name}>{el.name}</option>)}
                                         </Form.Select>
                                     </div>
@@ -142,9 +143,9 @@ export default function UserAddress(){
 
                                 <div class="row mb-3">
                                     <div class="col-sm-9 text-secondary">
-                                        <Form.Select name='regionId' >
+                                        <Form.Select name='region' onChange={(e) => handleCitySelect(e)} >
                                             <option>City</option>
-                                            {(cities.municipios ? cities.municipios.map((el, index) => <option key={index} value={el.nombre}>{el.nombre}</option>) : <div>'Error'</div>)}
+                                            {(orderedCities ? orderedCities.map((el, index) => <option key={index} value={el.nombre}>{el.nombre}</option>) : <div>'Error'</div>)}
                                         </Form.Select>
                                     </div>
                                 </div>
