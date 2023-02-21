@@ -7,7 +7,7 @@ import FavButton from "./FavouriteButton";
 
 export default function Wishlist({favourites}) {
   const dispatch = useDispatch();
-  // const favourites = useSelector((state) => state.users.userWishlist);
+  //const favourites = useSelector((state) => state.users.userWishlist);
   console.log(favourites)
   const userInfo = useSelector((state) => state.users.userInfo);
   //const showLoading = useSelector((state) => state.products.showLoading)
@@ -30,9 +30,9 @@ function handleQuitarFavorito(id, userEmail ) {
 
   return (
     <>
-      {favourites.products ? (
+      {favourites ? (
         <div className="Cards container col py-5">
-          {favourites.products.map((el) => {
+          {favourites.map((el) => {
               return (
                   <Winecards
                                     image={el.image}
