@@ -190,9 +190,17 @@ export default function Detail(props) {
               }
 
               <div className="ms-4 input-cart">
-                <label class="form-label" for="typeNumber">Number of boxes</label>
-                <input type="number" id="typeNumber" class="form-control" placeholder="1" value={cartQuantity} onChange={e => setCartQuantity(e.target.value)} />
-                <button type="button" id="button-cart" className="btn btn-warning btn-sm" onClick={() => handleClick(wine.id, cartQuantity, wine.name, wine.price)}>Add to cart <i class="bi bi-cart-check-fill"></i></button>
+                {wine.stock > 0 ?
+                  <div>
+                    <label class="form-label" for="typeNumber">Number of boxes</label>
+                    <input type="number" min={1} max={wine.stock} id="typeNumber" class="form-control" placeholder="1" value={cartQuantity} onChange={e => setCartQuantity(e.target.value)} />
+                    <button type="button" id="button-cart" className="btn btn-warning btn-sm" onClick={() => handleClick(wine.id, cartQuantity, wine.name, wine.price)}>Add to cart <i class="bi bi-cart-check-fill"></i></button>
+                  </div>
+                  :
+                  <div>
+                    <h5 className="danger">There is no availability of the selected product</h5>
+                  </div>
+                }
               </div>
             </div>
           </div>
