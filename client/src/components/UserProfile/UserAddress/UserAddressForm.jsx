@@ -144,7 +144,7 @@ console.log(input);
                                 <div class="row mb-3">
                                     <div class="col-sm-9 text-secondary">
                                         <Form.Select name='region' onChange={(e) => handleCitySelect(e)} >
-                                            <option>City</option>
+                                            <option name='region'>City</option>
                                             {(orderedCities ? orderedCities.map((el, index) => <option key={index} value={el.nombre}>{el.nombre}</option>) : <div>'Error'</div>)}
                                         </Form.Select>
                                     </div>
