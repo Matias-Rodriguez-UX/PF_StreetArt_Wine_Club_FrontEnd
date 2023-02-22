@@ -1,0 +1,7 @@
+.address{
+    font-size: 22px;
+    display: flex;
+    justify-content: center;
+    color: brown;
+    /* font-weight: bold; */
+}
