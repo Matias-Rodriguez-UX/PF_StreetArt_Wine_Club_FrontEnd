@@ -122,8 +122,8 @@ export function createUserAddress(payload) {
   };
 }
 
-export function deleteUserAddress(addressId, userId) {
-  return async function () {
+export function deleteUserAddress(addressId) {
+  return async function (dispatch) {
     try {
       var address = await axios.delete(`/users/${addressId}`);
       return dispatch({

@@ -3,9 +3,8 @@ import Form from 'react-bootstrap/Form';
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { getStates } from "../../../actions";
-import { createUserAddress, getAllCities } from "../../../actions/userActions";
+import { createUserAddress, deleteUserAddress, getAllCities } from "../../../actions/userActions";
 import { getUserAddresses } from "../../../actions/userActions";
-import UserShowAddress from "./UserShowAddress";
 
 export default function UserAddress(){
     const dispatch = useDispatch();
@@ -63,8 +62,6 @@ const [ input, setInput ] = useState({
 //  console.log(input);
     const handleSelect =  (e) => {
         if (e.target.name === 'state') {
-            // console.log(e.target.name);
-            // console.log(e.target.value);
              dispatch(getAllCities(e.target.value));
             setInput({
                 ...input,
@@ -85,12 +82,12 @@ const [ input, setInput ] = useState({
         }
     };
     console.log(input);
+
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log(input);
         if (input.reference === '' || input.address === '' || input.zipCode === 0 || input.telephone === 0) 
         return alert('You need to complete all the fields');
-
         dispatch(createUserAddress(input));
         alert ('Address added!');
         setInput({
@@ -100,6 +97,11 @@ const [ input, setInput ] = useState({
             telephone: ''
         });
         history.push('/userprofile');
+    };
+
+    const handleDelete = (e, el) => {
+        e.preventDefault()
+        dispatch(deleteUserAddress(el));
     };
     
     return (
@@ -129,6 +131,7 @@ const [ input, setInput ] = useState({
                         <div>
                             <h6 class="mb-0">Edit</h6>
                         </div>
+                        <button onClick={(e) => handleDelete(e, el.id)}>x</button>
                         </div>
                     </div>
                   <hr/>
