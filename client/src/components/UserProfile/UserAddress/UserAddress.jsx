@@ -4,15 +4,18 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { getStates } from "../../../actions";
 import { createUserAddress, getAllCities } from "../../../actions/userActions";
+import { getUserAddresses } from "../../../actions/userActions";
+import UserShowAddress from "./UserShowAddress";
 
 export default function UserAddress(){
     const dispatch = useDispatch();
     const history = useHistory();
+    
+    const userInfo = useSelector((state) => state.users.userInfo);
     const states = useSelector((state) => state.products.states);
     const cities = useSelector((state) => state.users.cities);
-
-    const userInfo = useSelector((state) => state.users.userInfo);
-// console.log(userInfo);
+    const addresses = useSelector(state => state.users.userAddresses);
+    console.log(addresses);
 const [ input, setInput ] = useState({
     reference: '',
     address: '',
@@ -47,6 +50,7 @@ const [ input, setInput ] = useState({
 
     useEffect(() => {
         dispatch(getStates());
+        dispatch(getUserAddresses(userInfo.email))
     }, [dispatch]);
 
     const handleChange = (e) => {
@@ -101,6 +105,40 @@ const [ input, setInput ] = useState({
     return (
         <div className="container col py-5 mt-5" display='flex'>
           <div class="col-md-8">
+          <Form>
+                <div class="card mb-4 d-flex">
+            {
+                (addresses ? addresses.map((el, index) => 
+                <div>
+                    <div class="d-flex card-body mb-1">
+                    <Form.Check 
+                     type="switch"
+                     id="custom-switch"
+                     label="Main address"
+                     />
+                        <div class="row-sm-3 d-flex ">
+                            <h6 class="mb-0">{el.reference}</h6>
+                            <h6 class="mb-0">{el.address}</h6>
+                        </div>
+                        <div class="row-sm-3 d-flex text-secondary">
+                            <h6 class="mb-0">{el.telephone}</h6>
+                        <div class="col-sm-3 text-secondary flex-fill">
+                             <h6 class="mb-0">{el.state}</h6>
+                             <h6 class="mb-0">{el.region}</h6>
+                        </div>
+                        <div>
+                            <h6 class="mb-0">Edit</h6>
+                        </div>
+                        </div>
+                    </div>
+                  <hr/>
+                  </div>
+                    ) : 
+                
+                <p>error</p>)
+            }
+                            </div>
+                </Form>
                         <div class="card">
                             <div class="card-body">
                                 <h4>Add address</h4>

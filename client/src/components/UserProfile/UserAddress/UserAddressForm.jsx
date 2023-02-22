@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { getStates } from "../../../actions";
 import { createUserAddress, getAllCities } from "../../../actions/userActions";
+import UserShowAddress from "./UserShowAddress";
 
 export default function UserAddress(){
     const dispatch = useDispatch();
@@ -23,7 +24,7 @@ export default function UserAddress(){
     });
     // console.log(states);
     input.userEmail = userInfo.email;
-console.log(input);
+    console.log(input);
     let orderedStates = states.sort(function(a,b) {
         if (a.name > b.name){
             return 1;
