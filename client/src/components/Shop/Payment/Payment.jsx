@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { useEffect, useState } from "react";
+import Form from 'react-bootstrap/Form';
 // import { useAuth0 } from "@auth0/auth0-react";
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -9,36 +10,33 @@ import NavigationBar from "../../Navbar/index";
 import Banner from '../../Home/Banner/index';
 import Footer from '../../Footer/index';
 // import useLocalStorage from  '../../../useLocalStorage';
+import { getStates } from "../../../actions";
 import { backToCartOrder } from "../../../actions/ordersAction";
-import { statusCart, deleteCart, createUserAddress, getUserInfo } from "../../../actions/userActions";
+import { statusCart, deleteCart, createUserAddress, getUserInfo, getAllCities} from "../../../actions/userActions";
 import "./Payment.css"
 const PayPalButton = window.paypal.Buttons.driver("react", { React, ReactDOM });
 
 function validate(input) {
   let errors = {};
-  if (!input.address){
-    errors.address = 'Address is required';
-  } else if(!input.reference){
-    errors.reference = 'Reference is required';
-  } else if (!input.state){
-    errors.state = 'State is required';
-  } else if (!input.region){
-    errors.region = 'Region is required';
-  } else if (!input.telephone){
-    errors.telephone = 'Telephone is required';
-  }else if (!input.zipCode){
-    errors.zipCode = 'ZipCode is required';
-  } 
+  const requiredFields = ['address', 'reference', 'telephone', 'zipCode'];
+  requiredFields.forEach((field) => {
+    if (!input[field]) {
+      errors[field] = `${field} is required`;
+    }
+  });
   return errors;
-  }
+}
 
 
 export default function Paypal(){
-    // const { user, isAuthenticated } = useAuth0();
-    // const [storedCart, setStoredCart] = useLocalStorage("cart", []);
+    const dispatch = useDispatch();
     const cart = useSelector((state) => state.products.cart);
     const userInfo = useSelector((state) => state.users.userInfo);
-    const dispatch = useDispatch();
+    console.log(userInfo);
+    const states = useSelector((state) => state.users.states);
+    console.log(states);
+    const cities = useSelector((state) => state.users.cities);
+    console.log(cities);
     const [errors, setErrors] = useState({});
     const [input, setInput] = useState({
       reference: "",
@@ -53,6 +51,35 @@ export default function Paypal(){
     const total = cart.reduce((acc, product) => {
       return acc + product.price * product.cartQuantity;
     }, 0);
+    
+    let orderedStates = states.sort(function(a,b) {
+      if (a.name > b.name){
+          return 1;
+      }
+      if (b.name > a.name){
+          return -1
+      }
+      return 0;
+    });
+
+
+   let orderedCities = cities.sort(function(a,b) {
+      if (a.nombre > b.nombre){
+          return 1;
+      }
+      if (b.nombre > a.nombre){
+          return -1
+      }
+      return 0;
+    }); 
+
+    useEffect(() => {
+      dispatch(getStates());
+      dispatch(getUserInfo(userInfo.email));
+      /* dispatch(getAllCities()); */
+    }, [dispatch]);
+
+
     const createOrder = (data, actions) => {
       return actions.order.create({
         purchase_units: [
@@ -69,16 +96,45 @@ export default function Paypal(){
     }
 
     function handleChange(e){
-      setInput({
-          ...input,
+      setInput(prevState => ({
+          ...prevState,
           [e.target.id] : e.target.value
-      })
+       }));
       setErrors(validate({
           ...input,
           [e.target.id] : e.target.value
       }))
-      console.log(input);
+      setInput(prevState => {
+        console.log(prevState);
+        return prevState;
+      });
   }
+
+  const handleSelect =  (e) => {
+    if (e.target.name) {
+        console.log(e.target.name);
+        console.log(e.target.value);
+        dispatch(getAllCities(e.target.value));
+        setInput({
+            ...input,
+            [e.target.name] : e.target.value
+        });
+      }
+  };
+
+  const handleCitySelect =  (e) => {
+      if (e.target.name) {
+          console.log(e.target.name);
+          console.log(e.target.value);
+          setInput({
+              ...input,
+              [e.target.name] : e.target.value
+          });
+      }
+  };
+
+
+
     
     function handlePay (total) {
       let addressUser = input;
@@ -99,9 +155,6 @@ export default function Paypal(){
       )) */
       dispatch(createUserAddress(addressUser))
     }
-    useEffect(() => {
-      dispatch(getUserInfo(userInfo.email))
-    }, [dispatch]);
 
     
   
@@ -188,21 +241,16 @@ export default function Paypal(){
             </div>
             <div className="row">
               <div className="col-md-5 mb-3">
-                <label for="phone">State</label>
-                <input type="text" id="state" className="form-control" placeholder="" value={input.state} onChange={(e) => handleChange(e)}/>
-                {errors.state && (
-                <p className="error">{errors.state}</p>
-                )}
-                <div className="invalid-feedback">
-                  State required.
-                </div>
+              <Form.Select name='state' onChange={(e) => handleSelect(e)}>
+                <option name='state'>State</option>
+                {orderedStates?.map((el, index) => (<option key={index} value={el.name}>{el.name}</option>))}
+              </Form.Select>
               </div>
               <div className="col-md-5 mb-3">
-                <label for="zip">Region</label>
-                <input type="text" className="form-control" id="region" placeholder="" value={input.region} onChange={(e) => handleChange(e)}/>
-                {errors.region && (
-                <p className="error">{errors.region}</p>
-                )}
+              <Form.Select name='region' onChange={(e) => handleCitySelect(e)} >
+                <option name='region'>City</option>
+                {(orderedCities ? orderedCities.map((el, index) => (<option key={index} value={el.nombre}>{el.nombre}</option>)) : <div>'Error'</div>)}
+              </Form.Select>
               </div>
             </div>
     
