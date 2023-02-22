@@ -10,7 +10,7 @@ import NavigationBar from "../../Navbar/index";
 import Banner from '../../Home/Banner/index';
 import Footer from '../../Footer/index';
 // import useLocalStorage from  '../../../useLocalStorage';
-import { getStates } from "../../../actions";
+import { getStates } from "../../../actions/index.js";
 import { backToCartOrder } from "../../../actions/ordersAction";
 import { statusCart, deleteCart, createUserAddress, getUserInfo, getAllCities} from "../../../actions/userActions";
 import "./Payment.css"
@@ -32,11 +32,8 @@ export default function Paypal(){
     const dispatch = useDispatch();
     const cart = useSelector((state) => state.products.cart);
     const userInfo = useSelector((state) => state.users.userInfo);
-    console.log(userInfo);
-    const states = useSelector((state) => state.users.states);
-    console.log(states);
+    const states = useSelector((state) => state.products.states);
     const cities = useSelector((state) => state.users.cities);
-    console.log(cities);
     const [errors, setErrors] = useState({});
     const [input, setInput] = useState({
       reference: "",
@@ -63,7 +60,7 @@ export default function Paypal(){
     });
 
 
-   let orderedCities = cities.sort(function(a,b) {
+   let orderedCities = cities?.municipios?.sort(function(a,b) {
       if (a.nombre > b.nombre){
           return 1;
       }
@@ -112,8 +109,6 @@ export default function Paypal(){
 
   const handleSelect =  (e) => {
     if (e.target.name) {
-        console.log(e.target.name);
-        console.log(e.target.value);
         dispatch(getAllCities(e.target.value));
         setInput({
             ...input,
@@ -124,8 +119,6 @@ export default function Paypal(){
 
   const handleCitySelect =  (e) => {
       if (e.target.name) {
-          console.log(e.target.name);
-          console.log(e.target.value);
           setInput({
               ...input,
               [e.target.name] : e.target.value
@@ -145,15 +138,22 @@ export default function Paypal(){
         timerProgressBar: true,
         allowOutsideClick: true,
         confirmButtonColor: '#ffc107'
-      })
-      dispatch(statusCart({
-        email: userInfo.email,
-        status: 'processing shipping'
-      }))
-      /* dispatch(deleteCart(
-         userInfo.id,
-      )) */
-      dispatch(createUserAddress(addressUser))
+      }).then(() => {
+        dispatch(statusCart({
+          email: userInfo.email,
+          status: 'processing shipping'
+        }))
+        dispatch(createUserAddress(addressUser))
+        setInput({
+          reference: "",
+          address: "", 
+          zipCode: "",
+          telephone: "",
+          userEmail: userInfo.email,
+          state: "",
+          region: "",  
+      });
+      }) 
     }
 
     
