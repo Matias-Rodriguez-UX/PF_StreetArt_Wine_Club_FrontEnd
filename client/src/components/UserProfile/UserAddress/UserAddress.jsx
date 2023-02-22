@@ -60,7 +60,7 @@ const [ input, setInput ] = useState({
     const handleSelect =  (e) => {
         if (e.target.name === 'state') {
             // console.log(e.target.name);
-            console.log(e.target.value);
+            // console.log(e.target.value);
              dispatch(getAllCities(e.target.value));
             setInput({
                 ...input,
@@ -68,19 +68,19 @@ const [ input, setInput ] = useState({
             });
         }
     };
-    console.log(orderedCities);
+    // console.log(orderedCities);
 
-    // const handleCitySelect =  (e) => {
-    //     if (e.target.name === 'regionId') {
-    //         console.log(e.target.name);
-    //         console.log(e.target.value);
-    //         setInput({
-    //             ...input,
-    //             [e.target.name] : e.target.value
-    //         });
-    //     }
-    // };
-
+    const handleCitySelect =  (e) => {
+        if (e.target.name === 'region') {
+            // console.log(e.target.name);
+            console.log(e.target.value);
+            setInput({
+                ...input,
+                [e.target.name] : e.target.value
+            });
+        }
+    };
+    console.log(input);
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log(input);
@@ -142,7 +142,7 @@ const [ input, setInput ] = useState({
 
                                 <div class="row mb-3">
                                     <div class="col-sm-9 text-secondary">
-                                        <Form.Select name='region' onChange={(e) => handleSelect(e)}>
+                                        <Form.Select name='region' onChange={(e) => handleCitySelect(e)}>
                                             <option name='region'>City</option>
                                             {(orderedCities ? orderedCities.map((el, index) => <option key={index} value={el.nombre}>{el.nombre}</option>) : <div>'Error'</div>)}
                                         </Form.Select>
