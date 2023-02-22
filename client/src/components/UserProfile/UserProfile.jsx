@@ -33,9 +33,9 @@ export default function UserProfile() {
     const [currentPage, setCurrentPage] = useState('home');
 
     const { isLoading, isAuthenticated: auth, user } = useAuth0();
-    const emailAdmin = 'artstreetwineclub@gmail.com';
+
     let userDb = {};
-    
+
     if (auth) {
         // console.log(user.AssigRoles[0])
         userDb = {
@@ -45,14 +45,15 @@ export default function UserProfile() {
             role: user.AssigRoles[0]
         }
     };
-// console.log(user.AssigRoles[0][0])
+    // console.log(user.AssigRoles[0][0])
     useEffect(() => {
         if (userDb.email) {
             dispatch(createUser(userDb));
             dispatch(getUserWishlist(userDb.email));
+            console.log(userDb.role)
         }
     }, [user, dispatch]);
-     
+
     useEffect(() => {
         dispatch(getAllUsers());
         dispatch(getUserInfo(userDb.email));
@@ -62,7 +63,7 @@ export default function UserProfile() {
     }, [dispatch, isLoading, auth, user]);
 
     useEffect(() => {
-        if(userInfo?.shoppingCart?.length > 0){
+        if (userInfo?.shoppingCart?.length > 0) {
             dispatch(getUserCart(userInfo.id))
         }
     }, [userInfo])
@@ -91,7 +92,7 @@ export default function UserProfile() {
                 </div>
 
 
-                {user.email === emailAdmin ?
+                {auth && (userInfo.role === 'superAdmin' || userInfo.role === 'admin') ?
                     <div className="m-4 d-flex align-items-center">
                         <Link to='/admin' className="">
                             <Button type="button" className="btn btn-warning btn-lg">Admin profile</Button>
