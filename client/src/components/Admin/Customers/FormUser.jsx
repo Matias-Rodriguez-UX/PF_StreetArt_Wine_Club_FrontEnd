@@ -7,10 +7,10 @@ import { editUserInfo, getAllUsers } from "../../../actions/userActions";
 
 export default function FormUser({ selectedData, setShowModalEdit }) {
     const dispatch = useDispatch()
-
+    const roles = ['common', 'member', 'admin', 'superAdmin']
     const [postSuccess, setPostSuccess] = useState(false);
     const [input, setInput] = useState(selectedData)
-
+    const userInfo = useSelector((state) => state.users.userInfo);
     const [activeButton, setActiveButton] = useState(true)
 
     useEffect(() => {
@@ -22,9 +22,10 @@ export default function FormUser({ selectedData, setShowModalEdit }) {
     function handleSelectOption(e) {
         setInput({
             ...input,
-            status: e.target.value
+            [e.target.name]: e.target.value
         })
     }
+
     console.log(input)
     const handleSubmit = async (e, name) => {
         e.preventDefault()
@@ -75,7 +76,17 @@ export default function FormUser({ selectedData, setShowModalEdit }) {
                 </Form.Group>
                 <Form.Group >
                     <Form.Label>Role</Form.Label>
-                    <Form.Control type="text" name="role" value={input.role} disabled />
+                    {(userInfo.role === "superAdmin") ?
+                        <Form.Control
+                            name="role"
+                            as="select"
+                            value={input.role}
+                            onChange={e => handleSelectOption(e)}>
+                            {roles.map((el, index) => <option key={index} value={el}>{el}</option>)}
+                        </Form.Control> :
+                        <Form.Control type="text" name="role" value={input.role} disabled />
+                    }
+
                 </Form.Group>
                 <Form.Group>
                     <Form.Label>Profile</Form.Label>

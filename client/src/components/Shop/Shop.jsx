@@ -218,6 +218,7 @@ export default function Shop() {
                                     winery={el.winery}
                                     price={el.price}
                                     id={el.id}
+                                    stock={el.stock}
                                     addCart={addCart}
                                     handleAgregarFavorito={handleAgregarFavorito}
                                     handleQuitarFavorito={handleQuitarFavorito}

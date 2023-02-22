@@ -3,14 +3,18 @@ import { useDispatch, useSelector } from "react-redux";
 import { getUserAddresses } from "../../../actions/userActions";
 import UserAddress from "./UserAddressForm";
 import Form from 'react-bootstrap/Form';
+import { getStates } from "../../../actions";
 
 export default function UserShowAddress(){
     const dispatch = useDispatch();
     const userInfo = useSelector((state => state.users.userInfo));
-    // console.log(userInfo);
+    console.log(userInfo);
     const addresses = useSelector(state => state.users.userAddresses);
+    const states = useSelector((state) => state.products.states);
+    const cities = useSelector((state) => state.users.cities);
 
     useEffect(() => {
+        dispatch(getStates());
         dispatch(getUserAddresses(userInfo.email))
     }, [dispatch]);
     console.log(addresses)
@@ -41,7 +45,7 @@ export default function UserShowAddress(){
                 
                 <p>error</p>)
             }
-            <UserAddress/>
+            <UserAddress userInfo={userInfo} addresses={addresses} states={states} cities={cities} />
             </div>
         </div>
 

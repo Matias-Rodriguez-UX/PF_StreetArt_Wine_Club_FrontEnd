@@ -17,6 +17,7 @@ import {
   DELETE_FAVOURITE,
   ADD_TO_CART,
   GET_USER_CART,
+  POST_NEWSLETTER,
 } from "./allActions";
 import axios from "axios";
 import { loadingAction } from ".";
@@ -41,7 +42,7 @@ export function getAllStates() {
 export function getAllCities(id) {
   return async function (dispatch) {
     let cities = await axios.get(
-      `https://apis.datos.gob.ar/georef/api/municipios?provincia=${id}&campos=id,nombre&max=100`
+      `https://apis.datos.gob.ar/georef/api/municipios?provincia=${id}&campos=id,nombre&max=1000`
     );
     return dispatch({
       type: GET_ALL_CITIES,
@@ -114,7 +115,7 @@ export function editUserInfo(payload) {
 
 export function getUserAddresses(email) {
   return async function (dispatch) {
-    let addresses = await axios.get(`/users/?email=${email}`);
+    let addresses = await axios.get(`/addresses?email=${email}`);
     dispatch({
       type: GET_USER_ADDRESSES,
       payload: addresses.data,
@@ -278,6 +279,21 @@ export function deleteFavourite(id, email) {
       });
     } catch (error) {
       console.log("Error", error);
+    }
+  };
+}
+
+export function postNewsletter(email) {
+  return async function (dispatch) {
+    try {
+      console.log(email);
+      let newsletter = await axios.post("/newsletter", email);
+      return dispatch({
+        type: POST_NEWSLETTER,
+        payload: newsletter.data,
+      });
+    } catch (error) {
+      console.log("ERROR", error);
     }
   };
 }
