@@ -115,7 +115,7 @@ export default function Paypal(){
               <path fillRule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
                 </svg>Back to Cart</Link>
           </div>
-          <div className="container d-flex align-items-center gap-5 mt-4">
+          <div className="container d-flex justify-content-between gap-5 mt-4">
           <div className="col-md-4 order-md-2 mb-4">
           <h4 className="d-flex justify-content-between align-items-center mb-3">
             <span className="text-muted">Your cart</span>
@@ -227,7 +227,7 @@ export default function Paypal(){
           </div>
           <div className="container d-flex align-items-center"> 
             <div className="col col-12">
-              <h1>${total},00.</h1>
+              <h1>${total},00-</h1>
               <PayPalButton
                 createOrder={(data, actions) => createOrder(data, actions)}
                 onApprove={(data, actions) => onApprove(data, actions)}

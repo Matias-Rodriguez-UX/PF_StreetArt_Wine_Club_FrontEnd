@@ -54,7 +54,7 @@ export default function UserProfile() {
         dispatch(getAllUsers());
         setLoading(isLoading);
         setIsAuthenticated(auth);
-        localStorage.clear()
+        // localStorage.clear()
     }, [dispatch, isLoading, auth, user]);
 
     useEffect(() => {
@@ -63,6 +63,15 @@ export default function UserProfile() {
         }
     }, [userInfo])
 
+    // useEffect(() => {
+    //     if(cart.length === 0 && !isAuthenticated){
+    //       const storedCart = JSON.parse(localStorage.getItem('cart')) || [];
+    //       storedCart.forEach(item => dispatch(addCartToLs(item)));
+    //     }
+    //     if(isAuthenticated && userInfo.id){
+    //       dispatch(getUserCart(userInfo.id))
+    //     }
+    //   }, [dispatch, userInfo.id]);
 
 
     if (loading) {

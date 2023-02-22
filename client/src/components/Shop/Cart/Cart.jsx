@@ -4,13 +4,12 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import {Link } from "react-router-dom";
-import { deleteFromCart, removeCartQuantity, addCartQuantity, addCartToLs } from '../../../actions';
+import { deleteFromCart, removeCartQuantity, addCartQuantity, addCartToLs, addToCart } from '../../../actions';
 import NavigationBar from "../../Navbar/index";
 import Banner from '../../Home/Banner/index';
 import Footer from '../../Footer/index';
 import "./Cart.css"
-import { deleteUserCart, getUserCart, getUserInfo, updateUserCart, statusCart } from "../../../actions/userActions";
-
+import { deleteUserCart, getUserCart, getUserInfo, updateUserCart, statusCart, addUserCart } from "../../../actions/userActions";
 
 export default function Cart() {
   const cart = useSelector((state) => state.products.cart);
@@ -21,6 +20,24 @@ export default function Cart() {
   }, 0);
 
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if(cart.length > 0 && currentUser.id){
+      const storedCart = JSON.parse(localStorage.getItem('cart')) || [];
+      if(storedCart.length > 0){
+      storedCart.forEach(item => dispatch(addUserCart({
+        userId: currentUser.id,
+        totalPrice: item.price * item.cartQuantity,
+        quantity: item.cartQuantity,
+        email: currentUser.email,
+        productId: item.id,
+    }))); 
+      }
+    }
+    // if(isAuthenticated && currentUser.id){
+    //   dispatch(getUserCart(currentUser.id))
+    // }
+  }, [dispatch, currentUser.id]);
   
   const { user, isAuthenticated, isLoading } = useAuth0();
 
@@ -81,14 +98,15 @@ export default function Cart() {
     }
   }
 
-  const deleteProduct = (userId, productId) => {
+  const deleteProduct = (userId, productId, name) => {
     if(!isAuthenticated){
       dispatch(deleteFromCart(productId))
+      addDeleteAlert(name)
     }
     if(isAuthenticated){
-      console.log('Click Delete Data Base')
       dispatch(deleteUserCart(userId, productId))
       setGetSwitch(true)
+      addDeleteAlert(name)
     }
   }
 
@@ -99,11 +117,23 @@ export default function Cart() {
     }))
   }
 
+  const addDeleteAlert = (name) => {
+    Swal.fire({
+        title: "YOUR PRODUCT WAS DELETED",
+        text: `You have deleted all ${name} Boxes`,
+        icon: 'warning',
+        timer: '4000',
+        timerProgressBar: true,
+        allowOutsideClick: true,
+        confirmButtonColor: '#ffc107'
+    })
+}
+
   return (
     <>
       <Banner />
       <NavigationBar />
-      <div className="container d-flex align-items-center" >
+      <div className="container d-flex col align-items-center" >
         <table className="shadow-table table align-middle table-striped m-5">
           <thead >
             <tr>
@@ -140,7 +170,7 @@ export default function Cart() {
                   </button>
                 </td>
                 <td className="text-center">${product.price * product.cartQuantity},00-</td>
-                <td className="text-center"><button className="bg-transparent border border-0 fw-bolder ms-5 me-5 text-danger" onClick={() => deleteProduct(currentUser.id, product.id)}><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
+                <td className="text-center"><button className="bg-transparent border border-0 fw-bolder ms-5 me-5 text-danger" onClick={() => deleteProduct(currentUser.id, product.id, product.name)}><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
                   <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z" />
                 </svg>
                 </button>
@@ -158,7 +188,9 @@ export default function Cart() {
       <div className="container w-75 d-flex align-items-center justify-content-end  mt-1 mb-5" >
             {isAuthenticated ?
                 (
-                    <Link to={"/payment"}><button type="button" class="btn btn-warning btn-sm" onClick={handleStatus}>Buy Product</button></Link> 
+                    <Link to={"/payment"} className='text-decoration-none text-reset'><button type="button" class="btn btn-warning btn-sm d-flex align-items-center" onClick={handleStatus}><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-credit-card-2-back-fill me-2" viewBox="0 0 16 16">
+                      <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v5H0V4zm11.5 1a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h2a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-2zM0 11v1a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-1H0z"/>
+                        </svg>Buy Product</button></Link> 
                 ) :
                 (
                     <button type="button" className="btn btn-warning btn-sm">Register</button> 
