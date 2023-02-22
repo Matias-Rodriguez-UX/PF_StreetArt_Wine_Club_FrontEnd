@@ -100,7 +100,7 @@ export function editUserInfo(payload) {
 
 export function getUserAddresses(email) {
   return async function (dispatch) {
-    let addresses = await axios.get(`/users/?email=${email}`);
+    let addresses = await axios.get(`/addresses?email=${email}`);
     dispatch({
       type: GET_USER_ADDRESSES,
       payload: addresses.data,
