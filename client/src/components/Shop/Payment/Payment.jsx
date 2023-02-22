@@ -69,15 +69,18 @@ export default function Paypal(){
     }
 
     function handleChange(e){
-      setInput({
-          ...input,
+      setInput(prevState => ({
+          ...prevState,
           [e.target.id] : e.target.value
-      })
+       }));
       setErrors(validate({
           ...input,
           [e.target.id] : e.target.value
       }))
-      console.log(input);
+      setInput(prevState => {
+        console.log(prevState);
+        return prevState;
+      });
   }
     
     function handlePay (total) {
