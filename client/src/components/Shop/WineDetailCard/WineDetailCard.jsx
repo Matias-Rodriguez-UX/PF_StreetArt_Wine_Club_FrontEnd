@@ -189,16 +189,23 @@ export default function Detail(props) {
                 <FavoriteIcon className="text-muted" disable />
               }
 
-              <div className="ms-4 input-cart">
+              <div className="input-cart">
                 {wine.stock > 0 ?
                   <div>
-                    <label class="form-label" for="typeNumber">Number of boxes</label>
-                    <input type="number" min={1} max={wine.stock} id="typeNumber" class="form-control" placeholder="1" value={cartQuantity} onChange={e => setCartQuantity(e.target.value)} />
-                    <button type="button" id="button-cart" className="btn btn-warning btn-sm" onClick={() => handleClick(wine.id, cartQuantity, wine.name, wine.price)}>Add to cart <i class="bi bi-cart-check-fill"></i></button>
+                    <div className="d-flex align-items-center gap-2">
+                      <label className="form-label" for="typeNumber">Number of boxes</label>
+                      <input style={{ height: '2rem' }} type="number" min={1} max={wine.stock} id="typeNumber" className="form-control" placeholder="1" value={cartQuantity} onChange={e => setCartQuantity(e.target.value)} />
+                    </div>
+
+                    <button type="button" id="button-cart" className="btn btn-warning btn-lg mt-2 ms-4" onClick={() => handleClick(wine.id, cartQuantity, wine.name, wine.price)}>Add to cart <i class="bi bi-cart-check-fill"></i></button>
                   </div>
                   :
-                  <div>
-                    <h5 className="danger">There is no availability of the selected product</h5>
+                  <div className="d-flex align-items-end justify-content-center gap-3" >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#df4759" className="bi bi-exclamation-circle" viewBox="0 0 16 16">
+                      <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                      <path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995z" />
+                    </svg>
+                    <p className="align-top" style={{ color: '#df4759', height: '24px', fontSize: '16px' }}>Product not avilable</p>
                   </div>
                 }
               </div>
