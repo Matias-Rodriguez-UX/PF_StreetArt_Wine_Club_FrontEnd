@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Form from 'react-bootstrap/Form';
 // import { useAuth0 } from "@auth0/auth0-react";
 import { useSelector, useDispatch } from 'react-redux';
+import { useHistory } from "react-router-dom";
 import { Link } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import NavigationBar from "../../Navbar/index";
@@ -12,7 +13,7 @@ import Footer from '../../Footer/index';
 // import useLocalStorage from  '../../../useLocalStorage';
 import { getStates } from "../../../actions/index.js";
 import { backToCartOrder } from "../../../actions/ordersAction";
-import { statusCart, deleteCart, createUserAddress, getUserInfo, getAllCities} from "../../../actions/userActions";
+import { statusCart, getUserAddresses, createUserAddress, getUserInfo, getAllCities} from "../../../actions/userActions";
 import "./Payment.css"
 const PayPalButton = window.paypal.Buttons.driver("react", { React, ReactDOM });
 
@@ -34,7 +35,10 @@ export default function Paypal(){
     const userInfo = useSelector((state) => state.users.userInfo);
     const states = useSelector((state) => state.products.states);
     const cities = useSelector((state) => state.users.cities);
+    const userAddresses = useSelector((state) => state.users.userAddresses);
+    const history = useHistory();
     const [errors, setErrors] = useState({});
+    const [selectedAddress, setSelectedAddress] = useState(null);
     const [input, setInput] = useState({
       reference: "",
       address: "", 
@@ -42,9 +46,9 @@ export default function Paypal(){
       telephone: "", 
       userEmail: userInfo.email,
       state: "",
-      region: "", 
+      region: "",
     })
-
+    console.log(input);
     const total = cart.reduce((acc, product) => {
       return acc + product.price * product.cartQuantity;
     }, 0);
@@ -73,7 +77,7 @@ export default function Paypal(){
     useEffect(() => {
       dispatch(getStates());
       dispatch(getUserInfo(userInfo.email));
-      /* dispatch(getAllCities()); */
+      dispatch(getUserAddresses(userInfo.email)); 
     }, [dispatch]);
 
 
@@ -91,11 +95,23 @@ export default function Paypal(){
     const onApprove = (data, actions) => {
       return actions.order.capture(handlePay(total));
     }
+    const handleAddressChange = (addressId) => {
+      // actualiza el estado input con la dirección seleccionada
+      // const addressId = e.target.value;
+      const selected = userAddresses.find((address) => address.id === addressId);
+      setSelectedAddress(selected);
+      console.log(selected);
+      /* setInput({
+        ...input,
+        selectedAddress: selected
+      }); */
+    };
+    
 
     function handleChange(e){
       setInput(prevState => ({
           ...prevState,
-          [e.target.id] : e.target.value
+          [e.target.id] : e.target.value,
        }));
       setErrors(validate({
           ...input,
@@ -153,6 +169,7 @@ export default function Paypal(){
           state: "",
           region: "",  
       });
+      history.push('/shop');
       }) 
     }
 
@@ -272,6 +289,43 @@ export default function Paypal(){
             </div>
         </form>
         </div>
+          </div>
+          {userAddresses.length > 0 ? (
+              <>
+                <h2>Select an address:</h2>
+                <ul>
+                {userAddresses.map(address => (
+                  <li key={address.id}>
+                    <input type="radio" name="address" value={address.id} id={address.id} onChange={(event) => handleAddressChange(event.target.value)} checked={selectedAddress?.id === address.id}/>
+                    <label htmlFor={address.id}>
+                      {`${address.reference}, ${address.address}, ${address.state}, ${address.region}, ${address.zipCode}, ${address.telephone}, ${address.userEmail} `}
+                    </label>  
+                  </li>
+                ))}
+                </ul>
+            {selectedAddress && (
+              <>
+                <h3>Selected address:</h3>
+                <p>{`${selectedAddress.reference}, ${selectedAddress.address}, ${selectedAddress.state}, ${selectedAddress.region}, ${selectedAddress.zipCode}, ${selectedAddress.telephone}, ${selectedAddress.userEmail}`}</p>
+                <button onClick={() => setInput({
+                    ...input,
+                    reference: selectedAddress.reference,
+                    address: selectedAddress.address,
+                    zipCode: selectedAddress.zipCode,
+                    telephone: selectedAddress.telephone,
+                    state: selectedAddress.state,
+                    region: selectedAddress.region,
+                    selectedAddress: selectedAddress
+                })}>Use this address</button>
+              </>
+            )}
+            </>
+          ):(
+            <>
+              <p>You Don't have any address</p>
+            </>
+          )}
+          <div className="container d-flex align-items-center"> 
           </div>
           <div className="container d-flex align-items-center"> 
             <div className="col col-12">
