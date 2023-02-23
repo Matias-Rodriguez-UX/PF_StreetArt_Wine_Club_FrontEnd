@@ -9,6 +9,7 @@ import FormUser from "./FormUser";
 
 export default function AdminCustomers() {
     const dispatch = useDispatch()
+    const userInfo = useSelector((state) => state.users.userInfo);
     const allUsers = useSelector((state) => state.users.allUsers)
     const showLoading = useSelector((state) => state.products.showLoading)
     const [userList, setUserList] = useState(allUsers);
@@ -19,6 +20,8 @@ export default function AdminCustomers() {
         dispatch(getAllUsers())
     }, [userList])
 
+
+
     function handleClick(item) {
         setSelectedData(item);
         setShowModalEdit(true);
@@ -28,7 +31,7 @@ export default function AdminCustomers() {
     if (allUsers.length) {
         headers = Object.keys(allUsers[0]);
     }
-
+    console.log(allUsers)
 
     return (
         <>
@@ -48,7 +51,13 @@ export default function AdminCustomers() {
                                 {allUsers.map((item, index) => (
                                     <tr key={index} onClick={() => handleClick(item)} style={{ cursor: 'pointer' }}>
                                         {headers.map((header, subIndex) => (
-                                            <td key={subIndex} className="ellipsis">{item[header]}</td>
+                                            (Array.isArray(item[header])) ?
+                                                <td key={subIndex} className="ellipsis"> {item[header].map((el, index) =>
+                                                    (typeof el === 'object') ?
+                                                        <li key={index} style={{ listStyleType: 'none' }}>{el.name}</li> :
+                                                        <li key={index} style={{ listStyleType: 'none' }}>{el}</li>
+                                                )}</td> :
+                                                <td key={subIndex} className="ellipsis">{item[header]}</td>
                                         ))}
                                     </tr>
                                 ))}
@@ -58,7 +67,7 @@ export default function AdminCustomers() {
 
                     <Modal show={showModalEdit} onHide={() => setShowModalEdit(false)} >
                         <Modal.Header closeButton>
-                            <Modal.Title>Edit Product</Modal.Title>
+                            <Modal.Title>Edit User</Modal.Title>
                         </Modal.Header>
                         <Modal.Body>
                             <FormUser selectedData={selectedData} setShowModalEdit={setShowModalEdit} />

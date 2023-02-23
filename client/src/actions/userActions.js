@@ -1,5 +1,3 @@
-import { useAuth0 } from "@auth0/auth0-react";
-// const { isLoading, isAuthenticated: auth, user } = useAuth0();
 import {
   GET_ALL_STATES,
   GET_ALL_CITIES,
@@ -18,6 +16,8 @@ import {
   ADD_TO_CART,
   GET_USER_CART,
   POST_NEWSLETTER,
+  SET_AGE,
+  ASSIGN_MEMBERSHIPS,
 } from "./allActions";
 import axios from "axios";
 import { loadingAction } from ".";
@@ -294,6 +294,34 @@ export function postNewsletter(email) {
       return dispatch({
         type: POST_NEWSLETTER,
         payload: newsletter.data,
+      });
+    } catch (error) {
+      console.log("ERROR", error);
+    }
+  };
+}
+
+export function setAge(age) {
+  return async function (dispatch) {
+    try {
+      return dispatch({
+        type: SET_AGE,
+        payload: age,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
+export function assignMemberships(idUser, idMembership) {
+  return async function (dispatch) {
+    try {
+      let memeberships = await axios.put(
+        `users/${idUser}/membership/${idMembership}`
+      );
+      return dispatch({
+        type: ASSIGN_MEMBERSHIPS,
       });
     } catch (error) {
       console.log("ERROR", error);
