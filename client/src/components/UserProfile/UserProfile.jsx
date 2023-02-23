@@ -22,8 +22,6 @@ import { Loader } from "../Loader";
 export default function UserProfile() {
     const dispatch = useDispatch();
 
-
-    const users = useSelector((state) => state.users.users);
     const userInfo = useSelector((state) => state.users.userInfo);
     const favourites = useSelector((state) => state.users.userWishlist);
     const [loading, setLoading] = useState(true)
@@ -48,7 +46,7 @@ export default function UserProfile() {
         if (userDb.email) {
             dispatch(createUser(userDb));
             dispatch(getUserWishlist(userDb.email));
-            console.log(userDb.role)
+            dispatch(getUserInfo(userDb.email));
         }
     }, [user, dispatch]);
 
@@ -60,10 +58,10 @@ export default function UserProfile() {
     }, [dispatch, isLoading, auth, user]);
 
     useEffect(() => {
-        if (userInfo?.shoppingCart?.length > 0) {
+        if (userInfo?.shoppingCarts?.length > 0) {
             dispatch(getUserCart(userInfo.id))
         }
-    }, [userInfo])
+    }, [dispatch, userInfo])
 
     // useEffect(() => {
     //     if(cart.length === 0 && !isAuthenticated){

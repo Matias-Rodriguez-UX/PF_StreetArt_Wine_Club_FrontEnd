@@ -8,13 +8,17 @@ import { deleteFromCart, removeCartQuantity, addCartQuantity, addCartToLs, addTo
 import NavigationBar from "../../Navbar/index";
 import Banner from '../../Home/Banner/index';
 import Footer from '../../Footer/index';
+import CartAlert from "./CartAlert";
 import "./Cart.css"
+import Swal from 'sweetalert2';
 import { deleteUserCart, getUserCart, getUserInfo, updateUserCart, statusCart, addUserCart } from "../../../actions/userActions";
 
 export default function Cart() {
   const cart = useSelector((state) => state.products.cart);
   const currentUser = useSelector((state) => state.users.userInfo)
   const [getSwitch, setGetSwitch] = useState(false)
+  const [localStorageState, setLocalStorageState] = useState(false)
+  
   const total = cart.reduce((acc, product) => {
     return acc + product.price * product.cartQuantity;
   }, 0);
@@ -22,21 +26,19 @@ export default function Cart() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if(cart.length > 0 && currentUser.id){
-      const storedCart = JSON.parse(localStorage.getItem('cart')) || [];
-      if(storedCart.length > 0){
-      storedCart.forEach(item => dispatch(addUserCart({
-        userId: currentUser.id,
-        totalPrice: item.price * item.cartQuantity,
-        quantity: item.cartQuantity,
-        email: currentUser.email,
-        productId: item.id,
-    }))); 
+    if(cart.length === 0 && !currentUser.id){
+      console.log('no user')
+      if(cart.length === 0 && !isAuthenticated){
+        const storedCart = JSON.parse(localStorage.getItem('cart')) || [];
+        storedCart.forEach(item => dispatch(addCartToLs(item)));
       }
     }
-    // if(isAuthenticated && currentUser.id){
-    //   dispatch(getUserCart(currentUser.id))
-    // }
+    if(currentUser.id){
+      const storedCart = JSON.parse(localStorage.getItem('cart')) || [];
+      if(storedCart.length > 0){
+        setLocalStorageState(true)
+      }
+    }
   }, [dispatch, currentUser.id]);
   
   const { user, isAuthenticated, isLoading } = useAuth0();
@@ -131,6 +133,11 @@ export default function Cart() {
 
   return (
     <>
+      {localStorageState ? <CartAlert 
+        setLocalStorageState={setLocalStorageState} 
+        localStorageState={localStorageState}
+        cart={cart}
+        currentUser={currentUser}/> : undefined}
       <Banner />
       <NavigationBar />
       <div className="container d-flex col align-items-center" >
@@ -164,7 +171,7 @@ export default function Cart() {
                 </td>
                 <td className="text-center">{product.cartQuantity}</td>
                 <td className="text-center">
-                  <button className="bg-transparent fs-5 border fw-bolder border-0 text-primary" onClick={() => addProductQuantity(product.id, product.price)}><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#ffbb33" class="bi bi-cart-plus-fill" viewBox="0 0 16 16">
+                  <button className="bg-transparent fs-5 border fw-bolder border-0 text-primary" onClick={() => addProductQuantity(product.id, product.price)}><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#ffbb33" className="bi bi-cart-plus-fill" viewBox="0 0 16 16">
                     <path d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1H.5zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0zM9 5.5V7h1.5a.5.5 0 0 1 0 1H9v1.5a.5.5 0 0 1-1 0V8H6.5a.5.5 0 0 1 0-1H8V5.5a.5.5 0 0 1 1 0z" />
                   </svg>
                   </button>
