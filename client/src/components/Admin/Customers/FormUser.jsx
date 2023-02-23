@@ -5,7 +5,7 @@ import { } from "../../../actions";
 import Swal from 'sweetalert2';
 import { editUserInfo, getAllUsers } from "../../../actions/userActions";
 
-export default function FormUser({ selectedData, setShowModalEdit }) {
+export default function FormUser({ selectedData, setShowModalEdit, membershipList }) {
     const dispatch = useDispatch()
     const roles = ['common', 'member', 'admin', 'superAdmin']
     const [postSuccess, setPostSuccess] = useState(false);
@@ -99,7 +99,7 @@ export default function FormUser({ selectedData, setShowModalEdit }) {
                 <Form.Group>
                     <Form.Label>Memberships</Form.Label>
                     {Array.isArray(input.memberships) ? input.memberships.map((membership, index) => <Form.Control key={index} type="text" name={membership} value={membership} disabled />) :
-                        <Form.Control min={0} max={1000} type="text" name="dni" value={input.memberships} disabled />}
+                        <Form.Control min={0} max={1000} type="text" name="memberships" value={input.memberships} disabled />}
                 </Form.Group>
                 <Form.Label>Status</Form.Label>
                 <Form.Control

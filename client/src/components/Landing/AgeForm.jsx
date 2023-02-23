@@ -29,12 +29,12 @@ export default function AgeForm() {
     };
 
     return (
-        <Form onSubmit={handleSubmit}>
-            <FormGroup>
-                <FormLabel>Select your birthdate</FormLabel>
-                <FormControl style={{ width: '50%' }} type="date" value={fechaNacimiento} onChange={(event) => setFechaNacimiento(event.target.value)} />
+        <Form onSubmit={handleSubmit} className="d-flex flex-column align-items-center justify-content-center" >
+            <FormGroup className='d-flex bg-light p-4 rounded'>
+                <FormLabel><strong>Select your birthdate</strong></FormLabel>
+                <FormControl style={{ width: '60%' }} type="date" value={fechaNacimiento} onChange={(event) => setFechaNacimiento(event.target.value)} />
             </FormGroup>
-            <Button type="submit" className='btn btn-warning btn-lg'>Verify age</Button>
+            <Button type="submit" className='btn btn-warning btn-lg mt-3'>Verify age</Button>
         </Form>
     );
 }

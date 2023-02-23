@@ -9,6 +9,8 @@ import FormUser from "./FormUser";
 
 export default function AdminCustomers() {
     const dispatch = useDispatch()
+    const allMemberships = useSelector((state) => state.memberships.allMemberships)
+    const [membershipList, setmembershipList] = useState(allMemberships);
     const allUsers = useSelector((state) => state.users.allUsers)
     const showLoading = useSelector((state) => state.products.showLoading)
     const [userList, setUserList] = useState(allUsers);
@@ -61,7 +63,7 @@ export default function AdminCustomers() {
                             <Modal.Title>Edit Product</Modal.Title>
                         </Modal.Header>
                         <Modal.Body>
-                            <FormUser selectedData={selectedData} setShowModalEdit={setShowModalEdit} />
+                            <FormUser selectedData={selectedData} setShowModalEdit={setShowModalEdit} membershipList={membershipList} />
                         </Modal.Body>
                         <Modal.Footer>
                             <Button variant="secondary" onClick={() => setShowModalEdit(false)}>
