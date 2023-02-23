@@ -47,6 +47,7 @@ export const GET_WISHLIST = 'GET_WISHLIST'
 export const POST_WISHLIST = 'POST_WISHLIST'
 export const DELETE_FAVOURITE = 'DELETE_FAVOURITE'
 export const POST_NEWSLETTER = 'POST_NEWSLETTER'
+export const SET_AGE = "SET_AGE"
 
 
 

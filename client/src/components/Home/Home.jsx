@@ -12,14 +12,14 @@ import Footer from '../Footer'
 import RegisterModal from "./RegisterModal/RegisterModal";
 import { useAuth0 } from "@auth0/auth0-react";
 import { Loader } from "../Loader";
+import { loadingAction } from "../../actions";
 
 export default function Home() {
     const { isLoading, isAuthenticated: auth } = useAuth0();
-
+    console.log(localStorage)
     return (
         <>{isLoading ? <Loader /> : auth ?
             <>
-                <RegisterModal />
                 <Banner></Banner>
                 <NavigationBar></NavigationBar>
                 <Main></Main>
@@ -31,6 +31,7 @@ export default function Home() {
                 <Contact></Contact>
                 <Footer></Footer>
             </> : <>
+                <RegisterModal />
                 <Banner></Banner>
                 <NavigationBar></NavigationBar>
                 <Main></Main>
