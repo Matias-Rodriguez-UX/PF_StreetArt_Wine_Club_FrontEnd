@@ -2,7 +2,7 @@
 import {
   GET_ALL_USERS, GET_USER_ADDRESSES, GET_USER_INFO, CREATE_USER, EDIT_USER,
   CREATE_USER_ADDRESS, EDIT_ADDRESS, DELETE_USER_ADDRESS, GET_ALL_STATES, GET_ALL_CITIES,
-  EDIT_USER_ADDRESS, GET_WISHLIST, POST_WISHLIST, DELETE_FAVOURITE, POST_NEWSLETTER, SET_AGE
+  EDIT_USER_ADDRESS, GET_WISHLIST, POST_WISHLIST, DELETE_FAVOURITE, POST_NEWSLETTER, SET_AGE, ASSIGN_MEMBERSHIPS
 } from "../actions/allActions";
 
 const initialState = {
@@ -91,10 +91,13 @@ export default function rootReducer(state = initialState, action) {
         ...state
       }
     case SET_AGE:
-      console.log(action.payload)
       return {
         ...state,
         ageUser: action.payload
+      }
+    case ASSIGN_MEMBERSHIPS:
+      return {
+        ...state,
       }
 
     default:
