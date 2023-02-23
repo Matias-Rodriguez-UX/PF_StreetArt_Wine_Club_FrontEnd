@@ -18,25 +18,36 @@ export default function CartAlert({ setLocalStorageState, localStorageState }) {
     };
 
   const handleShow = () => {
-
     const storedCart = JSON.parse(localStorage.getItem('cart')) || [];
-        if(storedCart.length > 0){
-            storedCart.forEach(item =>
-                !cart.some(el => el.id === item.id) ?
-                dispatch(addUserCart({
-                userId: currentUser.id,
-                totalPrice: item.price * item.cartQuantity,
-                quantity: item.cartQuantity,
-                email: currentUser.email,
-                productId: item.id,
-                })) : dispatch(updateUserCart({
-                userId: currentUser.id,
-                totalPrice: item.price * item.cartQuantity,
-                quantity: item.cartQuantity + cart.find(el => el.id === item.id).cartQuantity,
-                email: currentUser.email,
-                productId: item.id,
-            })))
+    const orderUserCart = currentUser.orders.find(el => el.status === 'cart')
+    console.log(orderUserCart)
+    if(orderUserCart){
+            console.log('order cart')
+            // storedCart.forEach(item =>
+            //     !cart.some(el => el.id === item.id) ?
+            //     dispatch(addUserCart({
+            //     userId: currentUser.id,
+            //     totalPrice: item.price * item.cartQuantity,
+            //     quantity: item.cartQuantity,
+            //     email: currentUser.email,
+            //     productId: item.id,
+            //     })) : 
+            //     dispatch(updateUserCart({
+            //     userId: currentUser.id,
+            //     totalPrice: item.price * item.cartQuantity,
+            //     quantity: item.cartQuantity,
+            //     email: currentUser.email,
+            //     productId: item.id,
+            // })))
         }
+    if(!orderUserCart){
+        console.log('not order cart')
+            // dispatch(addUserCart({
+            //     userId: currentUser.id,
+            //     email: currentUser.email,
+            //     localStorage: storedCart,
+            // }))
+    }
         localStorage.removeItem('cart')
         dispatch(getUserCart(currentUser.id))
         setLocalStorageState(false)

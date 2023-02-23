@@ -27,7 +27,6 @@ export default function Cart() {
 
   useEffect(() => {
     if(cart.length === 0 && !currentUser.id){
-      console.log('no user')
       if(cart.length === 0 && !isAuthenticated){
         const storedCart = JSON.parse(localStorage.getItem('cart')) || [];
         storedCart.forEach(item => dispatch(addCartToLs(item)));

@@ -171,10 +171,12 @@ export function addUserCart(payload) {
   return async function () {
     /* console.log("PAYLOAD: ", payload); */
     try {
-      await axios.post(
+      console.log("PAYLOAD addUserCart: ", payload);
+      const result = await axios.post(
         `http://localhost:3001/users/${payload.userId}/cart`,
         payload
       );
+      console.log("result addUserCart: ", result);
     } catch (error) {
       console.log("Error", error);
     }
@@ -195,10 +197,12 @@ export function getUserCart(id) {
 export function updateUserCart(payload) {
   return async function () {
     try {
-      await axios.put(
+      console.log("PAYLOAD update: ", payload);
+      const result = await axios.put(
         `http://localhost:3001/users/${payload.userId}/cart`,
         payload
       );
+      console.log("RESULT update: ", result);
     } catch (error) {}
   };
 }
