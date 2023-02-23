@@ -9,7 +9,6 @@ import FormUser from "./FormUser";
 
 export default function AdminCustomers() {
     const dispatch = useDispatch()
-    const userInfo = useSelector((state) => state.users.userInfo);
     const allUsers = useSelector((state) => state.users.allUsers)
     const showLoading = useSelector((state) => state.products.showLoading)
     const [userList, setUserList] = useState(allUsers);
