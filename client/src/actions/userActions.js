@@ -169,7 +169,6 @@ export function editUserAddress(payload) {
 
 export function addUserCart(payload) {
   return async function () {
-    /* console.log("PAYLOAD: ", payload); */
     try {
       console.log("PAYLOAD addUserCart: ", payload);
       const result = await axios.post(

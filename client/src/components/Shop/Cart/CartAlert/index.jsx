@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux';
 import { addUserCart, getUserCart, updateUserCart } from '../../../../actions/userActions';
 
 export default function CartAlert({ setLocalStorageState, localStorageState }) {
-    const [show, setShow] = useState(localStorageState);
+    const [show] = useState(localStorageState);
 
     const cart = useSelector((state) => state.products.cart)
     const currentUser = useSelector((state) => state.users.userInfo)
@@ -23,33 +23,31 @@ export default function CartAlert({ setLocalStorageState, localStorageState }) {
     console.log(orderUserCart)
     if(orderUserCart){
             console.log('order cart')
-            // storedCart.forEach(item =>
-            //     !cart.some(el => el.id === item.id) ?
-            //     dispatch(addUserCart({
-            //     userId: currentUser.id,
-            //     totalPrice: item.price * item.cartQuantity,
-            //     quantity: item.cartQuantity,
-            //     email: currentUser.email,
-            //     productId: item.id,
-            //     })) : 
-            //     dispatch(updateUserCart({
-            //     userId: currentUser.id,
-            //     totalPrice: item.price * item.cartQuantity,
-            //     quantity: item.cartQuantity,
-            //     email: currentUser.email,
-            //     productId: item.id,
-            // })))
+            storedCart.forEach(item =>
+                !cart.some(el => el.id === item.id) ?
+                dispatch(addUserCart({
+                userId: currentUser.id,
+                totalPrice: item.price * item.cartQuantity,
+                quantity: item.cartQuantity,
+                email: currentUser.email,
+                productId: item.id,
+                })) : 
+                dispatch(updateUserCart({
+                userId: currentUser.id,
+                totalPrice: item.price * item.cartQuantity,
+                quantity: item.cartQuantity,
+                email: currentUser.email,
+                productId: item.id,
+            })))
         }
     if(!orderUserCart){
         console.log('not order cart')
-            // dispatch(addUserCart({
-            //     userId: currentUser.id,
-            //     email: currentUser.email,
-            //     localStorage: storedCart,
-            // }))
+            dispatch(addUserCart({
+                userId: currentUser.id,
+                email: currentUser.email,
+                localStorage: storedCart}))
     }
         localStorage.removeItem('cart')
-        dispatch(getUserCart(currentUser.id))
         setLocalStorageState(false)
 };
 
