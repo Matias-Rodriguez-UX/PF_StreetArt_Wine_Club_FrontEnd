@@ -49,6 +49,7 @@ export default function UserProfile() {
             console.log(userDb)
             dispatch(createUser(userDb));
             dispatch(getUserWishlist(userDb.email));
+            console.log(userDb.role)
         }
     }, [user, dispatch]);
 
@@ -61,19 +62,9 @@ export default function UserProfile() {
 
     useEffect(() => {
         if (userInfo?.shoppingCarts?.length > 0) {
-            dispatch(getUserCart(userInfo.id))
+            dispatch(getUserCart(userInfo.shoppingCarts))
         }
-    }, [dispatch, userInfo])
-
-    // useEffect(() => {
-    //     if(cart.length === 0 && !isAuthenticated){
-    //       const storedCart = JSON.parse(localStorage.getItem('cart')) || [];
-    //       storedCart.forEach(item => dispatch(addCartToLs(item)));
-    //     }
-    //     if(isAuthenticated && userInfo.id){
-    //       dispatch(getUserCart(userInfo.id))
-    //     }
-    //   }, [dispatch, userInfo.id]);
+    }, [userInfo])
 
 
     if (loading) {
