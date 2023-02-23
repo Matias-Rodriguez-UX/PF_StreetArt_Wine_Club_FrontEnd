@@ -6,6 +6,7 @@ import { getStates } from "../../../actions";
 import { createUserAddress, getAllCities } from "../../../actions/userActions";
 import { getUserAddresses } from "../../../actions/userActions";
 import UserShowAddress from "./UserShowAddress";
+import './address.css'
 
 export default function UserAddress(){
     const dispatch = useDispatch();
@@ -101,15 +102,17 @@ const [ input, setInput ] = useState({
         });
         history.push('/userprofile');
     };
-    
+    console.log(addresses)
     return (
         <div className="container col py-5 mt-5" display='flex'>
           <div class="col-md-8">
-          <Form>
-                <div class="card mb-4 d-flex">
+
             {
-                (addresses ? addresses.map((el, index) => 
-                <div>
+                typeof addresses !== 'string'?
+          (<Form>
+                <div class="card mb-4 d-flex">
+             {addresses.map((el, index) => 
+                {<div>
                     <div class="d-flex card-body mb-1">
                     <Form.Check 
                      type="switch"
@@ -132,13 +135,13 @@ const [ input, setInput ] = useState({
                         </div>
                     </div>
                   <hr/>
-                  </div>
-                    ) : 
-                
-                <p>error</p>)
-            }
+                  </div>}
+                    ) }
+            
                             </div>
-                </Form>
+                </Form>): 
+                <div className="address"><p>You don't have registered addresses yet</p></div>
+                }
                         <div class="card">
                             <div class="card-body">
                                 <h4>Add address</h4>
