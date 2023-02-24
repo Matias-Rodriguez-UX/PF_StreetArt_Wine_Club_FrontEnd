@@ -278,10 +278,12 @@ export function setAge(age) {
 
 export function assignMemberships(idUser, idMembership) {
   return async function (dispatch) {
+    console.log(idMembership)
     try {
-      let memeberships = await axios.put(`users/${idUser}/membership/${idMembership}`);
+      let memeberships = await axios.put(`users/${idUser}/membership/`, idMembership);
       return dispatch({
         type: ASSIGN_MEMBERSHIPS,
+        payload: memeberships.result
       });
     } catch (error) {
       console.log("ERROR", error)
