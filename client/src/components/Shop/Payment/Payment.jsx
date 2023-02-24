@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { useEffect, useState } from "react";
 import Form from 'react-bootstrap/Form';
-// import { useAuth0 } from "@auth0/auth0-react";
+import { useAuth0 } from "@auth0/auth0-react";
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from "react-router-dom";
 import { Link } from 'react-router-dom';
@@ -37,6 +37,7 @@ export default function Paypal(){
     const cities = useSelector((state) => state.users.cities);
     const userAddresses = useSelector((state) => state.users.userAddresses);
     const history = useHistory();
+    const { user, isAuthenticated } = useAuth0();
     const [errors, setErrors] = useState({});
     const [selectedAddress, setSelectedAddress] = useState('');
     const [input, setInput] = useState({
@@ -74,11 +75,24 @@ export default function Paypal(){
       return 0;
     }); 
 
-    useEffect(() => {
+    /* useEffect(() => {
       dispatch(getStates());
-      dispatch(getUserInfo(userInfo.email));
+      dispatch(getUserInfo(user.email));
       dispatch(getUserAddresses(userInfo.email)); 
-    }, [dispatch]);
+    }, [dispatch]); */
+
+    useEffect(() => {
+      if(!userInfo.id && isAuthenticated){
+          dispatch(getUserInfo(user.email))
+          dispatch(getUserAddresses(userInfo.email));
+          dispatch(getStates());
+      }
+      if(userInfo.id && isAuthenticated){
+        dispatch(getStates());
+        dispatch(getUserInfo(user.email));
+        dispatch(getUserAddresses(userInfo.email));
+      }
+    }, [dispatch, isAuthenticated, userInfo.id])
 
 
     const createOrder = (data, actions) => {
