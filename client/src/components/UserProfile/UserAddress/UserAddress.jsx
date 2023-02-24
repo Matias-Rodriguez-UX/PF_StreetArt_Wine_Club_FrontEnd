@@ -5,6 +5,7 @@ import { useHistory } from "react-router-dom";
 import { getStates } from "../../../actions";
 import { createUserAddress, deleteUserAddress, getAllCities } from "../../../actions/userActions";
 import { getUserAddresses } from "../../../actions/userActions";
+import { Row, Col, Card } from 'react-bootstrap';
 import './address.css'  
 
 
@@ -104,54 +105,61 @@ export default function UserAddress({ setCurrentPage }) {
             zipCode: '',
             telephone: ''
         });
-        history.push('/userprofile');
+        window.location.reload();
     };
     const handleDelete = (e, el) => {
         e.preventDefault()
         dispatch(deleteUserAddress(el.id));
+        alert ('Address deleted!');
+        window.location.reload();
     };
     
     return (
         <div className="container col py-5 mt-5" display='flex'>
 
+
           <div class="col-md-8">
           <Form>
                     <div class="card mb-4 d-flex">
+
                 {
                     (typeof addresses !== 'string') ?
-                
                 addresses.map((el, index) => 
-                    (<div>
-                        <div class="d-flex card-body mb-1">
-                        <Form.Check 
-                        type="switch"
-                        id="custom-switch"
-                        label="Main address"
-                        />
-                            <div class="row-sm-3 d-flex ">
-                                <h6 class="mb-0">{el.reference}</h6>
-                                <h6 class="mb-0">{el.address}</h6>
-                            </div>
-                            <div class="row-sm-3 d-flex text-secondary">
-                                <h6 class="mb-0">{el.telephone}</h6>
-                            <div class="col-sm-3 text-secondary flex-fill">
-                                <h6 class="mb-0">{el.state}</h6>
-                                <h6 class="mb-0">{el.region}</h6>
-                            </div>
-                            <div>
-                                <h6 class="mb-0">Edit</h6>
-                            </div>
-                            <button class="btn btn-warning btn-sm" onClick={(e) => handleDelete(e, el)}>x</button>
-                            </div>
-                        </div>
-                    <hr/>
+                    ( 
+                    <>
+                    <Col key={index} xs={12} md={4} className="mb-5 me-5">
+                    <Card className='me-5' border="warning" style={{ width: '15rem' }}>
+                    <Card.Body>
+                    <Form.Check 
+                            type="switch"
+                            id="custom-switch"
+                            label=""
+                            /> 
+                      <Card.Title>                            
+                        {el.reference}
+                     </Card.Title>
+                      <Card.Text className='justify-content-center'>
+                        {el.address}
+                        <br/>
+                        {el.telephone}
+                        <br/>
+                        {el.state}
+                        <br/>
+                        {el.region}
+                      </Card.Text> 
+                      <div class='d-flex justify-content-end'>                     
+                        <button class="btn btn-warning btn-sm me-2" >Edit</button>
+                        <button class="btn btn-warning btn-sm" onClick={(e) => handleDelete(e, el)}>x</button>
                     </div>
-                         
+                    </Card.Body>
+                    </Card>
+                    </Col>
+                    <br />  
+                    </> 
                 )): 
                     <div className="address"><p>You don't have registered addresses yet</p></div>
                     }
-                    </div>
-                    </Form>
+                    </Row> 
                         <div class="card">
                             <div class="card-body">
                                 <h4>Add address</h4>
@@ -219,6 +227,66 @@ export default function UserAddress({ setCurrentPage }) {
 
 
 
+{/* <Card border="warning" style={{ width: '18rem' }}>
+<Card.Header>Header</Card.Header>
+<Card.Body>
+  <Card.Title>Warning Card Title</Card.Title>
+  <Card.Text>
+    Some quick example text to build on the card title and make up the
+    bulk of the card's content.
+  </Card.Text>
+</Card.Body>
+</Card>
+<br /> */}
 
+{/* <div className="container col py-5 mt-5" display='flex'>
+          <div class="col-md-8">
+          <Form>
+                    <div class="card mb-4 d-flex">
+                {
+                    (typeof addresses !== 'string') ?
+                
+                addresses.map((el, index) => 
+                    ( <div className="col py-5">
+                        <div class="col-md-8">
+                            <div class="card mb-3">
+                                 <div class="card-body">
+                                    <div class="row">
+                        <Form.Check 
+                        type="switch"
+                        id="custom-switch"
+                        label="Main address"
+                        />
+                                                                                        <div class="row-sm-3">
+                                <h6 class="mb-0">{el.reference}</h6>
+                            </div>
+                            <div class="row-sm-9 text-secondary ">
+                                <h6 class="mb-0">{el.address}</h6>
+                            </div>
+                            <div class="row-sm-9 text-secondary">
+                                <h6 class="mb-0">{el.telephone}</h6>
+                            <div class="row-sm-9 text-secondary">
+                                <h6 class="mb-0">{el.state}</h6>
+                            </div>
+                            <div class="row-sm-9 text-secondary">
+                                <h6 class="mb-0">{el.region}</h6>
+                            </div>
+                            <div>
+                                <h6 class="mb-0">Edit</h6>
+                            </div>
+                            <button class="btn btn-warning btn-sm" onClick={(e) => handleDelete(e, el)}>x</button>
+                            </div>
+                        </div>
+                    <hr/>
+                    </div>
+                    </div>
+                    </div>
+                    </div>
+                         
+                )): 
+                    <div className="address"><p>You don't have registered addresses yet</p></div>
+                    }
+                    </div>
+                    </Form> */}
 
 
