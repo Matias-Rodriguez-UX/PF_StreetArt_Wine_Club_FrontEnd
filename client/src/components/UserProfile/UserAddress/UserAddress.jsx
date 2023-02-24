@@ -3,10 +3,10 @@ import Form from 'react-bootstrap/Form';
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { getStates } from "../../../actions";
-import { createUserAddress, getAllCities } from "../../../actions/userActions";
+import { createUserAddress, deleteUserAddress, getAllCities } from "../../../actions/userActions";
 import { getUserAddresses } from "../../../actions/userActions";
-import UserShowAddress from "./UserShowAddress";
-import './address.css'
+import './address.css'  
+
 
 export default function UserAddress(){
     const dispatch = useDispatch();
@@ -64,8 +64,6 @@ const [ input, setInput ] = useState({
 //  console.log(input);
     const handleSelect =  (e) => {
         if (e.target.name === 'state') {
-            // console.log(e.target.name);
-            // console.log(e.target.value);
              dispatch(getAllCities(e.target.value));
             setInput({
                 ...input,
@@ -86,12 +84,12 @@ const [ input, setInput ] = useState({
         }
     };
     console.log(input);
+
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log(input);
         if (input.reference === '' || input.address === '' || input.zipCode === 0 || input.telephone === 0) 
         return alert('You need to complete all the fields');
-
         dispatch(createUserAddress(input));
         alert ('Address added!');
         setInput({
@@ -102,46 +100,51 @@ const [ input, setInput ] = useState({
         });
         history.push('/userprofile');
     };
-    console.log(addresses)
+    const handleDelete = (e, el) => {
+        e.preventDefault()
+        dispatch(deleteUserAddress(el.id));
+    };
+    
     return (
         <div className="container col py-5 mt-5" display='flex'>
           <div class="col-md-8">
-
-            {
-                typeof addresses !== 'string'?
-          (<Form>
-                <div class="card mb-4 d-flex">
-             {addresses.map((el, index) => 
-                {<div>
-                    <div class="d-flex card-body mb-1">
-                    <Form.Check 
-                     type="switch"
-                     id="custom-switch"
-                     label="Main address"
-                     />
-                        <div class="row-sm-3 d-flex ">
-                            <h6 class="mb-0">{el.reference}</h6>
-                            <h6 class="mb-0">{el.address}</h6>
-                        </div>
-                        <div class="row-sm-3 d-flex text-secondary">
-                            <h6 class="mb-0">{el.telephone}</h6>
-                        <div class="col-sm-3 text-secondary flex-fill">
-                             <h6 class="mb-0">{el.state}</h6>
-                             <h6 class="mb-0">{el.region}</h6>
-                        </div>
-                        <div>
-                            <h6 class="mb-0">Edit</h6>
-                        </div>
-                        </div>
-                    </div>
-                  <hr/>
-                  </div>}
-                    ) }
-            
+          <Form>
+                    <div class="card mb-4 d-flex">
+                {
+                    (typeof addresses !== 'string') ?
+                
+                addresses.map((el, index) => 
+                    (<div>
+                        <div class="d-flex card-body mb-1">
+                        <Form.Check 
+                        type="switch"
+                        id="custom-switch"
+                        label="Main address"
+                        />
+                            <div class="row-sm-3 d-flex ">
+                                <h6 class="mb-0">{el.reference}</h6>
+                                <h6 class="mb-0">{el.address}</h6>
                             </div>
-                </Form>): 
-                <div className="address"><p>You don't have registered addresses yet</p></div>
-                }
+                            <div class="row-sm-3 d-flex text-secondary">
+                                <h6 class="mb-0">{el.telephone}</h6>
+                            <div class="col-sm-3 text-secondary flex-fill">
+                                <h6 class="mb-0">{el.state}</h6>
+                                <h6 class="mb-0">{el.region}</h6>
+                            </div>
+                            <div>
+                                <h6 class="mb-0">Edit</h6>
+                            </div>
+                            <button class="btn btn-warning btn-sm" onClick={(e) => handleDelete(e, el)}>x</button>
+                            </div>
+                        </div>
+                    <hr/>
+                    </div>
+                         
+                )): 
+                    <div className="address"><p>You don't have registered addresses yet</p></div>
+                    }
+                    </div>
+                    </Form>
                         <div class="card">
                             <div class="card-body">
                                 <h4>Add address</h4>
@@ -213,4 +216,10 @@ const [ input, setInput ] = useState({
 
 
     )
-}
+};
+
+
+
+
+
+
