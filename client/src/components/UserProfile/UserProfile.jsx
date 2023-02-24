@@ -49,8 +49,8 @@ export default function UserProfile() {
         if (userDb.email) {
             console.log(userDb)
             dispatch(createUser(userDb));
+            dispatch(getUserInfo(userDb.email))
             dispatch(getUserWishlist(userDb.email));
-            console.log(userDb.role)
         }
     }, [user, dispatch]);
 
@@ -78,7 +78,7 @@ export default function UserProfile() {
 
 
     return (
-        isAuthenticated ? (
+        isAuthenticated && userInfo.id ? (
             <div className="row" >
                 <Banner />
                 <NavigationBar />
