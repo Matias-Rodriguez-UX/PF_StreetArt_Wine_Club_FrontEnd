@@ -19,8 +19,6 @@ import EditUserProfileCard from "./EditUserProfileCard/EditUserProfileCard";
 import Wishlist from "./Wishlist/Wishlist";
 import { Loader } from "../Loader";
 
-
-
 export default function UserProfile() {
     const dispatch = useDispatch();
 
@@ -57,7 +55,6 @@ export default function UserProfile() {
 
     useEffect(() => {
         dispatch(getAllUsers());
-        dispatch(getUserInfo(userDb.email));
         setLoading(isLoading);
         setIsAuthenticated(auth);
     }, [dispatch, isLoading, auth, user]);
