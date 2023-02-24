@@ -3,89 +3,106 @@ import ReactDOM from "react-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from 'react-redux';
-import {Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { deleteFromCart, removeCartQuantity, addCartQuantity, addCartToLs } from '../../../actions';
 import NavigationBar from "../../Navbar/index";
 import Banner from '../../Home/Banner/index';
 import Footer from '../../Footer/index';
 import "./Cart.css"
 import { deleteUserCart, getUserCart, getUserInfo, updateUserCart, statusCart } from "../../../actions/userActions";
+import SpinnerCard from "../WineCard/SpinnerCard";
+import LoginButton from "../../Login/LoginButton";
 
 
 export default function Cart() {
   const cart = useSelector((state) => state.products.cart);
   const currentUser = useSelector((state) => state.users.userInfo)
   const [getSwitch, setGetSwitch] = useState(false)
+  const [discount, setDiscount] = useState(0)
+  const [porcentage, setPorcentage] = useState(0)
   const total = cart.reduce((acc, product) => {
     return acc + product.price * product.cartQuantity;
   }, 0);
+  const [newTotal, setNewTotal] = useState(total)
 
   const dispatch = useDispatch();
-  
+
   const { user, isAuthenticated, isLoading } = useAuth0();
 
   useEffect(() => {
-    if(getSwitch){
+    if (getSwitch) {
       dispatch(getUserCart(currentUser.id))
       setGetSwitch(false)
     }
+
   }, [dispatch, getSwitch]);
 
   useEffect(() => {
-    if(!isAuthenticated){
+    if (!isAuthenticated) {
       localStorage.setItem('cart', JSON.stringify(cart));
     }
   }, [cart]);
 
   useEffect(() => {
-    if(!currentUser.id && isAuthenticated){
-        dispatch(getUserInfo(user.email))
+    if (!currentUser.id && isAuthenticated) {
+      dispatch(getUserInfo(user.email))
     }
-    if(currentUser.id && isAuthenticated){
-        dispatch(getUserCart(currentUser.id, currentUser.email))
+    if (currentUser.id && isAuthenticated) {
+      dispatch(getUserCart(currentUser.id, currentUser.email))
     }
-  }, [dispatch, isAuthenticated, currentUser.id])
+    if (total > 0) {
+      for (let i = 0; i < currentUser.memberships?.length; i++) {
+        let objetoActual = currentUser.memberships[i];
+        if (objetoActual.discount > discount) {
+          setDiscount(objetoActual.discount)
+        }
+      }
+      setPorcentage((100 - discount) / 100)
+
+      setNewTotal(total * (1 - (discount / 100)))
+    }
+  }, [dispatch, isAuthenticated, currentUser.id, discount, newTotal, total, porcentage])
 
   const addProductQuantity = (id, price) => {
-    if(isAuthenticated){
-        let updateWine = cart.find(el => el.id === id)
-        dispatch(updateUserCart({
-          userId: currentUser.id,
-          totalPrice: price * (updateWine.cartQuantity + 1),
-          quantity: updateWine.cartQuantity + 1,
-          email: user.email,
-          productId: id,
-        }))
-        dispatch(addCartQuantity(id))
+    if (isAuthenticated) {
+      let updateWine = cart.find(el => el.id === id)
+      dispatch(updateUserCart({
+        userId: currentUser.id,
+        totalPrice: price * (updateWine.cartQuantity + 1),
+        quantity: updateWine.cartQuantity + 1,
+        email: user.email,
+        productId: id,
+      }))
+      dispatch(addCartQuantity(id))
     }
-    if(!isAuthenticated){
+    if (!isAuthenticated) {
       dispatch(addCartQuantity(id))
     }
   }
 
   const restProductQuantity = (id, price) => {
-    if(isAuthenticated){
-        let updateWine = cart.find(el => el.id === id)
+    if (isAuthenticated) {
+      let updateWine = cart.find(el => el.id === id)
 
-        dispatch(updateUserCart({
-          userId: currentUser.id,
-          totalPrice: price * (updateWine.cartQuantity - 1),
-          quantity: updateWine.cartQuantity - 1,
-          email: user.email,
-          productId: id,
-        }))
-        dispatch(removeCartQuantity(id))
+      dispatch(updateUserCart({
+        userId: currentUser.id,
+        totalPrice: price * (updateWine.cartQuantity - 1),
+        quantity: updateWine.cartQuantity - 1,
+        email: user.email,
+        productId: id,
+      }))
+      dispatch(removeCartQuantity(id))
     }
-    if(!isAuthenticated){
+    if (!isAuthenticated) {
       dispatch(removeCartQuantity(id))
     }
   }
 
   const deleteProduct = (userId, productId) => {
-    if(!isAuthenticated){
+    if (!isAuthenticated) {
       dispatch(deleteFromCart(productId))
     }
-    if(isAuthenticated){
+    if (isAuthenticated) {
       console.log('Click Delete Data Base')
       dispatch(deleteUserCart(userId, productId))
       setGetSwitch(true)
@@ -150,21 +167,33 @@ export default function Cart() {
           </tbody>
         </table>
       </div>
-      <div className="container w-75 bg-wa">
-        <p>
-          <strong>Total: ${total},00-</strong>
-        </p>
+      <div className="container d-flex align-items-center justify-content-around">
+        <div className="d-flex ">
+          {isLoading ? <SpinnerCard /> :
+            <div>
+              {
+                total === newTotal ?
+                  <p>
+                    <strong>Total: ${newTotal}.00-</strong>
+                  </p> :
+                  <div className='d-flex align-items-center gap-4'><p className="fs-4 fw-bold">Total: </p><p className="text-decoration-line-through text-muted fs-6">${total}.00-</p><p className="fs-4 fw-bold">${newTotal}.00-</p></div>
+              }
+            </div>
+          }
+        </div>
+        <div className="float-end" >
+          {isAuthenticated ?
+            (
+              <Link to={"/payment"}>
+                <button type="button" id="button-cart" className="btn btn-warning btn-lg mb-4" onClick={handleStatus}>Buy Product<i class="bi bi-cart-check-fill ms-2"></i></button>
+              </Link>
+            ) :
+            (
+              <LoginButton />
+            )
+          }
+        </div>
       </div>
-      <div className="container w-75 d-flex align-items-center justify-content-end  mt-1 mb-5" >
-            {isAuthenticated ?
-                (
-                    <Link to={"/payment"}><button type="button" class="btn btn-warning btn-sm" onClick={handleStatus}>Buy Product</button></Link> 
-                ) :
-                (
-                    <button type="button" className="btn btn-warning btn-sm">Register</button> 
-                )
-              }      
-          </div>
       <div className="col col-12">
         <Footer />
       </div>

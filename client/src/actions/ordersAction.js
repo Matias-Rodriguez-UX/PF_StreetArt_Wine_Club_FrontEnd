@@ -10,8 +10,10 @@ const headers = {
 
 export function getOrders() {
   return async function (dispatch) {
+    console.log("DESPACHANDO PEDIDO DE ORDENES")
     try {
       let orders = await axios.get("/orders", headers);
+      console.log(orders.data)
       return (
         dispatch({
           type: GET_ORDERS,
