@@ -69,7 +69,9 @@ export default function UserProfile() {
 
 
     if (loading || !userInfo.id) {
-        return <Loader />;
+        return (
+            <Loader />
+        );
     } else if (userInfo.status === "suspended") {
         console.log(userInfo.status)
         return <SuspendedUser />

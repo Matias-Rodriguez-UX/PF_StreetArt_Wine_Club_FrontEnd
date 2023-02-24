@@ -56,7 +56,7 @@ export default function Shop() {
     }, [dispatch]);
 
     useEffect(() => {
-        if(Products.length === 0){
+        if (Products.length === 0) {
             dispatch(loadingAction(true))
             dispatch(getProducts());
         }
@@ -209,7 +209,11 @@ export default function Shop() {
                     />
                 </div>
 
-                {showLoading || isLoading ? <div className="container col py-5 mt-5"> <Loader /> </div> :
+                {showLoading || isLoading ?
+
+                    <Loader />
+
+                    :
                     <div className="Cards container col py-5">
                         {currentWines.length ? currentWines?.map((el) => {
                             return (
