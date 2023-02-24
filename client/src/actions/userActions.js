@@ -85,6 +85,7 @@ export function createUser(payload) {
   return async function (dispatch) {
     try {
       let user = await axios.post("/users/auth", payload);
+      console.log(user.data);
       return (
         dispatch({
           type: CREATE_USER,

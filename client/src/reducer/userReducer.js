@@ -1,8 +1,21 @@
-
 import {
-  GET_ALL_USERS, GET_USER_ADDRESSES, GET_USER_INFO, CREATE_USER, EDIT_USER,
-  CREATE_USER_ADDRESS, EDIT_ADDRESS, DELETE_USER_ADDRESS, GET_ALL_STATES, GET_ALL_CITIES,
-  EDIT_USER_ADDRESS, GET_WISHLIST, POST_WISHLIST, DELETE_FAVOURITE, POST_NEWSLETTER, SET_AGE, ASSIGN_MEMBERSHIPS
+  GET_ALL_USERS,
+  GET_USER_ADDRESSES,
+  GET_USER_INFO,
+  CREATE_USER,
+  EDIT_USER,
+  CREATE_USER_ADDRESS,
+  EDIT_ADDRESS,
+  DELETE_USER_ADDRESS,
+  GET_ALL_STATES,
+  GET_ALL_CITIES,
+  EDIT_USER_ADDRESS,
+  GET_WISHLIST,
+  POST_WISHLIST,
+  DELETE_FAVOURITE,
+  POST_NEWSLETTER,
+  SET_AGE,
+  ASSIGN_MEMBERSHIPS,
 } from "../actions/allActions";
 
 const initialState = {
@@ -14,7 +27,7 @@ const initialState = {
   userAddresses: [],
   userWishlist: [],
   ageUser: "",
-}
+};
 export default function rootReducer(state = initialState, action) {
   switch (action.type) {
     case GET_ALL_STATES:
@@ -28,7 +41,6 @@ export default function rootReducer(state = initialState, action) {
         ...state,
         cities: action.payload,
       };
-
 
     case GET_ALL_USERS:
       return {
@@ -44,10 +56,15 @@ export default function rootReducer(state = initialState, action) {
       };
 
     case CREATE_USER:
+      if (action.payload.id) {
+        return {
+          ...state,
+          userInfo: { status: "User Created" },
+        };
+      }
       return {
         ...state,
       };
-
     case EDIT_USER:
       return {
         ...state,
@@ -70,38 +87,37 @@ export default function rootReducer(state = initialState, action) {
       };
     case EDIT_USER_ADDRESS:
       return {
-        ...state
+        ...state,
       };
     case GET_WISHLIST:
-      const wishList = action.payload.products?.map(el => el)
+      const wishList = action.payload.products?.map((el) => el);
       return {
         ...state,
-        userWishlist: wishList
-      }
+        userWishlist: wishList,
+      };
     case POST_WISHLIST:
       return {
-        ...state
-      }
+        ...state,
+      };
     case DELETE_FAVOURITE:
       return {
-        ...state
-      }
+        ...state,
+      };
     case POST_NEWSLETTER:
       return {
-        ...state
-      }
+        ...state,
+      };
     case SET_AGE:
       return {
         ...state,
-        ageUser: action.payload
-      }
+        ageUser: action.payload,
+      };
     case ASSIGN_MEMBERSHIPS:
       return {
         ...state,
-      }
+      };
 
     default:
-      return { ...state }
-  };
-};
-
+      return { ...state };
+  }
+}

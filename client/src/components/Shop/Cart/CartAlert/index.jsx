@@ -3,6 +3,7 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
+import { localStorageCart } from '../../../../actions/ordersAction';
 import { addUserCart, getUserCart, updateUserCart } from '../../../../actions/userActions';
 
 export default function CartAlert({ setLocalStorageState, localStorageState }) {
@@ -12,16 +13,15 @@ export default function CartAlert({ setLocalStorageState, localStorageState }) {
     const currentUser = useSelector((state) => state.users.userInfo)
     const dispatch = useDispatch()
 
-  const handleClose = () => {
-    localStorage.removeItem('cart')
-    setLocalStorageState(false)
+    const handleClose = () => {
+        localStorage.removeItem('cart')
+        setLocalStorageState(false)
     };
 
-  const handleShow = () => {
-    const storedCart = JSON.parse(localStorage.getItem('cart')) || [];
-    const orderUserCart = currentUser.orders.find(el => el.status === 'cart')
-    console.log(orderUserCart)
-    if(orderUserCart){
+    const handleShow = () => {
+        const storedCart = JSON.parse(localStorage.getItem('cart')) || [];
+        const orderUserCart = currentUser.orders.find(el => el.status === 'cart')
+        if(orderUserCart){
             console.log('order cart')
             storedCart.forEach(item =>
                 !cart.some(el => el.id === item.id) ?
@@ -40,16 +40,16 @@ export default function CartAlert({ setLocalStorageState, localStorageState }) {
                 productId: item.id,
             })))
         }
-    if(!orderUserCart){
-        console.log('not order cart')
-            dispatch(addUserCart({
-                userId: currentUser.id,
-                email: currentUser.email,
-                localStorage: storedCart}))
-    }
+        if(!orderUserCart){
+            console.log('not order cart')
+            dispatch(localStorageCart({
+                arrayProducts: storedCart, 
+                email: currentUser.email
+            }))
+        }
         localStorage.removeItem('cart')
         setLocalStorageState(false)
-};
+    };
 
   
 

@@ -13,17 +13,19 @@ import "./Cart.css"
 import Swal from 'sweetalert2';
 import { deleteUserCart, getUserCart, getUserInfo, updateUserCart, statusCart, addUserCart } from "../../../actions/userActions";
 
+
 export default function Cart() {
   const cart = useSelector((state) => state.products.cart);
   const currentUser = useSelector((state) => state.users.userInfo)
   const [getSwitch, setGetSwitch] = useState(false)
   const [localStorageState, setLocalStorageState] = useState(false)
-  
+
   const total = cart.reduce((acc, product) => {
     return acc + product.price * product.cartQuantity;
   }, 0);
 
   const dispatch = useDispatch();
+  const { user, isAuthenticated, isLoading } = useAuth0();
 
   useEffect(() => {
     if(cart.length === 0 && !currentUser.id){
@@ -39,8 +41,6 @@ export default function Cart() {
       }
     }
   }, [dispatch, currentUser.id]);
-  
-  const { user, isAuthenticated, isLoading } = useAuth0();
 
   useEffect(() => {
     if(getSwitch){
@@ -60,7 +60,8 @@ export default function Cart() {
         dispatch(getUserInfo(user.email))
     }
     if(currentUser.id && isAuthenticated){
-        dispatch(getUserCart(currentUser.id, currentUser.email))
+      console.log('UserId Cart: ', currentUser.id)
+        dispatch(getUserCart(currentUser.id))
     }
   }, [dispatch, isAuthenticated, currentUser.id])
 
