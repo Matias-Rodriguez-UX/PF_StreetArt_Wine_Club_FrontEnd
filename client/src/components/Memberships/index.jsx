@@ -31,7 +31,7 @@ export default function Memberships() {
                             <hr></hr>
                             <div className='d-flex col gap-3 mb-2 align-items-center'>
                                 <img src='https://cdn-icons-png.flaticon.com/512/8335/8335942.png' width={'26px'} height={'26px'} alt='checked-i' />
-                                <Card.Text className='d-flex fs-6 m-0'>Shipments 50% OFF</Card.Text>
+                                <Card.Text className='d-flex fs-6 m-0'>Free Shipments</Card.Text>
                             </div>
                             <div className='d-flex col mb-2 gap-3 align-items-center'>
                                 <img src='https://cdn-icons-png.flaticon.com/512/8335/8335942.png' width={'26px'} height={'26px'} alt='checked-i' />
@@ -68,7 +68,7 @@ export default function Memberships() {
                             <hr></hr>
                             <div className='d-flex col gap-3 mb-2 align-items-center'>
                                 <img src='https://cdn-icons-png.flaticon.com/512/8335/8335942.png' width={'26px'} height={'26px'} alt='checked-i' />
-                                <Card.Text className='d-flex fs-6 m-0'>Shipments Free</Card.Text>
+                                <Card.Text className='d-flex fs-6 m-0'>Free Shipments</Card.Text>
                             </div>
                             <div className='d-flex col mb-2 gap-3 align-items-center'>
                                 <img src='https://cdn-icons-png.flaticon.com/512/8335/8335942.png' width={'26px'} height={'26px'} alt='checked-i' />
@@ -102,7 +102,7 @@ export default function Memberships() {
                             <hr></hr>
                             <div className='d-flex col gap-3 mb-2 align-items-center'>
                                 <img src='https://cdn-icons-png.flaticon.com/512/8335/8335942.png' width={'26px'} height={'26px'} alt='checked-i' />
-                                <Card.Text className='d-flex fs-6 m-0'>Shipments 50% OFF</Card.Text>
+                                <Card.Text className='d-flex fs-6 m-0'>Free Shipments</Card.Text>
                             </div>
                             <div className='d-flex col mb-2 gap-3 align-items-center'>
                                 <img src='https://cdn-icons-png.flaticon.com/512/8335/8335942.png' width={'26px'} height={'26px'} alt='checked-i' />

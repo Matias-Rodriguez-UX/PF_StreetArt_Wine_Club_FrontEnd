@@ -1,6 +1,6 @@
 import axios from "axios";
 import { loadingAction } from ".";
-import { GET_ORDERS, GET_ORDER_BY_ID } from "./allActions";
+import { FILTER_BY_STATUS, GET_ORDERS, GET_ORDER_BY_ID } from "./allActions";
 
 const headers = {
   headers: {
@@ -37,4 +37,17 @@ export function backToCartOrder(orderId) {
       return error;
     }
   };
+}
+
+export function filterOrderByStatus(status) {
+  return async function (dispatch) {
+    try {
+      return (dispatch({
+        type: FILTER_BY_STATUS,
+        payload: status
+      }))
+    } catch (e) {
+      return error
+    }
+  }
 }

@@ -69,7 +69,9 @@ export default function UserProfile() {
 
 
     if (loading || !userInfo.id) {
-        return <Loader />;
+        return (
+            <Loader />
+        );
     } else if (userInfo.status === "suspended") {
         console.log(userInfo.status)
         return <SuspendedUser />
@@ -88,10 +90,10 @@ export default function UserProfile() {
                     {currentPage === "home" && <UserInfo userName={userInfo.fullname} setCurrentPage={setCurrentPage} />}
                     {currentPage === "userinfo" && <UserInfo setCurrentPage={setCurrentPage} />}
                     {currentPage === "changeinfo" && <EditUserProfileCard setCurrentPage={setCurrentPage} />}
-                    {currentPage === "orders" && <UserOrders />}
-                    {currentPage === "addresses" && <UserAddress />}
-                    {currentPage === "memberships" && <UserMemberships />}
-                    {currentPage === "wishlist" && <Wishlist favourites={favourites} />}
+                    {currentPage === "orders" && <UserOrders setCurrentPage={setCurrentPage} />}
+                    {currentPage === "addresses" && <UserAddress setCurrentPage={setCurrentPage} />}
+                    {currentPage === "memberships" && <UserMemberships setCurrentPage={setCurrentPage} />}
+                    {currentPage === "wishlist" && <Wishlist favourites={favourites} setCurrentPage={setCurrentPage} />}
                 </div>
 
 
