@@ -3,10 +3,10 @@ import Form from 'react-bootstrap/Form';
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { getStates } from "../../../actions";
-import { createUserAddress, getAllCities } from "../../../actions/userActions";
+import { createUserAddress, deleteUserAddress, getAllCities } from "../../../actions/userActions";
 import { getUserAddresses } from "../../../actions/userActions";
-import UserShowAddress from "./UserShowAddress";
-import './address.css'
+import './address.css'  
+
 
 export default function UserAddress({ setCurrentPage }) {
     setCurrentPage("addresses")
@@ -64,9 +64,11 @@ export default function UserAddress({ setCurrentPage }) {
     //  console.log(input);
     const handleSelect = (e) => {
         if (e.target.name === 'state') {
+
             // console.log(e.target.name);
             // console.log(e.target.value);
             dispatch(getAllCities(e.target.value));
+
             setInput({
                 ...input,
                 [e.target.name]: e.target.value
@@ -86,11 +88,13 @@ export default function UserAddress({ setCurrentPage }) {
         }
     };
     console.log(input);
+
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log(input);
-        if (input.reference === '' || input.address === '' || input.zipCode === 0 || input.telephone === 0)
-            return alert('You need to complete all the fields');
+
+        if (input.reference === '' || input.address === '' || input.zipCode === 0 || input.telephone === 0) 
+        return alert('You need to complete all the fields');
 
         dispatch(createUserAddress(input));
         alert('Address added!');
@@ -102,94 +106,91 @@ export default function UserAddress({ setCurrentPage }) {
         });
         history.push('/userprofile');
     };
-    console.log(addresses)
+    const handleDelete = (e, el) => {
+        e.preventDefault()
+        dispatch(deleteUserAddress(el.id));
+    };
+    
     return (
         <div className="container col py-5 mt-5" display='flex'>
-            <div class="col-md-8">
 
+          <div class="col-md-8">
+          <Form>
+                    <div class="card mb-4 d-flex">
                 {
-                    typeof addresses !== 'string' ?
-                        (<Form>
-                            <div class="card mb-4 d-flex">
-                                {addresses.map((el, index) => {
-                                    <div>
-                                        <div class="d-flex card-body mb-1">
-                                            <Form.Check
-                                                type="switch"
-                                                id="custom-switch"
-                                                label="Main address"
-                                            />
-                                            <div class="row-sm-3 d-flex ">
-                                                <h6 class="mb-0">{el.reference}</h6>
-                                                <h6 class="mb-0">{el.address}</h6>
-                                            </div>
-                                            <div class="row-sm-3 d-flex text-secondary">
-                                                <h6 class="mb-0">{el.telephone}</h6>
-                                                <div class="col-sm-3 text-secondary flex-fill">
-                                                    <h6 class="mb-0">{el.state}</h6>
-                                                    <h6 class="mb-0">{el.region}</h6>
-                                                </div>
-                                                <div>
-                                                    <h6 class="mb-0">Edit</h6>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <hr />
+                    (typeof addresses !== 'string') ?
+                
+                addresses.map((el, index) => 
+                    (<div>
+                        <div class="d-flex card-body mb-1">
+                        <Form.Check 
+                        type="switch"
+                        id="custom-switch"
+                        label="Main address"
+                        />
+                            <div class="row-sm-3 d-flex ">
+                                <h6 class="mb-0">{el.reference}</h6>
+                                <h6 class="mb-0">{el.address}</h6>
+                            </div>
+                            <div class="row-sm-3 d-flex text-secondary">
+                                <h6 class="mb-0">{el.telephone}</h6>
+                            <div class="col-sm-3 text-secondary flex-fill">
+                                <h6 class="mb-0">{el.state}</h6>
+                                <h6 class="mb-0">{el.region}</h6>
+                            </div>
+                            <div>
+                                <h6 class="mb-0">Edit</h6>
+                            </div>
+                            <button class="btn btn-warning btn-sm" onClick={(e) => handleDelete(e, el)}>x</button>
+                            </div>
+                        </div>
+                    <hr/>
+                    </div>
+                         
+                )): 
+                    <div className="address"><p>You don't have registered addresses yet</p></div>
+                    }
+                    </div>
+                    </Form>
+                        <div class="card">
+                            <div class="card-body">
+                                <h4>Add address</h4>
+                                <div class="row mb-3">
+                                    <div class="col-sm-3">
+                                        <h6 class="mb-0">Reference (ex. Sam's house)</h6>
                                     </div>
-                                }
-                                )}
+                                    <div class="col-sm-9 text-secondary">
+                                        <input type="text" class="form-control" name='reference' value={input.reference} onChange={(e) => handleChange(e)} />
+                                    </div>
+                                </div>
+    
+                                <div class="row mb-3">
+                                    <div class="col-sm-3">
+                                        <h6 class="mb-0">Complete Address (street & number)</h6>
+                                    </div>
+                                    <div class="col-sm-9 text-secondary">
+                                        <input type="text" class="form-control" name='address' value={input.address} onChange={(e) => handleChange(e)}/>
+                                    </div>
+                                </div>
+                                
+                                <div class="row mb-3">
+                                    <div class="col-sm-3">
+                                        <h6 class="mb-0">Zip code</h6>
+                                    </div>
+                                    <div class="col-sm-9 text-secondary">
+                                        <input type="text" class="form-control" name='zipCode' value={input.zipCode} onChange={(e) => handleChange(e)}/>
+                                    </div>
+                                </div>
+    
+                                <div class="row mb-3">
+                                    <div class="col-sm-9 text-secondary">
+                                        <Form.Select name='state' onChange={(e) => handleSelect(e)}>
+                                            <option name='state'>State</option>
+                                            {orderedStates?.map((el, index) => <option key={index} value={el.name}>{el.name}</option>)}
+                                        </Form.Select>
+                                    </div>
+                                </div>
 
-                            </div>
-                        </Form>) :
-                        <div className="address"><p>You don't have registered addresses yet</p></div>
-                }
-                <div class="card">
-                    <div class="card-body">
-                        <h4>Add address</h4>
-                        <div class="row mb-3">
-                            <div class="col-sm-3">
-                                <h6 class="mb-0">Reference (ex. Sam's house)</h6>
-                            </div>
-                            <div class="col-sm-9 text-secondary">
-                                <input type="text" class="form-control" name='reference' value={input.reference} onChange={(e) => handleChange(e)} />
-                            </div>
-                        </div>
-
-                        <div class="row mb-3">
-                            <div class="col-sm-3">
-                                <h6 class="mb-0">Complete Address (street & number)</h6>
-                            </div>
-                            <div class="col-sm-9 text-secondary">
-                                <input type="text" class="form-control" name='address' value={input.address} onChange={(e) => handleChange(e)} />
-                            </div>
-                        </div>
-
-                        <div class="row mb-3">
-                            <div class="col-sm-3">
-                                <h6 class="mb-0">Zip code</h6>
-                            </div>
-                            <div class="col-sm-9 text-secondary">
-                                <input type="text" class="form-control" name='zipCode' value={input.zipCode} onChange={(e) => handleChange(e)} />
-                            </div>
-                        </div>
-
-                        <div class="row mb-3">
-                            <div class="col-sm-9 text-secondary">
-                                <Form.Select name='state' onChange={(e) => handleSelect(e)}>
-                                    <option name='state'>State</option>
-                                    {orderedStates?.map((el, index) => <option key={index} value={el.name}>{el.name}</option>)}
-                                </Form.Select>
-                            </div>
-                        </div>
-
-                        <div class="row mb-3">
-                            <div class="col-sm-9 text-secondary">
-                                <Form.Select name='region' onChange={(e) => handleCitySelect(e)}>
-                                    <option name='region'>City</option>
-                                    {(orderedCities ? orderedCities.map((el, index) => <option key={index} value={el.nombre}>{el.nombre}</option>) : <div>'Error'</div>)}
-                                </Form.Select>
-                            </div>
-                        </div>
 
                         <div class="row mb-3">
                             <div class="col-sm-3">
@@ -214,4 +215,10 @@ export default function UserAddress({ setCurrentPage }) {
 
 
     )
-}
+};
+
+
+
+
+
+
