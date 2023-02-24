@@ -125,7 +125,7 @@ export function createUserAddress(payload) {
 export function deleteUserAddress(addressId) {
   return async function (dispatch) {
     try {
-      var address = await axios.delete(`/users/${addressId}`);
+      var address = await axios.delete(`/addresses/${addressId}`);
       return dispatch({
         type: DELETE_USER_ADDRESS,
         payload: address.data,

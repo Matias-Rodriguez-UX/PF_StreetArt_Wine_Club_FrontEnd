@@ -101,7 +101,7 @@ const [ input, setInput ] = useState({
 
     const handleDelete = (e, el) => {
         e.preventDefault()
-        dispatch(deleteUserAddress(el));
+        dispatch(deleteUserAddress(el.id));
     };
     
     return (
@@ -110,8 +110,8 @@ const [ input, setInput ] = useState({
           <Form>
                 <div class="card mb-4 d-flex">
             {
-                (addresses ? addresses.map((el, index) => 
-                <div>
+                (addresses.length>0) ? addresses.map((el, index) => 
+               ( <div>
                     <div class="d-flex card-body mb-1">
                     <Form.Check 
                      type="switch"
@@ -131,14 +131,12 @@ const [ input, setInput ] = useState({
                         <div>
                             <h6 class="mb-0">Edit</h6>
                         </div>
-                        <button onClick={(e) => handleDelete(e, el.id)}>x</button>
+                            <button onClick={(e) => handleDelete(e, el)}>x</button>
                         </div>
                     </div>
                   <hr/>
                   </div>
-                    ) : 
-                
-                <p>error</p>)
+                    )) : <p>Error</p>
             }
                             </div>
                 </Form>
@@ -213,4 +211,4 @@ const [ input, setInput ] = useState({
 
 
     )
-}
+};
