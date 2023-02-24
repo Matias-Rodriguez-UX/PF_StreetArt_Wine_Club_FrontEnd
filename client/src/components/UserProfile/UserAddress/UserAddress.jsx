@@ -107,39 +107,43 @@ const [ input, setInput ] = useState({
     return (
         <div className="container col py-5 mt-5" display='flex'>
           <div class="col-md-8">
-          <Form>
-                <div class="card mb-4 d-flex">
-            {
-                (addresses.length>0) ? addresses.map((el, index) => 
-               ( <div>
-                    <div class="d-flex card-body mb-1">
-                    <Form.Check 
-                     type="switch"
-                     id="custom-switch"
-                     label="Main address"
-                     />
-                        <div class="row-sm-3 d-flex ">
-                            <h6 class="mb-0">{el.reference}</h6>
-                            <h6 class="mb-0">{el.address}</h6>
-                        </div>
-                        <div class="row-sm-3 d-flex text-secondary">
-                            <h6 class="mb-0">{el.telephone}</h6>
-                        <div class="col-sm-3 text-secondary flex-fill">
-                             <h6 class="mb-0">{el.state}</h6>
-                             <h6 class="mb-0">{el.region}</h6>
-                        </div>
-                        <div>
-                            <h6 class="mb-0">Edit</h6>
-                        </div>
-                            <button onClick={(e) => handleDelete(e, el)}>x</button>
-                        </div>
-                    </div>
-                  <hr/>
-                  </div>
-                    )) : <p>Error</p>
-            }
+
+                {
+                    typeof addresses !== 'string'?
+                (<Form>
+                    <div class="card mb-4 d-flex">
+                {addresses.map((el, index) => 
+                    {<div>
+                        <div class="d-flex card-body mb-1">
+                        <Form.Check 
+                        type="switch"
+                        id="custom-switch"
+                        label="Main address"
+                        />
+                            <div class="row-sm-3 d-flex ">
+                                <h6 class="mb-0">{el.reference}</h6>
+                                <h6 class="mb-0">{el.address}</h6>
                             </div>
-                </Form>
+                            <div class="row-sm-3 d-flex text-secondary">
+                                <h6 class="mb-0">{el.telephone}</h6>
+                            <div class="col-sm-3 text-secondary flex-fill">
+                                <h6 class="mb-0">{el.state}</h6>
+                                <h6 class="mb-0">{el.region}</h6>
+                            </div>
+                            <div>
+                                <h6 class="mb-0">Edit</h6>
+                            </div>
+                            <button onClick={(e) => handleDelete(e, el)}>x</button>
+                            </div>
+                        </div>
+                    <hr/>
+                    </div>}
+                        ) }
+
+                                </div>
+                    </Form>): 
+                    <div className="address"><p>You don't have registered addresses yet</p></div>
+                }
                         <div class="card">
                             <div class="card-body">
                                 <h4>Add address</h4>
@@ -212,3 +216,80 @@ const [ input, setInput ] = useState({
 
     )
 };
+
+
+
+
+
+
+
+
+// {
+//     typeof addresses !== 'string'?
+// (<Form>
+//     <div class="card mb-4 d-flex">
+//  {addresses.map((el, index) => 
+//     {<div>
+//         <div class="d-flex card-body mb-1">
+//         <Form.Check 
+//          type="switch"
+//          id="custom-switch"
+//          label="Main address"
+//          />
+//             <div class="row-sm-3 d-flex ">
+//                 <h6 class="mb-0">{el.reference}</h6>
+//                 <h6 class="mb-0">{el.address}</h6>
+//             </div>
+//             <div class="row-sm-3 d-flex text-secondary">
+//                 <h6 class="mb-0">{el.telephone}</h6>
+//             <div class="col-sm-3 text-secondary flex-fill">
+//                  <h6 class="mb-0">{el.state}</h6>
+//                  <h6 class="mb-0">{el.region}</h6>
+//             </div>
+//             <div>
+//                 <h6 class="mb-0">Edit</h6>
+//             </div>
+//             </div>
+//         </div>
+//       <hr/>
+//       </div>}
+//         ) }
+
+//                 </div>
+//     </Form>): 
+//     <div className="address"><p>You don't have registered addresses yet</p></div>
+//     }
+
+
+
+// {
+//     (addresses.length>0) ? addresses.map((el, index) => 
+//    ( <div>
+//         <div class="d-flex card-body mb-1">
+//         <Form.Check 
+//          type="switch"
+//          id="custom-switch"
+//          label="Main address"
+//          />
+//             <div class="row-sm-3 d-flex ">
+//                 <h6 class="mb-0">{el.reference}</h6>
+//                 <h6 class="mb-0">{el.address}</h6>
+//             </div>
+//             <div class="row-sm-3 d-flex text-secondary">
+//                 <h6 class="mb-0">{el.telephone}</h6>
+//             <div class="col-sm-3 text-secondary flex-fill">
+//                  <h6 class="mb-0">{el.state}</h6>
+//                  <h6 class="mb-0">{el.region}</h6>
+//             </div>
+//             <div>
+//                 <h6 class="mb-0">Edit</h6>
+//             </div>
+//                 <button onClick={(e) => handleDelete(e, el)}>x</button>
+//             </div>
+//         </div>
+//       <hr/>
+//       </div>
+//         )) : <p>Error</p>
+// }
+//                 </div>
+//     </Form>
