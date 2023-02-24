@@ -13,13 +13,14 @@ import ReviewsForm from "./Reviews/ReviewsForm";
 import { useAuth0 } from "@auth0/auth0-react";
 import ReviewsTemplate from "./Reviews/ReviewTemplate";
 import { addUserCart, getUserCart, getUserInfo, updateUserCart } from "../../../actions/userActions";
-import { Button, Modal } from "react-bootstrap";
+import { Badge, Button, Modal } from "react-bootstrap";
 import ReviewsEdit from "./Reviews/ReviewEdit";
 import { Rating } from "@mui/material";
 import LoginButton from "../../Login/LoginButton";
 import IconButtonWish from "./Wish/Wishbutton";
 import FavoriteIcon from '@mui/icons-material/Favorite'
 import { deleteFavourite, getUserWishlist, postFavourite } from "../../../actions/userActions";
+import { getMemberships } from "../../../actions/membershipsActions";
 
 export default function Detail(props) {
   const { isLoading, user, isAuthenticated } = useAuth0();
@@ -36,6 +37,14 @@ export default function Detail(props) {
   const [selectedReview, setSelectedReview] = useState({});
   const [userIf, setUserIf] = useState({});
   const currentUser = useSelector((state) => state.users.userInfo)
+  const allMemberships = useSelector((state) => state.memberships.allMemberships)
+  const wine = useSelector((state) => state.products.wineDetail);
+  let membershipsAvailables = {}
+  let discountsToUse = []
+  const [maxDiscount, setmaxDiscount] = useState(0)
+  const [priceDiscount, setpriceDiscoun] = useState(0)
+  let userMembership = []
+
 
   useEffect(() => {
     dispatch(loadingAction(true))
@@ -46,13 +55,35 @@ export default function Detail(props) {
     if (!currentUser.id && isAuthenticated) {
       dispatch(getUserInfo(user.email))
     }
-  }, [dispatch, isAuthenticated, currentUser.id, selectedReview, allReviews, userIf]);
+    dispatch(getMemberships())
+    if (allMemberships.length) {
+      for (let membership in allMemberships) {
+        membershipsAvailables[allMemberships[membership].name] = allMemberships[membership].discount;
+      }
+    }
+    if (currentUser.memberships?.length) {
+      userMembership = currentUser.memberships?.map(el => el.name)
+    }
+    if (userMembership.length) {
+      discountsToUse = Object.entries(membershipsAvailables)
+        .filter(([memebership, discount]) => userMembership.includes(memebership))
+        .map(([memebership, discount]) => discount);
+      console.log(discountsToUse)
+      setmaxDiscount(Math.max(...discountsToUse))
+      console.log(maxDiscount)
+      if (maxDiscount > 0) {
+        setpriceDiscoun(parseInt((wine.price - (wine.price * (maxDiscount / 100))).toFixed(2), 10))
+      }
+      console.log(priceDiscount)
+      console.log(wine.price)
+    }
+  }, [dispatch, isAuthenticated, currentUser.id, selectedReview, allReviews, userIf, maxDiscount, priceDiscount, wine.price]);
 
   useEffect(() => {
     if (getSwitch) dispatch(getUserCart(currentUser.id))
   })
 
-  const wine = useSelector((state) => state.products.wineDetail);
+
 
   const addAlert = (cartQuantity, name) => {
     Swal.fire({
@@ -129,7 +160,7 @@ export default function Detail(props) {
     for (const review of reviews) {
       medRating += review.rating
     }
-    medRating = medRating / reviews.length
+    medRating = (medRating / reviews.length).toFixed(2)
   }
 
   useEffect(() => {
@@ -160,7 +191,14 @@ export default function Detail(props) {
         <div className="row" id="detail">
           {/* <!----cardl left---> */}
           <div className="col col-6">
-            <div className="img-display">
+            {maxDiscount > 0 &&
+              <div className="z-2">
+                <Badge pill bg="warning" text="dark" className="ms-4 mt-2">
+                  {`${maxDiscount}% OFF`}
+                </Badge>
+              </div>
+            }
+            <div className="img-display z-1">
               <div className="img-showcase">
                 {/* <img src={wine.image} alt="imagen" className="imgWine"/> */}
                 <img src={wine.image} alt="imagen" className="mx-auto d-block" id="img-detail" />
@@ -170,7 +208,12 @@ export default function Detail(props) {
           <div className="col col-6">
             <div className="d-flex align-items-center justify-content-between">
               <h1>{wine.name}</h1>
-              <h2 className="me-4"><span>${wine.price}.00-</span></h2>
+              {isLoading ? <div className="spinner-grow text-secondary" style={{ width: '3rem', height: "3rem" }} role="status">
+                <span className="visually-hidden">Loading...</span>
+              </div> :
+                <h2 className="me-4">{wine.price === priceDiscount || priceDiscount === 0 ?
+                  <p className="fs-4 fw-bold">${wine.price}.00-</p> :
+                  <div className='d-flex align-items-center gap-4'><p className="text-decoration-line-through text-muted fs-6">${wine.price}.00-</p><p className="fs-4 fw-bold">${priceDiscount}</p></div>}</h2>}
             </div>
             <div className="d-flex row align-items-stretch mt-2">
               <Rating value={medRating} readOnly precision={0.1} className="col-3" /> <h6 className="col-3 text-muted mt-1">{medRating} from <a className="text-muted" style={{ textDecoration: 'none', color: '#292b2c' }} >{reviews.length} reviews</a></h6>

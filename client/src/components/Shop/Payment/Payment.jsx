@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Form from 'react-bootstrap/Form';
 // import { useAuth0 } from "@auth0/auth0-react";
 import { useSelector, useDispatch } from 'react-redux';
+import { useHistory } from "react-router-dom";
 import { Link } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import NavigationBar from "../../Navbar/index";
@@ -12,7 +13,7 @@ import Footer from '../../Footer/index';
 // import useLocalStorage from  '../../../useLocalStorage';
 import { getStates } from "../../../actions/index.js";
 import { backToCartOrder } from "../../../actions/ordersAction";
-import { statusCart, deleteCart, createUserAddress, getUserInfo, getAllCities} from "../../../actions/userActions";
+import { statusCart, getUserAddresses, createUserAddress, getUserInfo, getAllCities} from "../../../actions/userActions";
 import "./Payment.css"
 const PayPalButton = window.paypal.Buttons.driver("react", { React, ReactDOM });
 
@@ -34,7 +35,10 @@ export default function Paypal(){
     const userInfo = useSelector((state) => state.users.userInfo);
     const states = useSelector((state) => state.products.states);
     const cities = useSelector((state) => state.users.cities);
+    const userAddresses = useSelector((state) => state.users.userAddresses);
+    const history = useHistory();
     const [errors, setErrors] = useState({});
+    const [selectedAddress, setSelectedAddress] = useState('');
     const [input, setInput] = useState({
       reference: "",
       address: "", 
@@ -42,9 +46,9 @@ export default function Paypal(){
       telephone: "", 
       userEmail: userInfo.email,
       state: "",
-      region: "", 
+      region: "",
     })
-
+    console.log(input);
     const total = cart.reduce((acc, product) => {
       return acc + product.price * product.cartQuantity;
     }, 0);
@@ -73,7 +77,7 @@ export default function Paypal(){
     useEffect(() => {
       dispatch(getStates());
       dispatch(getUserInfo(userInfo.email));
-      /* dispatch(getAllCities()); */
+      dispatch(getUserAddresses(userInfo.email)); 
     }, [dispatch]);
 
 
@@ -92,14 +96,32 @@ export default function Paypal(){
       return actions.order.capture(handlePay(total));
     }
 
-    function handleChange(e){
+    const handleAddressChange = (event) => {
+      const addressId = event.target.value;
+      const selected = userAddresses.find((address) => address.id === addressId);
+      setSelectedAddress(selected);
+      setInput({
+        ...input,
+        reference: selected.reference,
+        address: selected.address,
+        zipCode: selected.zipCode,
+        telephone: selected.telephone,
+        state: selected.state,
+        region: selected.region,
+        userEmail: selected.userEmail,
+      });
+    };
+    
+
+    const handleChange = (event) => {
+      const { name, value } = event.target;
       setInput(prevState => ({
           ...prevState,
-          [e.target.id] : e.target.value
+          [name] : value,
        }));
       setErrors(validate({
           ...input,
-          [e.target.id] : e.target.value
+          [name] : value
       }))
       setInput(prevState => {
         console.log(prevState);
@@ -153,6 +175,7 @@ export default function Paypal(){
           state: "",
           region: "",  
       });
+      history.push('/shop');
       }) 
     }
 
@@ -200,7 +223,18 @@ export default function Paypal(){
           </form>
         </div>
         <div className="col-md-8 order-md-1">
-          <h4 className="mb-3">Billing address</h4>
+        {typeof userAddresses !== 'string'? (
+              <>
+                <label htmlFor="address-select">Select an address:</label>
+                <Form.Select id="selectedAddressId" name="selectedAddressId" onChange={handleAddressChange}>
+                <option value="">Select an address</option>
+                {userAddresses.map((address) => (
+                  <option key={address.id} value={address.id}>
+                    {`Reference: ${address.reference}, Address: ${address.address}, ZipCode: ${address.zipCode}, Telephone: ${address.telephone}`}
+                  </option>
+                ))}
+                </Form.Select>
+                <h4 className="mb-3">Billing address</h4>
           <form className="needs-validation" novalidate>
             <div className="row">
               <div className="mb-3">
@@ -221,23 +255,17 @@ export default function Paypal(){
     
             <div className="mb-3">
               <label for="address">Address</label>
-              <input type="text" className="form-control" id="address" placeholder="1234 Main St" value={input.address} onChange={(e) => handleChange(e)}/>
+              <input type="text" className="form-control" name="address" id="address" placeholder="1234 Main St" value={selectedAddress?.address || input.address} onChange={handleChange}/>
               {errors.address && (
                 <p className="error">{errors.address}</p>
                 )}
-              <div className="invalid-feedback">
-                Please enter your shipping address.
-              </div>
             </div>
             <div className="mb-3">
               <label for="address">Reference</label>
-              <input type="text" className="form-control" id="reference" placeholder="" value={input.reference} onChange={(e) => handleChange(e)}/>
+              <input type="text" className="form-control" name="reference" id="reference" placeholder="" value={selectedAddress?.reference || input.reference} onChange={handleChange}/>
               {errors.reference && (
                 <div><p className="error">{errors.reference}</p></div>
                 )}
-              <div className="invalid-feedback">
-                Please enter your reference.
-              </div>
             </div>
             <div className="row">
               <div className="col-md-5 mb-3">
@@ -257,20 +285,94 @@ export default function Paypal(){
             <div className="row">
               <div className="col-md-5 mb-3">
                 <label for="phone">Phone number with country code</label>
-                <input type="text" id="telephone" className="form-control" placeholder="+54 999-999-999" value={input.telephone} onChange={(e) => handleChange(e)}/>
+                <input type="text" id="telephone" name="telephone" className="form-control" placeholder="+54 999-999-999" value={selectedAddress?.telephone || input.telephone} onChange={handleChange}/>
                 {errors.telephone && (
                 <p className="error">{errors.telephone}</p>
                 )}
               </div>
               <div className="col-md-4 mb-3">
                 <label for="zip">ZipCode</label>
-                <input type="text" className="form-control" id="zipCode" placeholder="" value={input.zipCode} onChange={(e) => handleChange(e)}/>
+                <input type="text" className="form-control" name="zipCode" id="zipCode" placeholder="" value={selectedAddress?.zipCode || input.zipCode} onChange={handleChange}/>
                 {errors.zipCode && (
                 <p className="error">{errors.zipCode}</p>
                 )}
               </div>
             </div>
         </form>
+                
+            </>
+          ):(
+            <>
+              <h4 className="mb-3">Billing address</h4>
+              <form className="needs-validation" novalidate>
+                <div className="row">
+                  <div className="mb-3">
+                    <label for="firstName">Full name</label>
+                    <input type="text" className="form-control" id="firstName" placeholder="" value={userInfo.fullname} readOnly />
+                  </div>
+                </div>
+        
+                <div className="mb-3">
+                  <label for="username">Email</label>
+                  <div className="input-group">
+                    <div className="input-group-prepend">
+                      <span className="input-group-text">@</span>
+                    </div>
+                    <input type="text" className="form-control" id="username" value={userInfo.email} readOnly />
+                  </div>
+                </div>
+        
+                <div className="mb-3">
+                  <label for="address">Address</label>
+                  <input type="text" className="form-control" name="address" id="address" placeholder="1234 Main St" value={input.address} onChange={handleChange}/>
+                  {errors.address && (
+                    <p className="error">{errors.address}</p>
+                    )}
+                </div>
+                <div className="mb-3">
+                  <label for="address">Reference</label>
+                  <input type="text" className="form-control" name="reference" id="reference" placeholder="" value={input.reference} onChange={handleChange}/>
+                  {errors.reference && (
+                    <div><p className="error">{errors.reference}</p></div>
+                    )}
+                </div>
+                <div className="row">
+                  <div className="col-md-5 mb-3">
+                  <Form.Select name='state' onChange={(e) => handleSelect(e)}>
+                    <option name='state'>State</option>
+                    {orderedStates?.map((el, index) => (<option key={index} value={el.name}>{el.name}</option>))}
+                  </Form.Select>
+                  </div>
+                  <div className="col-md-5 mb-3">
+                  <Form.Select name='region' onChange={(e) => handleCitySelect(e)} >
+                    <option name='region'>City</option>
+                    {(orderedCities ? orderedCities.map((el, index) => (<option key={index} value={el.nombre}>{el.nombre}</option>)) : <div>'Error'</div>)}
+                  </Form.Select>
+                  </div>
+                </div>
+        
+                <div className="row">
+                  <div className="col-md-5 mb-3">
+                    <label for="phone">Phone number with country code</label>
+                    <input type="text" id="telephone" name="telephone" className="form-control" placeholder="+54 999-999-999" value={input.telephone} onChange={handleChange}/>
+                    {errors.telephone && (
+                    <p className="error">{errors.telephone}</p>
+                    )}
+                  </div>
+                  <div className="col-md-4 mb-3">
+                    <label for="zip">ZipCode</label>
+                    <input type="text" className="form-control" name="zipCode" id="zipCode" placeholder="" value={input.zipCode} onChange={handleChange}/>
+                    {errors.zipCode && (
+                    <p className="error">{errors.zipCode}</p>
+                    )}
+                  </div>
+                </div>
+            </form>
+            </>
+          )}
+          {/* <div className="container d-flex align-items-center">
+            <h4>codigo despues de billing address - form</h4> 
+          </div> */}
         </div>
           </div>
           <div className="container d-flex align-items-center"> 

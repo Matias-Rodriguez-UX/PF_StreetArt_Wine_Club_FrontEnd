@@ -1,3 +1,5 @@
+import { useAuth0 } from "@auth0/auth0-react";
+// const { isLoading, isAuthenticated: auth, user } = useAuth0();
 import {
   GET_ALL_STATES,
   GET_ALL_CITIES,
@@ -85,7 +87,6 @@ export function createUser(payload) {
   return async function (dispatch) {
     try {
       let user = await axios.post("/users/auth", payload);
-      console.log(user.data);
       return (
         dispatch({
           type: CREATE_USER,
@@ -170,6 +171,7 @@ export function editUserAddress(payload) {
 
 export function addUserCart(payload) {
   return async function () {
+    /* console.log("PAYLOAD: ", payload); */
     try {
       console.log("PAYLOAD addUserCart: ", payload);
       const result = await axios.post(
@@ -297,6 +299,7 @@ export function postNewsletter(email) {
         payload: newsletter.data,
       });
     } catch (error) {
+      mn;
       console.log("ERROR", error);
     }
   };
