@@ -20,8 +20,6 @@ import Wishlist from "./Wishlist/Wishlist";
 import { Loader } from "../Loader";
 import SuspendedUser from "./SuspendeUser/SuspendeUser";
 
-
-
 export default function UserProfile() {
     const dispatch = useDispatch();
 
@@ -58,7 +56,6 @@ export default function UserProfile() {
 
     useEffect(() => {
         dispatch(getAllUsers());
-        dispatch(getUserInfo(userDb.email));
         setLoading(isLoading);
         setIsAuthenticated(auth);
     }, [dispatch, isLoading, auth, user]);

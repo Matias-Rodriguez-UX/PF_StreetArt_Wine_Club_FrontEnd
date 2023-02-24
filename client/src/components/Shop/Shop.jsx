@@ -50,17 +50,16 @@ export default function Shop() {
 
     useEffect(() => {
         if (isAuthenticated && userInfo) {
-            dispatch(getUserWishlist(userInfo.email)).then(() => {
-                console.log(favourites)
-            });
+            dispatch(getUserWishlist(userInfo.email));
         }
         dispatch(getMemberships())
     }, [dispatch]);
 
     useEffect(() => {
-        dispatch(loadingAction(true))
-        dispatch(getProducts());
-
+        if(Products.length === 0){
+            dispatch(loadingAction(true))
+            dispatch(getProducts());
+        }
     }, [dispatch]);
 
     useEffect(() => {
@@ -72,6 +71,16 @@ export default function Shop() {
             localStorage.setItem('cart', JSON.stringify(cart));
         }
     }, [dispatch, getSwitch, cart])
+
+    useEffect(() => {
+        if (!currentUser.id && isAuthenticated) {
+            dispatch(getUserInfo(user.email))
+        }
+        if (currentUser.id && isAuthenticated && cart.length === 0) {
+            console.log('getUserCart(): ', currentUser.id)
+            dispatch(getUserCart(currentUser.id))
+        }
+    }, [dispatch, isAuthenticated, currentUser.id])
 
     function handleClick(e) {
         e.preventDefault()
@@ -176,14 +185,7 @@ export default function Shop() {
 
     }
 
-    useEffect(() => {
-        if (!currentUser.id && isAuthenticated) {
-            dispatch(getUserInfo(user.email))
-        }
-        if (currentUser.id && isAuthenticated) {
-            dispatch(getUserCart(currentUser.id, currentUser.email))
-        }
-    }, [dispatch, isAuthenticated, currentUser.id])
+
 
     return (
         <>

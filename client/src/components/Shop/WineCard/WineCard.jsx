@@ -15,7 +15,7 @@ const Winecards = ({ name, winery, price, image, id, addCart, handleAgregarFavor
   let userMembership = []
 
   useEffect(() => {
-    if (favourites.length && favourites.find((e) => e.id === id)) {
+    if (favourites?.length && favourites.find((e) => e.id === id)) {
       setFavorito(true);
     } else {
       setFavorito(false);
