@@ -71,7 +71,6 @@ export default function FormUser({ selectedData, setShowModalEdit }) {
     function handleSelectOptionMemberships(e, set, ele) {
         e.preventDefault()
         if (ele.indexOf(e.target.value) < 0) {
-            console.log(ele.indexOf(e.target.value))
             set([...ele, e.target.value])
         }
     }
