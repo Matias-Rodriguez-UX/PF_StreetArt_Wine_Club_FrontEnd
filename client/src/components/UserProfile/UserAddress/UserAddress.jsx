@@ -4,22 +4,27 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { getStates } from "../../../actions";
 import { createUserAddress, getAllCities } from "../../../actions/userActions";
+import { getUserAddresses } from "../../../actions/userActions";
+import UserShowAddress from "./UserShowAddress";
+import './address.css'
 
 export default function UserAddress(){
     const dispatch = useDispatch();
     const history = useHistory();
+    
+    const userInfo = useSelector((state) => state.users.userInfo);
     const states = useSelector((state) => state.products.states);
     const cities = useSelector((state) => state.users.cities);
-
-    const userInfo = useSelector((state) => state.users.userInfo);
-// console.log(userInfo);
-    const [ input, setInput ] = useState({
-        reference: '',
-        address: '',
-        zipCode:0,
-        telephone: 0,
-        stateId: 0,
-    });
+    const addresses = useSelector(state => state.users.userAddresses);
+    console.log(addresses);
+const [ input, setInput ] = useState({
+    reference: '',
+    address: '',
+    zipCode:"",
+    telephone: "",
+    state: "",
+    region: ""
+});
     // console.log(states);
     input.userEmail = userInfo.email;
 
@@ -33,19 +38,20 @@ export default function UserAddress(){
         return 0;
     });
     //   console.log(orderedStates);
-
-    // if (cities.length !==0) {cities.sort(function(a,b) {
-    //     if (a.name > b.name){
-    //         return 1;
-    //     }
-    //     if (b.name > a.name){
-    //         return -1
-    //     }
-    //     return 0;
-    //     })};
+   
+    let orderedCities = cities.municipios?.sort(function(a,b) {
+        if (a.nombre > b.nombre){
+            return 1;
+        }
+        if (b.nombre > a.nombre){
+            return -1
+        }
+        return 0;
+        });
 
     useEffect(() => {
         dispatch(getStates());
+        dispatch(getUserAddresses(userInfo.email))
     }, [dispatch]);
 
     const handleChange = (e) => {
@@ -53,13 +59,13 @@ export default function UserAddress(){
             ...input,
             [e.target.name]: e.target.value
         });
-        console.log(input);
+       
     };
-
+//  console.log(input);
     const handleSelect =  (e) => {
-        if (e.target.name === 'stateId') {
-            console.log(e.target.name);
-            console.log(e.target.value);
+        if (e.target.name === 'state') {
+            // console.log(e.target.name);
+            // console.log(e.target.value);
              dispatch(getAllCities(e.target.value));
             setInput({
                 ...input,
@@ -67,19 +73,19 @@ export default function UserAddress(){
             });
         }
     };
-    console.log(cities);
+    // console.log(orderedCities);
 
-    // const handleCitySelect =  (e) => {
-    //     if (e.target.name === 'regionId') {
-    //         console.log(e.target.name);
-    //         console.log(e.target.value);
-    //         setInput({
-    //             ...input,
-    //             [e.target.name] : e.target.value
-    //         });
-    //     }
-    // };
-
+    const handleCitySelect =  (e) => {
+        if (e.target.name === 'region') {
+            // console.log(e.target.name);
+            console.log(e.target.value);
+            setInput({
+                ...input,
+                [e.target.name] : e.target.value
+            });
+        }
+    };
+    console.log(input);
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log(input);
@@ -91,15 +97,51 @@ export default function UserAddress(){
         setInput({
             reference: '',
             address: '',
-            zipCode: 0,
-            telephone: 0
+            zipCode: '',
+            telephone: ''
         });
         history.push('/userprofile');
     };
-    
+    console.log(addresses)
     return (
         <div className="container col py-5 mt-5" display='flex'>
           <div class="col-md-8">
+
+            {
+                typeof addresses !== 'string'?
+          (<Form>
+                <div class="card mb-4 d-flex">
+             {addresses.map((el, index) => 
+                {<div>
+                    <div class="d-flex card-body mb-1">
+                    <Form.Check 
+                     type="switch"
+                     id="custom-switch"
+                     label="Main address"
+                     />
+                        <div class="row-sm-3 d-flex ">
+                            <h6 class="mb-0">{el.reference}</h6>
+                            <h6 class="mb-0">{el.address}</h6>
+                        </div>
+                        <div class="row-sm-3 d-flex text-secondary">
+                            <h6 class="mb-0">{el.telephone}</h6>
+                        <div class="col-sm-3 text-secondary flex-fill">
+                             <h6 class="mb-0">{el.state}</h6>
+                             <h6 class="mb-0">{el.region}</h6>
+                        </div>
+                        <div>
+                            <h6 class="mb-0">Edit</h6>
+                        </div>
+                        </div>
+                    </div>
+                  <hr/>
+                  </div>}
+                    ) }
+            
+                            </div>
+                </Form>): 
+                <div className="address"><p>You don't have registered addresses yet</p></div>
+                }
                         <div class="card">
                             <div class="card-body">
                                 <h4>Add address</h4>
@@ -132,18 +174,18 @@ export default function UserAddress(){
     
                                 <div class="row mb-3">
                                     <div class="col-sm-9 text-secondary">
-                                        <Form.Select name='stateId' onChange={(e) => handleSelect(e)}>
-                                            <option name='stateId'>State</option>
-                                            {orderedStates?.map((el, index) => <option key={index} value={el.id}>{el.name}</option>)}
+                                        <Form.Select name='state' onChange={(e) => handleSelect(e)}>
+                                            <option name='state'>State</option>
+                                            {orderedStates?.map((el, index) => <option key={index} value={el.name}>{el.name}</option>)}
                                         </Form.Select>
                                     </div>
                                 </div>
 
                                 <div class="row mb-3">
                                     <div class="col-sm-9 text-secondary">
-                                        <Form.Select name='regionId' >
-                                            <option>City</option>
-                                            {(cities.municipios ? cities.municipios.map((el, index) => <option key={index} value={el.id}>{el.nombre}</option>) : <div>'Error'</div>)}
+                                        <Form.Select name='region' onChange={(e) => handleCitySelect(e)}>
+                                            <option name='region'>City</option>
+                                            {(orderedCities ? orderedCities.map((el, index) => <option key={index} value={el.nombre}>{el.nombre}</option>) : <div>'Error'</div>)}
                                         </Form.Select>
                                     </div>
                                 </div>

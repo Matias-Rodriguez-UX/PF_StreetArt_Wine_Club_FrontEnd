@@ -2,7 +2,7 @@
 import {
   GET_ALL_USERS, GET_USER_ADDRESSES, GET_USER_INFO, CREATE_USER, EDIT_USER,
   CREATE_USER_ADDRESS, EDIT_ADDRESS, DELETE_USER_ADDRESS, GET_ALL_STATES, GET_ALL_CITIES,
-  EDIT_USER_ADDRESS, GET_WISHLIST, POST_WISHLIST, DELETE_FAVOURITE
+  EDIT_USER_ADDRESS, GET_WISHLIST, POST_WISHLIST, DELETE_FAVOURITE, POST_NEWSLETTER, SET_AGE, ASSIGN_MEMBERSHIPS
 } from "../actions/allActions";
 
 const initialState = {
@@ -12,8 +12,8 @@ const initialState = {
   allUsers: [],
   userInfo: {},
   userAddresses: [],
-  userWishlist: []
-
+  userWishlist: [],
+  ageUser: "",
 }
 export default function rootReducer(state = initialState, action) {
   switch (action.type) {
@@ -85,6 +85,19 @@ export default function rootReducer(state = initialState, action) {
     case DELETE_FAVOURITE:
       return {
         ...state
+      }
+    case POST_NEWSLETTER:
+      return {
+        ...state
+      }
+    case SET_AGE:
+      return {
+        ...state,
+        ageUser: action.payload
+      }
+    case ASSIGN_MEMBERSHIPS:
+      return {
+        ...state,
       }
 
     default:

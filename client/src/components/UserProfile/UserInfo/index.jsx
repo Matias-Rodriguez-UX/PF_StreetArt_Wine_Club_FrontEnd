@@ -30,6 +30,10 @@ export default function UserInfo({ userName, setCurrentPage }) {
             <div class="row">
               <div class="col-sm-3">
                 <h6 class="mb-0">Full Name</h6>
+                <div>
+
+                  
+                </div>
               </div>
               <div class="col-sm-9 text-secondary">
                 {userInfo.fullname}

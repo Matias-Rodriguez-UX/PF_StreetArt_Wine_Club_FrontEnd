@@ -28,29 +28,34 @@ export default function UserSideBar({ userName, userPicture, setCurrentPage }) {
 <Nav variant="pills" defaultActiveKey={'/'} className="d-flex flex-column flex-shrink-5 p-0 text-white bg-lg" style={{ width: '400px', height: '150vh' }}>
                 <a href="/home" className="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-black text-decoration-none">
                     {/* //Idea de que el nombre el usuario se vea al inicio de la sidebar */}
-                    <span className=" fs-4">StreetArt Wine Club</span>
+                    
+                    {/* <span className="fs-4">StreetArt Wine Club</span> */}
                 </a>
                 <hr />
                 <div className="mb-2">
-                    <a href="#" className="d-flex align-items-center justify-content-center text-black text-decoration-none mb-3" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src={userInfo.avatar} alt="user profile picture" width="100" height="100" className="rounded-circle" />
-                    </a>
+                    
                     
                     <ul className="list-unstyled" aria-labelledby="dropdownUser1">
                         <li className="mb-2">
                             <a className="text-black text-decoration-none m-4" href="#" onClick={() => setCurrentPage('userinfo')}>
-                                <p className="ms-3">Hello, 
-                                <br/>
-                                <strong>{userName}</strong></p>
+                                <div className="name">
+                                  <p className="ms-3">Hello,
+                                    <strong>   {userName}</strong></p>  
+                                </div>
+                                
                             </a>
                         </li>
-
-                        <li className="mb-2">
+                        <li className="image">
+                            <a href="#" className="d-flex align-items-center justify-content-center text-black text-decoration-none mb-3" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                                <img src={userInfo.avatar} alt="user profile picture" width="150" height="150" className="rounded-circle" />
+                            </a>
+                        </li>
+                        {/* <li className="mb-2">
                             <a className="text-black text-decoration-none m-2 float-end" href="#" onClick={() => logout()}>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="black" className="bi bi-box-arrow-right me-3" viewBox="0 0 16 16">
                                     <path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0v2z" />
                                     <path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z" />
-                                </svg>Sign out</a></li>
+                                </svg>Sign out</a></li> */}
                     </ul>
                 </div>
 

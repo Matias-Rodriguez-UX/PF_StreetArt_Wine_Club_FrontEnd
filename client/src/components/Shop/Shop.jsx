@@ -18,6 +18,7 @@ import { deleteFavourite, getUserWishlist, postFavourite } from "../../actions/u
 import { getUserCart, getUserInfo, updateUserCart } from "../../actions/userActions";
 import { useAuth0 } from "@auth0/auth0-react";
 import { addUserCart } from "../../actions/userActions";
+import { getMemberships } from "../../actions/membershipsActions";
 
 
 
@@ -25,6 +26,7 @@ export default function Shop() {
     const dispatch = useDispatch()
     const userInfo = useSelector((state) => state.users.userInfo);
     const favourites = useSelector((state) => state.users.userWishlist);
+    const allMemberships = useSelector((state) => state.memberships.allMemberships)
     const showLoading = useSelector((state) => state.products.showLoading)
     const allProducts = useSelector((state) => state.products.allProducts)
     const Products = useSelector((state) => state.products.products)
@@ -34,7 +36,7 @@ export default function Shop() {
 
     const [getSwitch, setGetSwitch] = useState(false)
 
-    const { user, isAuthenticated } = useAuth0();
+    const { user, isAuthenticated, isLoading } = useAuth0();
 
     const [currentPage, setCurrentPage] = useState(1);
     const [winesPerPage, setWinesPerPage] = useState(4);
@@ -45,10 +47,12 @@ export default function Shop() {
         setCurrentPage(pageNumber)
     };
 
+
     useEffect(() => {
         if (isAuthenticated && userInfo) {
             dispatch(getUserWishlist(userInfo.email));
         }
+        dispatch(getMemberships())
     }, [dispatch]);
 
     useEffect(() => {
@@ -160,6 +164,7 @@ export default function Shop() {
         }
     }
 
+
     const grapes = allGrapes()
     const states = allStates()
     const types = allTypes()
@@ -169,9 +174,6 @@ export default function Shop() {
 
 
 
-    if (userInfo) {
-        userEmail: userInfo.email
-    }
 
     function handleAgregarFavorito(id, userEmail) {
         dispatch(postFavourite(id, userEmail))
@@ -207,7 +209,7 @@ export default function Shop() {
                     />
                 </div>
 
-                {showLoading ? <div className="container col py-5 mt-5"> <Loader /> </div> :
+                {showLoading || isLoading ? <div className="container col py-5 mt-5"> <Loader /> </div> :
                     <div className="Cards container col py-5">
                         {currentWines.length ? currentWines?.map((el) => {
                             return (
@@ -218,14 +220,16 @@ export default function Shop() {
                                     winery={el.winery}
                                     price={el.price}
                                     id={el.id}
+                                    stock={el.stock}
                                     addCart={addCart}
                                     handleAgregarFavorito={handleAgregarFavorito}
                                     handleQuitarFavorito={handleQuitarFavorito}
                                     // favorito={favorito}
                                     userEmail={userInfo.email}
                                     favourites={favourites}
+                                    currentUser={currentUser}
+                                    allMemberships={allMemberships}
                                 />
-
                             )
                         }) : <h1>Wines not Found</h1>}
                     </div>}
