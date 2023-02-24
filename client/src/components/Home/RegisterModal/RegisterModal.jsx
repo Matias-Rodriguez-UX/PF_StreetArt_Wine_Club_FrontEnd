@@ -47,7 +47,7 @@ export default function RegisterModal() {
                 autoFocus
                 value={email}
                 onChange={(e) => handleOnChange(e)}
-              />
+                required />
             </Form.Group>
             <Button variant="warning" type="submit">Join!</Button> {/* Agregar botón dentro del formulario */}
           </Form>

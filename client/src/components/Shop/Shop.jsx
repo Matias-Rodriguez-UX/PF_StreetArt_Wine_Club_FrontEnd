@@ -215,7 +215,7 @@ export default function Shop() {
 
                     :
                     <div className="Cards container col py-5">
-                        {currentWines.length ? currentWines?.map((el) => {
+                        {currentWines?.length ? currentWines?.map((el) => {
                             return (
                                 <Winecards
                                     key={el.id}
