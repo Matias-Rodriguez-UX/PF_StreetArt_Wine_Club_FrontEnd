@@ -7,6 +7,7 @@ import { createUserAddress, deleteUserAddress, getAllCities } from "../../../act
 import { getUserAddresses } from "../../../actions/userActions";
 import './address.css'  
 
+
 export default function UserAddress(){
     const dispatch = useDispatch();
     const history = useHistory();
@@ -99,7 +100,6 @@ const [ input, setInput ] = useState({
         });
         history.push('/userprofile');
     };
-
     const handleDelete = (e, el) => {
         e.preventDefault()
         dispatch(deleteUserAddress(el.id));
