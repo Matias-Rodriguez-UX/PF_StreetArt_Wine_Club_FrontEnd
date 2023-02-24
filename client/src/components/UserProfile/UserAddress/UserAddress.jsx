@@ -5,6 +5,7 @@ import { useHistory } from "react-router-dom";
 import { getStates } from "../../../actions";
 import { createUserAddress, deleteUserAddress, getAllCities } from "../../../actions/userActions";
 import { getUserAddresses } from "../../../actions/userActions";
+import './address.css';
 
 export default function UserAddress(){
     const dispatch = useDispatch();
