@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { Form, FormGroup, FormControl, FormLabel, Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from "react-redux";
 import Rating from '@mui/material/Rating'
 import { loadingAction, postReview } from "../../../../actions";
@@ -10,16 +9,17 @@ import { useAuth0 } from "@auth0/auth0-react";
 
 
 export default function ReviewsTemplate({ review, handleClickEditReview, setShowModalDelete, setSelectedReview }) {
-    const { isLoading, isAuthenticated: auth, user } = useAuth0()
+    const { isLoading, isAuthenticated, user } = useAuth0()
     const dispatch = useDispatch()
     const userInfo = useSelector((state) => state.users.userInfo)
     const [author, setAuthor] = useState(review.userEmail)
 
     useEffect(() => {
         dispatch(loadingAction(true))
-        dispatch(getUserInfo(review.userEmail))
-
-    }, [auth, user, author])
+        if (isAuthenticated) {
+            dispatch(getUserInfo(review.userEmail))
+        }
+    }, [])
 
     function handleDeletButton() {
         setSelectedReview(review)
@@ -41,7 +41,7 @@ export default function ReviewsTemplate({ review, handleClickEditReview, setShow
                             <Rating name='rating' max={5} value={review.rating} readOnly />
                         </div>
                     </div>
-                    {auth && author === user.email && (
+                    {isAuthenticated && author === user.email && (
                         <div className="d-flex flex-column align-items-center justify-content-evenly col-2 gap-2">
                             <button type="button" class="btn btn-warning" onClick={() => handleClickEditReview(review)}>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">

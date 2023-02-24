@@ -16,6 +16,7 @@ export default function FormMembershipPost({ setShowModalPost, setmembershipList
         name: "",
         price: 0,
         discount: 0,
+        description: "",
     });
 
     const [activeButton, setActiveButton] = useState(true)
@@ -25,6 +26,7 @@ export default function FormMembershipPost({ setShowModalPost, setmembershipList
         if (input.name === ""
             || input.price <= 0
             || input.discount <= 0
+            || input.description === ""
         ) {
             setActiveButton(true)
         } else {
@@ -55,6 +57,7 @@ export default function FormMembershipPost({ setShowModalPost, setmembershipList
             name: input.name.toLowerCase(),
             price: parseInt(input.price, 10),
             discount: parseInt(input.quantity, 10),
+            description: input.description
         })
         setnewMembership(input)
         handleSelectOption(newMembership, setmembershipList, membershipList)
@@ -116,6 +119,13 @@ export default function FormMembershipPost({ setShowModalPost, setmembershipList
                     <InputGroup className="mb-3">
                         <Form.Control min={0} max={100} type="number" name="discount" value={input.discount} onChange={e => handleChanges(e)} required />
                         <InputGroup.Text>%</InputGroup.Text>
+                    </InputGroup>
+                </Form.Group>
+                <Form.Group controlId="formDetails">
+                    <Form.Label>Description</Form.Label>
+                    <InputGroup>
+                        <InputGroup.Text>Membership Details</InputGroup.Text>
+                        <Form.Control as="textarea" aria-label="With textarea" type="text" defaultValue={'vino'} name="description" value={input.description} onChange={e => handleChanges(e)} required />
                     </InputGroup>
                 </Form.Group>
                 <div className="d-flex flex-row-reverse justify-content-evenly mt-3">

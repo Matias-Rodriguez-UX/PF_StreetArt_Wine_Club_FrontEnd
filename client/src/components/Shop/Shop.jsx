@@ -18,6 +18,7 @@ import { deleteFavourite, getUserWishlist, postFavourite } from "../../actions/u
 import { getUserCart, getUserInfo, updateUserCart } from "../../actions/userActions";
 import { useAuth0 } from "@auth0/auth0-react";
 import { addUserCart } from "../../actions/userActions";
+import { getMemberships } from "../../actions/membershipsActions";
 
 
 
@@ -25,7 +26,7 @@ export default function Shop() {
     const dispatch = useDispatch()
     const userInfo = useSelector((state) => state.users.userInfo);
     const favourites = useSelector((state) => state.users.userWishlist);
-
+    const allMemberships = useSelector((state) => state.memberships.allMemberships)
     const showLoading = useSelector((state) => state.products.showLoading)
     const allProducts = useSelector((state) => state.products.allProducts)
     const Products = useSelector((state) => state.products.products)
@@ -35,7 +36,7 @@ export default function Shop() {
 
     const [getSwitch, setGetSwitch] = useState(false)
 
-    const { user, isAuthenticated } = useAuth0();
+    const { user, isAuthenticated, isLoading } = useAuth0();
 
     const [currentPage, setCurrentPage] = useState(1);
     const [winesPerPage, setWinesPerPage] = useState(4);
@@ -45,28 +46,41 @@ export default function Shop() {
     const pagination = (pageNumber) => {
         setCurrentPage(pageNumber)
     };
-    
-    useEffect(() => {
-        if(userInfo){
-        dispatch(getUserWishlist(userInfo.email));
-        }
-      }, [dispatch]);
+
 
     useEffect(() => {
-        dispatch(loadingAction(true))
-        dispatch(getProducts());
-        
+        if (isAuthenticated && userInfo) {
+            dispatch(getUserWishlist(userInfo.email));
+        }
+        dispatch(getMemberships())
     }, [dispatch]);
 
     useEffect(() => {
-        if(getSwitch){
+        if(Products.length === 0){
+            dispatch(loadingAction(true))
+            dispatch(getProducts());
+        }
+    }, [dispatch]);
+
+    useEffect(() => {
+        if (getSwitch) {
             dispatch(getUserCart(currentUser.id))
             return setGetSwitch(false)
         }
-        if(!isAuthenticated){
+        if (!isAuthenticated) {
             localStorage.setItem('cart', JSON.stringify(cart));
         }
     }, [dispatch, getSwitch, cart])
+
+    useEffect(() => {
+        if (!currentUser.id && isAuthenticated) {
+            dispatch(getUserInfo(user.email))
+        }
+        if (currentUser.id && isAuthenticated && cart.length === 0) {
+            console.log('getUserCart(): ', currentUser.id)
+            dispatch(getUserCart(currentUser.id))
+        }
+    }, [dispatch, isAuthenticated, currentUser.id])
 
     function handleClick(e) {
         e.preventDefault()
@@ -121,8 +135,8 @@ export default function Shop() {
     }
 
     const addCart = (id, cartQuantity, name, price) => {
-        if(isAuthenticated){
-            if(cart.some(el => el.id === id)){
+        if (isAuthenticated) {
+            if (cart.some(el => el.id === id)) {
                 let updateWine = cart.find(el => el.id === id)
                 dispatch(updateUserCart({
                     userId: currentUser.id,
@@ -134,21 +148,22 @@ export default function Shop() {
                 setGetSwitch(true)
                 return addAlert(cartQuantity, name);
             }
-             dispatch(addUserCart({
-              userId: currentUser.id,
-              totalPrice: price,
-              quantity:1,
-              email: user.email,
-              productId: id,
+            dispatch(addUserCart({
+                userId: currentUser.id,
+                totalPrice: price,
+                quantity: 1,
+                email: user.email,
+                productId: id,
             }))
             setGetSwitch(true)
             addAlert(cartQuantity, name);
-          } 
-          if(!isAuthenticated) {
+        }
+        if (!isAuthenticated) {
             dispatch(addToCart(id, cartQuantity));
             addAlert(cartQuantity, name);
-          }
+        }
     }
+
 
     const grapes = allGrapes()
     const states = allStates()
@@ -156,31 +171,21 @@ export default function Shop() {
     const quantities = allQuantity()
     const prices = allPrices()
 
-    
-   
-    
-if(userInfo){
-    userEmail: userInfo.email
-}
 
-   function handleAgregarFavorito(id, userEmail ) {
-         dispatch(postFavourite(id, userEmail ))
-         
-      } 
 
-    function handleQuitarFavorito(id, userEmail ) {          
-             dispatch(deleteFavourite(id, userEmail))
-             
-       } 
 
-    useEffect(() => {
-        if(!currentUser.id && isAuthenticated){
-            dispatch(getUserInfo(user.email))
-        }
-        if(currentUser.id && isAuthenticated){
-            dispatch(getUserCart(currentUser.id, currentUser.email))
-        }
-    }, [dispatch, isAuthenticated, currentUser.id])
+
+    function handleAgregarFavorito(id, userEmail) {
+        dispatch(postFavourite(id, userEmail))
+
+    }
+
+    function handleQuitarFavorito(id, userEmail) {
+        dispatch(deleteFavourite(id, userEmail))
+
+    }
+
+
 
     return (
         <>
@@ -204,7 +209,7 @@ if(userInfo){
                     />
                 </div>
 
-                {showLoading ? <div className="container col py-5 mt-5"> <Loader /> </div> :
+                {showLoading || isLoading ? <div className="container col py-5 mt-5"> <Loader /> </div> :
                     <div className="Cards container col py-5">
                         {currentWines.length ? currentWines?.map((el) => {
                             return (
@@ -215,14 +220,16 @@ if(userInfo){
                                     winery={el.winery}
                                     price={el.price}
                                     id={el.id}
+                                    stock={el.stock}
                                     addCart={addCart}
                                     handleAgregarFavorito={handleAgregarFavorito}
                                     handleQuitarFavorito={handleQuitarFavorito}
                                     // favorito={favorito}
                                     userEmail={userInfo.email}
                                     favourites={favourites}
+                                    currentUser={currentUser}
+                                    allMemberships={allMemberships}
                                 />
-
                             )
                         }) : <h1>Wines not Found</h1>}
                     </div>}

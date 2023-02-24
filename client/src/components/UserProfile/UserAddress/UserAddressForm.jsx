@@ -4,30 +4,27 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { getStates } from "../../../actions";
 import { createUserAddress, getAllCities } from "../../../actions/userActions";
-import { getUserAddresses } from "../../../actions/userActions";
 import UserShowAddress from "./UserShowAddress";
-import './address.css'
 
 export default function UserAddress(){
     const dispatch = useDispatch();
     const history = useHistory();
-    
-    const userInfo = useSelector((state) => state.users.userInfo);
     const states = useSelector((state) => state.products.states);
     const cities = useSelector((state) => state.users.cities);
-    const addresses = useSelector(state => state.users.userAddresses);
-    console.log(addresses);
-const [ input, setInput ] = useState({
-    reference: '',
-    address: '',
-    zipCode:"",
-    telephone: "",
-    state: "",
-    region: ""
-});
+
+    const userInfo = useSelector((state) => state.users.userInfo);
+// console.log(userInfo);
+    const [ input, setInput ] = useState({
+        reference: '',
+        address: '',
+        zipCode:"",
+        telephone: "",
+        state: "",
+        region: ""
+    });
     // console.log(states);
     input.userEmail = userInfo.email;
-
+    console.log(input);
     let orderedStates = states.sort(function(a,b) {
         if (a.name > b.name){
             return 1;
@@ -37,9 +34,10 @@ const [ input, setInput ] = useState({
         }
         return 0;
     });
-    //   console.log(orderedStates);
-   
-    let orderedCities = cities.municipios?.sort(function(a,b) {
+    // console.log(orderedStates);
+
+
+      let orderedCities = cities.municipios.sort(function(a,b) {
         if (a.nombre > b.nombre){
             return 1;
         }
@@ -51,7 +49,6 @@ const [ input, setInput ] = useState({
 
     useEffect(() => {
         dispatch(getStates());
-        dispatch(getUserAddresses(userInfo.email))
     }, [dispatch]);
 
     const handleChange = (e) => {
@@ -59,13 +56,13 @@ const [ input, setInput ] = useState({
             ...input,
             [e.target.name]: e.target.value
         });
-       
+        // console.log(input);
     };
-//  console.log(input);
+
     const handleSelect =  (e) => {
-        if (e.target.name === 'state') {
-            // console.log(e.target.name);
-            // console.log(e.target.value);
+        if (e.target.name) {
+            console.log(e.target.name);
+            console.log(e.target.value);
              dispatch(getAllCities(e.target.value));
             setInput({
                 ...input,
@@ -73,11 +70,10 @@ const [ input, setInput ] = useState({
             });
         }
     };
-    // console.log(orderedCities);
-
+  
     const handleCitySelect =  (e) => {
-        if (e.target.name === 'region') {
-            // console.log(e.target.name);
+        if (e.target.name) {
+            console.log(e.target.name);
             console.log(e.target.value);
             setInput({
                 ...input,
@@ -85,7 +81,7 @@ const [ input, setInput ] = useState({
             });
         }
     };
-    console.log(input);
+
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log(input);
@@ -97,51 +93,16 @@ const [ input, setInput ] = useState({
         setInput({
             reference: '',
             address: '',
-            zipCode: '',
-            telephone: ''
+            zipCode: "",
+            telephone: ""
         });
         history.push('/userprofile');
     };
-    console.log(addresses)
+    
     return (
+        <>
         <div className="container col py-5 mt-5" display='flex'>
           <div class="col-md-8">
-
-            {
-                typeof addresses !== 'string'?
-          (<Form>
-                <div class="card mb-4 d-flex">
-             {addresses.map((el, index) => 
-                {<div>
-                    <div class="d-flex card-body mb-1">
-                    <Form.Check 
-                     type="switch"
-                     id="custom-switch"
-                     label="Main address"
-                     />
-                        <div class="row-sm-3 d-flex ">
-                            <h6 class="mb-0">{el.reference}</h6>
-                            <h6 class="mb-0">{el.address}</h6>
-                        </div>
-                        <div class="row-sm-3 d-flex text-secondary">
-                            <h6 class="mb-0">{el.telephone}</h6>
-                        <div class="col-sm-3 text-secondary flex-fill">
-                             <h6 class="mb-0">{el.state}</h6>
-                             <h6 class="mb-0">{el.region}</h6>
-                        </div>
-                        <div>
-                            <h6 class="mb-0">Edit</h6>
-                        </div>
-                        </div>
-                    </div>
-                  <hr/>
-                  </div>}
-                    ) }
-            
-                            </div>
-                </Form>): 
-                <div className="address"><p>You don't have registered addresses yet</p></div>
-                }
                         <div class="card">
                             <div class="card-body">
                                 <h4>Add address</h4>
@@ -183,7 +144,7 @@ const [ input, setInput ] = useState({
 
                                 <div class="row mb-3">
                                     <div class="col-sm-9 text-secondary">
-                                        <Form.Select name='region' onChange={(e) => handleCitySelect(e)}>
+                                        <Form.Select name='region' onChange={(e) => handleCitySelect(e)} >
                                             <option name='region'>City</option>
                                             {(orderedCities ? orderedCities.map((el, index) => <option key={index} value={el.nombre}>{el.nombre}</option>) : <div>'Error'</div>)}
                                         </Form.Select>
@@ -210,6 +171,7 @@ const [ input, setInput ] = useState({
                                 </div>
                                 </div>
                                 </div>
+                                </>
 
 
     )
