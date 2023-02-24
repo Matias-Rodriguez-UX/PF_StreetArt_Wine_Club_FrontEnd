@@ -207,11 +207,8 @@ export default function productsReducer(state = initialState, action) {
       };
 
     case LOCALSTORAGE_CART:
-      console.log("in ls reducer");
-      console.log(action.payload);
       return {
         ...state,
-        cart: [{ status: "localStorage" }],
       };
 
     case REMOVE_CART_QUANTITY:

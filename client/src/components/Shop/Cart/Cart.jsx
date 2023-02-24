@@ -11,7 +11,7 @@ import Footer from '../../Footer/index';
 import CartAlert from "./CartAlert";
 import "./Cart.css"
 import Swal from 'sweetalert2';
-import { deleteUserCart, getUserCart, getUserInfo, updateUserCart, statusCart, addUserCart } from "../../../actions/userActions";
+import { deleteUserCart, getUserCart, getUserInfo, updateUserCart, statusCart, addUserCart, deleteUserCartGet } from "../../../actions/userActions";
 
 
 export default function Cart() {
@@ -50,6 +50,9 @@ export default function Cart() {
   }, [dispatch, getSwitch]);
 
   useEffect(() => {
+    if(isAuthenticated && cart[0]?.status === 'localStorage'){
+      dispatch(getUserCart(currentUser.id))
+    }
     if(!isAuthenticated){
       localStorage.setItem('cart', JSON.stringify(cart));
     }
@@ -106,8 +109,8 @@ export default function Cart() {
       addDeleteAlert(name)
     }
     if(isAuthenticated){
-      dispatch(deleteUserCart(userId, productId))
-      setGetSwitch(true)
+      dispatch(deleteUserCartGet(userId, productId))
+      // setGetSwitch(true)
       addDeleteAlert(name)
     }
   }

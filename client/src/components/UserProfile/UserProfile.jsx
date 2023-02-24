@@ -65,7 +65,7 @@ export default function UserProfile() {
 
     useEffect(() => {
         if (userInfo?.shoppingCarts?.length > 0) {
-            dispatch(getUserCart(userInfo.shoppingCarts))
+            dispatch(getUserCart(userInfo.id))
         }
     }, [userInfo])
 

@@ -187,8 +187,9 @@ export function addUserCart(payload) {
 
 export function getUserCart(id) {
   return async function (dispatch) {
+    console.log("start dispatch get");
     let userCart = await axios.get(`http://localhost:3001/users/${id}/cart`);
-    console.log(id, userCart);
+    console.log("end dispatch get: ", userCart);
     return dispatch({
       type: GET_USER_CART,
       payload: userCart.data.products,
@@ -330,5 +331,12 @@ export function assignMemberships(idUser, idMembership) {
     } catch (error) {
       console.log("ERROR", error);
     }
+  };
+}
+
+export function deleteUserCartGet(userId, productId) {
+  return (dispatch) => {
+    dispatch(deleteUserCart(userId, productId));
+    dispatch(getUserCart(userId));
   };
 }
