@@ -33,7 +33,7 @@ const Winecards = ({ name, winery, price, image, id, addCart, handleAgregarFavor
         .filter(([memebership, discount]) => userMembership.includes(memebership))
         .map(([memebership, discount]) => discount);
       setmaxDiscount(Math.max(...discountsToUse))
-      setpriceDiscoun((price - (price * (maxDiscount / 100))).toFixed(2))
+      setpriceDiscoun(parseInt((price - (price * (maxDiscount / 100))).toFixed(2)))
     }
   }, [favourites, id, allMemberships, currentUser, priceDiscount, maxDiscount]);
 
