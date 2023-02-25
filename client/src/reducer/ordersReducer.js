@@ -1,4 +1,4 @@
-import { GET_ORDERS } from "../actions/allActions";
+import { FILTER_BY_STATUS, GET_ORDERS } from "../actions/allActions";
 
 const initialState = {
   orders: [],
@@ -14,6 +14,13 @@ export default function ordersReducer(state = initialState, action) {
         orders: action.payload,
         allOrders: action.payload,
       };
+    case FILTER_BY_STATUS:
+      const allOrders = state.allOrders
+      const ordersFilter = action.payload === "all" ? allOrders : allOrders.filter(el => el.status.includes(action.payload))
+      return {
+        ...state,
+        orders: ordersFilter
+      }
     default:
       return { ...state };
   }

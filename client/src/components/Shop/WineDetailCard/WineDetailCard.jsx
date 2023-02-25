@@ -56,26 +56,14 @@ export default function Detail(props) {
       dispatch(getUserInfo(user.email))
     }
     dispatch(getMemberships())
-    if (allMemberships.length) {
-      for (let membership in allMemberships) {
-        membershipsAvailables[allMemberships[membership].name] = allMemberships[membership].discount;
+    if (wine.price > 0) {
+      for (let i = 0; i < currentUser.memberships?.length; i++) {
+        let objetoActual = currentUser.memberships[i];
+        if (objetoActual.discount > maxDiscount) {
+          setmaxDiscount(objetoActual.discount)
+        }
       }
-    }
-    if (currentUser.memberships?.length) {
-      userMembership = currentUser.memberships?.map(el => el.name)
-    }
-    if (userMembership.length) {
-      discountsToUse = Object.entries(membershipsAvailables)
-        .filter(([memebership, discount]) => userMembership.includes(memebership))
-        .map(([memebership, discount]) => discount);
-      console.log(discountsToUse)
-      setmaxDiscount(Math.max(...discountsToUse))
-      console.log(maxDiscount)
-      if (maxDiscount > 0) {
-        setpriceDiscoun(parseInt((wine.price - (wine.price * (maxDiscount / 100))).toFixed(2), 10))
-      }
-      console.log(priceDiscount)
-      console.log(wine.price)
+      setpriceDiscoun(wine.price * (1 - (maxDiscount / 100)))
     }
   }, [dispatch, isAuthenticated, currentUser.id, selectedReview, allReviews, userIf, maxDiscount, priceDiscount, wine.price]);
 

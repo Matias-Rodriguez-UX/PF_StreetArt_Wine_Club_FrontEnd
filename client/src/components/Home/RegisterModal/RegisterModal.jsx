@@ -5,6 +5,7 @@ import { Form } from "react-bootstrap";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useDispatch } from "react-redux";
 import { postNewsletter } from "../../../actions/userActions";
+import "./RegisterModal.css"
 
 export default function RegisterModal() {
   const { isAuthenticated } = useAuth0();
@@ -15,7 +16,7 @@ export default function RegisterModal() {
 
   const handleSubmit = (e) => {
     e.preventDefault(); // prevenir el comportamiento predeterminado del evento
-    dispatch(postNewsletter({ email }));
+    if(email!=='') {dispatch(postNewsletter({ email }))};
     handleClose(); // cerrar el modal después de enviar el formulario
   }
 
@@ -47,9 +48,11 @@ export default function RegisterModal() {
                 autoFocus
                 value={email}
                 onChange={(e) => handleOnChange(e)}
-              />
+                required />
             </Form.Group>
+            <div className="join-btn">
             <Button variant="warning" type="submit">Join!</Button> {/* Agregar botón dentro del formulario */}
+            </div>
           </Form>
         </Modal.Body>
         <Modal.Footer>

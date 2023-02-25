@@ -18,31 +18,33 @@ export default function Home() {
     const { isLoading, isAuthenticated: auth } = useAuth0();
     console.log(localStorage)
     return (
-        <>{isLoading ? <Loader /> : auth ?
-            <>
-                <Banner></Banner>
-                <NavigationBar></NavigationBar>
-                <Main></Main>
-                <Section1></Section1>
-                <Why></Why>
-                <Testimonial></Testimonial>
-                <FAQs></FAQs>
-                <Team></Team>
-                <Contact></Contact>
-                <Footer></Footer>
-            </> : <>
-                <RegisterModal />
-                <Banner></Banner>
-                <NavigationBar></NavigationBar>
-                <Main></Main>
-                <Section1></Section1>
-                <Why></Why>
-                <Testimonial></Testimonial>
-                <FAQs></FAQs>
-                <Team></Team>
-                <Contact></Contact>
-                <Footer></Footer>
-            </>}
+        <>{isLoading ?
+            <Loader />
+            : auth ?
+                <>
+                    <Banner></Banner>
+                    <NavigationBar></NavigationBar>
+                    <Main></Main>
+                    <Section1></Section1>
+                    <Why></Why>
+                    <Testimonial></Testimonial>
+                    <FAQs></FAQs>
+                    <Team></Team>
+                    <Contact></Contact>
+                    <Footer></Footer>
+                </> : <>
+                    <RegisterModal />
+                    <Banner></Banner>
+                    <NavigationBar></NavigationBar>
+                    <Main></Main>
+                    <Section1></Section1>
+                    <Why></Why>
+                    <Testimonial></Testimonial>
+                    <FAQs></FAQs>
+                    <Team></Team>
+                    <Contact></Contact>
+                    <Footer></Footer>
+                </>}
 
         </>
     )

@@ -121,7 +121,8 @@ export function getUserAddresses(email) {
     dispatch({
       type: GET_USER_ADDRESSES,
       payload: addresses.data,
-    });
+    }),
+      loadingAction(false);
   };
 }
 
@@ -129,10 +130,13 @@ export function createUserAddress(payload) {
   return async function (dispatch) {
     try {
       let address = await axios.post("/addresses", payload);
-      return dispatch({
-        type: CREATE_USER_ADDRESS,
-        payload: address.data,
-      });
+      return (
+        dispatch({
+          type: CREATE_USER_ADDRESS,
+          payload: address.data,
+        }),
+        loadingAction(false)
+      );
     } catch (error) {
       console.log("ERROR", error);
     }
@@ -143,10 +147,13 @@ export function deleteUserAddress(addressId, userId) {
   return async function () {
     try {
       var address = await axios.delete(`/users/${addressId}`);
-      return dispatch({
-        type: DELETE_USER_ADDRESS,
-        payload: address.data,
-      });
+      return (
+        dispatch({
+          type: DELETE_USER_ADDRESS,
+          payload: address.data,
+        }),
+        loadingAction(false)
+      );
     } catch (error) {
       console.log("Error", error);
     }
@@ -160,7 +167,8 @@ export function editUserAddress(payload) {
       dispatch({
         type: EDIT_USER_ADDRESS,
         payload: updatedAddress.data,
-      });
+      }),
+        loadingAction(false);
     } catch (error) {
       console.log("Error", error);
     }
@@ -187,25 +195,24 @@ export function addUserCart(payload) {
 
 export function getUserCart(id) {
   return async function (dispatch) {
-    console.log("start dispatch get");
     let userCart = await axios.get(`http://localhost:3001/users/${id}/cart`);
-    console.log("end dispatch get: ", userCart);
-    return dispatch({
-      type: GET_USER_CART,
-      payload: userCart.data.products,
-    });
+    return (
+      dispatch({
+        type: GET_USER_CART,
+        payload: userCart.data.products,
+      }),
+      loadingAction(false)
+    );
   };
 }
 
 export function updateUserCart(payload) {
   return async function () {
     try {
-      console.log("PAYLOAD update: ", payload);
       const result = await axios.put(
         `http://localhost:3001/users/${payload.userId}/cart`,
         payload
       );
-      console.log("RESULT update: ", result);
     } catch (error) {}
   };
 }
@@ -254,7 +261,8 @@ export function getUserWishlist(email) {
       dispatch({
         type: GET_WISHLIST,
         payload: wishlist.data,
-      });
+      }),
+        loadingAction(false);
     } catch (e) {
       console.log("Error", e);
     }
@@ -266,10 +274,13 @@ export function postFavourite(id, email) {
     try {
       console.log(email);
       let wishlist = await axios.post(`/users/fav/${email}/${id}`);
-      return dispatch({
-        type: POST_WISHLIST,
-        payload: wishlist.data,
-      });
+      return (
+        dispatch({
+          type: POST_WISHLIST,
+          payload: wishlist.data,
+        }),
+        loadingAction(false)
+      );
     } catch (error) {
       console.log("ERROR", error);
     }
@@ -280,10 +291,13 @@ export function deleteFavourite(id, email) {
   return async function (dispatch) {
     try {
       var wishlist = await axios.delete(`/users/deleteFav/${email}/${id}`);
-      return dispatch({
-        type: DELETE_FAVOURITE,
-        payload: wishlist.data,
-      });
+      return (
+        dispatch({
+          type: DELETE_FAVOURITE,
+          payload: wishlist.data,
+        }),
+        loadingAction(false)
+      );
     } catch (error) {
       console.log("Error", error);
     }
@@ -295,12 +309,14 @@ export function postNewsletter(email) {
     try {
       console.log(email);
       let newsletter = await axios.post("/newsletter", email);
-      return dispatch({
-        type: POST_NEWSLETTER,
-        payload: newsletter.data,
-      });
+      return (
+        dispatch({
+          type: POST_NEWSLETTER,
+          payload: newsletter.data,
+        }),
+        loadingAction(false)
+      );
     } catch (error) {
-      mn;
       console.log("ERROR", error);
     }
   };
@@ -309,10 +325,13 @@ export function postNewsletter(email) {
 export function setAge(age) {
   return async function (dispatch) {
     try {
-      return dispatch({
-        type: SET_AGE,
-        payload: age,
-      });
+      return (
+        dispatch({
+          type: SET_AGE,
+          payload: age,
+        }),
+        loadingAction(false)
+      );
     } catch (error) {
       console.log(error);
     }
@@ -325,9 +344,13 @@ export function assignMemberships(idUser, idMembership) {
       let memeberships = await axios.put(
         `users/${idUser}/membership/${idMembership}`
       );
-      return dispatch({
-        type: ASSIGN_MEMBERSHIPS,
-      });
+      return (
+        dispatch({
+          type: ASSIGN_MEMBERSHIPS,
+          payload: memeberships.result,
+        }),
+        loadingAction(false)
+      );
     } catch (error) {
       console.log("ERROR", error);
     }

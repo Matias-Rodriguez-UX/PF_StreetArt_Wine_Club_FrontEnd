@@ -3,13 +3,13 @@ import './Loader.css'
 
 export const Loader = () => {
     return (
-        <div className='d-flex align-items-center jutify-content-center'>
-            <div className='loaderBody mb-5'>
-                <div className="wrapper mt-5">
-                    <div className="loader">
-                    </div>
+        <div className='loaderBody mt-5'>
+            <div style={{ height: '150px' }}></div>
+            <div className="wrapper mt-5">
+                <div className="loader">
                 </div>
             </div>
         </div>
+
     )
 }

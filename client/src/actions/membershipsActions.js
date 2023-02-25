@@ -39,7 +39,8 @@ export function postMemberships(body) {
                 dispatch({
                     type: POST_MEMBERSHIP,
                     payload: memberships.data,
-                })
+                }),
+                loadingAction(false)
             );
         } catch (error) {
             return error, console.log(error);
@@ -55,7 +56,8 @@ export function updateMemberships(id, body) {
                 dispatch({
                     type: UPDATE_MEMBERSHIPS,
                     payload: memberships.data,
-                })
+                }),
+                loadingAction(false)
             );
         } catch (error) {
             return error, console.log(error);
@@ -70,7 +72,8 @@ export function deleteMemberships(id) {
                 dispatch({
                     type: DELETE_MEMBERSHIPS,
                     payload: memberships.data,
-                })
+                }),
+                loadingAction(false)
             );
         } catch (error) {
             return error, console.log(error);

@@ -130,7 +130,8 @@ export function postProduct(payload) {
       return dispatch({
         type: POST_PRODUCTS,
         payload: info.data,
-      });
+      }),
+        loadingAction(false);
     } catch (error) {
       console.log("ERROR", error);
     }
