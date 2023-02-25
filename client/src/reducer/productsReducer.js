@@ -34,6 +34,7 @@ const initialState = {
   filtersActive: false,
   showLoading: false,
   cart: [],
+  cartState: "",
   totalCart: 0,
   types: [],
   regions: [],
@@ -209,6 +210,7 @@ export default function productsReducer(state = initialState, action) {
     case LOCALSTORAGE_CART:
       return {
         ...state,
+        cartState: action.payload.data,
       };
 
     case REMOVE_CART_QUANTITY:

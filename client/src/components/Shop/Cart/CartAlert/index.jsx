@@ -24,8 +24,8 @@ export default function CartAlert({ setLocalStorageState, localStorageState }) {
         const orderUserCart = currentUser.orders.find(el => el.status === 'cart')
         if(orderUserCart){
             console.log('order cart')
-            dispatch(updateLocalStorageCartGet(storedCart, cart, currentUser))
-            setTimeout(() => dispatch(getUserCart(currentUser.id)), 2000)
+            dispatch(localStorageAddGet(currentUser, storedCart))
+            // setTimeout(() => dispatch(getUserCart(currentUser.id)), 2000)
             // storedCart.forEach(item =>
             //     !cart.some(el => el.id === item.id) ?
             //     dispatch(addUserCart({

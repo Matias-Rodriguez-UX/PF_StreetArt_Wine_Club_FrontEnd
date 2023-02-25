@@ -44,11 +44,9 @@ export function backToCartOrder(orderId) {
 }
 
 export function localStorageCart(payload) {
-  return async function () {
+  return async function (dispatch) {
     try {
-      console.log("start dispatch LocalStorage");
       let orders = await axios.post(`/orders/localStorageCart`, payload);
-      console.log("end dispatch LocalStorage: ", orders);
       return dispatch({
         type: LOCALSTORAGE_CART,
         payload: orders,
@@ -64,33 +62,36 @@ export function localStorageAddGet(user, storedCart) {
     dispatch(
       localStorageCart({ arrayProducts: storedCart, email: user.email })
     );
-    dispatch(getUserCart(user.id));
   };
 }
 
 export function updateLocalStorageCartGet(storedCart, cart, user) {
   return (dispatch) => {
-    storedCart.forEach((item, index) =>
-      !cart.some((el) => el.id === item.id)
-        ? dispatch(
-            addUserCart({
-              userId: user.id,
-              totalPrice: item.price * item.cartQuantity,
-              quantity: item.cartQuantity,
-              email: user.email,
-              productId: item.id,
-            })
-          )
-        : dispatch(
-            updateUserCart({
-              userId: user.id,
-              totalPrice: item.price * item.cartQuantity,
-              quantity: item.cartQuantity,
-              email: user.email,
-              productId: item.id,
-            })
-          )
-    );
+    try {
+      storedCart.forEach((item) =>
+        !cart.some((el) => el.id === item.id)
+          ? dispatch(
+              addUserCart({
+                userId: user.id,
+                totalPrice: item.price * item.cartQuantity,
+                quantity: item.cartQuantity,
+                email: user.email,
+                productId: item.id,
+              })
+            )
+          : dispatch(
+              updateUserCart({
+                userId: user.id,
+                totalPrice: item.price * item.cartQuantity,
+                quantity: item.cartQuantity,
+                email: user.email,
+                productId: item.id,
+              })
+            )
+      );
+    } catch (error) {
+      console.log(error);
+    }
   };
 }
 
