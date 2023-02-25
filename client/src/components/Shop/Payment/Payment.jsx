@@ -36,6 +36,7 @@ export default function Paypal(){
     const states = useSelector((state) => state.products.states);
     const cities = useSelector((state) => state.users.cities);
     const userAddresses = useSelector((state) => state.users.userAddresses);
+    console.log(userAddresses);
     const history = useHistory();
     const { user, isAuthenticated } = useAuth0();
     const [errors, setErrors] = useState({});
@@ -181,7 +182,8 @@ export default function Paypal(){
       }) 
     }
 
-    
+    const isInputDisabled = input.address || input.reference || input.region || input.state || input.telephone || input.zipCode !== "";
+
   
     return (
       <>
@@ -227,15 +229,6 @@ export default function Paypal(){
         <div className="col-md-8 order-md-1">
         {typeof userAddresses !== 'string'? (
               <>
-                <label htmlFor="address-select">Select an address:</label>
-                <Form.Select id="selectedAddressId" name="selectedAddressId" onChange={handleAddressChange}>
-                <option value="">Select an address</option>
-                {userAddresses.map((address) => (
-                  <option key={address.id} value={address.id}>
-                    {`Reference: ${address.reference}, Address: ${address.address}, ZipCode: ${address.zipCode}, Telephone: ${address.telephone}`}
-                  </option>
-                ))}
-                </Form.Select>
                 <h4 className="mb-3">Billing address</h4>
           <form className="needs-validation" novalidate>
             <div className="row">
@@ -257,27 +250,27 @@ export default function Paypal(){
     
             <div className="mb-3">
               <label for="address">Address</label>
-              <input type="text" className="form-control" name="address" id="address" placeholder="1234 Main St" value={input.address} onChange={handleChange}/>
+              <input type="text" className="form-control" name="address" id="address" placeholder="1234 Main St" value={input.address} onChange={handleChange} disabled={selectedAddress !== ""}/>
               {errors.address && (
                 <p className="error">{errors.address}</p>
                 )}
             </div>
             <div className="mb-3">
               <label for="address">Reference</label>
-              <input type="text" className="form-control" name="reference" id="reference" placeholder="" value={input.reference} onChange={handleChange}/>
+              <input type="text" className="form-control" name="reference" id="reference" placeholder="" value={input.reference} onChange={handleChange} disabled={selectedAddress !== ""}/>
               {errors.reference && (
                 <div><p className="error">{errors.reference}</p></div>
                 )}
             </div>
             <div className="row">
               <div className="col-md-5 mb-3">
-              <Form.Select name='state' onChange={(e) => handleSelect(e)}>
+              <Form.Select name='state' onChange={(e) => handleSelect(e)} disabled={selectedAddress !== ""}>
                 <option name='state'>State</option>
                 {orderedStates?.map((el, index) => (<option key={index} value={el.name}>{el.name}</option>))}
               </Form.Select>
               </div>
               <div className="col-md-5 mb-3">
-              <Form.Select name='region' onChange={(e) => handleCitySelect(e)} >
+              <Form.Select name='region' onChange={(e) => handleCitySelect(e)} disabled={selectedAddress !== ""}>
                 <option name='region'>City</option>
                 {(orderedCities ? orderedCities.map((el, index) => (<option key={index} value={el.nombre}>{el.nombre}</option>)) : <div>'Error'</div>)}
               </Form.Select>
@@ -287,21 +280,31 @@ export default function Paypal(){
             <div className="row">
               <div className="col-md-5 mb-3">
                 <label for="phone">Phone number with country code</label>
-                <input type="text" id="telephone" name="telephone" className="form-control" placeholder="+54 999-999-999" value={input.telephone} onChange={handleChange}/>
+                <input type="text" id="telephone" name="telephone" className="form-control" placeholder="+54 999-999-999" value={input.telephone} onChange={handleChange} disabled={selectedAddress !== ""}/>
                 {errors.telephone && (
                 <p className="error">{errors.telephone}</p>
                 )}
               </div>
               <div className="col-md-4 mb-3">
                 <label for="zip">ZipCode</label>
-                <input type="text" className="form-control" name="zipCode" id="zipCode" placeholder="" value={ input.zipCode} onChange={handleChange}/>
+                <input type="text" className="form-control" name="zipCode" id="zipCode" placeholder="" value={ input.zipCode} onChange={handleChange}disabled={selectedAddress !== ""}/>
                 {errors.zipCode && (
                 <p className="error">{errors.zipCode}</p>
                 )}
               </div>
             </div>
         </form>
-                
+
+        <label htmlFor="address-select"><h4>Select an saved address:</h4></label>
+                <Form.Select id="selectedAddressId" name="selectedAddressId" onChange={handleAddressChange}  disabled={isInputDisabled}>
+                <option value="">Saved addresses</option>
+                {userAddresses.map((address) => (
+                  <option key={address.id} value={address.id}>
+                    {`Reference: ${address.reference}, Address: ${address.address},Region: ${address.region}, State: ${address.state},Telephone: ${address.telephone}, ZipCode: ${address.zipCode}`}
+                  </option>
+                ))}
+                </Form.Select>
+                address reference region state telephone zipCode 
             </>
           ):(
             <>
