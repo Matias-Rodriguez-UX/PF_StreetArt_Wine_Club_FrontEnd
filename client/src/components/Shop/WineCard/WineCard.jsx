@@ -1,12 +1,14 @@
 import { useAuth0 } from '@auth0/auth0-react';
 import React, { useEffect, useState } from 'react';
 import { Card, Button, Badge } from 'react-bootstrap';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import './Card.css'
 import SpinnerCard from './SpinnerCard';
 
 const Winecards = ({ name, winery, price, image, id, addCart, handleAgregarFavorito, userEmail, handleQuitarFavorito, favourites, stock, currentUser }) => {
   const { isLoading } = useAuth0();
+  const showLoading = useSelector((state) => state.products.showLoading)
   const [favorito, setFavorito] = useState(false);
   const [maxDiscount, setmaxDiscount] = useState(0)
   const [priceDiscount, setpriceDiscoun] = useState(0)

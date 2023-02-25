@@ -42,10 +42,11 @@ export function backToCartOrder(orderId) {
 export function filterOrderByStatus(status) {
   return async function (dispatch) {
     try {
-      return (dispatch({
+      return dispatch({
         type: FILTER_BY_STATUS,
         payload: status
-      }))
+      }),
+        loadingAction(false);
     } catch (e) {
       return error
     }
