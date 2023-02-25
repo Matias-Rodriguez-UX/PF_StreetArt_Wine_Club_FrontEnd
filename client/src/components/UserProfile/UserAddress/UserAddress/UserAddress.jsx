@@ -153,10 +153,10 @@ export default function UserAddress(){
         console.log(addressToEdit);
         // if (input.reference === '' || input.address === '' || input.zipCode === 0 || input.telephone === 0) 
         // return alert('You need to complete all the fields');
-        dispatch(editUserAddress(addressToEdit));
+        dispatch(editUserAddress(addressToEdit.id, addressToEdit));
         setShowEditModal(false);
-        setShouldRender(true);
-    };
+        window.location.reload();
+        };
     
     return (
         <div className="container col py-5 mt-5" display='flex'>

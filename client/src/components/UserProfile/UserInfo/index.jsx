@@ -6,20 +6,7 @@ import { getUserInfo } from "../../../actions/userActions";
 
 export default function UserInfo({ userName, setCurrentPage }) {
   const userInfo = useSelector((state) => state.users.userInfo);
-
   const addressSelect = userInfo.addresses.length - 1
-
-  // let userEmail = '';
-  // if(auth){
-  //   userEmail = user.email
-  // };
-
-//   useEffect(() => {
-//     if(user.email){
-//       dispatch(getUserInfo(user.email))
-//       console.log('userInfo: ', user.email)
-//   }
-// }, [dispatch, user.email]);
 
 
   return (
