@@ -48,6 +48,7 @@ export default function UserProfile() {
     // console.log(user.AssigRoles[0][0])
     useEffect(() => {
         if (userDb.email) {
+            
             console.log(userDb)
             dispatch(createUser(userDb));
             dispatch(getUserInfo(userDb.email))
