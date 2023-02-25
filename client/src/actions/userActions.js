@@ -103,7 +103,8 @@ export function getUserAddresses(email) {
     dispatch({
       type: GET_USER_ADDRESSES,
       payload: addresses.data,
-    });
+    }),
+      loadingAction(false);
   };
 }
 
@@ -114,21 +115,23 @@ export function createUserAddress(payload) {
       return dispatch({
         type: CREATE_USER_ADDRESS,
         payload: address.data,
-      });
+      }),
+        loadingAction(false);
     } catch (error) {
       console.log("ERROR", error);
     }
   };
 }
 
-export function deleteUserAddress(addressId, userId) {
-  return async function () {
+export function deleteUserAddress(addressId) {
+  return async function (dispatch) {
     try {
-      var address = await axios.delete(`/users/${addressId}`);
+      var address = await axios.delete(`/addresses/${addressId}`);
       return dispatch({
         type: DELETE_USER_ADDRESS,
         payload: address.data,
-      });
+      }),
+        loadingAction(false);
     } catch (error) {
       console.log("Error", error);
     }
@@ -142,7 +145,8 @@ export function editUserAddress(payload) {
       dispatch({
         type: EDIT_USER_ADDRESS,
         payload: updatedAddress.data,
-      });
+      }),
+        loadingAction(false);
     } catch (error) {
       console.log("Error", error);
     }
@@ -172,7 +176,8 @@ export function getUserCart(id) {
     return dispatch({
       type: GET_USER_CART,
       payload: userCart.data.products,
-    });
+    }),
+      loadingAction(false);
   };
 }
 
@@ -183,7 +188,7 @@ export function updateUserCart(payload) {
         `http://localhost:3001/users/${payload.userId}/cart`,
         payload
       );
-    } catch (error) {}
+    } catch (error) { }
   };
 }
 
@@ -231,7 +236,8 @@ export function getUserWishlist(email) {
       dispatch({
         type: GET_WISHLIST,
         payload: wishlist.data,
-      });
+      }),
+        loadingAction(false);
     } catch (e) {
       console.log("Error", e);
     }
@@ -246,7 +252,8 @@ export function postFavourite(id, email) {
       return dispatch({
         type: POST_WISHLIST,
         payload: wishlist.data,
-      });
+      }),
+        loadingAction(false);
     } catch (error) {
       console.log("ERROR", error);
     }
@@ -260,7 +267,8 @@ export function deleteFavourite(id, email) {
       return dispatch({
         type: DELETE_FAVOURITE,
         payload: wishlist.data,
-      });
+      }),
+        loadingAction(false);
     } catch (error) {
       console.log("Error", error);
     }
@@ -275,7 +283,8 @@ export function postNewsletter(email) {
       return dispatch({
         type: POST_NEWSLETTER,
         payload: newsletter.data
-      });
+      }),
+        loadingAction(false);
     } catch (error) {
       console.log("ERROR", error)
     }
@@ -288,7 +297,8 @@ export function setAge(age) {
       return dispatch({
         type: SET_AGE,
         payload: age
-      })
+      }),
+        loadingAction(false);
     } catch (error) {
       console.log(error)
     }
@@ -298,11 +308,14 @@ export function setAge(age) {
 
 export function assignMemberships(idUser, idMembership) {
   return async function (dispatch) {
+    console.log(idMembership)
     try {
-      let memeberships = await axios.put(`users/${idUser}/membership/${idMembership}`);
+      let memeberships = await axios.put(`users/${idUser}/membership/`, idMembership);
       return dispatch({
         type: ASSIGN_MEMBERSHIPS,
-      });
+        payload: memeberships.result
+      }),
+        loadingAction(false);;
     } catch (error) {
       console.log("ERROR", error)
     }

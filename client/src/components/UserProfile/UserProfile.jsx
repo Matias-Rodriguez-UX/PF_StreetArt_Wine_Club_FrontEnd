@@ -18,6 +18,7 @@ import UserMemberships from "./UserMemberships/UserMemberships";
 import EditUserProfileCard from "./EditUserProfileCard/EditUserProfileCard";
 import Wishlist from "./Wishlist/Wishlist";
 import { Loader } from "../Loader";
+import SuspendedUser from "./SuspendeUser/SuspendeUser";
 
 export default function UserProfile() {
     const dispatch = useDispatch();
@@ -48,8 +49,8 @@ export default function UserProfile() {
         if (userDb.email) {
             console.log(userDb)
             dispatch(createUser(userDb));
+            dispatch(getUserInfo(userDb.email))
             dispatch(getUserWishlist(userDb.email));
-            console.log(userDb.role)
         }
     }, [user, dispatch]);
 
@@ -67,12 +68,19 @@ export default function UserProfile() {
 
 
 
-    if (loading) {
-        return <Loader />;
+    if (loading || !userInfo.id) {
+        return (
+            <Loader />
+        );
+    } else if (userInfo.status === "suspended") {
+        console.log(userInfo.status)
+        return <SuspendedUser />
     };
 
+
+
     return (
-        isAuthenticated ? (
+        isAuthenticated && userInfo.id ? (
             <div className="row" >
                 <Banner />
                 <NavigationBar />
@@ -82,10 +90,10 @@ export default function UserProfile() {
                     {currentPage === "home" && <UserInfo userName={userInfo.fullname} setCurrentPage={setCurrentPage} />}
                     {currentPage === "userinfo" && <UserInfo setCurrentPage={setCurrentPage} />}
                     {currentPage === "changeinfo" && <EditUserProfileCard setCurrentPage={setCurrentPage} />}
-                    {currentPage === "orders" && <UserOrders />}
-                    {currentPage === "addresses" && <UserAddress />}
-                    {currentPage === "memberships" && <UserMemberships />}
-                    {currentPage === "wishlist" && <Wishlist favourites={favourites} />}
+                    {currentPage === "orders" && <UserOrders setCurrentPage={setCurrentPage} />}
+                    {currentPage === "addresses" && <UserAddress setCurrentPage={setCurrentPage} />}
+                    {currentPage === "memberships" && <UserMemberships setCurrentPage={setCurrentPage} />}
+                    {currentPage === "wishlist" && <Wishlist favourites={favourites} setCurrentPage={setCurrentPage} />}
                 </div>
 
 

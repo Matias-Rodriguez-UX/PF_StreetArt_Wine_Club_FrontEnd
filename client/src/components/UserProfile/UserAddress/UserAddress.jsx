@@ -3,10 +3,11 @@ import Form from 'react-bootstrap/Form';
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { getStates } from "../../../actions";
-import { createUserAddress, getAllCities } from "../../../actions/userActions";
+import { createUserAddress, deleteUserAddress, getAllCities } from "../../../actions/userActions";
 import { getUserAddresses } from "../../../actions/userActions";
-import UserShowAddress from "./UserShowAddress";
-import './address.css'
+import { Row, Col, Card } from 'react-bootstrap';
+import './address.css'  
+
 
 export default function UserAddress(){
     const dispatch = useDispatch();
@@ -64,8 +65,6 @@ const [ input, setInput ] = useState({
 //  console.log(input);
     const handleSelect =  (e) => {
         if (e.target.name === 'state') {
-            // console.log(e.target.name);
-            // console.log(e.target.value);
              dispatch(getAllCities(e.target.value));
             setInput({
                 ...input,
@@ -86,12 +85,12 @@ const [ input, setInput ] = useState({
         }
     };
     console.log(input);
+
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log(input);
         if (input.reference === '' || input.address === '' || input.zipCode === 0 || input.telephone === 0) 
         return alert('You need to complete all the fields');
-
         dispatch(createUserAddress(input));
         alert ('Address added!');
         setInput({
@@ -100,48 +99,57 @@ const [ input, setInput ] = useState({
             zipCode: '',
             telephone: ''
         });
-        history.push('/userprofile');
+        window.location.reload();
     };
-    console.log(addresses)
+    const handleDelete = (e, el) => {
+        e.preventDefault()
+        dispatch(deleteUserAddress(el.id));
+        alert ('Address deleted!');
+        window.location.reload();
+    };
+    
     return (
         <div className="container col py-5 mt-5" display='flex'>
-          <div class="col-md-8">
-
-            {
-                typeof addresses !== 'string'?
-          (<Form>
-                <div class="card mb-4 d-flex">
-             {addresses.map((el, index) => 
-                {<div>
-                    <div class="d-flex card-body mb-1">
+          <div class="col-md-9">
+          <Row>
+                {
+                    (typeof addresses !== 'string') ?
+                addresses.map((el, index) => 
+                    ( 
+                    <>
+                    <Col key={index} xs={12} md={4} className="mb-5 me-5">
+                    <Card className='me-5' border="warning" style={{ width: '15rem' }}>
+                    <Card.Body>
                     <Form.Check 
-                     type="switch"
-                     id="custom-switch"
-                     label="Main address"
-                     />
-                        <div class="row-sm-3 d-flex ">
-                            <h6 class="mb-0">{el.reference}</h6>
-                            <h6 class="mb-0">{el.address}</h6>
-                        </div>
-                        <div class="row-sm-3 d-flex text-secondary">
-                            <h6 class="mb-0">{el.telephone}</h6>
-                        <div class="col-sm-3 text-secondary flex-fill">
-                             <h6 class="mb-0">{el.state}</h6>
-                             <h6 class="mb-0">{el.region}</h6>
-                        </div>
-                        <div>
-                            <h6 class="mb-0">Edit</h6>
-                        </div>
-                        </div>
+                            type="switch"
+                            id="custom-switch"
+                            label=""
+                            /> 
+                      <Card.Title>                            
+                        {el.reference}
+                     </Card.Title>
+                      <Card.Text className='justify-content-center'>
+                        {el.address}
+                        <br/>
+                        {el.telephone}
+                        <br/>
+                        {el.state}
+                        <br/>
+                        {el.region}
+                      </Card.Text> 
+                      <div class='d-flex justify-content-end'>                     
+                        <button class="btn btn-warning btn-sm me-2" >Edit</button>
+                        <button class="btn btn-warning btn-sm" onClick={(e) => handleDelete(e, el)}>x</button>
                     </div>
-                  <hr/>
-                  </div>}
-                    ) }
-            
-                            </div>
-                </Form>): 
-                <div className="address"><p>You don't have registered addresses yet</p></div>
-                }
+                    </Card.Body>
+                    </Card>
+                    </Col>
+                    <br />  
+                    </> 
+                )): 
+                    <div className="address"><p>You don't have registered addresses yet</p></div>
+                    }
+                    </Row> 
                         <div class="card">
                             <div class="card-body">
                                 <h4>Add address</h4>
@@ -213,4 +221,68 @@ const [ input, setInput ] = useState({
 
 
     )
-}
+};
+
+
+
+{/* <Card border="warning" style={{ width: '18rem' }}>
+<Card.Header>Header</Card.Header>
+<Card.Body>
+  <Card.Title>Warning Card Title</Card.Title>
+  <Card.Text>
+    Some quick example text to build on the card title and make up the
+    bulk of the card's content.
+  </Card.Text>
+</Card.Body>
+</Card>
+<br /> */}
+
+{/* <div className="container col py-5 mt-5" display='flex'>
+          <div class="col-md-8">
+          <Form>
+                    <div class="card mb-4 d-flex">
+                {
+                    (typeof addresses !== 'string') ?
+                
+                addresses.map((el, index) => 
+                    ( <div className="col py-5">
+                        <div class="col-md-8">
+                            <div class="card mb-3">
+                                 <div class="card-body">
+                                    <div class="row">
+                        <Form.Check 
+                        type="switch"
+                        id="custom-switch"
+                        label="Main address"
+                        />
+                                                                                        <div class="row-sm-3">
+                                <h6 class="mb-0">{el.reference}</h6>
+                            </div>
+                            <div class="row-sm-9 text-secondary ">
+                                <h6 class="mb-0">{el.address}</h6>
+                            </div>
+                            <div class="row-sm-9 text-secondary">
+                                <h6 class="mb-0">{el.telephone}</h6>
+                            <div class="row-sm-9 text-secondary">
+                                <h6 class="mb-0">{el.state}</h6>
+                            </div>
+                            <div class="row-sm-9 text-secondary">
+                                <h6 class="mb-0">{el.region}</h6>
+                            </div>
+                            <div>
+                                <h6 class="mb-0">Edit</h6>
+                            </div>
+                            <button class="btn btn-warning btn-sm" onClick={(e) => handleDelete(e, el)}>x</button>
+                            </div>
+                        </div>
+                    <hr/>
+                    </div>
+                    </div>
+                    </div>
+                    </div>
+                         
+                )): 
+                    <div className="address"><p>You don't have registered addresses yet</p></div>
+                    }
+                    </div>
+                    </Form> */}

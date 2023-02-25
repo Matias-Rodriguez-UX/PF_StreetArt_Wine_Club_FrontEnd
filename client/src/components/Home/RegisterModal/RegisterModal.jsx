@@ -15,7 +15,7 @@ export default function RegisterModal() {
 
   const handleSubmit = (e) => {
     e.preventDefault(); // prevenir el comportamiento predeterminado del evento
-    dispatch(postNewsletter({ email }));
+    if(email!=='') {dispatch(postNewsletter({ email }))};
     handleClose(); // cerrar el modal después de enviar el formulario
   }
 
@@ -47,7 +47,7 @@ export default function RegisterModal() {
                 autoFocus
                 value={email}
                 onChange={(e) => handleOnChange(e)}
-              />
+                required />
             </Form.Group>
             <Button variant="warning" type="submit">Join!</Button> {/* Agregar botón dentro del formulario */}
           </Form>

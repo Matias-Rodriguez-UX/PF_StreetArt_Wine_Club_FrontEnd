@@ -1,6 +1,6 @@
 import axios from "axios";
 import { loadingAction } from ".";
-import { GET_ORDERS, GET_ORDER_BY_ID } from "./allActions";
+import { FILTER_BY_STATUS, GET_ORDERS, GET_ORDER_BY_ID } from "./allActions";
 
 const headers = {
   headers: {
@@ -10,8 +10,10 @@ const headers = {
 
 export function getOrders() {
   return async function (dispatch) {
+    console.log("DESPACHANDO PEDIDO DE ORDENES")
     try {
       let orders = await axios.get("/orders", headers);
+      console.log(orders.data)
       return (
         dispatch({
           type: GET_ORDERS,
@@ -35,4 +37,18 @@ export function backToCartOrder(orderId) {
       return error;
     }
   };
+}
+
+export function filterOrderByStatus(status) {
+  return async function (dispatch) {
+    try {
+      return dispatch({
+        type: FILTER_BY_STATUS,
+        payload: status
+      }),
+        loadingAction(false);
+    } catch (e) {
+      return error
+    }
+  }
 }

@@ -1,18 +1,17 @@
 import { useAuth0 } from '@auth0/auth0-react';
 import React, { useEffect, useState } from 'react';
 import { Card, Button, Badge } from 'react-bootstrap';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import './Card.css'
 import SpinnerCard from './SpinnerCard';
 
-const Winecards = ({ name, winery, price, image, id, addCart, handleAgregarFavorito, userEmail, handleQuitarFavorito, favourites, stock, currentUser, allMemberships }) => {
+const Winecards = ({ name, winery, price, image, id, addCart, handleAgregarFavorito, userEmail, handleQuitarFavorito, favourites, stock, currentUser }) => {
   const { isLoading } = useAuth0();
+  const showLoading = useSelector((state) => state.products.showLoading)
   const [favorito, setFavorito] = useState(false);
-  let membershipsAvailables = {}
-  let discountsToUse = []
   const [maxDiscount, setmaxDiscount] = useState(0)
   const [priceDiscount, setpriceDiscoun] = useState(0)
-  let userMembership = []
 
   useEffect(() => {
     if (favourites?.length && favourites.find((e) => e.id === id)) {
@@ -20,22 +19,17 @@ const Winecards = ({ name, winery, price, image, id, addCart, handleAgregarFavor
     } else {
       setFavorito(false);
     }
-    if (allMemberships.length) {
-      for (let membership in allMemberships) {
-        membershipsAvailables[allMemberships[membership].name] = allMemberships[membership].discount;
+    if (price > 0) {
+      for (let i = 0; i < currentUser.memberships?.length; i++) {
+        let objetoActual = currentUser.memberships[i];
+        if (objetoActual.discount > maxDiscount) {
+          setmaxDiscount(objetoActual.discount)
+        }
       }
+      setpriceDiscoun(price * (1 - (maxDiscount / 100)))
     }
-    if (currentUser.memberships?.length) {
-      userMembership = currentUser.memberships?.map(el => el.name)
-    }
-    if (userMembership.length) {
-      discountsToUse = Object.entries(membershipsAvailables)
-        .filter(([memebership, discount]) => userMembership.includes(memebership))
-        .map(([memebership, discount]) => discount);
-      setmaxDiscount(Math.max(...discountsToUse))
-      setpriceDiscoun((price - (price * (maxDiscount / 100))).toFixed(2))
-    }
-  }, [favourites, id, allMemberships, currentUser, priceDiscount, maxDiscount]);
+
+  }, [favourites, id, currentUser, priceDiscount, maxDiscount]);
 
 
 
