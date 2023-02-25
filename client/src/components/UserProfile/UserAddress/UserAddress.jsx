@@ -6,6 +6,8 @@ import { getStates } from "../../../actions";
 import { createUserAddress, deleteUserAddress, getAllCities } from "../../../actions/userActions";
 import { getUserAddresses } from "../../../actions/userActions";
 import { Row, Col, Card } from 'react-bootstrap';
+import { Toast } from 'react-bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './address.css'  
 
 
@@ -18,16 +20,20 @@ export default function UserAddress(){
     const cities = useSelector((state) => state.users.cities);
     const addresses = useSelector(state => state.users.userAddresses);
     console.log(addresses);
-const [ input, setInput ] = useState({
-    reference: '',
-    address: '',
-    zipCode:"",
-    telephone: "",
-    state: "",
-    region: ""
-});
+
+    const [shouldRender, setShouldRender] = useState(false);
+    const [showToast, setShowToast] = useState(false);
+    const [ input, setInput ] = useState({
+        reference: '',
+        address: '',
+        zipCode:"",
+        telephone: "",
+        state: "",
+        region: ""
+    });
     // console.log(states);
-    input.userEmail = userInfo.email;
+    input.userEmail = userInfo.email; 
+    const toggleShowA = () => setShowToast(!showToast);
 
     let orderedStates = states.sort(function(a,b) {
         if (a.name > b.name){
@@ -101,10 +107,11 @@ const [ input, setInput ] = useState({
         });
         window.location.reload();
     };
+
     const handleDelete = (e, el) => {
         e.preventDefault()
         dispatch(deleteUserAddress(el.id));
-        alert ('Address deleted!');
+        toggleShowA();
         window.location.reload();
     };
     
@@ -137,9 +144,23 @@ const [ input, setInput ] = useState({
                         <br/>
                         {el.region}
                       </Card.Text> 
-                      <div class='d-flex justify-content-end'>                     
+                      <div class='d-flex justify-content-end'>  
+                      <div>                   
                         <button class="btn btn-warning btn-sm me-2" >Edit</button>
+                        </div>
+                        <div>
                         <button class="btn btn-warning btn-sm" onClick={(e) => handleDelete(e, el)}>x</button>
+                        {showToast && (
+                            <Toast className='toast prefers-reduced-motion: no-preference' show={showToast} onClose={toggleShowA}  delay={500} autohide>
+                            <Toast.Header>
+                                <img src="holder.js/20x20?text=%20" className="rounded me-2" alt="" />
+                                <strong className="me-auto">Street Art Wines Club</strong>
+                                <small>just now</small>
+                            </Toast.Header>
+                            <Toast.Body>Woohoo, you deleted that address!</Toast.Body>
+                            </Toast>
+                        )}
+                        </div>
                     </div>
                     </Card.Body>
                     </Card>

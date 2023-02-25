@@ -256,7 +256,8 @@ export default function Detail(props) {
             </div>}
         </div>
         <div className="col col-12 p-5" id="review">
-          <h3 id="reviews">REVIEWS</h3>{
+          <h3 id="reviews">REVIEWS</h3>
+          {
             isAuthenticated ?
               <div>
                 <Modal show={showModalEdit} onHide={() => setShowModalEdit(false)} >
