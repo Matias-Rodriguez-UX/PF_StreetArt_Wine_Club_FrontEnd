@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import Form from 'react-bootstrap/Form';
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { getStates } from "../../../../actions";
-import { createUserAddress, deleteUserAddress, editUserAddress, getAllCities } from "../../../../actions/userActions";
-import { getUserAddresses } from "../../../../actions/userActions";
+import { getStates } from "../../../actions";
+import { createUserAddress, deleteUserAddress, editUserAddress, getAllCities, setDefaultAddress } from "../../../actions/userActions";
+import { getUserAddresses } from "../../../actions/userActions";
 import { Modal, Row, Col, Card, Button } from 'react-bootstrap';
 import { Toast } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -20,11 +20,15 @@ export default function UserAddress(){
     const states = useSelector((state) => state.products.states);
     const cities = useSelector((state) => state.users.cities);
     const addresses = useSelector(state => state.users.userAddresses);
-    console.log(addresses);
+    const defaultAddress = useSelector((state) => state.users.defaultAddress);
+    const localDefaultAddress = JSON.parse(window.localStorage.getItem('defaultAddress'));
 
-    const [shouldRender, setShouldRender] = useState(false);
+    console.log(defaultAddress);
+
+
     const [showToast, setShowToast] = useState(false);
     const [showToastSubmit, setShowToastSubmit] = useState(false);
+    const [showToastAddress, setShowToastAddress] = useState(false);
     const [showEditModal, setShowEditModal] = useState(false);
     const [addressToEdit, setAddressToEdit] = useState(null);
     const [ input, setInput ] = useState({
@@ -39,6 +43,7 @@ export default function UserAddress(){
     input.userEmail = userInfo.email; 
     const toggleShowA = () => setShowToast(!showToast);
     const toggleShowSubmit = () => setShowToastSubmit(!showToastSubmit);
+    const toggleShowAddress = () => setShowToastAddress(!showToastAddress);
 
     let orderedStates = states.sort(function(a,b) {
         if (a.name > b.name){
@@ -73,7 +78,7 @@ export default function UserAddress(){
         });
        
     };
-//  console.log(input);
+
     const handleSelect =  (e) => {
         if (e.target.name === 'state') {
              dispatch(getAllCities(e.target.value));
@@ -83,11 +88,9 @@ export default function UserAddress(){
             });
         }
     };
-    // console.log(orderedCities);
 
     const handleCitySelect =  (e) => {
         if (e.target.name === 'region') {
-            // console.log(e.target.name);
             console.log(e.target.value);
             setInput({
                 ...input,
@@ -95,7 +98,6 @@ export default function UserAddress(){
             });
         }
     };
-    // console.log(input);
 
     const handleSelectInEdition = (e) => {
             if (e.target.name === 'state') {
@@ -151,12 +153,17 @@ export default function UserAddress(){
     const handleSaveChangedAddress = (e) => {
         e.preventDefault();
         console.log(addressToEdit);
-        // if (input.reference === '' || input.address === '' || input.zipCode === 0 || input.telephone === 0) 
-        // return alert('You need to complete all the fields');
         dispatch(editUserAddress(addressToEdit.id, addressToEdit));
         setShowEditModal(false);
         window.location.reload();
         };
+    
+    const handleSetDefaultAddress = (address) => {
+            console.log(address)
+            dispatch(setDefaultAddress(address));
+            toggleShowAddress();
+            window.location.reload();
+          };
     
     return (
         <div className="container col py-5 mt-5" display='flex'>
@@ -171,10 +178,24 @@ export default function UserAddress(){
                     <Card className='me-5' border="warning" style={{ width: '15rem' }}>
                     <Card.Body>
                     <Form.Check 
-                            type="switch"
+                            type="radio"
                             id="custom-switch"
-                            label=""
+                            checked={defaultAddress ? el.id === defaultAddress.id : false}
+                            label="Main address"
+                            onClick={(e) => handleSetDefaultAddress(el)}
                             /> 
+                            
+                            {showToastAddress && (
+                            <Toast className='toast prefers-reduced-motion: no-preference' show={showToastAddress} onClose={toggleShowAddress}  delay={500} autohide>
+                            <Toast.Header>
+                                <img src='holder.js/20x20?text=%20' className="rounded me-2" alt="brand logo" />
+                                <strong className="me-auto">Street Art Wines Club</strong>
+                                <small>just now</small>
+                            </Toast.Header>
+                            <Toast.Body>Now this is your main address!</Toast.Body>
+                            </Toast>
+                        )}
+
                       <Card.Title>                            
                         {el.reference}
                      </Card.Title>

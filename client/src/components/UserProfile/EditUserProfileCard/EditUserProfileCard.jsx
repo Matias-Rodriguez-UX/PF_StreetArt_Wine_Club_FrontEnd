@@ -84,7 +84,7 @@ export default function EditUserProfileCard() {
         const handleSubmit = (e) => {
             // e.preventDefault();
             dispatch(editUserInfo(input));
-			dispatch(editUserAddress(userInfo.addresses[addressSelect].id,input))
+			// dispatch(editUserAddress(userInfo.addresses[addressSelect].id,input))
 			dispatch(getUserInfo(userEmail))
 			
             alert('Info modified!');
@@ -134,7 +134,7 @@ export default function EditUserProfileCard() {
 									<input type="text" readOnly class="form-control" name='userEmail' value={input.userEmail} onChange={(e) => handleChange(e)}/>
 								</div>
 							</div>
-							<div class="row mb-3">
+							{/* <div class="row mb-3">
 								<div class="col-sm-3">
 									<h6 class="mb-0">Phone</h6>
 								</div>
@@ -183,7 +183,7 @@ export default function EditUserProfileCard() {
 								<div class="col-sm-9 text-secondary">
 									<input type="text" class="form-control" name='zipCode' value={input.zipCode} onChange={(e) => handleChange(e)}/>
 								</div>
-							</div>
+							</div> */}
                             <div class="row mb-3">
 								<div class="col-sm-3">
 									<h6 class="mb-0">About you</h6>

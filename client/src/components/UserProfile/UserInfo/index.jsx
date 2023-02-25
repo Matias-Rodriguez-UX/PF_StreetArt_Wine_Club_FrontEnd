@@ -1,13 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useDispatch, useSelector } from 'react-redux';
-import { getUserInfo } from "../../../actions/userActions";
+import { getDefaultAddress, getUserInfo } from "../../../actions/userActions";
 
 
 export default function UserInfo({ userName, setCurrentPage }) {
+  const dispatch = useDispatch();
   const userInfo = useSelector((state) => state.users.userInfo);
-  const addressSelect = userInfo.addresses.length - 1
+  const defaultAddress = useSelector((state) => state.users.defaultAddress);
+  // const addressSelect = userInfo.addresses.length - 1
 
+  useEffect(() => {
+    dispatch(getDefaultAddress());
+  }, [dispatch]);
 
   return (
     <div className="col py-5">
@@ -38,10 +43,19 @@ export default function UserInfo({ userName, setCurrentPage }) {
             <hr />
             <div class="row">
               <div class="col-sm-3">
+                <h6 class="mb-0">About you</h6>
+              </div>
+              <div class="col-sm-9 text-secondary">
+              {userInfo.profile}
+              </div>
+            </div>
+            <hr />
+            <div class="row">
+              <div class="col-sm-3">
                 <h6 class="mb-0">Phone</h6>
               </div>
               <div class="col-sm-9 text-secondary">
-              {userInfo.addresses.length?userInfo.addresses[addressSelect].telephone:"You don't have registered telephone yet"}
+              {defaultAddress ? defaultAddress.telephone :"You didn't pick your main address & contact number yet"}
               </div>
             </div>
            <hr />
@@ -50,7 +64,16 @@ export default function UserInfo({ userName, setCurrentPage }) {
                 <h6 class="mb-0">Address</h6>
               </div>
               <div class="col-sm-9 text-secondary">
-                {userInfo.addresses.length?userInfo.addresses[addressSelect].address:"You don't have registered addresses yet"}
+                {defaultAddress ? defaultAddress.address :"You didn't pick your main address & contact number yet"}
+              </div>
+            </div>
+            <hr />
+            <div class="row">
+              <div class="col-sm-3">
+                <h6 class="mb-0">Reference</h6>
+              </div>
+              <div class="col-sm-9 text-secondary">
+                {defaultAddress ? defaultAddress.reference :"You didn't pick your main address & contact number yet"}
               </div>
             </div>
             <hr />
@@ -59,7 +82,7 @@ export default function UserInfo({ userName, setCurrentPage }) {
                 <h6 class="mb-0">State</h6>
               </div>
               <div class="col-sm-9 text-secondary">
-              {userInfo.addresses.length?userInfo.addresses[addressSelect].state:""}
+              {defaultAddress ? defaultAddress.state :" "}
               </div>
             </div>
             <hr />
@@ -68,7 +91,7 @@ export default function UserInfo({ userName, setCurrentPage }) {
                 <h6 class="mb-0">City</h6>
               </div>
               <div class="col-sm-9 text-secondary">
-              {userInfo.addresses.length?userInfo.addresses[addressSelect].region:""}
+              {defaultAddress ? defaultAddress.region :" "}
               </div>
             </div>
             <hr />
