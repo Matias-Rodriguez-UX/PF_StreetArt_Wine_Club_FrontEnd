@@ -1,11 +1,12 @@
 import axios from "axios";
 import { loadingAction } from ".";
-<<<<<<< HEAD
-import { GET_ORDERS, GET_ORDER_BY_ID, LOCALSTORAGE_CART } from "./allActions";
+import {
+  FILTER_BY_STATUS,
+  GET_ORDERS,
+  GET_ORDER_BY_ID,
+  LOCALSTORAGE_CART,
+} from "./allActions";
 import { getUserCart, addUserCart, updateUserCart } from "./userActions";
-=======
-import { FILTER_BY_STATUS, GET_ORDERS, GET_ORDER_BY_ID } from "./allActions";
->>>>>>> 38df31b8bae7799a84232e472060eb90f84fbdd2
 
 const headers = {
   headers: {
@@ -15,10 +16,8 @@ const headers = {
 
 export function getOrders() {
   return async function (dispatch) {
-    console.log("DESPACHANDO PEDIDO DE ORDENES")
     try {
       let orders = await axios.get("/orders", headers);
-      console.log(orders.data)
       return (
         dispatch({
           type: GET_ORDERS,
@@ -44,7 +43,6 @@ export function backToCartOrder(orderId) {
   };
 }
 
-<<<<<<< HEAD
 export function localStorageCart(payload) {
   return async function () {
     try {
@@ -72,45 +70,42 @@ export function localStorageAddGet(user, storedCart) {
 
 export function updateLocalStorageCartGet(storedCart, cart, user) {
   return (dispatch) => {
-    try {
-      storedCart.forEach((item) =>
-        !cart.some((el) => el.id === item.id)
-          ? dispatch(
-              addUserCart({
-                userId: user.id,
-                totalPrice: item.price * item.cartQuantity,
-                quantity: item.cartQuantity,
-                email: user.email,
-                productId: item.id,
-              })
-            )
-          : dispatch(
-              updateUserCart({
-                userId: user.id,
-                totalPrice: item.price * item.cartQuantity,
-                quantity: item.cartQuantity,
-                email: user.email,
-                productId: item.id,
-              })
-            )
-      );
-      dispatch(getUserCart(user.id));
-    } catch (error) {
-      console.log(error);
-    }
+    storedCart.forEach((item, index) =>
+      !cart.some((el) => el.id === item.id)
+        ? dispatch(
+            addUserCart({
+              userId: user.id,
+              totalPrice: item.price * item.cartQuantity,
+              quantity: item.cartQuantity,
+              email: user.email,
+              productId: item.id,
+            })
+          )
+        : dispatch(
+            updateUserCart({
+              userId: user.id,
+              totalPrice: item.price * item.cartQuantity,
+              quantity: item.cartQuantity,
+              email: user.email,
+              productId: item.id,
+            })
+          )
+    );
   };
-=======
+}
+
 export function filterOrderByStatus(status) {
   return async function (dispatch) {
     try {
-      return dispatch({
-        type: FILTER_BY_STATUS,
-        payload: status
-      }),
-        loadingAction(false);
+      return (
+        dispatch({
+          type: FILTER_BY_STATUS,
+          payload: status,
+        }),
+        loadingAction(false)
+      );
     } catch (e) {
-      return error
+      return error;
     }
-  }
->>>>>>> 38df31b8bae7799a84232e472060eb90f84fbdd2
+  };
 }
