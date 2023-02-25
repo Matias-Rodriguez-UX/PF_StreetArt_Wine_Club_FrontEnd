@@ -97,12 +97,15 @@ export default function UserInfo({ userName, setCurrentPage }) {
             <hr />
             <div class="row">
               <div class="col-sm-12">
-                <a class="btn btn-warning  float-end" onClick={() => setCurrentPage('changeinfo')} >Edit</a>
+                <div className='float-end'>
+                <a class="btn btn-warning" onClick={() => setCurrentPage('changeinfo')} >Edit personal info</a>
               </div>
+              <a class="btn btn-warning btn-margin" onClick={() => setCurrentPage('addresses')} >Edit address & contact</a>
             </div>
           </div>
         </div>
       </div>
+    </div>
     </div>
   )
 }
