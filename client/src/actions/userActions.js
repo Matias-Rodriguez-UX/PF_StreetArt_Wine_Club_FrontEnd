@@ -321,3 +321,14 @@ export function assignMemberships(idUser, idMembership) {
     }
   };
 };
+
+export function updateSubscription(email) {
+  return async function () {
+    try {
+      await axios.put(
+        `http://localhost:3001/newsletter`, email
+      
+      );
+    } catch (error) { }
+  };
+}
