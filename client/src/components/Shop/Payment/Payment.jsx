@@ -75,11 +75,9 @@ export default function Paypal(){
       return 0;
     }); 
 
-    /* useEffect(() => {
-      dispatch(getStates());
-      dispatch(getUserInfo(user.email));
-      dispatch(getUserAddresses(userInfo.email)); 
-    }, [dispatch]); */
+    useEffect(() => {
+        console.log(selectedAddress);
+    }, [selectedAddress]); 
 
     useEffect(() => {
       if(!userInfo.id && isAuthenticated){
@@ -112,18 +110,8 @@ export default function Paypal(){
 
     const handleAddressChange = (event) => {
       const addressId = event.target.value;
-      const selected = userAddresses.find((address) => address.id === addressId);
+      const selected = userAddresses.find((address) => address.id === parseInt(addressId));
       setSelectedAddress(selected);
-      setInput({
-        ...input,
-        reference: selected.reference,
-        address: selected.address,
-        zipCode: selected.zipCode,
-        telephone: selected.telephone,
-        state: selected.state,
-        region: selected.region,
-        userEmail: selected.userEmail,
-      });
     };
     
 
@@ -269,14 +257,14 @@ export default function Paypal(){
     
             <div className="mb-3">
               <label for="address">Address</label>
-              <input type="text" className="form-control" name="address" id="address" placeholder="1234 Main St" value={selectedAddress?.address || input.address} onChange={handleChange}/>
+              <input type="text" className="form-control" name="address" id="address" placeholder="1234 Main St" value={input.address} onChange={handleChange}/>
               {errors.address && (
                 <p className="error">{errors.address}</p>
                 )}
             </div>
             <div className="mb-3">
               <label for="address">Reference</label>
-              <input type="text" className="form-control" name="reference" id="reference" placeholder="" value={selectedAddress?.reference || input.reference} onChange={handleChange}/>
+              <input type="text" className="form-control" name="reference" id="reference" placeholder="" value={input.reference} onChange={handleChange}/>
               {errors.reference && (
                 <div><p className="error">{errors.reference}</p></div>
                 )}
@@ -299,14 +287,14 @@ export default function Paypal(){
             <div className="row">
               <div className="col-md-5 mb-3">
                 <label for="phone">Phone number with country code</label>
-                <input type="text" id="telephone" name="telephone" className="form-control" placeholder="+54 999-999-999" value={selectedAddress?.telephone || input.telephone} onChange={handleChange}/>
+                <input type="text" id="telephone" name="telephone" className="form-control" placeholder="+54 999-999-999" value={input.telephone} onChange={handleChange}/>
                 {errors.telephone && (
                 <p className="error">{errors.telephone}</p>
                 )}
               </div>
               <div className="col-md-4 mb-3">
                 <label for="zip">ZipCode</label>
-                <input type="text" className="form-control" name="zipCode" id="zipCode" placeholder="" value={selectedAddress?.zipCode || input.zipCode} onChange={handleChange}/>
+                <input type="text" className="form-control" name="zipCode" id="zipCode" placeholder="" value={ input.zipCode} onChange={handleChange}/>
                 {errors.zipCode && (
                 <p className="error">{errors.zipCode}</p>
                 )}
