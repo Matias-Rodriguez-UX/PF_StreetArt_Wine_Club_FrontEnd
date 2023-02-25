@@ -3,9 +3,9 @@ import Form from 'react-bootstrap/Form';
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { getStates } from "../../../../actions";
-import { createUserAddress, deleteUserAddress, getAllCities } from "../../../../actions/userActions";
+import { createUserAddress, deleteUserAddress, editUserAddress, getAllCities } from "../../../../actions/userActions";
 import { getUserAddresses } from "../../../../actions/userActions";
-import { Row, Col, Card } from 'react-bootstrap';
+import { Modal, Row, Col, Card, Button } from 'react-bootstrap';
 import { Toast } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './address.css';
@@ -95,7 +95,29 @@ export default function UserAddress(){
             });
         }
     };
-    console.log(input);
+    // console.log(input);
+
+    const handleSelectInEdition = (e) => {
+            if (e.target.name === 'state') {
+                console.log(e.target.value);
+                 dispatch(getAllCities(e.target.value));
+                 setAddressToEdit({
+                    ...addressToEdit,
+                    state: e.target.value,
+                });
+            }
+    };
+
+    const handleCitySelectInEdition =  (e) => {
+        if (e.target.name === 'region') {
+            console.log(e.target.name);
+            console.log(e.target.value);
+           setAddressToEdit({
+            ...addressToEdit,
+            region: e.target.value,
+             });
+        };
+    };
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -125,6 +147,16 @@ export default function UserAddress(){
         setAddressToEdit(address);
         setShowEditModal(true);
       };
+
+    const handleSaveChangedAddress = (e) => {
+        e.preventDefault();
+        console.log(addressToEdit);
+        // if (input.reference === '' || input.address === '' || input.zipCode === 0 || input.telephone === 0) 
+        // return alert('You need to complete all the fields');
+        dispatch(editUserAddress(addressToEdit));
+        setShowEditModal(false);
+        setShouldRender(true);
+    };
     
     return (
         <div className="container col py-5 mt-5" display='flex'>
@@ -181,6 +213,87 @@ export default function UserAddress(){
                 )): 
                     <div className="address"><p>You don't have registered addresses yet</p></div>
                     }
+
+                    {/* Modal de edición de dirección */}
+                    <Modal show={showEditModal} onHide={() => setShowEditModal(false)}>
+                        <Modal.Header closeButton>
+                        <Modal.Title>Edit your address</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                        <Form>
+                        <Form.Group controlId="formPhoneAddress">
+                            <Form.Label>Reference</Form.Label>
+                            <Form.Control
+                                type="text"
+                                placeholder={addressToEdit?.reference || 'Insert your reference'}
+                                value={addressToEdit?.reference || ''}
+                                onChange={(e) =>
+                                setAddressToEdit({
+                                    ...addressToEdit,
+                                    reference: e.target.value,
+                                })
+                                }
+                            />
+                            </Form.Group>
+                            <Form.Group controlId="formStreetAddress">
+                            <Form.Label>Address</Form.Label>
+                            <Form.Control
+                                type="text"
+                                placeholder={addressToEdit?.address || 'Insert your address'}
+                                value={addressToEdit?.address || ''}
+                                onChange={(e) =>
+                                setAddressToEdit({
+                                    ...addressToEdit,
+                                    address: e.target.value,
+                                })
+                                }
+                            />
+                            </Form.Group>
+                            <Form.Group controlId="formPhoneAddress">
+                            <Form.Label>Contact number</Form.Label>
+                            <Form.Control
+                                type="text"
+                                placeholder={addressToEdit?.telephone || 'Insert your contact number'}
+                                value={addressToEdit?.telephone || ''}
+                                onChange={(e) =>
+                                setAddressToEdit({
+                                    ...addressToEdit,
+                                    telephone: e.target.value,
+                                })
+                                }
+                            />
+                            </Form.Group>
+
+                            <Form.Group controlId="formStateAddress">
+                            <Form.Label>State</Form.Label>
+                            <Form.Select name='state' onChange={(e) =>
+                                handleSelectInEdition(e)}>
+                                            <option name='state'>State</option>
+                                            {orderedStates?.map((el, index) => <option key={index} value={el.name}>{el.name}</option>)}
+                                        </Form.Select>
+                            </Form.Group>
+
+                            <Form.Group controlId="formRegionAddress">
+                            <Form.Label>City</Form.Label>
+                            <Form.Select name='region' onChange={(e) =>
+                               handleCitySelectInEdition(e)}>
+                                            <option name='region'>City</option>
+                                            {(orderedCities ? orderedCities.map((el, index) => <option key={index} value={el.nombre}>{el.nombre}</option>) : <div>'Error'</div>)}
+                                        </Form.Select>
+                            </Form.Group>
+                        </Form>
+                        </Modal.Body>
+                        <Modal.Footer>
+                        <Button variant="secondary" onClick={() => setShowEditModal(false)}>
+                            Cancelar
+                        </Button>
+                        <Button variant=" btn-warning" type='submit' onClick={(e) => handleSaveChangedAddress(e)}>
+                            Guardar cambios
+                        </Button>
+                        </Modal.Footer>
+                    </Modal>
+
+
                     </Row> 
                         <div class="card">
                             <div class="card-body">

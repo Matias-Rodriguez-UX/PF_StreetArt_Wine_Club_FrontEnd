@@ -141,7 +141,7 @@ export function deleteUserAddress(addressId) {
 export function editUserAddress(payload) {
   return async function (dispatch) {
     try {
-      let updatedAddress = await axios.put(`/users/${payload}`);
+      let updatedAddress = await axios.put(`/addresses/${payload.id}`);
       dispatch({
         type: EDIT_USER_ADDRESS,
         payload: updatedAddress.data,
