@@ -1,0 +1,30 @@
+.order {
+  margin-top: 5px;
+  background-color: lightblue;
+  box-shadow: 2px 2px gray;
+  border-radius: 20px;
+}
+
+.subOrder {
+  /* border-radius: 20px; */
+  border-bottom: solid white;
+  border-radius: 20px;
+  padding: 20px;
+}
+
+.divStyle {
+  margin-top: 50px;
+}
+
+.accrdn {
+  margin-top: 10px;
+  display: flex;
+  justify-content: start;
+}
+
+.pStyle {
+  width: 300px;
+  margin-bottom: 0px;
+  color: #212529;
+  font-size: 18px;
+}

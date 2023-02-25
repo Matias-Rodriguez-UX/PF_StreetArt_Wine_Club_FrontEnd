@@ -36,7 +36,6 @@ export const GET_REVIEWS = "GET_REVIEWS";
 export const UPDATE_REVIEWS = "UPDATE_REVIEWS";
 export const POST_PRODUCTS = "POST_PRODUCTS";
 // export const DELETE_PRODUCTS = 'DELETE_PRODUCTS';
-
 export const UPDATE_PRODUCTS = 'UPDATE_PRODUCTS';
 export const DELETE_REVIEW = 'DELETE_REVIEW';
 export const POST_REVIEW = 'POST_REVIEW';
@@ -52,8 +51,5 @@ export const POST_NEWSLETTER = 'POST_NEWSLETTER'
 export const SET_AGE = "SET_AGE"
 export const ASSIGN_MEMBERSHIPS = "ASSIGN_MEMBERSHIPS"
 export const FILTER_BY_STATUS = "FILTER_BY_STATUS"
-
-
-
-
+export const GET_USER_ORDER = 'GET_USER_ORDER'
 
