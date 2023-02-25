@@ -6,7 +6,10 @@ import { getStates } from "../../../actions";
 import { createUserAddress, deleteUserAddress, getAllCities } from "../../../actions/userActions";
 import { getUserAddresses } from "../../../actions/userActions";
 import { Row, Col, Card } from 'react-bootstrap';
-import './address.css'  
+import { Toast } from 'react-bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './address.css';
+// import logo from '../../../../public/favicon.ico';
 
 
 export default function UserAddress(){
@@ -18,16 +21,22 @@ export default function UserAddress(){
     const cities = useSelector((state) => state.users.cities);
     const addresses = useSelector(state => state.users.userAddresses);
     console.log(addresses);
-const [ input, setInput ] = useState({
-    reference: '',
-    address: '',
-    zipCode:"",
-    telephone: "",
-    state: "",
-    region: ""
-});
+
+    const [shouldRender, setShouldRender] = useState(false);
+    const [showToast, setShowToast] = useState(false);
+    const [showToastSubmit, setShowToastSubmit] = useState(false);
+    const [ input, setInput ] = useState({
+        reference: '',
+        address: '',
+        zipCode:"",
+        telephone: "",
+        state: "",
+        region: ""
+    });
     // console.log(states);
-    input.userEmail = userInfo.email;
+    input.userEmail = userInfo.email; 
+    const toggleShowA = () => setShowToast(!showToast);
+    const toggleShowSubmit = () => setShowToastSubmit(!showToastSubmit);
 
     let orderedStates = states.sort(function(a,b) {
         if (a.name > b.name){
@@ -92,7 +101,7 @@ const [ input, setInput ] = useState({
         if (input.reference === '' || input.address === '' || input.zipCode === 0 || input.telephone === 0) 
         return alert('You need to complete all the fields');
         dispatch(createUserAddress(input));
-        alert ('Address added!');
+        toggleShowSubmit();
         setInput({
             reference: '',
             address: '',
@@ -101,10 +110,11 @@ const [ input, setInput ] = useState({
         });
         window.location.reload();
     };
+
     const handleDelete = (e, el) => {
         e.preventDefault()
         dispatch(deleteUserAddress(el.id));
-        alert ('Address deleted!');
+        toggleShowA();
         window.location.reload();
     };
     
@@ -137,9 +147,23 @@ const [ input, setInput ] = useState({
                         <br/>
                         {el.region}
                       </Card.Text> 
-                      <div class='d-flex justify-content-end'>                     
+                      <div class='d-flex justify-content-end'>  
+                      <div>                   
                         <button class="btn btn-warning btn-sm me-2" >Edit</button>
+                        </div>
+                        <div>
                         <button class="btn btn-warning btn-sm" onClick={(e) => handleDelete(e, el)}>x</button>
+                        {showToast && (
+                            <Toast className='toast prefers-reduced-motion: no-preference' show={showToast} onClose={toggleShowA}  delay={100} autohide>
+                            <Toast.Header>
+                                <img src='holder.js/20x20?text=%20' className="rounded me-2" alt="brand logo" />
+                                <strong className="me-auto">Street Art Wines Club</strong>
+                                <small>just now</small>
+                            </Toast.Header>
+                            <Toast.Body>Woohoo, you deleted that address!</Toast.Body>
+                            </Toast>
+                        )}
+                        </div>
                     </div>
                     </Card.Body>
                     </Card>
@@ -212,6 +236,16 @@ const [ input, setInput ] = useState({
                                     <div class="col-sm-9 text-secondary">
                                         <input type="button" class="btn btn-warning btn-sm" value="Add" onClick={(e) => handleSubmit(e)}/>
                                     </div>
+                                        {showToastSubmit && (
+                                        <Toast className='toast prefers-reduced-motion: no-preference' show={showToastSubmit} onClose={toggleShowSubmit}  delay={150} autohide>
+                                        <Toast.Header>
+                                            <img src="holder.js/20x20?text=%20" className="rounded me-2" alt="" />
+                                            <strong className="me-auto">Street Art Wines Club</strong>
+                                            <small>just now</small>
+                                        </Toast.Header>
+                                        <Toast.Body>Woohoo, you added that address!</Toast.Body>
+                                        </Toast>
+                                        )}
                                     </div>
                                 </div> 
                                 </div>
@@ -223,66 +257,3 @@ const [ input, setInput ] = useState({
     )
 };
 
-
-
-{/* <Card border="warning" style={{ width: '18rem' }}>
-<Card.Header>Header</Card.Header>
-<Card.Body>
-  <Card.Title>Warning Card Title</Card.Title>
-  <Card.Text>
-    Some quick example text to build on the card title and make up the
-    bulk of the card's content.
-  </Card.Text>
-</Card.Body>
-</Card>
-<br /> */}
-
-{/* <div className="container col py-5 mt-5" display='flex'>
-          <div class="col-md-8">
-          <Form>
-                    <div class="card mb-4 d-flex">
-                {
-                    (typeof addresses !== 'string') ?
-                
-                addresses.map((el, index) => 
-                    ( <div className="col py-5">
-                        <div class="col-md-8">
-                            <div class="card mb-3">
-                                 <div class="card-body">
-                                    <div class="row">
-                        <Form.Check 
-                        type="switch"
-                        id="custom-switch"
-                        label="Main address"
-                        />
-                                                                                        <div class="row-sm-3">
-                                <h6 class="mb-0">{el.reference}</h6>
-                            </div>
-                            <div class="row-sm-9 text-secondary ">
-                                <h6 class="mb-0">{el.address}</h6>
-                            </div>
-                            <div class="row-sm-9 text-secondary">
-                                <h6 class="mb-0">{el.telephone}</h6>
-                            <div class="row-sm-9 text-secondary">
-                                <h6 class="mb-0">{el.state}</h6>
-                            </div>
-                            <div class="row-sm-9 text-secondary">
-                                <h6 class="mb-0">{el.region}</h6>
-                            </div>
-                            <div>
-                                <h6 class="mb-0">Edit</h6>
-                            </div>
-                            <button class="btn btn-warning btn-sm" onClick={(e) => handleDelete(e, el)}>x</button>
-                            </div>
-                        </div>
-                    <hr/>
-                    </div>
-                    </div>
-                    </div>
-                    </div>
-                         
-                )): 
-                    <div className="address"><p>You don't have registered addresses yet</p></div>
-                    }
-                    </div>
-                    </Form> */}

@@ -5,12 +5,10 @@ import { getUserInfo } from "../../../actions/userActions";
 
 
 export default function UserInfo({ userName, setCurrentPage }) {
-  // const dispatch = useDispatch();
-  // const { isAuthenticated: auth, user } = useAuth0();
   const userInfo = useSelector((state) => state.users.userInfo);
-  console.log(userInfo)
+
   const addressSelect = userInfo.addresses.length - 1
-  console.log(addressSelect)
+
   // let userEmail = '';
   // if(auth){
   //   userEmail = user.email
@@ -22,6 +20,7 @@ export default function UserInfo({ userName, setCurrentPage }) {
 //       console.log('userInfo: ', user.email)
 //   }
 // }, [dispatch, user.email]);
+
 
   return (
     <div className="col py-5">
