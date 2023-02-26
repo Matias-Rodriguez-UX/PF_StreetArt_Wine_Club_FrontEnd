@@ -76,10 +76,6 @@ export default function Shop() {
         if (!currentUser.id && isAuthenticated) {
             dispatch(getUserInfo(user.email))
         }
-        if (currentUser.id && isAuthenticated && cart.length === 0) {
-            console.log('getUserCart(): ', currentUser.id)
-            dispatch(getUserCart(currentUser.id))
-        }
     }, [dispatch, isAuthenticated, currentUser.id])
 
     function handleClick(e) {

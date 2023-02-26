@@ -1,6 +1,11 @@
 import axios from "axios";
 import { loadingAction } from ".";
-import { FILTER_BY_STATUS, GET_ORDERS, GET_ORDER_BY_ID, GET_USER_ORDER } from "./allActions";
+import {
+  FILTER_BY_STATUS,
+  GET_ORDERS,
+  LOCALSTORAGE_CART,
+  GET_USER_ORDER,
+} from "./allActions";
 
 const headers = {
   headers: {
@@ -10,10 +15,8 @@ const headers = {
 
 export function getOrders() {
   return async function (dispatch) {
-    console.log("DESPACHANDO PEDIDO DE ORDENES")
     try {
       let orders = await axios.get("/orders", headers);
-      console.log(orders.data)
       return (
         dispatch({
           type: GET_ORDERS,
@@ -39,18 +42,43 @@ export function backToCartOrder(orderId) {
   };
 }
 
+export function localStorageCart(payload) {
+  return async function (dispatch) {
+    try {
+      let orders = await axios.post(`/orders/localStorageCart`, payload);
+      console.log(orders);
+      return dispatch({
+        type: LOCALSTORAGE_CART,
+        payload: orders,
+      });
+    } catch (error) {
+      return error;
+    }
+  };
+}
+
+export function localStorageAddGet(user, storedCart) {
+  return (dispatch) => {
+    dispatch(
+      localStorageCart({ arrayProducts: storedCart, email: user.email })
+    );
+  };
+}
+
 export function filterOrderByStatus(status) {
   return async function (dispatch) {
     try {
-      return dispatch({
-        type: FILTER_BY_STATUS,
-        payload: status
-      }),
-        loadingAction(false);
+      return (
+        dispatch({
+          type: FILTER_BY_STATUS,
+          payload: status,
+        }),
+        loadingAction(false)
+      );
     } catch (e) {
-      return error
+      return error;
     }
-  }
+  };
 }
 
 export function getUserOrders(email) {
@@ -58,7 +86,7 @@ export function getUserOrders(email) {
     try {
       let orders = await axios.get(`/orders/byuser?email=${email}`, headers);
       return (
-        dispatch({ 
+        dispatch({
           type: GET_USER_ORDER,
           payload: orders.data,
         }),
