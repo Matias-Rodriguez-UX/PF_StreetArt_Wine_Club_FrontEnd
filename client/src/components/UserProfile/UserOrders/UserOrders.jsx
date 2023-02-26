@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Tab, Tabs } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserOrders } from "../../../actions/ordersAction";
-import "./UserOrder.css";
+// import "./UserOrder.css";
 import Accordion from "react-bootstrap/Accordion";
 
 export default function UserOrders() {
