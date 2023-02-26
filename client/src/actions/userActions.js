@@ -3,7 +3,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import {
   GET_ALL_STATES, GET_ALL_CITIES, GET_ALL_USERS, GET_USER_INFO, CREATE_USER, EDIT_USER, GET_USER_ADDRESSES, CREATE_USER_ADDRESS, EDIT_USER_ADDRESS, DELETE_USER_ADDRESS,
   DELETE_USER, GET_WISHLIST, POST_WISHLIST, DELETE_FAVOURITE, ADD_TO_CART,
-  GET_USER_CART, POST_NEWSLETTER, SET_AGE, ASSIGN_MEMBERSHIPS
+  GET_USER_CART, POST_NEWSLETTER, SET_AGE, ASSIGN_MEMBERSHIPS, SET_DEFAULT_ADDRESS, GET_DEFAULT_ADDRESS
 } from "./allActions";
 import axios from "axios";
 import { loadingAction } from ".";
@@ -151,7 +151,23 @@ export function editUserAddress(id,payload) {
       console.log("Error", error);
     }
   };
-}
+};
+
+export function setDefaultAddress (address) {
+  return async function (dispatch){
+    dispatch({
+      type: SET_DEFAULT_ADDRESS,
+      payload: address,
+    });
+  };
+};
+
+export function getDefaultAddress () {
+  return (dispatch) => {
+    const defaultAddress = JSON.parse(localStorage.getItem("defaultAddress"));
+    dispatch(setDefaultAddress(defaultAddress));
+  };
+};
 
 //USER CART
 

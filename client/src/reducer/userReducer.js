@@ -1,7 +1,7 @@
 
 import {
   GET_ALL_USERS, GET_USER_ADDRESSES, GET_USER_INFO, CREATE_USER, EDIT_USER,
-  CREATE_USER_ADDRESS, EDIT_ADDRESS, DELETE_USER_ADDRESS, GET_ALL_STATES, GET_ALL_CITIES,
+  CREATE_USER_ADDRESS, SET_DEFAULT_ADDRESS, DELETE_USER_ADDRESS, GET_ALL_STATES, GET_ALL_CITIES,
   EDIT_USER_ADDRESS, GET_WISHLIST, POST_WISHLIST, DELETE_FAVOURITE, POST_NEWSLETTER, SET_AGE, ASSIGN_MEMBERSHIPS
 } from "../actions/allActions";
 
@@ -12,6 +12,7 @@ const initialState = {
   allUsers: [],
   userInfo: {},
   userAddresses: [],
+  defaultAddress: null,
   userWishlist: [],
   ageUser: "",
 }
@@ -72,6 +73,14 @@ export default function rootReducer(state = initialState, action) {
       return {
         ...state
       };
+
+    case SET_DEFAULT_ADDRESS:
+      localStorage.setItem('defaultAddress', JSON.stringify(action.payload));
+      return{
+        ...state,
+        defaultAddress: action.payload,
+      };
+
     case GET_WISHLIST:
       const wishList = action.payload.products?.map(el => el)
       return {
