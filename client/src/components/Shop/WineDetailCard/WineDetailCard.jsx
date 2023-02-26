@@ -63,7 +63,7 @@ export default function Detail(props) {
           setmaxDiscount(objetoActual.discount)
         }
       }
-      setpriceDiscoun(Math.ceil(wine.price * (1 - (maxDiscount / 100))))
+      setpriceDiscoun(wine.price * (1 - (maxDiscount / 100)))
     }
   }, [dispatch, isAuthenticated, currentUser.id, selectedReview, allReviews, userIf, maxDiscount, priceDiscount, wine.price]);
 

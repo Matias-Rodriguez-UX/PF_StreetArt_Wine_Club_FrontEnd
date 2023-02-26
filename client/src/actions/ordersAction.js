@@ -5,7 +5,6 @@ import {
   GET_ORDERS,
   LOCALSTORAGE_CART,
   GET_USER_ORDER,
-  CHANGE_ORDER,
 } from "./allActions";
 
 const headers = {
@@ -34,6 +33,7 @@ export function getOrders() {
 export function backToCartOrder(orderId) {
   return async function () {
     try {
+      console.log(orderId);
       let orders = await axios.put(`/orders/backToCart/${orderId}`);
       console.log(orders);
     } catch (error) {
@@ -89,23 +89,6 @@ export function getUserOrders(email) {
         dispatch({
           type: GET_USER_ORDER,
           payload: orders.data,
-        }),
-        dispatch(loadingAction(false))
-      );
-    } catch (error) {
-      return error;
-    }
-  };
-}
-
-export function changeOrder(orderId, addressId, status) {
-  return async function (dispatch) {
-    try {
-      let order = await axios.put(`/orders/update?orderId=${orderId}&addressId=${addressId}`, status);
-      return (
-        dispatch({
-          type: CHANGE_ORDER,
-          payload: order.data,
         }),
         dispatch(loadingAction(false))
       );
