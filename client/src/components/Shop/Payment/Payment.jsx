@@ -41,6 +41,7 @@ export default function Paypal(){
     const { user, isAuthenticated } = useAuth0();
     const [errors, setErrors] = useState({});
     const [selectedAddress, setSelectedAddress] = useState('');
+    console.log(selectedAddress);
     const [input, setInput] = useState({
       reference: "",
       address: "", 
@@ -178,11 +179,13 @@ export default function Paypal(){
           state: "",
           region: "",  
       });
-      history.push('/shop');
+      /* history.push('/shop'); */
       }) 
     }
 
     const isInputDisabled = input.address || input.reference || input.region || input.state || input.telephone || input.zipCode !== "";
+
+    const paypalDisabled = input.address || input.reference || input.region || input.state || input.telephone || input.zipCode === "";
 
   
     return (
@@ -264,14 +267,16 @@ export default function Paypal(){
             </div>
             <div className="row">
               <div className="col-md-5 mb-3">
+              <label for="state">State</label>
               <Form.Select name='state' onChange={(e) => handleSelect(e)} disabled={selectedAddress !== ""}>
-                <option name='state'>State</option>
+                <option name=''></option>
                 {orderedStates?.map((el, index) => (<option key={index} value={el.name}>{el.name}</option>))}
               </Form.Select>
               </div>
               <div className="col-md-5 mb-3">
+              <label for="city">City</label>
               <Form.Select name='region' onChange={(e) => handleCitySelect(e)} disabled={selectedAddress !== ""}>
-                <option name='region'>City</option>
+                <option name=''></option>
                 {(orderedCities ? orderedCities.map((el, index) => (<option key={index} value={el.nombre}>{el.nombre}</option>)) : <div>'Error'</div>)}
               </Form.Select>
               </div>
@@ -297,7 +302,7 @@ export default function Paypal(){
 
         <label htmlFor="address-select"><h4>Select an saved address:</h4></label>
                 <Form.Select id="selectedAddressId" name="selectedAddressId" onChange={handleAddressChange}  disabled={isInputDisabled}>
-                <option value="">Saved addresses</option>
+                <option value=""></option>
                 {userAddresses.map((address) => (
                   <option key={address.id} value={address.id}>
                     {`Reference: ${address.reference}, Address: ${address.address},Region: ${address.region}, State: ${address.state},Telephone: ${address.telephone}, ZipCode: ${address.zipCode}`}
@@ -386,6 +391,7 @@ export default function Paypal(){
               <PayPalButton
                 createOrder={(data, actions) => createOrder(data, actions)}
                 onApprove={(data, actions) => onApprove(data, actions)}
+                disabled={paypalDisabled || selectedAddress == ""}
               />
             </div>   
           </div>
