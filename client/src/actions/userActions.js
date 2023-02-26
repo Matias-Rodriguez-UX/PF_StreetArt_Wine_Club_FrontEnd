@@ -231,7 +231,7 @@ export function updateUserCart(payload) {
         `http://localhost:3001/users/${payload.userId}/cart`,
         payload
       );
-    } catch (error) {}
+    } catch (error) { }
   };
 }
 
@@ -360,7 +360,7 @@ export function assignMemberships(idUser, idMembership) {
   return async function (dispatch) {
     try {
       let memeberships = await axios.put(
-        `users/${idUser}/membership/${idMembership}`
+        `users/${idUser}/membership`, idMembership
       );
       return (
         dispatch({
@@ -386,6 +386,6 @@ export function updateSubscription(email) {
   return async function () {
     try {
       await axios.put(`http://localhost:3001/newsletter`, email);
-    } catch (error) {}
+    } catch (error) { }
   };
 }

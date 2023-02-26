@@ -90,7 +90,7 @@ export default function Paypal() {
           setDiscount(objetoActual.discount)
         }
       }
-      setNewTotal(total * (1 - (discount / 100)))
+      setNewTotal(Math.ceil(total * (1 - (discount / 100))))
     }
   }, [dispatch, discount, newTotal, total]);
 
