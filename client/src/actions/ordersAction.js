@@ -1,12 +1,6 @@
 import axios from "axios";
 import { loadingAction } from ".";
-import {
-  FILTER_BY_STATUS,
-  GET_ORDERS,
-  GET_ORDER_BY_ID,
-  LOCALSTORAGE_CART,
-} from "./allActions";
-import { getUserCart, addUserCart, updateUserCart } from "./userActions";
+import { FILTER_BY_STATUS, GET_ORDERS, LOCALSTORAGE_CART } from "./allActions";
 
 const headers = {
   headers: {
@@ -47,6 +41,7 @@ export function localStorageCart(payload) {
   return async function (dispatch) {
     try {
       let orders = await axios.post(`/orders/localStorageCart`, payload);
+      console.log(orders);
       return dispatch({
         type: LOCALSTORAGE_CART,
         payload: orders,
@@ -62,36 +57,6 @@ export function localStorageAddGet(user, storedCart) {
     dispatch(
       localStorageCart({ arrayProducts: storedCart, email: user.email })
     );
-  };
-}
-
-export function updateLocalStorageCartGet(storedCart, cart, user) {
-  return (dispatch) => {
-    try {
-      storedCart.forEach((item) =>
-        !cart.some((el) => el.id === item.id)
-          ? dispatch(
-              addUserCart({
-                userId: user.id,
-                totalPrice: item.price * item.cartQuantity,
-                quantity: item.cartQuantity,
-                email: user.email,
-                productId: item.id,
-              })
-            )
-          : dispatch(
-              updateUserCart({
-                userId: user.id,
-                totalPrice: item.price * item.cartQuantity,
-                quantity: item.cartQuantity,
-                email: user.email,
-                productId: item.id,
-              })
-            )
-      );
-    } catch (error) {
-      console.log(error);
-    }
   };
 }
 

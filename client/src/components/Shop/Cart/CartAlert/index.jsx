@@ -3,9 +3,8 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
-import { localStorageCart } from '../../../../actions/ordersAction';
 import { addUserCart, getUserCart, updateUserCart } from '../../../../actions/userActions';
-import { localStorageAddGet, updateLocalStorageCartGet } from '../../../../actions/ordersAction';
+import { localStorageAddGet } from '../../../../actions/ordersAction';
 
 export default function CartAlert({ setLocalStorageState, localStorageState }) {
     const [show] = useState(localStorageState);
@@ -23,41 +22,29 @@ export default function CartAlert({ setLocalStorageState, localStorageState }) {
         const storedCart = JSON.parse(localStorage.getItem('cart')) || [];
         const orderUserCart = currentUser.orders.find(el => el.status === 'cart')
         if(orderUserCart){
-            console.log('order cart')
-            dispatch(localStorageAddGet(currentUser, storedCart))
-            // setTimeout(() => dispatch(getUserCart(currentUser.id)), 2000)
-            // storedCart.forEach(item =>
-            //     !cart.some(el => el.id === item.id) ?
-            //     dispatch(addUserCart({
-            //     userId: currentUser.id,
-            //     totalPrice: item.price * item.cartQuantity,
-            //     quantity: item.cartQuantity,
-            //     email: currentUser.email,
-            //     productId: item.id,
-            //     })) : 
-            //     dispatch(updateUserCart({
-            //     userId: currentUser.id,
-            //     totalPrice: item.price * item.cartQuantity,
-            //     quantity: item.cartQuantity,
-            //     email: currentUser.email,
-            //     productId: item.id,
-            // })))
+            storedCart.forEach((item, index) => {
+                let cartItem = cart.find(el => el.id === item.id)
+                !cart.some(el => el.id === item.id) ?
+                dispatch(addUserCart({
+                  userId: currentUser.id,
+                  totalPrice: item.price * item.cartQuantity,
+                  quantity: item.cartQuantity,
+                  email: currentUser.email,
+                  productId: item.id,
+                })) : 
+                dispatch(updateUserCart({
+                  userId: currentUser.id,
+                  totalPrice: item.price * item.cartQuantity,
+                  quantity: item.cartQuantity + cartItem.cartQuantity,
+                  email: currentUser.email,
+                  productId: item.id,
+                }))
+                if(index === storedCart.length - 1) dispatch(getUserCart(currentUser.id))
+          })
         }
-        if(!orderUserCart){
-            console.log('not order cart')
-            // let newArray = storedCart.map(item => {
-            //   return {
-            //     totalPrice: item.price * item.quantity,
-
-            //   }
-            // })
+        if(!orderUserCart){     
             dispatch(localStorageAddGet(currentUser, storedCart))
-            // dispatch(localStorageCart({
-            //     arrayProducts: storedCart, 
-            //     email: currentUser.email
-            // }))
         }
-
         localStorage.removeItem('cart')
         setLocalStorageState(false)
     };
