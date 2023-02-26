@@ -1,12 +1,13 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import React from "react";
 import { Nav } from "react-bootstrap";
+import { useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 import './Style.css'
 
 
 export default function SideBar({ setCurrentPage }) {
-
+    const userInfo = useSelector((state) => state.users.userInfo);
     const { logout } = useAuth0();
 
     function NavbarLink({ to, children }) {
@@ -84,7 +85,7 @@ export default function SideBar({ setCurrentPage }) {
                 <hr className="mt-5" />
                 <div className="">
                     <a href="#" className="d-flex align-items-center text-white text-decoration-none mb-3" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=580&q=80" alt="" width="32" height="32" className="rounded-circle me-2" />
+                        <img src={userInfo.avatar} alt="" width="32" height="32" className="rounded-circle me-2" />
                         <strong className="ms-3">Admin</strong>
                     </a>
                     <ul className="list-unstyled" aria-labelledby="dropdownUser1">

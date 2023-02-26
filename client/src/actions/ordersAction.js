@@ -101,7 +101,10 @@ export function getUserOrders(email) {
 export function changeOrder(orderId, addressId, status) {
   return async function (dispatch) {
     try {
-      let order = await axios.put(`/orders/update?orderId=${orderId}&addressId=${addressId}`, status);
+      let order
+      addressId !== null || addressId !== NaN ?
+        order = await axios.put(`/orders/update?orderId=${orderId}&addressId=${addressId}`, status) :
+        order = await axios.put(`/orders/update?orderId=${orderId}`, status)
       return (
         dispatch({
           type: CHANGE_ORDER,

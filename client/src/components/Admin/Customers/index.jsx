@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { loadingAction } from "../../../actions";
 import { getAllUsers } from "../../../actions/userActions";
 import { Loader } from "../../Loader";
+import WebPagination from "../../Shop/Pagination/Pagination";
 import FormUser from "./FormUser";
 
 
@@ -14,6 +15,14 @@ export default function AdminCustomers() {
     const [userList, setUserList] = useState(allUsers);
     const [selectedData, setSelectedData] = useState({});
     const [showModalEdit, setShowModalEdit] = useState(false);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [customersPerPage, setCustomersPerPage] = useState(8);
+    const indexOfLastOrder = currentPage * customersPerPage;
+    const indexOfFirstOrder = indexOfLastOrder - customersPerPage;
+    const currentcustomers = allUsers.slice(indexOfFirstOrder, indexOfLastOrder);
+    const pagination = (pageNumber) => {
+        setCurrentPage(pageNumber)
+    };
 
     useEffect(() => {
         dispatch(getAllUsers())
@@ -74,6 +83,12 @@ export default function AdminCustomers() {
                     </Modal>
                 </>
             }
+            <WebPagination
+                winesPerPage={customersPerPage}
+                numberOfWines={allUsers.length}
+                currentPage={currentPage}
+                setCurrentPage={setCurrentPage}
+                pagination={pagination} />
         </>
     )
 }
