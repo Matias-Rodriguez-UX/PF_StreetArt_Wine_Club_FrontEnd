@@ -1,26 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useDispatch, useSelector } from 'react-redux';
-import { getUserInfo } from "../../../actions/userActions";
+import { getDefaultAddress, getUserInfo } from "../../../actions/userActions";
 
 
 export default function UserInfo({ userName, setCurrentPage }) {
-  // const dispatch = useDispatch();
-  // const { isAuthenticated: auth, user } = useAuth0();
+  const dispatch = useDispatch();
   const userInfo = useSelector((state) => state.users.userInfo);
-  // console.log(userInfo)
+  const defaultAddress = useSelector((state) => state.users.defaultAddress);
+  // const addressSelect = userInfo.addresses.length - 1
 
-  // let userEmail = '';
-  // if(auth){
-  //   userEmail = user.email
-  // };
-
-//   useEffect(() => {
-//     if(user.email){
-//       dispatch(getUserInfo(user.email))
-//       console.log('userInfo: ', user.email)
-//   }
-// }, [dispatch, user.email]);
+  useEffect(() => {
+    dispatch(getDefaultAddress());
+  }, [dispatch]);
 
   return (
     <div className="col py-5">
@@ -51,39 +43,69 @@ export default function UserInfo({ userName, setCurrentPage }) {
             <hr />
             <div class="row">
               <div class="col-sm-3">
-                <h6 class="mb-0">Phone</h6>
+                <h6 class="mb-0">About you</h6>
               </div>
               <div class="col-sm-9 text-secondary">
-                (239) 816-9029
+              {userInfo.profile}
               </div>
             </div>
             <hr />
             <div class="row">
               <div class="col-sm-3">
-                <h6 class="mb-0">Mobile</h6>
+                <h6 class="mb-0">Phone</h6>
               </div>
               <div class="col-sm-9 text-secondary">
-                (320) 380-4539
+              {defaultAddress ? defaultAddress.telephone :"You didn't pick your main address & contact number yet"}
               </div>
             </div>
-            <hr />
+           <hr />
             <div class="row">
               <div class="col-sm-3">
                 <h6 class="mb-0">Address</h6>
               </div>
               <div class="col-sm-9 text-secondary">
-                Bay Area, San Francisco, CA
+                {defaultAddress ? defaultAddress.address :"You didn't pick your main address & contact number yet"}
+              </div>
+            </div>
+            <hr />
+            <div class="row">
+              <div class="col-sm-3">
+                <h6 class="mb-0">Reference</h6>
+              </div>
+              <div class="col-sm-9 text-secondary">
+                {defaultAddress ? defaultAddress.reference :"You didn't pick your main address & contact number yet"}
+              </div>
+            </div>
+            <hr />
+            <div class="row">
+              <div class="col-sm-3">
+                <h6 class="mb-0">State</h6>
+              </div>
+              <div class="col-sm-9 text-secondary">
+              {defaultAddress ? defaultAddress.state :" "}
+              </div>
+            </div>
+            <hr />
+            <div class="row">
+              <div class="col-sm-3">
+                <h6 class="mb-0">City</h6>
+              </div>
+              <div class="col-sm-9 text-secondary">
+              {defaultAddress ? defaultAddress.region :" "}
               </div>
             </div>
             <hr />
             <div class="row">
               <div class="col-sm-12">
-                <a class="btn btn-warning  float-end" onClick={() => setCurrentPage('changeinfo')} >Edit</a>
+                <div className='float-end'>
+                <a class="btn btn-warning" onClick={() => setCurrentPage('changeinfo')} >Edit personal info</a>
               </div>
+              <a class="btn btn-warning btn-margin" onClick={() => setCurrentPage('addresses')} >Edit address & contact</a>
             </div>
           </div>
         </div>
       </div>
+    </div>
     </div>
   )
 }

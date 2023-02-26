@@ -14,6 +14,8 @@ import AlertPage from "./Helpers/AlertPage";
 import { useAuth0 } from "@auth0/auth0-react";
 import Cart from "./components/Shop/Cart/Cart";
 import Payment from "./components/Shop/Payment/Payment"
+import Unsubcribed from "./components/Home/unsubscribedNewsletter/unsubscribed";
+
 
 function App() {
   return (
@@ -28,6 +30,7 @@ function App() {
         <Route path={"/cart"} component={Cart} />
         <Route path={"/payment"} component={Payment} />
         <Route exact path={"/alertPage"} component={AlertPage} />
+        <Route exact path={"/unsubscription"} component={Unsubcribed} />
         <PrivateRoute exact path={"/admin"} component={AdminProfile} />
       </Switch>
     </BrowserRouter>

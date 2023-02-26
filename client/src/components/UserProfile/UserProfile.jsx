@@ -13,16 +13,19 @@ import LoginButton from "../Login/LoginButton";
 import UserSideBar from "./UserSideBar/UserSideBar";
 import UserInfo from "./UserInfo";
 import UserOrders from "./UserOrders/UserOrders";
-import UserAddress from "./UserAddress/UserAddress";
+// import UserAddress from "./UserAddress/UserAddress";
 import UserMemberships from "./UserMemberships/UserMemberships";
 import EditUserProfileCard from "./EditUserProfileCard/EditUserProfileCard";
 import Wishlist from "./Wishlist/Wishlist";
 import { Loader } from "../Loader";
+import SuspendedUser from "./SuspendeUser/SuspendeUser";
+import UserAddress from "./UserAddress/UserAddress";
+
 
 export default function UserProfile() {
     const dispatch = useDispatch();
 
-    const users = useSelector((state) => state.users.users);
+    // const users = useSelector((state) => state.users.users);
     const userInfo = useSelector((state) => state.users.userInfo);
     const favourites = useSelector((state) => state.users.userWishlist);
     const [loading, setLoading] = useState(true)
@@ -32,7 +35,7 @@ export default function UserProfile() {
     const { isLoading, isAuthenticated: auth, user } = useAuth0();
 
     let userDb = {};
-    console.log(localStorage)
+
     if (auth) {
         // console.log(user.AssigRoles[0])
         userDb = {
@@ -46,33 +49,43 @@ export default function UserProfile() {
     // console.log(user.AssigRoles[0][0])
     useEffect(() => {
         if (userDb.email) {
-            console.log(userDb)
             dispatch(createUser(userDb));
+            dispatch(getUserInfo(userDb.email))
             dispatch(getUserWishlist(userDb.email));
-            console.log(userDb.role)
         }
-    }, [user, dispatch]);
+    }, [dispatch, userDb.email]);
 
     useEffect(() => {
-        dispatch(getAllUsers());
-        setLoading(isLoading);
-        setIsAuthenticated(auth);
-    }, [dispatch, isLoading, auth, user]);
+        if(userInfo.status === 'User Created'){
+            dispatch(getAllUsers());
+            dispatch(getUserInfo(userDb.email));
+            dispatch(getUserWishlist(userDb.email));
+            setLoading(isLoading);
+            setIsAuthenticated(auth);
+        }
+    }, [dispatch, userInfo, isLoading, auth]);
 
     useEffect(() => {
-        if (userInfo?.shoppingCart?.length > 0) {
+        if (userInfo?.shoppingCarts?.length > 0) {
             dispatch(getUserCart(userInfo.id))
         }
     }, [userInfo])
 
 
 
-    if (loading) {
-        return <Loader />;
+    if (loading || !userInfo.id) {
+        return (
+            <Loader />
+        );
+    } else if (userInfo.status === "suspended") {
+        console.log(userInfo.status)
+        return <SuspendedUser />
     };
 
+
+
     return (
-        isAuthenticated ? (
+        isAuthenticated && userInfo.id ? (
             <div className="row" >
                 <Banner />
                 <NavigationBar />
@@ -82,10 +95,10 @@ export default function UserProfile() {
                     {currentPage === "home" && <UserInfo userName={userInfo.fullname} setCurrentPage={setCurrentPage} />}
                     {currentPage === "userinfo" && <UserInfo setCurrentPage={setCurrentPage} />}
                     {currentPage === "changeinfo" && <EditUserProfileCard setCurrentPage={setCurrentPage} />}
-                    {currentPage === "orders" && <UserOrders />}
-                    {currentPage === "addresses" && <UserAddress />}
-                    {currentPage === "memberships" && <UserMemberships />}
-                    {currentPage === "wishlist" && <Wishlist favourites={favourites} />}
+                    {currentPage === "orders" && <UserOrders setCurrentPage={setCurrentPage} />}
+                    {currentPage === "addresses" && <UserAddress setCurrentPage={setCurrentPage} />}
+                    {currentPage === "memberships" && <UserMemberships setCurrentPage={setCurrentPage} />}
+                    {currentPage === "wishlist" && <Wishlist favourites={favourites} setCurrentPage={setCurrentPage} />}
                 </div>
 
 
