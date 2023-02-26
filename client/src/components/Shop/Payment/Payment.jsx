@@ -14,6 +14,8 @@ import Footer from '../../Footer/index';
 import { getStates, resetCart } from "../../../actions/index.js";
 import { backToCartOrder } from "../../../actions/ordersAction";
 import { statusPayment, getUserAddresses, createUserAddress, getUserInfo, getAllCities, getUserCart} from "../../../actions/userActions";
+
+
 import "./Payment.css"
 const PayPalButton = window.paypal.Buttons.driver("react", { React, ReactDOM });
 
@@ -40,6 +42,7 @@ export default function Paypal(){
     const { user, isAuthenticated } = useAuth0();
     const [errors, setErrors] = useState({});
     const [selectedAddress, setSelectedAddress] = useState('');
+    const [discount, setDiscount] = useState(0)
     const [input, setInput] = useState({
       reference: "",
       address: "", 
@@ -54,6 +57,8 @@ export default function Paypal(){
     const total = cart.reduce((acc, product) => {
       return acc + product.price * product.cartQuantity;
     }, 0);
+
+    const [newTotal, setNewTotal] = useState(total)
     
     let orderedStates = states.sort(function(a,b) {
       if (a.name > b.name){
@@ -88,7 +93,16 @@ export default function Paypal(){
         dispatch(getUserCart(userInfo.id));
         dispatch(getUserAddresses(userInfo.email));
       }
-    }, [dispatch, isAuthenticated, userInfo.id])
+      if (total > 0) {
+        for (let i = 0; i < userInfo.memberships?.length; i++) {
+          let objetoActual = userInfo.memberships[i];
+          if (objetoActual.discount > discount) {
+            setDiscount(objetoActual.discount)
+          }
+        }
+        setNewTotal(Math.ceil(total * (1 - (discount / 100))))
+      }
+    }, [dispatch, isAuthenticated, userInfo.id, discount, newTotal, total])
 
 
     const createOrder = (data, actions) => {
@@ -226,8 +240,12 @@ export default function Paypal(){
             </li>
            ))}
             <li className="list-group-item d-flex justify-content-between">
-              <span>Total</span>
-              <strong>${total},00</strong>
+            {total === newTotal ?
+                      <p>
+                        <strong>Total: ${newTotal}.00-</strong>
+                      </p> :
+                      <div className='d-flex align-items-center gap-5'><p className="fs-5 fw-bold">Total: </p><p className="text-decoration-line-through text-muted fs-6">${total}.00-</p><p className="fs-5 fw-bold">${newTotal}.00-</p></div>
+                  }
             </li>
           </ul>
     
@@ -398,7 +416,7 @@ export default function Paypal(){
           </div>
           <div className="container d-flex align-items-center"> 
             <div className="col col-12">
-              <h1>${total},00.</h1>
+              <h1>${newTotal},00.</h1>
               <PayPalButton
                 createOrder={(data, actions) => createOrder(data, actions)}
                 onApprove={(data, actions) => onApprove(data, actions)}

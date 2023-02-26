@@ -12,7 +12,8 @@ import CartAlert from "./CartAlert";
 import "./Cart.css"
 import Swal from 'sweetalert2';
 import { deleteUserCart, getUserCart, getUserInfo, updateUserCart, statusCart, addUserCart } from "../../../actions/userActions";
-
+import SpinnerCard from "../WineCard/SpinnerCard";
+import LoginButton from "../../Login/LoginButton";
 
 export default function Cart() {
   const cartState = useSelector ((state) => state.products.cartState)
@@ -20,11 +21,14 @@ export default function Cart() {
   const currentUser = useSelector((state) => state.users.userInfo)
   const [getSwitch, setGetSwitch] = useState(false)
   const [localStorageState, setLocalStorageState] = useState(false)
+  const [discount, setDiscount] = useState(0)
+  const [porcentage, setPorcentage] = useState(0)
 
   const total = cart.reduce((acc, product) => {
     return acc + product.price * product.cartQuantity;
   }, 0);
 
+  const [newTotal, setNewTotal] = useState(total)
   const dispatch = useDispatch();
   const { user, isAuthenticated, isLoading } = useAuth0();
 
@@ -40,9 +44,20 @@ export default function Cart() {
       if(storedCart.length > 0){
         setLocalStorageState(true)
       }
-    
     }
-  }, [dispatch, currentUser.id]);
+    if (total > 0) {
+      for (let i = 0; i < currentUser.memberships?.length; i++) {
+        let objetoActual = currentUser.memberships[i];
+        if (objetoActual.discount > discount) {
+          setDiscount(objetoActual.discount)
+        }
+      }
+      setPorcentage((100 - discount) / 100)
+
+      setNewTotal(Math.ceil(total * (1 - (discount / 100))))
+    }
+  }, [dispatch, currentUser.id, discount, newTotal, total, porcentage]);
+
 
   useEffect(() => {
     if(getSwitch){
@@ -194,23 +209,31 @@ export default function Cart() {
           </tbody>
         </table>
       </div>
-      <div className="container w-75 bg-wa">
-        <p>
-          <strong>Total: ${total},00-</strong>
-        </p>
-      </div>
-      <div className="container w-75 d-flex align-items-center justify-content-end  mt-1 mb-5" >
-            {isAuthenticated ?
-                (
-                    <Link to={"/payment"} className='text-decoration-none text-reset'><button type="button" class="btn btn-warning btn-sm d-flex align-items-center" onClick={handleStatus}><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-credit-card-2-back-fill me-2" viewBox="0 0 16 16">
-                      <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v5H0V4zm11.5 1a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h2a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-2zM0 11v1a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-1H0z"/>
-                        </svg>Buy Product</button></Link> 
-                ) :
-                (
-                    <button type="button" className="btn btn-warning btn-sm">Register</button> 
-                )
-              }      
-          </div>
+      <div className="container d-flex align-items-center justify-content-around">
+        <div className="d-flex ">
+          <div>
+              {
+                total === newTotal ?
+                  <p>
+                    <strong>Total: ${newTotal}.00-</strong>
+                  </p> :
+                  <div className='d-flex align-items-center gap-4'><p className="fs-4 fw-bold">Total: </p><p className="text-decoration-line-through text-muted fs-6">${total}.00-</p><p className="fs-4 fw-bold">${newTotal}.00-</p></div>
+              }
+            </div>
+        </div>
+        <div className="float-end" >
+          {isAuthenticated ?
+            (
+              <Link to={"/payment"}>
+                <button type="button" id="button-cart" className="btn btn-warning btn-lg mb-4" onClick={handleStatus}>Buy Product<i class="bi bi-cart-check-fill ms-2"></i></button>
+              </Link>
+            ) :
+            (
+              <LoginButton />
+            )
+          }
+        </div>
+      </div>
       <div className="col col-12">
         <Footer />
       </div>
