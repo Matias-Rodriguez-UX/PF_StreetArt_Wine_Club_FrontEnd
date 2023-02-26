@@ -188,7 +188,7 @@ export default function UserAddress(){
                             {showToastAddress && (
                             <Toast className='toast prefers-reduced-motion: no-preference' show={showToastAddress} onClose={toggleShowAddress}  delay={500} autohide>
                             <Toast.Header>
-                                <img src='holder.js/20x20?text=%20' className="rounded me-2" alt="brand logo" />
+                                <img src={process.env.PUBLIC_URL + "/favicon.ico"} className="rounded me-2" alt="brand logo" />
                                 <strong className="me-auto">Street Art Wines Club</strong>
                                 <small>just now</small>
                             </Toast.Header>
