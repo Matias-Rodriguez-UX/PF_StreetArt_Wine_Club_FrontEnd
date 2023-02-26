@@ -231,7 +231,7 @@ export function updateUserCart(payload) {
         `http://localhost:3001/users/${payload.userId}/cart`,
         payload
       );
-    } catch (error) { }
+    } catch (error) {}
   };
 }
 
@@ -254,6 +254,27 @@ export function statusCart(payload) {
         `http://localhost:3001/orders/checkout`,
         payload
       );
+    } catch (error) {
+      console.log("Error", error);
+    }
+  };
+}
+
+export function statusPayment(payload) {
+  console.log(payload);
+  return async function () {
+    try {
+      if (payload.addressId) {
+        let result = await axios.put(
+          `http://localhost:3001/orders/checkout?addressId=${payload.addressId}`,
+          payload
+        );
+      } else {
+        let result = await axios.put(
+          `http://localhost:3001/orders/checkout`,
+          payload
+        );
+      }
     } catch (error) {
       console.log("Error", error);
     }
@@ -360,7 +381,7 @@ export function assignMemberships(idUser, idMembership) {
   return async function (dispatch) {
     try {
       let memeberships = await axios.put(
-        `users/${idUser}/membership`, idMembership
+        `users/${idUser}/membership/${idMembership}`
       );
       return (
         dispatch({
@@ -386,6 +407,6 @@ export function updateSubscription(email) {
   return async function () {
     try {
       await axios.put(`http://localhost:3001/newsletter`, email);
-    } catch (error) { }
+    } catch (error) {}
   };
 }

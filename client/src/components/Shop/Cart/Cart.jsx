@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from 'react-redux';
-import { Link } from "react-router-dom";
+import {Link } from "react-router-dom";
 import { deleteFromCart, removeCartQuantity, addCartQuantity, addCartToLs, addToCart } from '../../../actions';
 import NavigationBar from "../../Navbar/index";
 import Banner from '../../Home/Banner/index';
@@ -15,9 +15,8 @@ import { deleteUserCart, getUserCart, getUserInfo, updateUserCart, statusCart, a
 import SpinnerCard from "../WineCard/SpinnerCard";
 import LoginButton from "../../Login/LoginButton";
 
-
 export default function Cart() {
-  const cartState = useSelector((state) => state.products.cartState)
+  const cartState = useSelector ((state) => state.products.cartState)
   const cart = useSelector((state) => state.products.cart);
   const currentUser = useSelector((state) => state.users.userInfo)
   const [getSwitch, setGetSwitch] = useState(false)
@@ -28,21 +27,21 @@ export default function Cart() {
   const total = cart.reduce((acc, product) => {
     return acc + product.price * product.cartQuantity;
   }, 0);
-  const [newTotal, setNewTotal] = useState(total)
 
+  const [newTotal, setNewTotal] = useState(total)
   const dispatch = useDispatch();
   const { user, isAuthenticated, isLoading } = useAuth0();
 
   useEffect(() => {
-    if (cart.length === 0 && !currentUser.id) {
-      if (!isAuthenticated) {
+    if(cart.length === 0 && !currentUser.id){
+      if(!isAuthenticated){
         const storedCart = JSON.parse(localStorage.getItem('cart')) || [];
         storedCart.forEach(item => dispatch(addCartToLs(item)));
       }
     }
-    if (currentUser.id) {
+    if(currentUser.id){
       const storedCart = JSON.parse(localStorage.getItem('cart')) || [];
-      if (storedCart.length > 0) {
+      if(storedCart.length > 0){
         setLocalStorageState(true)
       }
     }
@@ -57,76 +56,77 @@ export default function Cart() {
 
       setNewTotal(Math.ceil(total * (1 - (discount / 100))))
     }
-  }, [dispatch, isAuthenticated, currentUser.id, discount, newTotal, total, porcentage])
+  }, [dispatch, currentUser.id, discount, newTotal, total, porcentage]);
+
 
   useEffect(() => {
-    if (getSwitch) {
+    if(getSwitch){
       dispatch(getUserCart(currentUser.id))
       setGetSwitch(false)
     }
   }, [dispatch, getSwitch]);
 
   useEffect(() => {
-    if (!isAuthenticated) {
+    if(!isAuthenticated){
       localStorage.setItem('cart', JSON.stringify(cart));
     }
   }, [cart]);
 
 
   useEffect(() => {
-    if (!currentUser.id && isAuthenticated) {
-      dispatch(getUserInfo(user.email))
+    if(!currentUser.id && isAuthenticated){
+        dispatch(getUserInfo(user.email))
     }
-    if (currentUser.id && isAuthenticated && cartState === '') {
-      dispatch(getUserCart(currentUser.id))
+    if(currentUser.id && isAuthenticated && cartState === ''){
+        dispatch(getUserCart(currentUser.id))
     }
-    if (cartState !== '') {
+    if(cartState !== '' ){
       console.log('cart created o cart update')
       dispatch(getUserCart(currentUser.id))
     }
   }, [dispatch, isAuthenticated, currentUser.id, cartState])
 
   const addProductQuantity = (id, price) => {
-    if (isAuthenticated) {
-      let updateWine = cart.find(el => el.id === id)
-      dispatch(updateUserCart({
-        userId: currentUser.id,
-        totalPrice: price * (updateWine.cartQuantity + 1),
-        quantity: updateWine.cartQuantity + 1,
-        email: user.email,
-        productId: id,
-      }))
-      dispatch(addCartQuantity(id))
+    if(isAuthenticated){
+        let updateWine = cart.find(el => el.id === id)
+        dispatch(updateUserCart({
+          userId: currentUser.id,
+          totalPrice: price * (updateWine.cartQuantity + 1),
+          quantity: updateWine.cartQuantity + 1,
+          email: user.email,
+          productId: id,
+        }))
+        dispatch(addCartQuantity(id))
     }
-    if (!isAuthenticated) {
+    if(!isAuthenticated){
       dispatch(addCartQuantity(id))
     }
   }
 
   const restProductQuantity = (id, price) => {
-    if (isAuthenticated) {
-      let updateWine = cart.find(el => el.id === id)
+    if(isAuthenticated){
+        let updateWine = cart.find(el => el.id === id)
 
-      dispatch(updateUserCart({
-        userId: currentUser.id,
-        totalPrice: price * (updateWine.cartQuantity - 1),
-        quantity: updateWine.cartQuantity - 1,
-        email: user.email,
-        productId: id,
-      }))
-      dispatch(removeCartQuantity(id))
+        dispatch(updateUserCart({
+          userId: currentUser.id,
+          totalPrice: price * (updateWine.cartQuantity - 1),
+          quantity: updateWine.cartQuantity - 1,
+          email: user.email,
+          productId: id,
+        }))
+        dispatch(removeCartQuantity(id))
     }
-    if (!isAuthenticated) {
+    if(!isAuthenticated){
       dispatch(removeCartQuantity(id))
     }
   }
 
   const deleteProduct = (userId, productId, name) => {
-    if (!isAuthenticated) {
+    if(!isAuthenticated){
       dispatch(deleteFromCart(productId))
       addDeleteAlert(name)
     }
-    if (isAuthenticated) {
+    if(isAuthenticated){
       dispatch(deleteUserCart(userId, productId))
       setGetSwitch(true)
       addDeleteAlert(name)
@@ -138,27 +138,28 @@ export default function Cart() {
       email: currentUser.email,
       status: 'processing payment'
     }))
+    console.log(currentUser.email);
   }
-
+  
   const addDeleteAlert = (name) => {
     Swal.fire({
-      title: "YOUR PRODUCT WAS DELETED",
-      text: `You have deleted all ${name} Boxes`,
-      icon: 'warning',
-      timer: '4000',
-      timerProgressBar: true,
-      allowOutsideClick: true,
-      confirmButtonColor: '#ffc107'
+        title: "YOUR PRODUCT WAS DELETED",
+        text: `You have deleted all ${name} Boxes`,
+        icon: 'warning',
+        timer: '4000',
+        timerProgressBar: true,
+        allowOutsideClick: true,
+        confirmButtonColor: '#ffc107'
     })
-  }
+}
 
   return (
     <>
-      {localStorageState ? <CartAlert
-        setLocalStorageState={setLocalStorageState}
+      {localStorageState ? <CartAlert 
+        setLocalStorageState={setLocalStorageState} 
         localStorageState={localStorageState}
         cart={cart}
-        currentUser={currentUser} /> : undefined}
+        currentUser={currentUser}/> : undefined}
       <Banner />
       <NavigationBar />
       <div className="container d-flex col align-items-center" >
@@ -210,8 +211,7 @@ export default function Cart() {
       </div>
       <div className="container d-flex align-items-center justify-content-around">
         <div className="d-flex ">
-          {isLoading ? <SpinnerCard /> :
-            <div>
+          <div>
               {
                 total === newTotal ?
                   <p>
@@ -220,7 +220,6 @@ export default function Cart() {
                   <div className='d-flex align-items-center gap-4'><p className="fs-4 fw-bold">Total: </p><p className="text-decoration-line-through text-muted fs-6">${total}.00-</p><p className="fs-4 fw-bold">${newTotal}.00-</p></div>
               }
             </div>
-          }
         </div>
         <div className="float-end" >
           {isAuthenticated ?
@@ -234,7 +233,7 @@ export default function Cart() {
             )
           }
         </div>
-      </div>
+      </div>
       <div className="col col-12">
         <Footer />
       </div>

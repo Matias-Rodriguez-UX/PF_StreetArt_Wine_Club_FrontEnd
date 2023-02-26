@@ -1,4 +1,4 @@
-import { CHANGE_ORDER, FILTER_BY_STATUS, GET_ORDERS, GET_USER_ORDER } from "../actions/allActions";
+import { FILTER_BY_STATUS, GET_ORDERS, GET_USER_ORDER } from "../actions/allActions";
 
 const initialState = {
   orders: [],
@@ -22,15 +22,11 @@ export default function ordersReducer(state = initialState, action) {
         ...state,
         orders: ordersFilter
       }
-    case GET_USER_ORDER:
-      return {
-        ...state,
-        userOrder: action.payload
-      };
-    case CHANGE_ORDER:
-      return {
-        ...state,
-      };
+      case GET_USER_ORDER:
+        return {
+            ...state,
+            userOrder: action.payload
+        };
     default:
       return { ...state };
   }
