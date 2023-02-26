@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from 'react-redux';
-import {Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { deleteFromCart, removeCartQuantity, addCartQuantity, addCartToLs, addToCart } from '../../../actions';
 import NavigationBar from "../../Navbar/index";
 import Banner from '../../Home/Banner/index';
@@ -17,7 +17,7 @@ import LoginButton from "../../Login/LoginButton";
 
 
 export default function Cart() {
-  const cartState = useSelector ((state) => state.products.cartState)
+  const cartState = useSelector((state) => state.products.cartState)
   const cart = useSelector((state) => state.products.cart);
   const currentUser = useSelector((state) => state.users.userInfo)
   const [getSwitch, setGetSwitch] = useState(false)
@@ -34,15 +34,15 @@ export default function Cart() {
   const { user, isAuthenticated, isLoading } = useAuth0();
 
   useEffect(() => {
-    if(cart.length === 0 && !currentUser.id){
-      if(!isAuthenticated){
+    if (cart.length === 0 && !currentUser.id) {
+      if (!isAuthenticated) {
         const storedCart = JSON.parse(localStorage.getItem('cart')) || [];
         storedCart.forEach(item => dispatch(addCartToLs(item)));
       }
     }
-    if(currentUser.id){
+    if (currentUser.id) {
       const storedCart = JSON.parse(localStorage.getItem('cart')) || [];
-      if(storedCart.length > 0){
+      if (storedCart.length > 0) {
         setLocalStorageState(true)
       }
     }
@@ -60,73 +60,73 @@ export default function Cart() {
   }, [dispatch, isAuthenticated, currentUser.id, discount, newTotal, total, porcentage])
 
   useEffect(() => {
-    if(getSwitch){
+    if (getSwitch) {
       dispatch(getUserCart(currentUser.id))
       setGetSwitch(false)
     }
   }, [dispatch, getSwitch]);
 
   useEffect(() => {
-    if(!isAuthenticated){
+    if (!isAuthenticated) {
       localStorage.setItem('cart', JSON.stringify(cart));
     }
   }, [cart]);
 
 
   useEffect(() => {
-    if(!currentUser.id && isAuthenticated){
-        dispatch(getUserInfo(user.email))
+    if (!currentUser.id && isAuthenticated) {
+      dispatch(getUserInfo(user.email))
     }
-    if(currentUser.id && isAuthenticated && cartState === ''){
-        dispatch(getUserCart(currentUser.id))
+    if (currentUser.id && isAuthenticated && cartState === '') {
+      dispatch(getUserCart(currentUser.id))
     }
-    if(cartState !== '' ){
+    if (cartState !== '') {
       console.log('cart created o cart update')
       dispatch(getUserCart(currentUser.id))
     }
   }, [dispatch, isAuthenticated, currentUser.id, cartState])
 
   const addProductQuantity = (id, price) => {
-    if(isAuthenticated){
-        let updateWine = cart.find(el => el.id === id)
-        dispatch(updateUserCart({
-          userId: currentUser.id,
-          totalPrice: price * (updateWine.cartQuantity + 1),
-          quantity: updateWine.cartQuantity + 1,
-          email: user.email,
-          productId: id,
-        }))
-        dispatch(addCartQuantity(id))
+    if (isAuthenticated) {
+      let updateWine = cart.find(el => el.id === id)
+      dispatch(updateUserCart({
+        userId: currentUser.id,
+        totalPrice: price * (updateWine.cartQuantity + 1),
+        quantity: updateWine.cartQuantity + 1,
+        email: user.email,
+        productId: id,
+      }))
+      dispatch(addCartQuantity(id))
     }
-    if(!isAuthenticated){
+    if (!isAuthenticated) {
       dispatch(addCartQuantity(id))
     }
   }
 
   const restProductQuantity = (id, price) => {
-    if(isAuthenticated){
-        let updateWine = cart.find(el => el.id === id)
+    if (isAuthenticated) {
+      let updateWine = cart.find(el => el.id === id)
 
-        dispatch(updateUserCart({
-          userId: currentUser.id,
-          totalPrice: price * (updateWine.cartQuantity - 1),
-          quantity: updateWine.cartQuantity - 1,
-          email: user.email,
-          productId: id,
-        }))
-        dispatch(removeCartQuantity(id))
+      dispatch(updateUserCart({
+        userId: currentUser.id,
+        totalPrice: price * (updateWine.cartQuantity - 1),
+        quantity: updateWine.cartQuantity - 1,
+        email: user.email,
+        productId: id,
+      }))
+      dispatch(removeCartQuantity(id))
     }
-    if(!isAuthenticated){
+    if (!isAuthenticated) {
       dispatch(removeCartQuantity(id))
     }
   }
 
   const deleteProduct = (userId, productId, name) => {
-    if(!isAuthenticated){
+    if (!isAuthenticated) {
       dispatch(deleteFromCart(productId))
       addDeleteAlert(name)
     }
-    if(isAuthenticated){
+    if (isAuthenticated) {
       dispatch(deleteUserCart(userId, productId))
       setGetSwitch(true)
       addDeleteAlert(name)
@@ -142,23 +142,23 @@ export default function Cart() {
 
   const addDeleteAlert = (name) => {
     Swal.fire({
-        title: "YOUR PRODUCT WAS DELETED",
-        text: `You have deleted all ${name} Boxes`,
-        icon: 'warning',
-        timer: '4000',
-        timerProgressBar: true,
-        allowOutsideClick: true,
-        confirmButtonColor: '#ffc107'
+      title: "YOUR PRODUCT WAS DELETED",
+      text: `You have deleted all ${name} Boxes`,
+      icon: 'warning',
+      timer: '4000',
+      timerProgressBar: true,
+      allowOutsideClick: true,
+      confirmButtonColor: '#ffc107'
     })
-}
+  }
 
   return (
     <>
-      {localStorageState ? <CartAlert 
-        setLocalStorageState={setLocalStorageState} 
+      {localStorageState ? <CartAlert
+        setLocalStorageState={setLocalStorageState}
         localStorageState={localStorageState}
         cart={cart}
-        currentUser={currentUser}/> : undefined}
+        currentUser={currentUser} /> : undefined}
       <Banner />
       <NavigationBar />
       <div className="container d-flex col align-items-center" >
@@ -208,7 +208,8 @@ export default function Cart() {
           </tbody>
         </table>
       </div>
-       <div className="d-flex ">
+      <div className="container d-flex align-items-center justify-content-around">
+        <div className="d-flex ">
           {isLoading ? <SpinnerCard /> :
             <div>
               {
@@ -221,18 +222,19 @@ export default function Cart() {
             </div>
           }
         </div>
-      <div className="container w-75 d-flex align-items-center justify-content-end  mt-1 mb-5" >
-            {isAuthenticated ?
-                (
-                    <Link to={"/payment"} className='text-decoration-none text-reset'><button type="button" class="btn btn-warning btn-sm d-flex align-items-center" onClick={handleStatus}><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-credit-card-2-back-fill me-2" viewBox="0 0 16 16">
-                      <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v5H0V4zm11.5 1a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h2a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-2zM0 11v1a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-1H0z"/>
-                        </svg>Buy Product</button></Link> 
-                ) :
-                (
-                    <button type="button" className="btn btn-warning btn-sm">Register</button> 
-                )
-              }      
-          </div>
+        <div className="float-end" >
+          {isAuthenticated ?
+            (
+              <Link to={"/payment"}>
+                <button type="button" id="button-cart" className="btn btn-warning btn-lg mb-4" onClick={handleStatus}>Buy Product<i class="bi bi-cart-check-fill ms-2"></i></button>
+              </Link>
+            ) :
+            (
+              <LoginButton />
+            )
+          }
+        </div>
+      </div>
       <div className="col col-12">
         <Footer />
       </div>
