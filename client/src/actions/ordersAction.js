@@ -97,3 +97,25 @@ export function getUserOrders(email) {
     }
   };
 }
+
+
+export function changeOrder(orderId, addressId, status) {
+  return async function (dispatch) {
+    try {
+      let order
+      addressId !== null || addressId !== NaN ?
+        order = await axios.put(`/orders/update?orderId=${orderId}&addressId=${addressId}`, status) :
+        order = await axios.put(`/orders/update?orderId=${orderId}`, status)
+      return (
+        dispatch({
+          type: CHANGE_ORDER,
+          payload: order.data,
+        }),
+        dispatch(loadingAction(false))
+      );
+    } catch (error) {
+      return error;
+    }
+  };
+}
+
