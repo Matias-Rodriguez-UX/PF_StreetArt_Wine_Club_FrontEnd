@@ -123,8 +123,9 @@ export default function Cart() {
       email: currentUser.email,
       status: 'processing payment'
     }))
+    console.log(currentUser.email);
   }
-
+  
   const addDeleteAlert = (name) => {
     Swal.fire({
         title: "YOUR PRODUCT WAS DELETED",

@@ -13,7 +13,7 @@ import Footer from '../../Footer/index';
 // import useLocalStorage from  '../../../useLocalStorage';
 import { getStates } from "../../../actions/index.js";
 import { backToCartOrder } from "../../../actions/ordersAction";
-import { statusCart, getUserAddresses, createUserAddress, getUserInfo, getAllCities} from "../../../actions/userActions";
+import { statusPayment, getUserAddresses, createUserAddress, getUserInfo, getAllCities, getUserCart} from "../../../actions/userActions";
 import "./Payment.css"
 const PayPalButton = window.paypal.Buttons.driver("react", { React, ReactDOM });
 
@@ -47,9 +47,10 @@ export default function Paypal(){
       address: "", 
       zipCode: "",
       telephone: "", 
-      userEmail: userInfo.email,
+      email: userInfo.email,
       state: "",
       region: "",
+      status: "processing shipping",
     })
     console.log(input);
     const total = cart.reduce((acc, product) => {
@@ -90,6 +91,7 @@ export default function Paypal(){
       if(userInfo.id && isAuthenticated){
         dispatch(getStates());
         dispatch(getUserInfo(user.email));
+        dispatch(getUserCart(userInfo.id));
         dispatch(getUserAddresses(userInfo.email));
       }
     }, [dispatch, isAuthenticated, userInfo.id])
@@ -113,7 +115,11 @@ export default function Paypal(){
     const handleAddressChange = (event) => {
       const addressId = event.target.value;
       const selected = userAddresses.find((address) => address.id === parseInt(addressId));
-      setSelectedAddress(selected);
+      setSelectedAddress({
+       ...selected, email: selected.userEmail, 
+       addressId: selected.id,
+       status: "processing shipping",
+      });
     };
     
 
@@ -165,10 +171,12 @@ export default function Paypal(){
         allowOutsideClick: true,
         confirmButtonColor: '#ffc107'
       }).then(() => {
-        dispatch(statusCart({
-          email: userInfo.email,
-          status: 'processing shipping'
-        }))
+        if (selectedAddress !== '') {
+          dispatch(statusPayment(selectedAddress))
+        }
+        if(input.reference !== ''){
+          dispatch(statusPayment(input))
+        }
         dispatch(createUserAddress(addressUser))
         setInput({
           reference: "",

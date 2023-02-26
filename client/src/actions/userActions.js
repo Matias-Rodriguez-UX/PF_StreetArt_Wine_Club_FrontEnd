@@ -260,6 +260,33 @@ export function statusCart(payload) {
   };
 }
 
+export function statusPayment(payload) {
+  console.log(payload);
+  return async function () {
+    try {
+      if (payload.addressId) {
+        let result = await axios.put(
+          `http://localhost:3001/orders/checkout?addressId=${payload.addressId}`,
+          payload
+        );
+      }else{
+        let result = await axios.put(
+          `http://localhost:3001/orders/checkout`,
+          payload
+        );
+      }
+
+      /* let result = await axios.put(
+        `http://localhost:3001/orders/checkout`,
+        payload
+      ); */
+    } catch (error) {
+      console.log("Error", error);
+    }
+  };
+}
+
+
 export function deleteCart(userId) {
   return async function () {
     try {
