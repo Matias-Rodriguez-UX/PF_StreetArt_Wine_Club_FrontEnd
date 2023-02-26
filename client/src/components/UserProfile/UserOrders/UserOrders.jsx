@@ -1,9 +1,11 @@
 import React, { useEffect } from "react";
-import { Tab, Tabs } from "react-bootstrap";
+import { Button, Tab, Tabs } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserOrders } from "../../../actions/ordersAction";
 import "./UserOrder.css";
 import Accordion from "react-bootstrap/Accordion";
+import { BsFillArrowUpRightSquareFill } from "react-icons/bs";
+import { Link } from "react-router-dom";
 
 export default function UserOrders() {
   const dispatch = useDispatch();
@@ -29,7 +31,7 @@ export default function UserOrders() {
           {userOrder ? (
             userOrder.map((el) =>
               el.status === "processing payment" ? (
-                <Accordion defaultActiveKey="0">
+                <Accordion defaultActiveKey="1">
                   <div className="subOrder">
                     <h4>Order number: #{el.id}</h4>
                     <h5>Total price: ${el.totalPrice}</h5>{" "}
@@ -43,6 +45,10 @@ export default function UserOrders() {
                               <p className="pStyle">Name: {p.name}</p>
                               <p className="pStyle">Quantity: {p.quantity}</p>
                               <p className="pStyle">Price: ${p.price}</p>
+                              <Link to={"/shop/" + p.id}> <Button variant="outline-secondary" className="btnStyle"> 
+                                <i class="bi bi-box-arrow-up-right"></i>
+                              </Button></Link>
+                              
                             </div>
                           );
                         })}
@@ -64,12 +70,12 @@ export default function UserOrders() {
           {userOrder ? (
             userOrder.map((el) =>
               el.status === "processing shipping" ? (
-                <Accordion defaultActiveKey="0">
+                <Accordion defaultActiveKey="1">
                   <div className="subOrder">
                     {" "}
-                    <h4>Order number: #{el.id}</h4>{" "}
-                    <h5>Total price: ${el.totalPrice}</h5>{" "}
-                    <h5>Purchase Date: {el.date}</h5>{" "}
+                    <h4>Order number: #{el.id}</h4>
+                    <h5>Total price: ${el.totalPrice}</h5>
+                    <h5>Purchase Date: {el.date}</h5>
                     <Accordion.Item eventKey="0">
                       <Accordion.Header>Products</Accordion.Header>
                       <Accordion.Body>
@@ -79,6 +85,9 @@ export default function UserOrders() {
                               <p className="pStyle">Name: {p.name}</p>
                               <p className="pStyle">Quantity: {p.quantity}</p>
                               <p className="pStyle">Price: ${p.price}</p>
+                              <Link to={"/shop/" + p.id}> <Button variant="outline-secondary" className="btnStyle"> 
+                                <i class="bi bi-box-arrow-up-right"></i>
+                              </Button></Link>
                             </div>
                           );
                         })}
@@ -96,7 +105,7 @@ export default function UserOrders() {
           {userOrder ? (
             userOrder.map((el) =>
               el.status === "shipped" ? (
-                <Accordion defaultActiveKey="0">
+                <Accordion defaultActiveKey="1">
                   <div className="subOrder">
                     {" "}
                     <h4>Order number: #{el.id}</h4>{" "}
@@ -111,6 +120,9 @@ export default function UserOrders() {
                               <p className="pStyle">Name: {p.name}</p>
                               <p className="pStyle">Quantity: {p.quantity}</p>
                               <p className="pStyle">Price: ${p.price}</p>
+                              <Link to={"/shop/" + p.id}> <Button variant="outline-secondary" className="btnStyle"> 
+                                <i class="bi bi-box-arrow-up-right"></i>
+                              </Button></Link>
                             </div>
                           );
                         })}
@@ -128,7 +140,7 @@ export default function UserOrders() {
           {userOrder ? (
             userOrder.map((el) =>
               el.status === "delivered" ? (
-                <Accordion defaultActiveKey="0">
+                <Accordion defaultActiveKey="1">
                   <div className="subOrder">
                     {" "}
                     <h4>Order number: #{el.id}</h4>{" "}
@@ -143,6 +155,9 @@ export default function UserOrders() {
                               <p className="pStyle">Name: {p.name}</p>
                               <p className="pStyle">Quantity: {p.quantity}</p>
                               <p className="pStyle">Price: ${p.price}</p>
+                              <Link to={"/shop/" + p.id}> <Button variant="outline-secondary" className="btnStyle"> 
+                                <i class="bi bi-box-arrow-up-right"></i>
+                              </Button></Link>
                             </div>
                           );
                         })}
@@ -174,6 +189,9 @@ export default function UserOrders() {
                               <p className="pStyle">Name: {p.name}</p>
                               <p className="pStyle">Quantity: {p.quantity}</p>
                               <p className="pStyle">Price: ${p.price}</p>
+                              <Link to={"/shop/" + p.id}> <Button variant="outline-secondary" className="btnStyle"> 
+                                <i class="bi bi-box-arrow-up-right"></i>
+                              </Button></Link>
                             </div>
                           );
                         })}
