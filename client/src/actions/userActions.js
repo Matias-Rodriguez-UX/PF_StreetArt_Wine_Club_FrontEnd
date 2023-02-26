@@ -360,7 +360,7 @@ export function assignMemberships(idUser, idMembership) {
   return async function (dispatch) {
     try {
       let memeberships = await axios.put(
-        `users/${idUser}/membership/${idMembership}`
+        `users/${idUser}/membership`, idMembership
       );
       return (
         dispatch({
