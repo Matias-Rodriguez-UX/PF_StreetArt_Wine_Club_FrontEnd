@@ -45,7 +45,7 @@ export default function Paypal(){
     const [discount, setDiscount] = useState(0)
     const [input, setInput] = useState({
       reference: "",
-      address: "", 
+      Newaddress: "", 
       zipCode: "",
       telephone: "", 
       email: userInfo.email,
@@ -166,7 +166,7 @@ export default function Paypal(){
       }
   };
 
-
+console.log(input)
 
     
     function handlePay (total) {
@@ -188,10 +188,10 @@ export default function Paypal(){
         dispatch(createUserAddress(addressUser))
         setInput({
           reference: "",
-          address: "", 
+          Newaddress: "", 
           zipCode: "",
           telephone: "",
-          userEmail: userInfo.email,
+          email: userInfo.email,
           state: "",
           region: "",  
       });
@@ -200,9 +200,9 @@ export default function Paypal(){
       }) 
     }
 
-    const isInputDisabled = input.address || input.reference || input.region || input.state || input.telephone || input.zipCode !== "";
+    const isInputDisabled = input.Newaddress || input.reference || input.region || input.state || input.telephone || input.zipCode !== "";
 
-    const paypalDisabled = input.address || input.reference || input.region || input.state || input.telephone || input.zipCode === "";
+    const paypalDisabled = input.Newaddress || input.reference || input.region || input.state || input.telephone || input.zipCode === "";
 
     const handleBackToOrder = () => {
       const orderPayment = userInfo?.orders?.find(el => el.status === "processing payment")?.id
@@ -363,7 +363,7 @@ export default function Paypal(){
         
                 <div className="mb-3">
                   <label for="address">Address</label>
-                  <input type="text" className="form-control" name="address" id="address" placeholder="1234 Main St" value={input.address} onChange={handleChange}/>
+                  <input type="text" className="form-control" name="Newaddress" id="Newaddress" placeholder="1234 Main St" value={input.Newaddress} onChange={handleChange}/>
                   {errors.address && (
                     <p className="error">{errors.address}</p>
                     )}
