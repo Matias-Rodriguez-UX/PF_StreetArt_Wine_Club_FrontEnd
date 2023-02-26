@@ -160,10 +160,10 @@ export function deleteUserAddress(addressId, userId) {
   };
 }
 
-export function editUserAddress(payload) {
+export function editUserAddress(id, payload) {
   return async function (dispatch) {
     try {
-      let updatedAddress = await axios.put(`/users/${payload}`);
+      let updatedAddress = await axios.put(`/addresses/${id}`, payload);
       dispatch({
         type: EDIT_USER_ADDRESS,
         payload: updatedAddress.data,
@@ -361,5 +361,13 @@ export function deleteUserCartGet(userId, productId) {
   return (dispatch) => {
     dispatch(deleteUserCart(userId, productId));
     dispatch(getUserCart(userId));
+  };
+}
+
+export function updateSubscription(email) {
+  return async function () {
+    try {
+      await axios.put(`http://localhost:3001/newsletter`, email);
+    } catch (error) {}
   };
 }

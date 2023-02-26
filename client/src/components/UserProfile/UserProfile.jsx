@@ -13,12 +13,13 @@ import LoginButton from "../Login/LoginButton";
 import UserSideBar from "./UserSideBar/UserSideBar";
 import UserInfo from "./UserInfo";
 import UserOrders from "./UserOrders/UserOrders";
-import UserAddress from "./UserAddress/UserAddress";
+// import UserAddress from "./UserAddress/UserAddress";
 import UserMemberships from "./UserMemberships/UserMemberships";
 import EditUserProfileCard from "./EditUserProfileCard/EditUserProfileCard";
 import Wishlist from "./Wishlist/Wishlist";
 import { Loader } from "../Loader";
 import SuspendedUser from "./SuspendeUser/SuspendeUser";
+import UserAddress from "./UserAddress/UserAddress/UserAddress";
 
 export default function UserProfile() {
     const dispatch = useDispatch();
