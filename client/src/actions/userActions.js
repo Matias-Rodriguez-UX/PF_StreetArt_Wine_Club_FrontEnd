@@ -269,23 +269,17 @@ export function statusPayment(payload) {
           `http://localhost:3001/orders/checkout?addressId=${payload.addressId}`,
           payload
         );
-      }else{
+      } else {
         let result = await axios.put(
           `http://localhost:3001/orders/checkout`,
           payload
         );
       }
-
-      /* let result = await axios.put(
-        `http://localhost:3001/orders/checkout`,
-        payload
-      ); */
     } catch (error) {
       console.log("Error", error);
     }
   };
 }
-
 
 export function deleteCart(userId) {
   return async function () {

@@ -11,7 +11,7 @@ import NavigationBar from "../../Navbar/index";
 import Banner from '../../Home/Banner/index';
 import Footer from '../../Footer/index';
 // import useLocalStorage from  '../../../useLocalStorage';
-import { getStates } from "../../../actions/index.js";
+import { getStates, resetCart } from "../../../actions/index.js";
 import { backToCartOrder } from "../../../actions/ordersAction";
 import { statusPayment, getUserAddresses, createUserAddress, getUserInfo, getAllCities, getUserCart} from "../../../actions/userActions";
 import "./Payment.css"
@@ -36,12 +36,10 @@ export default function Paypal(){
     const states = useSelector((state) => state.products.states);
     const cities = useSelector((state) => state.users.cities);
     const userAddresses = useSelector((state) => state.users.userAddresses);
-    console.log(userAddresses);
     const history = useHistory();
     const { user, isAuthenticated } = useAuth0();
     const [errors, setErrors] = useState({});
     const [selectedAddress, setSelectedAddress] = useState('');
-    console.log(selectedAddress);
     const [input, setInput] = useState({
       reference: "",
       address: "", 
@@ -52,7 +50,7 @@ export default function Paypal(){
       region: "",
       status: "processing shipping",
     })
-    console.log(input);
+
     const total = cart.reduce((acc, product) => {
       return acc + product.price * product.cartQuantity;
     }, 0);
@@ -77,10 +75,6 @@ export default function Paypal(){
       }
       return 0;
     }); 
-
-    useEffect(() => {
-        console.log(selectedAddress);
-    }, [selectedAddress]); 
 
     useEffect(() => {
       if(!userInfo.id && isAuthenticated){
@@ -187,6 +181,7 @@ export default function Paypal(){
           state: "",
           region: "",  
       });
+      dispatch(resetCart())
       /* history.push('/shop'); */
       }) 
     }
@@ -195,6 +190,14 @@ export default function Paypal(){
 
     const paypalDisabled = input.address || input.reference || input.region || input.state || input.telephone || input.zipCode === "";
 
+    const handleBackToOrder = () => {
+      const orderPayment = userInfo?.orders?.find(el => el.status === "processing payment")?.id
+      if(orderPayment){
+        getUserInfo(userInfo.email)
+        backToCartOrder(orderPayment)
+      }
+      
+    }
   
     return (
       <>
@@ -202,14 +205,14 @@ export default function Paypal(){
           <NavigationBar />
           <div className="container d-flex flex-wrap col align-items-center gap-2 mt-4">
           <div className="container-fluid w-100 d-flex align-items-center">
-          <Link to={'/cart'} className='text-decoration-none text-reset' onClick={backToCartOrder(userInfo?.orders?.find(el => el.status === "processing payment")?.id)}><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-arrow-left me-2" viewBox="0 0 16 16">
+          <Link to={'/cart'} className='text-decoration-none text-reset' onClick={handleBackToOrder}><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-arrow-left me-2" viewBox="0 0 16 16">
               <path fillRule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
                 </svg>Back to Cart</Link>
           </div>
-          <div className="container d-flex align-items-center gap-5 mt-4">
+          <div className="container d-flex align-items-start gap-5 mt-4">
           <div className="col-md-4 order-md-2 mb-4">
           <h4 className="d-flex justify-content-between align-items-center mb-3">
-            <span className="text-muted">Your cart</span>
+            <span className="text-muted">Your Cart</span>
             <span className="badge badge-secondary badge-pill">3</span>
           </h4>
           <ul className="list-group mb-3">
@@ -240,7 +243,7 @@ export default function Paypal(){
         <div className="col-md-8 order-md-1">
         {typeof userAddresses !== 'string'? (
               <>
-                <h4 className="mb-3">Billing address</h4>
+                <h4 className="mb-3">Billing Address</h4>
           <form className="needs-validation" novalidate>
             <div className="row">
               <div className="mb-3">
@@ -321,7 +324,7 @@ export default function Paypal(){
             </>
           ):(
             <>
-              <h4 className="mb-3">Billing address</h4>
+              <h4 className="mb-3">Billing Address</h4>
               <form className="needs-validation" novalidate>
                 <div className="row">
                   <div className="mb-3">
