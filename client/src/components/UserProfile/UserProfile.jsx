@@ -56,7 +56,7 @@ export default function UserProfile() {
     }, [dispatch, userDb.email]);
 
     useEffect(() => {
-        if(userInfo.status === 'User Created'){
+        if (userInfo.status === 'User Created') {
             dispatch(getAllUsers());
             dispatch(getUserInfo(userDb.email));
             dispatch(getUserWishlist(userDb.email));
