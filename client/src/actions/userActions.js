@@ -20,6 +20,8 @@ import {
   POST_NEWSLETTER,
   SET_AGE,
   ASSIGN_MEMBERSHIPS,
+  SET_DEFAULT_ADDRESS,
+  GET_DEFAULT_ADDRESS,
 } from "./allActions";
 import axios from "axios";
 import { loadingAction } from ".";
@@ -172,6 +174,22 @@ export function editUserAddress(id, payload) {
     } catch (error) {
       console.log("Error", error);
     }
+  };
+}
+
+export function setDefaultAddress(address) {
+  return async function (dispatch) {
+    dispatch({
+      type: SET_DEFAULT_ADDRESS,
+      payload: address,
+    });
+  };
+}
+
+export function getDefaultAddress() {
+  return (dispatch) => {
+    const defaultAddress = JSON.parse(localStorage.getItem("defaultAddress"));
+    dispatch(setDefaultAddress(defaultAddress));
   };
 }
 

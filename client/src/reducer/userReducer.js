@@ -5,7 +5,7 @@ import {
   CREATE_USER,
   EDIT_USER,
   CREATE_USER_ADDRESS,
-  EDIT_ADDRESS,
+  SET_DEFAULT_ADDRESS,
   DELETE_USER_ADDRESS,
   GET_ALL_STATES,
   GET_ALL_CITIES,
@@ -25,6 +25,7 @@ const initialState = {
   allUsers: [],
   userInfo: {},
   userAddresses: [],
+  defaultAddress: null,
   userWishlist: [],
   ageUser: "",
 };
@@ -89,6 +90,14 @@ export default function rootReducer(state = initialState, action) {
       return {
         ...state,
       };
+
+    case SET_DEFAULT_ADDRESS:
+      localStorage.setItem("defaultAddress", JSON.stringify(action.payload));
+      return {
+        ...state,
+        defaultAddress: action.payload,
+      };
+
     case GET_WISHLIST:
       const wishList = action.payload.products?.map((el) => el);
       return {

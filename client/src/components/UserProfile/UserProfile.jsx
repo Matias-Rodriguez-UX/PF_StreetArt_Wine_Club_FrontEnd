@@ -19,7 +19,8 @@ import EditUserProfileCard from "./EditUserProfileCard/EditUserProfileCard";
 import Wishlist from "./Wishlist/Wishlist";
 import { Loader } from "../Loader";
 import SuspendedUser from "./SuspendeUser/SuspendeUser";
-import UserAddress from "./UserAddress/UserAddress/UserAddress";
+import UserAddress from "./UserAddress/UserAddress";
+
 
 export default function UserProfile() {
     const dispatch = useDispatch();

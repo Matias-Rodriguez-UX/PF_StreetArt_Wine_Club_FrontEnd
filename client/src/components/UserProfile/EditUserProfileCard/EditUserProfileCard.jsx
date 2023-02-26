@@ -2,9 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useDispatch, useSelector} from 'react-redux';
 import { getUserInfo, editUserInfo, editUserAddress } from "../../../actions/userActions";
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
 import {Image} from "react-bootstrap";
+import { Toast } from 'react-bootstrap';
 import { useHistory } from "react-router-dom";
 
 
@@ -16,25 +15,21 @@ export default function EditUserProfileCard() {
     const userInfo = useSelector((state) => state.users.userInfo);
 	const userId = userInfo.id;
 	// console.log(userId)
-	const addressSelect = userInfo.addresses.length - 1
+	const addressSelect = userInfo.addresses.length - 1;
+	const [showToastUser, setShowToastUser] = useState(false);
     const [loading, setLoading] = useState(false);
     const [input, setInput] = useState({
 		fullname: userInfo.fullname,
 		profile: userInfo.profile? userInfo.profile: '',
         avatar: userInfo.avatar,
 		status: 'active',
-		reference:userInfo.addresses.length? userInfo.addresses[addressSelect].reference: '' ,
-        telephone: userInfo.addresses.length? userInfo.addresses[addressSelect].telephone: '' ,
-        address:userInfo.addresses.length? userInfo.addresses[addressSelect].address: '' ,
-        state:userInfo.addresses.length? userInfo.addresses[addressSelect].state: '' ,
-        region:userInfo.addresses.length? userInfo.addresses[addressSelect].region: '' ,
-        zipCode: userInfo.addresses.length? userInfo.addresses[addressSelect].zipCode: '' ,
 		userEmail: userInfo.email
     });
 	input.id=userId;
 	input.email=userInfo.email;
 	// console.log(input.id);
     let userEmail = '';
+	const toggleShowUser = () => setShowToastUser(!showToastUser);
 
     if(auth){
         userEmail = user.email
@@ -84,10 +79,8 @@ export default function EditUserProfileCard() {
         const handleSubmit = (e) => {
             // e.preventDefault();
             dispatch(editUserInfo(input));
-			dispatch(editUserAddress(userInfo.addresses[addressSelect].id,input))
+			// dispatch(editUserAddress(userInfo.addresses[addressSelect].id,input))
 			dispatch(getUserInfo(userEmail))
-			
-            alert('Info modified!');
             setInput({
                 fullname: '',
                 email:'',
@@ -98,7 +91,8 @@ export default function EditUserProfileCard() {
                 city:'',
                 zipCode: '',
                 profile:''
-            })
+            });
+			toggleShowUser();
 			window.location.reload()
         };
 
@@ -134,56 +128,6 @@ export default function EditUserProfileCard() {
 									<input type="text" readOnly class="form-control" name='userEmail' value={input.userEmail} onChange={(e) => handleChange(e)}/>
 								</div>
 							</div>
-							<div class="row mb-3">
-								<div class="col-sm-3">
-									<h6 class="mb-0">Phone</h6>
-								</div>
-								<div class="col-sm-9 text-secondary">
-									<input type="text" class="form-control" name='telephone' value={input.telephone} onChange={(e) => handleChange(e)}/>
-								</div>
-							</div>
-							<div class="row mb-3">
-								<div class="col-sm-3">
-									<h6 class="mb-0">Address</h6>
-								</div>
-								<div class="col-sm-9 text-secondary">
-									<input type="text" class="form-control" name='address' value={input.address} onChange={(e) => handleChange(e)}/>
-								</div>
-							</div>
-							<div class="row mb-3">
-								<div class="col-sm-3">
-									<h6 class="mb-0">Address reference</h6>
-								</div>
-								<div class="col-sm-9 text-secondary">
-									<input type="text" class="form-control" name='reference' value={input.reference} onChange={(e) => handleChange(e)}/>
-								</div>
-							</div>
-							
-                            <div class="row mb-3">
-								<div class="col-sm-3">
-									<h6 class="mb-0">State</h6>
-								</div>
-							
-								<div class="col-sm-9 text-secondary">
-									<input type="text" class="form-control" name='state' value={input.state} onChange={(e) => handleChange(e)}/>
-								</div>
-							</div>
-                            <div class="row mb-3">
-								<div class="col-sm-3">
-									<h6 class="mb-0">City</h6>
-								</div>
-								<div class="col-sm-9 text-secondary">
-									<input type="text" class="form-control" name='region' value={input.region} onChange={(e) => handleChange(e)}/>
-								</div>
-							</div>
-                            <div class="row mb-3">
-								<div class="col-sm-3">
-									<h6 class="mb-0">ZIP code</h6>
-								</div>
-								<div class="col-sm-9 text-secondary">
-									<input type="text" class="form-control" name='zipCode' value={input.zipCode} onChange={(e) => handleChange(e)}/>
-								</div>
-							</div>
                             <div class="row mb-3">
 								<div class="col-sm-3">
 									<h6 class="mb-0">About you</h6>
@@ -197,6 +141,16 @@ export default function EditUserProfileCard() {
 								<div class="col-sm-9 text-secondary">
 									<input type="button" class="btn btn-warning btn-sm" value="Save Changes" onClick={(e) => handleSubmit(e)}/>
 								</div>
+								{showToastUser && (
+                            <Toast className='toast prefers-reduced-motion: no-preference' show={showToastUser} onClose={toggleShowUser}  delay={500} autohide>
+                            <Toast.Header>
+                                <img src='holder.js/20x20?text=%20' className="rounded me-2" alt="brand logo" />
+                                <strong className="me-auto">Street Art Wines Club</strong>
+                                <small>just now</small>
+                            </Toast.Header>
+                            <Toast.Body> Glup, glup. You changed your info!</Toast.Body>
+                            </Toast>
+                        )}
 							</div>
 						</div>
 					</div>
