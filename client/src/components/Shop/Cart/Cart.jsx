@@ -12,6 +12,8 @@ import CartAlert from "./CartAlert";
 import "./Cart.css"
 import Swal from 'sweetalert2';
 import { deleteUserCart, getUserCart, getUserInfo, updateUserCart, statusCart, addUserCart } from "../../../actions/userActions";
+import SpinnerCard from "../WineCard/SpinnerCard";
+import LoginButton from "../../Login/LoginButton";
 
 
 export default function Cart() {
@@ -20,10 +22,13 @@ export default function Cart() {
   const currentUser = useSelector((state) => state.users.userInfo)
   const [getSwitch, setGetSwitch] = useState(false)
   const [localStorageState, setLocalStorageState] = useState(false)
+  const [discount, setDiscount] = useState(0)
+  const [porcentage, setPorcentage] = useState(0)
 
   const total = cart.reduce((acc, product) => {
     return acc + product.price * product.cartQuantity;
   }, 0);
+  const [newTotal, setNewTotal] = useState(total)
 
   const dispatch = useDispatch();
   const { user, isAuthenticated, isLoading } = useAuth0();
@@ -40,9 +45,19 @@ export default function Cart() {
       if(storedCart.length > 0){
         setLocalStorageState(true)
       }
-    
     }
-  }, [dispatch, currentUser.id]);
+    if (total > 0) {
+      for (let i = 0; i < currentUser.memberships?.length; i++) {
+        let objetoActual = currentUser.memberships[i];
+        if (objetoActual.discount > discount) {
+          setDiscount(objetoActual.discount)
+        }
+      }
+      setPorcentage((100 - discount) / 100)
+
+      setNewTotal(Math.ceil(total * (1 - (discount / 100))))
+    }
+  }, [dispatch, isAuthenticated, currentUser.id, discount, newTotal, total, porcentage])
 
   useEffect(() => {
     if(getSwitch){
@@ -193,11 +208,19 @@ export default function Cart() {
           </tbody>
         </table>
       </div>
-      <div className="container w-75 bg-wa">
-        <p>
-          <strong>Total: ${total},00-</strong>
-        </p>
-      </div>
+       <div className="d-flex ">
+          {isLoading ? <SpinnerCard /> :
+            <div>
+              {
+                total === newTotal ?
+                  <p>
+                    <strong>Total: ${newTotal}.00-</strong>
+                  </p> :
+                  <div className='d-flex align-items-center gap-4'><p className="fs-4 fw-bold">Total: </p><p className="text-decoration-line-through text-muted fs-6">${total}.00-</p><p className="fs-4 fw-bold">${newTotal}.00-</p></div>
+              }
+            </div>
+          }
+        </div>
       <div className="container w-75 d-flex align-items-center justify-content-end  mt-1 mb-5" >
             {isAuthenticated ?
                 (
