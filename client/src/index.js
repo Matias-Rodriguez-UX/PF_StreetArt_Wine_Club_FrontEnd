@@ -16,8 +16,8 @@ axios.defaults.headers.common['Authorization'] = sessionStorage.getItem('user');
 
 //axios.defaults.baseURL = 'https://pfstreetartwineclubbackend-production.up.railway.app';
 
-const domain = "dev-142tko5ud5c6ozuq.us.auth0.com";
-const clientId = "1gLC55ZNHYDtZnf38LU2Zlc1UMUqoEXT";
+const domain = "dev-eqjids43tpn0c5lj.us.auth0.com";
+const clientId = "CW1fFkRrBryYtSpyefTvYFWGf6sNQNhg";
 
 ReactDOM.render(
   <Provider store={store}>
