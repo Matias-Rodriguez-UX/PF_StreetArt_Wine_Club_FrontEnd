@@ -86,36 +86,43 @@ export default function UserProfile() {
 
     return (
         isAuthenticated && userInfo.id ? (
-            <div className="row" >
-                <Banner />
-                <NavigationBar />
-                <UserSideBar className='col-3' userName={userInfo.fullname} userPicture={userInfo.avatar} setCurrentPage={setCurrentPage} />
+            <div>
+                <div className="row " >
+                    <Banner />
+                    <NavigationBar />
+                    <div className='ms-3 col-3'>
+                        <UserSideBar userName={userInfo.fullname} userPicture={userInfo.avatar} setCurrentPage={setCurrentPage} />
+                        {auth && (userInfo.role === 'superAdmin' || userInfo.role === 'admin') ?
+                            <div className="m-4 d-flex align-items-center">
+                                <Link to='/admin' className="">
+                                    <Button type="button" className="btn btn-warning btn-lg">Admin profile</Button>
+                                </Link>
+                            </div> :
+                            <div className="m-4 d-flex align-items-center">
+                                <Link to='/shop'>
+                                    <Button type="button" className="btn btn-warning btn-lg">Go shopping</Button>
+                                </Link>
+                            </div>}
+                    </div>
+                    <div className="col-1" >
 
-                <div className="container col-8">
-                    {currentPage === "home" && <UserInfo userName={userInfo.fullname} setCurrentPage={setCurrentPage} />}
-                    {currentPage === "userinfo" && <UserInfo setCurrentPage={setCurrentPage} />}
-                    {currentPage === "changeinfo" && <EditUserProfileCard setCurrentPage={setCurrentPage} />}
-                    {currentPage === "orders" && <UserOrders setCurrentPage={setCurrentPage} />}
-                    {currentPage === "addresses" && <UserAddress setCurrentPage={setCurrentPage} />}
-                    {currentPage === "memberships" && <UserMemberships setCurrentPage={setCurrentPage} />}
-                    {currentPage === "wishlist" && <Wishlist favourites={favourites} setCurrentPage={setCurrentPage} />}
-                </div>
+                    </div>
 
 
-                {auth && (userInfo.role === 'superAdmin' || userInfo.role === 'admin') ?
-                    <div className="m-4 d-flex align-items-center">
-                        <Link to='/admin' className="">
-                            <Button type="button" className="btn btn-warning btn-lg">Admin profile</Button>
-                        </Link>
-                    </div> :
-                    <div className="m-4 d-flex align-items-center">
-                        <Link to='/shop'>
-                            <Button type="button" className="btn btn-warning btn-lg">Go shopping</Button>
-                        </Link>
-                    </div>}
+                    <div className="container col-7">
+                        {currentPage === "home" && <UserInfo userName={userInfo.fullname} setCurrentPage={setCurrentPage} />}
+                        {currentPage === "userinfo" && <UserInfo setCurrentPage={setCurrentPage} />}
+                        {currentPage === "changeinfo" && <EditUserProfileCard setCurrentPage={setCurrentPage} />}
+                        {currentPage === "orders" && <UserOrders setCurrentPage={setCurrentPage} />}
+                        {currentPage === "addresses" && <UserAddress setCurrentPage={setCurrentPage} />}
+                        {currentPage === "memberships" && <UserMemberships setCurrentPage={setCurrentPage} />}
+                        {currentPage === "wishlist" && <Wishlist favourites={favourites} setCurrentPage={setCurrentPage} />}
+                    </div>
 
+
+                </div >
                 <Footer />
-            </div >
+            </div>
         ) : (
             <div className="conatiner-fluid d-flex alig-items-center justify-content-center" style={{ height: '100vh', width: '100vw' }}>
                 <div className="d-flex flex-column align-items-center justify-content-center" >
