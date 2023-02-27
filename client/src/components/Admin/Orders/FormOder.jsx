@@ -54,6 +54,7 @@ export default function FormOrder({ selectedData, setShowModalEdit }) {
             confirmButtonColor: '#ffc107'
         })
     }
+
     return (
         <>
             <Form>
@@ -98,7 +99,7 @@ export default function FormOrder({ selectedData, setShowModalEdit }) {
                             as="select"
                             onChange={(e) => { handleSelectOption(e) }}>
                             <option value="">Select the Address</option>
-                            {userAddresses?.map((el, index) => <option key={index} value={el.id}>{el.reference}: {el.address}</option>)}
+                            {typeof userAddresses === "string" ? <option value={null}>{userAddresses}</option> : userAddresses?.map((el, index) => <option key={index} value={el.id}>{el.reference}: {el.address}</option>)}
                         </Form.Control>
                     </InputGroup>
                 </Form.Group>
