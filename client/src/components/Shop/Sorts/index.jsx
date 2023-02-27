@@ -20,10 +20,10 @@ export default function Sort({ setSort, handleClick, setCurrentPage }) {
     }
 
     return (
-        <div className="container-fluid bg-dark row p-3">
+        <div className="bg-dark row p-3">
             <div className="col-8 d-flex justify-content-evenly me-4">
                 <h3 className="ms-4 me-4" style={{ color: "white" }}>Sort</h3>
-                <select className="form-select me-4"  placeholder="Order by Name" name="orderAlph" id="name" onChange={(e) => (handleOrderAlph(e))}>
+                <select className="form-select me-4" placeholder="Order by Name" name="orderAlph" id="name" onChange={(e) => (handleOrderAlph(e))}>
                     <option value="" disabled selected hidden> by name</option>
                     <option value="a">A to Z</option>
                     <option value="z">Z to A</option>
@@ -34,7 +34,7 @@ export default function Sort({ setSort, handleClick, setCurrentPage }) {
                     <option value="low">Lower Price</option>
                 </select>
             </div>
-            <button type="button" className="col btn btn-outline-warning" onClick={e => handleClick(e)}>Clear filters and sorts</button>
+            <button type="button" className="col btn btn-outline-warning me-4" onClick={e => handleClick(e)}>Clear filters and sorts</button>
         </div>
 
     )
