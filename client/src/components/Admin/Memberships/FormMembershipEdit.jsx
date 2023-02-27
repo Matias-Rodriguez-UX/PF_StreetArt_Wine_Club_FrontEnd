@@ -85,6 +85,18 @@ export default function FormMembershipEdit({ selectedData, setShowModalEdit }) {
         })
     }
 
+    const addAlertDelete = (name) => {
+        Swal.fire({
+            title: "THE MEMBERSHIP WAS DELETE",
+            text: `You delete the membership ${name}`,
+            icon: 'error',
+            timer: '3000',
+            timerProgressBar: true,
+            allowOutsideClick: true,
+            confirmButtonColor: '#ffc107'
+        })
+    }
+
 
     return (
         <>
