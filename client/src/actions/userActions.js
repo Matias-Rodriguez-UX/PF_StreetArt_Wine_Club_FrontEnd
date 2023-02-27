@@ -22,6 +22,7 @@ import {
   ASSIGN_MEMBERSHIPS,
   SET_DEFAULT_ADDRESS,
   GET_DEFAULT_ADDRESS,
+  GET_NEWSLETTER,
 } from "./allActions";
 import axios from "axios";
 import { loadingAction } from ".";
@@ -424,6 +425,21 @@ export function updateSubscription(email) {
   return async function () {
     try {
       await axios.put(`http://localhost:3001/newsletter`, email);
+    } catch (error) { }
+  };
+}
+
+export function getNewsletter() {
+  return async function (dispatch) {
+    try {
+      let newsletter = await axios.get(`http://localhost:3001/newsletter`,);
+      return (
+        dispatch({
+          type: GET_NEWSLETTER,
+          payload: newsletter.data
+        }),
+        loadingAction(false)
+      )
     } catch (error) { }
   };
 }

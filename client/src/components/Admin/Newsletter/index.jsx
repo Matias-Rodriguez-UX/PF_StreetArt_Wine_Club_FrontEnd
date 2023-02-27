@@ -2,16 +2,15 @@ import React, { useEffect, useState } from "react";
 import { Button, Modal, Table } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { loadingAction } from "../../../actions";
-import { getMemberships } from "../../../actions/membershipsActions";
-import FormMembershipEdit from "./FormMembershipEdit";
-import FormMembershipPost from "./FormMembershipPost";
 import { Loader } from '../../Loader'
+import FormNewsPost from "./FormNewsPost";
+import FormNewsEdit from "./FormNewsEdit";
+import { getNewsletter } from "../../../actions/userActions";
 
 
-export default function AdminMemberships() {
+export default function AdminNewsletter() {
     const dispatch = useDispatch()
-    const allMemberships = useSelector((state) => state.memberships.allMemberships)
-    const [membershipList, setmembershipList] = useState(allMemberships);
+    const newsletter = useSelector((state) => state.users.newsletter)
     const [showModalPost, setShowModalPost] = useState(false);
     const [selectedData, setSelectedData] = useState({});
     const [showModalEdit, setShowModalEdit] = useState(false);
@@ -19,12 +18,14 @@ export default function AdminMemberships() {
 
     useEffect(() => {
         dispatch(loadingAction(true))
-        dispatch(getMemberships())
-    }, [membershipList])
+        dispatch(getNewsletter()).then(() => {
+            dispatch(loadingAction(false));
+        })
+    }, [selectedData])
 
     let headers = []
-    if (allMemberships.length) {
-        headers = Object.keys(allMemberships[0]);
+    if (newsletter.length) {
+        headers = Object.keys(newsletter[0]);
     }
 
     function handleClick(item) {
@@ -41,11 +42,11 @@ export default function AdminMemberships() {
         <>
             {showLoading ? <Loader /> : <>
                 <div className='container d-flex align-items-center justify-content-evenly mt-4'>
-                    <h1>Memberships</h1>
-                    <Button variant='warning' hover onClick={(e) => handleClickPost(e)}>Add Memberships</Button>
+                    <h1>Newsletter</h1>
+                    <Button variant='warning' hover onClick={(e) => handleClickPost(e)}>Add newsletter</Button>
                 </div>
-                <div>
-                    {allMemberships?.length ? <Table striped bordered hover responsive>
+                <div className="mt-4 d-flex aiign-items-center jutify-content-center text-center">
+                    {newsletter?.length ? <Table striped bordered hover responsive>
                         <thead>
                             <tr>
                                 {headers.map((header, index) => (
@@ -54,7 +55,7 @@ export default function AdminMemberships() {
                             </tr>
                         </thead>
                         <tbody>
-                            {allMemberships.map((item, index) => (
+                            {newsletter.map((item, index) => (
                                 <tr key={index} onClick={() => handleClick(item)} style={{ cursor: 'pointer' }}>
                                     {headers.map((header, subIndex) => (
                                         <td key={subIndex} className="ellipsis">{item[header]}</td>
@@ -62,33 +63,23 @@ export default function AdminMemberships() {
                                 </tr>
                             ))}
                         </tbody>
-                    </Table> : <h2>Not memberships to see</h2>}
+                    </Table> : <h2>Not newsletter to see</h2>}
                 </div>
                 <Modal show={showModalPost} onHide={() => setShowModalPost(false)} >
                     <Modal.Header closeButton>
                         <Modal.Title>Create Membership</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        <FormMembershipPost setShowModalPost={setShowModalPost} setmembershipList={setmembershipList} membershipList={membershipList} />
+                        <FormNewsPost setShowModalPost={setShowModalPost} />
                     </Modal.Body>
-                    <Modal.Footer>
-                        <Button variant="secondary" onClick={() => setShowModalPost(false)}>
-                            Close
-                        </Button>
-                    </Modal.Footer>
                 </Modal>
                 <Modal show={showModalEdit} onHide={() => setShowModalEdit(false)} >
                     <Modal.Header closeButton>
-                        <Modal.Title>Edit Memberships</Modal.Title>
+                        <Modal.Title>Edit newsletter</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        <FormMembershipEdit selectedData={selectedData} setShowModalEdit={setShowModalEdit} />
+                        <FormNewsEdit selectedData={selectedData} setShowModalEdit={setShowModalEdit} />
                     </Modal.Body>
-                    <Modal.Footer>
-                        <Button variant="secondary" onClick={() => setShowModalEdit(false)}>
-                            Close
-                        </Button>
-                    </Modal.Footer>
                 </Modal>
             </>
             }

@@ -5,6 +5,7 @@ import AdminProducts from "./Products";
 import AdminMemberships from "./Memberships";
 import AdminCustomers from "./Customers";
 import AdminOrders from "./Orders";
+import AdminNewsletter from "./Newsletter";
 
 export default function AdminProfile() {
     const [currentPage, setCurrentPage] = useState('home')
@@ -21,6 +22,7 @@ export default function AdminProfile() {
                     {currentPage === "memberships" && <AdminMemberships />}
                     {currentPage === "customers" && <AdminCustomers />}
                     {currentPage === "orders" && <AdminOrders />}
+                    {currentPage === "newsletter" && <AdminNewsletter />}
                 </div>
             </div>
         </>

@@ -67,7 +67,8 @@ export function updateMemberships(id, body) {
 export function deleteMemberships(id) {
     return async function (dispatch) {
         try {
-            let memberships = await axios.delete(`/users/membership/${id}`, headers);
+            let memberships = await axios.delete(`/memberships/${id}`, headers);
+            console.log(memberships)
             return (
                 dispatch({
                     type: DELETE_MEMBERSHIPS,
