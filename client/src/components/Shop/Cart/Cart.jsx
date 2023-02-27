@@ -31,7 +31,8 @@ export default function Cart() {
   const [newTotal, setNewTotal] = useState(total)
   const dispatch = useDispatch();
   const { user, isAuthenticated, isLoading } = useAuth0();
-
+console.log(newTotal)
+console.log(total)
   useEffect(() => {
     if(cart.length === 0 && !currentUser.id){
       if(!isAuthenticated){
@@ -138,7 +139,7 @@ export default function Cart() {
       email: currentUser.email,
       status: 'processing payment'
     }))
-    console.log(currentUser.email);
+    // console.log(currentUser.email);
   }
   
   const addDeleteAlert = (name) => {
@@ -217,16 +218,22 @@ export default function Cart() {
                   <p>
                     <strong>Total: ${newTotal}.00-</strong>
                   </p> :
-                  <div className='d-flex align-items-center gap-4'><p className="fs-4 fw-bold">Total: </p><p className="text-decoration-line-through text-muted fs-6">${total}.00-</p><p className="fs-4 fw-bold">${newTotal}.00-</p></div>
+                  <div className='d-flex align-items-center gap-4'><p className="fs-4 fw-bold">Total: </p><p className="text-decoration-line-through text-muted fs-6">${total}.00-</p><p className="fs-4 fw-bold"> ${cart.length >0? newTotal : 0}.00-</p></div>
               }
             </div>
         </div>
         <div className="float-end" >
           {isAuthenticated ?
             (
-              <Link to={"/payment"}>
+              <div>{cart.length ? (
+                <Link to={"/payment"}>
                 <button type="button" id="button-cart" className="btn btn-warning btn-lg mb-4" onClick={handleStatus}>Buy Product<i class="bi bi-cart-check-fill ms-2"></i></button>
               </Link>
+              ):
+              (
+                <button disabled type="button" id="button-cart" className="btn btn-warning btn-lg mb-4">Buy Product<i class="bi bi-cart-check-fill ms-2"></i></button>
+              )
+              }</div>
             ) :
             (
               <LoginButton />
