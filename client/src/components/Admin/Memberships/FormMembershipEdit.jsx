@@ -21,7 +21,7 @@ export default function FormMembershipEdit({ selectedData, setShowModalEdit }) {
         if (input.name === ""
             || input.price <= 0
             || input.discount <= 0
-            || input.descriptio === ""
+            || input.description === ""
         ) {
             setActiveButton(true)
         } else {
@@ -131,7 +131,7 @@ export default function FormMembershipEdit({ selectedData, setShowModalEdit }) {
             </Form>
             <Modal show={showModalUpdate} onHide={() => setShowModalUpdate(false)} className="bg-dark">
                 <Modal.Header closeButton>
-                    <Modal.Title>Update Product</Modal.Title>
+                    <Modal.Title>Update Membership</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>Are you sure about the changes you are going to make?</Modal.Body>
                 <Modal.Footer>

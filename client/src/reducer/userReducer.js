@@ -16,6 +16,7 @@ import {
   POST_NEWSLETTER,
   SET_AGE,
   ASSIGN_MEMBERSHIPS,
+  GET_NEWSLETTER,
 } from "../actions/allActions";
 
 const initialState = {
@@ -28,6 +29,7 @@ const initialState = {
   defaultAddress: null,
   userWishlist: [],
   ageUser: "",
+  newsletter: []
 };
 export default function rootReducer(state = initialState, action) {
   switch (action.type) {
@@ -124,6 +126,12 @@ export default function rootReducer(state = initialState, action) {
     case ASSIGN_MEMBERSHIPS:
       return {
         ...state,
+      };
+    case GET_NEWSLETTER:
+      console.log(action.payload)
+      return {
+        ...state,
+        newsletter: action.payload,
       };
 
     default:
