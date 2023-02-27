@@ -22,12 +22,12 @@ export default function ordersReducer(state = initialState, action) {
         ...state,
         orders: ordersFilter
       }
-      case GET_USER_ORDER:
-        return {
-            ...state,
-            userOrder: action.payload
-        };
-      case CHANGE_ORDER:
+    case GET_USER_ORDER:
+      return {
+        ...state,
+        userOrder: action.payload
+      };
+    case CHANGE_ORDER:
       return {
         ...state,
       };

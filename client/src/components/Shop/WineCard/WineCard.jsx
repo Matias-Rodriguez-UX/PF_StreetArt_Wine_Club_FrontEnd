@@ -19,6 +19,7 @@ const Winecards = ({ name, winery, price, image, id, addCart, handleAgregarFavor
     } else {
       setFavorito(false);
     }
+
     if (price > 0) {
       for (let i = 0; i < currentUser.memberships?.length; i++) {
         let objetoActual = currentUser.memberships[i];

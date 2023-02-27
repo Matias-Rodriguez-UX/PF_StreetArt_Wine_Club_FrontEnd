@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Modal } from 'react-bootstrap';
-import FormOrder from './FormOrder';
+import { Table, Modal, Button } from 'react-bootstrap';
+import FormOrder from './FormOder';
 import './Style.css'
 
 function TableOrders({ currentOrders }) {
@@ -31,7 +31,7 @@ function TableOrders({ currentOrders }) {
                             {headers.map((header, subIndex) => (
                                 (typeof item[header] !== "object") ?
                                     <td key={subIndex} className="ellipsis">{item[header]}</td> :
-                                                    (item[header] === null) ?
+                                    (item[header] === null) ?
                                         <td key={subIndex} className="ellipsis">Null</td> :
                                         <td key={subIndex} className="ellipsis">{item[header].id}</td>
                             ))}
