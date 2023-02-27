@@ -33,7 +33,7 @@ export default function UserProfile() {
     const [currentPage, setCurrentPage] = useState('home');
 
     const { isLoading, isAuthenticated: auth, user } = useAuth0();
-
+    console.log("SOY EL USER",user)
     let userDb = {};
 
     if (auth) {
