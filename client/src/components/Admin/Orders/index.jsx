@@ -45,8 +45,8 @@ export default function AdminOrders() {
                         : <h1>Orders not Found</h1>}
                 </div>}
             <WebPagination
-                orderPerPage={ordersPerPage}
-                numberOfOrders={allOrders.length}
+                winesPerPage={ordersPerPage}
+                numberOfWines={allOrders.length}
                 currentPage={currentPage}
                 setCurrentPage={setCurrentPage}
                 pagination={pagination} />

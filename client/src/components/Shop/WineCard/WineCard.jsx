@@ -19,6 +19,7 @@ const Winecards = ({ name, winery, price, image, id, addCart, handleAgregarFavor
     } else {
       setFavorito(false);
     }
+
     if (price > 0) {
       for (let i = 0; i < currentUser.memberships?.length; i++) {
         let objetoActual = currentUser.memberships[i];
@@ -26,7 +27,7 @@ const Winecards = ({ name, winery, price, image, id, addCart, handleAgregarFavor
           setmaxDiscount(objetoActual.discount)
         }
       }
-      setpriceDiscoun(price * (1 - (maxDiscount / 100)))
+      setpriceDiscoun(Math.ceil(price * (1 - (maxDiscount / 100))))
     }
 
   }, [favourites, id, currentUser, priceDiscount, maxDiscount]);
