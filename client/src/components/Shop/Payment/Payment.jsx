@@ -196,7 +196,7 @@ console.log(input)
           region: "",  
       });
       dispatch(resetCart())
-      /* history.push('/shop'); */
+       history.push('/shop');
       }) 
     }
 
