@@ -202,13 +202,13 @@ console.log(input)
 
     const isInputDisabled = input.Newaddress || input.reference || input.region || input.state || input.telephone || input.zipCode !== "";
 
-    const paypalDisabled = input.Newaddress || input.reference || input.region || input.state || input.telephone || input.zipCode === "";
+    const paypalDisabled = input.Newaddress && input.reference && input.region && input.state && input.telephone && input.zipCode !== "";
 
     const handleBackToOrder = () => {
       const orderPayment = userInfo?.orders?.find(el => el.status === "processing payment")?.id
       if(orderPayment){
-        getUserInfo(userInfo.email)
-        backToCartOrder(orderPayment)
+        dispatch(getUserInfo(userInfo.email));
+        dispatch(backToCartOrder(orderPayment));
       }
       
     }
@@ -282,7 +282,7 @@ console.log(input)
     
             <div className="mb-3">
               <label for="address">Address</label>
-              <input type="text" className="form-control" name="address" id="address" placeholder="1234 Main St" value={input.address} onChange={handleChange} disabled={selectedAddress !== ""}/>
+              <input type="text" className="form-control" name="Newaddress" id="Newaddress" placeholder="1234 Main St" value={input.Newaddress} onChange={handleChange} disabled={selectedAddress !== ""}/>
               {errors.address && (
                 <p className="error">{errors.address}</p>
                 )}
@@ -414,16 +414,51 @@ console.log(input)
           </div> */}
         </div>
           </div>
-          <div className="container d-flex align-items-center"> 
+          {typeof userAddresses !== 'string'? 
+          (<>
+            {paypalDisabled || selectedAddress !== "" ?
+            (
+              <div className="container d-flex align-items-center"> 
             <div className="col col-12">
               <h1>${newTotal},00.</h1>
               <PayPalButton
                 createOrder={(data, actions) => createOrder(data, actions)}
                 onApprove={(data, actions) => onApprove(data, actions)}
-                disabled={paypalDisabled || selectedAddress == ""}
               />
             </div>   
-          </div>
+            </div>
+            ) :
+            (
+              <>
+                <h4>You must fill in the information to create a new address or select one in case you have an address saved in your account</h4>
+              </>
+            )
+              
+          }
+          </>) : 
+          (<>
+            {paypalDisabled || selectedAddress !== ""?
+            (
+              <div className="container d-flex align-items-center"> 
+            <div className="col col-12">
+              <h1>${newTotal},00.</h1>
+              <PayPalButton
+                createOrder={(data, actions) => createOrder(data, actions)}
+                onApprove={(data, actions) => onApprove(data, actions)}
+              />
+            </div>   
+            </div>
+            ) :
+            (
+              <>
+                <h4>You must fill in the information to create a new address</h4>
+              </>
+            )
+              
+          }
+          </>) }
+          
+          
           </div>
             <Footer />
       </>
