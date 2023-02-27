@@ -54,6 +54,7 @@ export default function FormOrder({ selectedData, setShowModalEdit }) {
             confirmButtonColor: '#ffc107'
         })
     }
+    console.log(userAddresses)
     return (
         <>
             <Form>
