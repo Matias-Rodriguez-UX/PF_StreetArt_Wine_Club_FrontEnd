@@ -11,21 +11,12 @@ export default function UserOrders({ setCurrentPage }) {
   const dispatch = useDispatch();
   const userActive = useSelector((state) => state.users.userInfo);
   const email = sessionStorage.getItem("user");
+  
 
-  const membershipName = userActive.memberships.map((el) => el.name);
-  const membershipDetail = userActive.memberships.map((el) => el.description);
-  const membershipPrice = userActive.memberships.map((el) => el.price);
-  console.log(membershipName, membershipDetail, membershipPrice);
 
-  // useEffect (()=> {
-  //     if(userActive){
-  //        dispatch(getUserInfo(email))
-  //     }
-  //     getUserMembership()
-  // },[dispatch])
-  //console.log(userActive);
   return (
     <div className="boxStyle">
+      {console.log(userActive.memberships)}
       {userActive && userActive.memberships && userActive.memberships.length > 0? (
         
         userActive.memberships.map((el) => {
@@ -59,10 +50,9 @@ export default function UserOrders({ setCurrentPage }) {
                 <Card.Title>{el.description}</Card.Title>
                 <Card.Text>Price: ${el.price} </Card.Text>
               </Card.Body>
-             {/*  <Card.Footer className="text-muted">
-                {userActive.email}, your membership is valid from{" "}
-                {userActive.memberships}
-              </Card.Footer> */}
+               <Card.Footer className="text-muted">
+                Your membership is valid from {el.User_Membership.createdAt.substring(0, 10)}. Expiration date is in a month.
+              </Card.Footer> 
             </Card>
             </div>
           )
