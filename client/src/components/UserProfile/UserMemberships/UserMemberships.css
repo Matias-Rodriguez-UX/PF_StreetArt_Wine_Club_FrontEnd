@@ -1,8 +1,12 @@
-.box{
+.boxStyle{
     margin: 200px;
     /* padding: 50px; */
 }
 .notMembership{
     font-size: 22px;
     margin-bottom: 50px;
+}
+
+.cardStyle{
+    margin-bottom: 20px;
 }
