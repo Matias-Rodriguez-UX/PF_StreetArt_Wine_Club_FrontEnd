@@ -139,6 +139,7 @@ export function getUserAddresses(email) {
 
 export function createUserAddress(payload) {
   return async function (dispatch) {
+    console.log(payload)
     try {
       let address = await axios.post("/addresses", payload);
       return (
