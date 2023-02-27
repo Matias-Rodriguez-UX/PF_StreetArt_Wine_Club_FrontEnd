@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
-import { useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Accordion from 'react-bootstrap/Accordion';
 import { Nav, Button, Card } from "react-bootstrap";
 import './Style.css'
@@ -10,7 +10,7 @@ import UserInfo from "../UserInfo";
 
 export default function UserSideBar({ userName, userPicture, setCurrentPage }) {
     const dispatch = useDispatch();
-    const { logout, user, isAuthenticated:auth } = useAuth0();
+    const { logout, user, isAuthenticated: auth } = useAuth0();
     const userInfo = useSelector((state) => state.users.userInfo);
 
     // let userEmail = '';
@@ -25,15 +25,14 @@ export default function UserSideBar({ userName, userPicture, setCurrentPage }) {
 
     return (
         <>
-<Nav variant="pills" defaultActiveKey={'/'} className="d-flex flex-column flex-shrink-5 p-0 text-white bg-lg" style={{ width: '400px', height: 'auto' }}>
+            <Nav variant="pills" defaultActiveKey={'/'} className="d-flex flex-column flex-shrink-5 p-0 text-white bg-lg" style={{ width: '400px', height: 'auto' }}>
                 <a href="/home" className="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-black text-decoration-none">
                     {/* //Idea de que el nombre el usuario se vea al inicio de la sidebar */}
-                    
+
                     {/* <span className="fs-4">StreetArt Wine Club</span> */}
                 </a>
                 <hr />
-                <div className="mb-2">
-                 <div className="mb-2 d-flex align-items-center justify-content-center mt-2">
+                <div className="mb-2 d-flex align-items-center justify-content-center mt-2">
                     <div>
                         <a href="#" className="d-flex align-items-center justify-content-center text-black text-decoration-none mb-3" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
                             <img src={userPicture} alt="user profile picture" width="50" height="50" className="rounded-circle" />
@@ -47,21 +46,12 @@ export default function UserSideBar({ userName, userPicture, setCurrentPage }) {
                                     <strong>   {userName}</strong></p>
                             </div>
 
-                <Nav.Item onClick={() => setCurrentPage('orders')}>
-                    <Nav.Link title="Orders" href="#orders">
-                        <a href="#" className="nav-link text-black">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className="bi bi-box-seam me-3" viewBox="0 0 16 16">
-                                <path d="M8.186 1.113a.5.5 0 0 0-.372 0L1.846 3.5l2.404.961L10.404 2l-2.218-.887zm3.564 1.426L5.596 5 8 5.961 14.154 3.5l-2.404-.961zm3.25 1.7-6.5 2.6v7.922l6.5-2.6V4.24zM7.5 14.762V6.838L1 4.239v7.923l6.5 2.6zM7.443.184a1.5 1.5 0 0 1 1.114 0l7.129 2.852A.5.5 0 0 1 16 3.5v8.662a1 1 0 0 1-.629.928l-7.185 2.874a.5.5 0 0 1-.372 0L.63 13.09a1 1 0 0 1-.63-.928V3.5a.5.5 0 0 1 .314-.464L7.443.184z" />
-                            </svg>
-                            My orders    
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-chevron-right float right" viewBox="0 0 16 16">
-                                <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
-                            </svg>
                         </a>
-                    </Nav.Link>
-                </Nav.Item>
+                    </div>
 
-           <Accordion >
+                </div>
+
+                <Accordion >
                     <Accordion.Item eventKey="0">
                         <Accordion.Header className='nav-link text-black'><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-person float right me-3" viewBox="0 0 16 16">
                             <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10Z" />
