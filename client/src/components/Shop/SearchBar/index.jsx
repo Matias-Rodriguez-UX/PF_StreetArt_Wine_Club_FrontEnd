@@ -51,6 +51,7 @@ export default function SearchBar() {
 
     const onChange=(e, {newValue})=>{
         setValue(newValue);
+
       }
 
     const inputProps={
@@ -62,12 +63,14 @@ export default function SearchBar() {
     
     const handleClick = (product) => {
         dispatch(getProductByName(product))
+        setValue('')
     }
 
     const eventEnter=(e)=>{
         if(e.key == "Enter"){
             setValue(e.target.value)
             handleClick(value)
+            setValue('')
         }
         }
 
