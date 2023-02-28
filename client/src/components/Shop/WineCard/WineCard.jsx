@@ -39,6 +39,7 @@ const Winecards = ({ name, winery, price, image, id, addCart, handleAgregarFavor
   return (isLoading ? <SpinnerCard /> :
     <Card className="cardWine" style={{ width: '18rem', height: '36rem' }}>
       <div className='z-index-2'>
+        {userEmail ? 
         <div className='heart ' style={{ cursor: 'pointer' }}>
           <i
             onClick={() => {
@@ -52,7 +53,7 @@ const Winecards = ({ name, winery, price, image, id, addCart, handleAgregarFavor
             }}
             className={favorito ? 'bi bi-heart-fill' : 'bi bi-heart'}
           ></i>
-        </div>
+        </div> : null}
         {maxDiscount > 0 &&
           <div>
             <Badge pill bg="warning" text="dark" className="ms-4 mt-2">
