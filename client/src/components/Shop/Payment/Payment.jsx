@@ -180,7 +180,6 @@ export default function Paypal() {
 
     
     function handlePay (total) {
-      let addressUser = input;
       Swal.fire({
         title: `Your purchase by $ ${total},00 It was successful!`,
         icon: 'success',
@@ -195,9 +194,6 @@ export default function Paypal() {
         if(input.reference !== ''){
           dispatch(statusPayment(input))
         }
-        dispatch(createUserAddress(addressUser))
-        
-        
       }).then(() => {
         dispatch(resetCart())
         dispatch(getUserInfo(userInfo.email));
@@ -205,7 +201,7 @@ export default function Paypal() {
       }) 
     }
 
-    let isInputDisabled = input.Newaddress || input.reference || input.region || input.state || input.telephone || input.zipCode !== "";
+    let isInputDisabled = input.address || input.reference || input.region || input.state || input.telephone || input.zipCode !== "";
 
   const paypalDisabled = input.address && input.reference && input.region && input.state && input.telephone && input.zipCode !== "";
 
