@@ -79,7 +79,13 @@ export default function Paypal(){
           return -1
       }
       return 0;
-    }); 
+    });
+
+    useEffect(() => {
+      if (userInfo?.orders?.some(el => el.status=== 'processing payment')) {
+        dispatch(getUserCart(userInfo.id))
+      }
+    }, [dispatch, userInfo])
 
     useEffect(() => {
       if(!userInfo.id && isAuthenticated){
@@ -90,7 +96,6 @@ export default function Paypal(){
       if(userInfo.id && isAuthenticated){
         dispatch(getStates());
         dispatch(getUserInfo(user.email));
-        dispatch(getUserCart(userInfo.id));
         dispatch(getUserAddresses(userInfo.email));
       }
       if (total > 0) {
@@ -123,11 +128,16 @@ export default function Paypal(){
     const handleAddressChange = (event) => {
       const addressId = event.target.value;
       const selected = userAddresses.find((address) => address.id === parseInt(addressId));
-      setSelectedAddress({
-       ...selected, email: selected.userEmail, 
-       addressId: selected.id,
-       status: "processing shipping",
-      });
+      if (addressId === '') {
+        setSelectedAddress('')
+      }
+      if (addressId !== ''){
+        setSelectedAddress({
+          ...selected, email: selected.userEmail, 
+          addressId: selected.id,
+          status: "processing shipping",
+         });
+      }
     };
     
 
@@ -172,7 +182,7 @@ console.log(input)
     function handlePay (total) {
       let addressUser = input;
       Swal.fire({
-        title: `Your purchase by ${total},00 It was successful!`,
+        title: `Your purchase by $ ${total},00 It was successful!`,
         icon: 'success',
         timer: '8000',
         timerProgressBar: true,
@@ -186,21 +196,16 @@ console.log(input)
           dispatch(statusPayment(input))
         }
         dispatch(createUserAddress(addressUser))
-        setInput({
-          reference: "",
-          Newaddress: "", 
-          zipCode: "",
-          telephone: "",
-          email: userInfo.email,
-          state: "",
-          region: "",  
-      });
-      dispatch(resetCart())
-       history.push('/shop');
+        
+        
+      }).then(() => {
+        dispatch(resetCart())
+        dispatch(getUserInfo(userInfo.email));
+        history.push('/shop');
       }) 
     }
 
-    const isInputDisabled = input.Newaddress || input.reference || input.region || input.state || input.telephone || input.zipCode !== "";
+    let isInputDisabled = input.Newaddress || input.reference || input.region || input.state || input.telephone || input.zipCode !== "";
 
     const paypalDisabled = input.Newaddress && input.reference && input.region && input.state && input.telephone && input.zipCode !== "";
 
