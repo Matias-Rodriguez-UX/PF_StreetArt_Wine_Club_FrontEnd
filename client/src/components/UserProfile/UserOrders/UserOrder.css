@@ -1,25 +1,28 @@
-.order {
-  margin-top: 5px;
-  background-color: lightblue;
-  box-shadow: 2px 2px gray;
-  border-radius: 20px;
+.tab-content>.active.order {
+  padding: 1rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 1rem;
+  background-color: white !important;
 }
 
 .subOrder {
   /* border-radius: 20px; */
-  border-bottom: solid white;
-  border-radius: 20px;
+  width: 300px;
+  background-color: rgb(230, 230, 230) !important;
+  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.15);
+  transition: 0.5s;
+  border-radius: 1rem;
+  margin: 1rem;
   padding: 20px;
 }
 
-.divStyle {
-  margin-top: 50px;
-}
-
-.accrdn {
-  margin-top: 10px;
-  display: flex;
-  justify-content: start;
+.nav-link {
+  color: black !important;
+  /* Establece el color del texto del enlace en negro */
+  text-decoration: none !important;
+  /* Elimina el subrayado del enlace */
 }
 
 .pStyle {
@@ -29,6 +32,6 @@
   font-size: 18px;
 }
 
-.btnStyle{
+.btnStyle {
   margin-left: 10rem;
 }
