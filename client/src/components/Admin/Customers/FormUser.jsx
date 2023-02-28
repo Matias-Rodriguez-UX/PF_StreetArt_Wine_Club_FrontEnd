@@ -39,7 +39,7 @@ export default function FormUser({ selectedData, setShowModalEdit }) {
     }
     function handleConfirmUpdate() {
         fromNameToId()
-        dispatch(assignMemberships(selectedData.id, membershipsId)).then(() => {
+        dispatch(assignMemberships(selectedData.id, { idMembership: membershipsId })).then(() => {
             addAlertModifiedMembership()
             setShowModalUpdate(false)
         })

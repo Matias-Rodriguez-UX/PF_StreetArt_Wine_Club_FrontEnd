@@ -80,11 +80,6 @@ export default function AdminCustomers() {
                         <Modal.Body>
                             <FormUser selectedData={selectedData} setShowModalEdit={setShowModalEdit} />
                         </Modal.Body>
-                        <Modal.Footer>
-                            <Button variant="secondary" onClick={() => setShowModalEdit(false)}>
-                                Close
-                            </Button>
-                        </Modal.Footer>
                     </Modal>
                 </>
             }

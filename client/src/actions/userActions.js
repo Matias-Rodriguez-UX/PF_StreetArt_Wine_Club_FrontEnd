@@ -22,6 +22,7 @@ import {
   ASSIGN_MEMBERSHIPS,
   SET_DEFAULT_ADDRESS,
   GET_DEFAULT_ADDRESS,
+  GET_NEWSLETTER,
 } from "./allActions";
 import axios from "axios";
 import { loadingAction } from ".";
@@ -106,11 +107,13 @@ export function editUserInfo(payload) {
   return async function (dispatch) {
     try {
       let updatedUser = await axios.put(`/users`, payload);
-      dispatch({
-        type: EDIT_USER,
-        payload: updatedUser.data,
-      }),
-        loadingAction(false);
+      return (
+        dispatch({
+          type: EDIT_USER,
+          payload: updatedUser.data,
+        }),
+        loadingAction(false)
+      )
     } catch (e) {
       console.log("Error", e);
     }
@@ -119,17 +122,25 @@ export function editUserInfo(payload) {
 
 export function getUserAddresses(email) {
   return async function (dispatch) {
-    let addresses = await axios.get(`/addresses?email=${email}`);
-    dispatch({
-      type: GET_USER_ADDRESSES,
-      payload: addresses.data,
-    }),
-      loadingAction(false);
+    try {
+      let addresses = await axios.get(`/addresses?email=${email}`);
+      return (
+        dispatch({
+          type: GET_USER_ADDRESSES,
+          payload: addresses.data,
+        }),
+        loadingAction(false)
+      )
+    } catch (e) {
+      console.log(e)
+    }
+
   };
 }
 
 export function createUserAddress(payload) {
   return async function (dispatch) {
+    console.log(payload)
     try {
       let address = await axios.post("/addresses", payload);
       return (
@@ -166,11 +177,13 @@ export function editUserAddress(id, payload) {
   return async function (dispatch) {
     try {
       let updatedAddress = await axios.put(`/addresses/${id}`, payload);
-      dispatch({
-        type: EDIT_USER_ADDRESS,
-        payload: updatedAddress.data,
-      }),
-        loadingAction(false);
+      return (
+        dispatch({
+          type: EDIT_USER_ADDRESS,
+          payload: updatedAddress.data,
+        }),
+        loadingAction(false)
+      )
     } catch (error) {
       console.log("Error", error);
     }
@@ -179,10 +192,13 @@ export function editUserAddress(id, payload) {
 
 export function setDefaultAddress(address) {
   return async function (dispatch) {
-    dispatch({
-      type: SET_DEFAULT_ADDRESS,
-      payload: address,
-    });
+    return (
+      dispatch({
+        type: SET_DEFAULT_ADDRESS,
+        payload: address,
+      }),
+      loadingAction(false)
+    )
   };
 }
 
@@ -231,7 +247,7 @@ export function updateUserCart(payload) {
         `http://localhost:3001/users/${payload.userId}/cart`,
         payload
       );
-    } catch (error) {}
+    } catch (error) { }
   };
 }
 
@@ -297,11 +313,13 @@ export function getUserWishlist(email) {
   return async function (dispatch) {
     try {
       let wishlist = await axios.get(`/users/favourites/${email}`);
-      dispatch({
-        type: GET_WISHLIST,
-        payload: wishlist.data,
-      }),
-        loadingAction(false);
+      return (
+        dispatch({
+          type: GET_WISHLIST,
+          payload: wishlist.data,
+        }),
+        loadingAction(false)
+      )
     } catch (e) {
       console.log("Error", e);
     }
@@ -381,7 +399,7 @@ export function assignMemberships(idUser, idMembership) {
   return async function (dispatch) {
     try {
       let memeberships = await axios.put(
-        `users/${idUser}/membership/${idMembership}`
+        `users/${idUser}/membership`, idMembership
       );
       return (
         dispatch({
@@ -407,6 +425,21 @@ export function updateSubscription(email) {
   return async function () {
     try {
       await axios.put(`http://localhost:3001/newsletter`, email);
-    } catch (error) {}
+    } catch (error) { }
+  };
+}
+
+export function getNewsletter() {
+  return async function (dispatch) {
+    try {
+      let newsletter = await axios.get(`http://localhost:3001/newsletter`,);
+      return (
+        dispatch({
+          type: GET_NEWSLETTER,
+          payload: newsletter.data
+        }),
+        loadingAction(false)
+      )
+    } catch (error) { }
   };
 }

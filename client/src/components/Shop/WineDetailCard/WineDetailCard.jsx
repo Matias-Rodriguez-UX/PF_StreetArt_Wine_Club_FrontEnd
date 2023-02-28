@@ -39,11 +39,9 @@ export default function Detail(props) {
   const currentUser = useSelector((state) => state.users.userInfo)
   const allMemberships = useSelector((state) => state.memberships.allMemberships)
   const wine = useSelector((state) => state.products.wineDetail);
-  let membershipsAvailables = {}
-  let discountsToUse = []
   const [maxDiscount, setmaxDiscount] = useState(0)
   const [priceDiscount, setpriceDiscoun] = useState(0)
-  let userMembership = []
+
 
 
   useEffect(() => {
@@ -56,6 +54,7 @@ export default function Detail(props) {
       dispatch(getUserInfo(user.email))
     }
     dispatch(getMemberships())
+
     if (wine.price > 0) {
       for (let i = 0; i < currentUser.memberships?.length; i++) {
         let objetoActual = currentUser.memberships[i];
@@ -63,7 +62,7 @@ export default function Detail(props) {
           setmaxDiscount(objetoActual.discount)
         }
       }
-      setpriceDiscoun(wine.price * (1 - (maxDiscount / 100)))
+      setpriceDiscoun(Math.ceil(wine.price * (1 - (maxDiscount / 100))))
     }
   }, [dispatch, isAuthenticated, currentUser.id, selectedReview, allReviews, userIf, maxDiscount, priceDiscount, wine.price]);
 
