@@ -37,9 +37,9 @@ export default function UserOrders() {
               el.status === "processing payment" ? (
                 <Accordion defaultActiveKey="1">
                   <div className="subOrder">
-                    <h4>Order number: #{el.id}</h4>
-                    <h5>Total price: ${el.totalPrice}</h5>{" "}
-                    <h5>Purchase Date: {el.date}</h5>
+                    <h5>Order number: #{el.id}</h5>
+                    <h6>Total price: ${el.totalPrice}</h6>{" "}
+                    <h6>Purchase Date: {el.date}</h6>
                     <Accordion.Item eventKey="0">
                       <Accordion.Header>Products</Accordion.Header>
                       <Accordion.Body>
@@ -77,9 +77,9 @@ export default function UserOrders() {
                 <Accordion defaultActiveKey="1">
                   <div className="subOrder">
                     {" "}
-                    <h4>Order number: #{el.id}</h4>
-                    <h5>Total price: ${el.totalPrice}</h5>
-                    <h5>Purchase Date: {el.date}</h5>
+                    <h5>Order number: #{el.id}</h5>
+                    <h6>Total price: ${el.totalPrice}</h6>{" "}
+                    <h6>Purchase Date: {el.date}</h6>
                     <Accordion.Item eventKey="0">
                       <Accordion.Header>Products</Accordion.Header>
                       <Accordion.Body>
@@ -112,9 +112,9 @@ export default function UserOrders() {
                 <Accordion defaultActiveKey="1">
                   <div className="subOrder">
                     {" "}
-                    <h4>Order number: #{el.id}</h4>{" "}
-                    <h5>Total price: ${el.totalPrice}</h5>{" "}
-                    <h5>Purchase Date: {el.date}</h5>
+                    <h5>Order number: #{el.id}</h5>
+                    <h6>Total price: ${el.totalPrice}</h6>{" "}
+                    <h6>Purchase Date: {el.date}</h6>
                     <Accordion.Item eventKey="0">
                       <Accordion.Header>Products</Accordion.Header>
                       <Accordion.Body>
@@ -147,9 +147,9 @@ export default function UserOrders() {
                 <Accordion defaultActiveKey="1">
                   <div className="subOrder">
                     {" "}
-                    <h4>Order number: #{el.id}</h4>{" "}
-                    <h5>Total price: ${el.totalPrice}</h5>{" "}
-                    <h5>Purchase Date: {el.date}</h5>
+                    <h5>Order number: #{el.id}</h5>
+                    <h6>Total price: ${el.totalPrice}</h6>{" "}
+                    <h6>Purchase Date: {el.date}</h6>
                     <Accordion.Item eventKey="0">
                       <Accordion.Header>Products</Accordion.Header>
                       <Accordion.Body>
@@ -181,9 +181,9 @@ export default function UserOrders() {
               el.status === "cancelled" ? (
                 <Accordion defaultActiveKey="0">
                   <div className="subOrder">
-                    <h4>Order number: #{el.id}</h4>{" "}
-                    <h5>Total price: ${el.totalPrice}</h5>{" "}
-                    <h5>Purchase Date: {el.date}</h5>
+                    <h5>Order number: #{el.id}</h5>
+                    <h6>Total price: ${el.totalPrice}</h6>{" "}
+                    <h6>Purchase Date: {el.date}</h6>
                     <Accordion.Item eventKey="0">
                       <Accordion.Header>Products</Accordion.Header>
                       <Accordion.Body>
