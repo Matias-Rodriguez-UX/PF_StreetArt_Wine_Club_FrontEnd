@@ -13,15 +13,15 @@ import "./navbar.css"
 
 export default function NavigationBar() {
   const { isAuthenticated } = useAuth0();
-  
+
   let location = useLocation();
   const cart = useSelector(state => state.products.cart)
-  const userInfo = useSelector (state => state.users.userInfo);
+  const userInfo = useSelector(state => state.users.userInfo);
 
   return (
     <Navbar collapseOnSelect expand="lg" bg="light" variant="light" style={{ boxShadow: 'rgba(0, 0, 0, 0.1) 0px 4px 8px' }}>
       <Container>
-        <Link to='/home' className="text-decoration-none text-reset fs-5">StreetArt Wine Club</Link>
+        <Link to='/home' className="me-4"><img src="https://res.cloudinary.com/dom9fvn1q/image/upload/v1677697005/products/pkkcqvdzzhu5graylrzw.png" alt="logo" style={{ width: '110px' }} /> </Link>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="me-auto gap-3 align-items-center ">

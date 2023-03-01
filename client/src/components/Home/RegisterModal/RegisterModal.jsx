@@ -16,7 +16,7 @@ export default function RegisterModal() {
 
   const handleSubmit = (e) => {
     e.preventDefault(); // prevenir el comportamiento predeterminado del evento
-    if(email!=='') {dispatch(postNewsletter({ email }))};
+    if (email !== '') { dispatch(postNewsletter({ email })) };
     handleClose(); // cerrar el modal después de enviar el formulario
   }
 
@@ -51,7 +51,7 @@ export default function RegisterModal() {
                 required />
             </Form.Group>
             <div className="join-btn">
-            <Button variant="warning" type="submit">Join!</Button> {/* Agregar botón dentro del formulario */}
+              <Button variant="warning" type="submit">Join!</Button> {/* Agregar botón dentro del formulario */}
             </div>
           </Form>
         </Modal.Body>
