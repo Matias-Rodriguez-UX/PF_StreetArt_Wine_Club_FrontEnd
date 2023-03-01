@@ -215,7 +215,7 @@ export default function UserAddress() {
                                                     <div>
                                                         <button class="btn btn-warning btn-sm me-2" onClick={() => handleEditClick(el)}>Edit</button>
                                                     </div>
-                                                    <div>
+                                                    {/* <div>
                                                         <button class="btn btn-warning btn-sm" onClick={(e) => handleDelete(e, el)}>x</button>
                                                         {showToast && (
                                                             <Toast className='toast prefers-reduced-motion: no-preference' show={showToast} onClose={toggleShowA} delay={100} autohide>
@@ -227,7 +227,7 @@ export default function UserAddress() {
                                                                 <Toast.Body>Woohoo, you deleted that address!</Toast.Body>
                                                             </Toast>
                                                         )}
-                                                    </div>
+                                                    </div> */}
                                                 </div>
                                             </Card.Body>
                                         </Card>
