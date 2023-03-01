@@ -6,6 +6,7 @@ import { getUserOrders } from "../../../actions/ordersAction";
 import Accordion from "react-bootstrap/Accordion";
 import { BsFillArrowUpRightSquareFill } from "react-icons/bs";
 import { Link } from "react-router-dom";
+import './UserOrder.css'
 
 export default function UserOrders() {
   const dispatch = useDispatch();
@@ -14,18 +15,21 @@ export default function UserOrders() {
   useEffect(() => {
     if (userInfo) dispatch(getUserOrders(userInfo.email));
   }, [dispatch]);
+
   return (
-    <div className="divStyle">
+    <div className="divStyle mt-4">
       <Tabs
         defaultActiveKey="processing payment"
         id="justify-tab-example"
         className="mb-3"
         justify
+        style={{ color: 'black' }}
       >
         <Tab
           eventKey="processing payment"
           title="Processing Payment"
           className="order"
+
         >
           {console.log(userOrder)}
           {userOrder ? (
@@ -33,9 +37,9 @@ export default function UserOrders() {
               el.status === "processing payment" ? (
                 <Accordion defaultActiveKey="1">
                   <div className="subOrder">
-                    <h4>Order number: #{el.id}</h4>
-                    <h5>Total price: ${el.totalPrice}</h5>{" "}
-                    <h5>Purchase Date: {el.date}</h5>
+                    <h5>Order number: #{el.id}</h5>
+                    <h6>Total price: ${el.totalPrice}</h6>{" "}
+                    <h6>Purchase Date: {el.date}</h6>
                     <Accordion.Item eventKey="0">
                       <Accordion.Header>Products</Accordion.Header>
                       <Accordion.Body>
@@ -45,10 +49,10 @@ export default function UserOrders() {
                               <p className="pStyle">Name: {p.name}</p>
                               <p className="pStyle">Quantity: {p.quantity}</p>
                               <p className="pStyle">Price: ${p.price}</p>
-                              <Link to={"/shop/" + p.id}> <Button variant="outline-secondary" className="btnStyle"> 
+                              <Link to={"/shop/" + p.id}> <Button variant="outline-secondary" className="btnStyle">
                                 <i class="bi bi-box-arrow-up-right"></i>
                               </Button></Link>
-                              
+
                             </div>
                           );
                         })}
@@ -73,9 +77,9 @@ export default function UserOrders() {
                 <Accordion defaultActiveKey="1">
                   <div className="subOrder">
                     {" "}
-                    <h4>Order number: #{el.id}</h4>
-                    <h5>Total price: ${el.totalPrice}</h5>
-                    <h5>Purchase Date: {el.date}</h5>
+                    <h5>Order number: #{el.id}</h5>
+                    <h6>Total price: ${el.totalPrice}</h6>{" "}
+                    <h6>Purchase Date: {el.date}</h6>
                     <Accordion.Item eventKey="0">
                       <Accordion.Header>Products</Accordion.Header>
                       <Accordion.Body>
@@ -85,7 +89,7 @@ export default function UserOrders() {
                               <p className="pStyle">Name: {p.name}</p>
                               <p className="pStyle">Quantity: {p.quantity}</p>
                               <p className="pStyle">Price: ${p.price}</p>
-                              <Link to={"/shop/" + p.id}> <Button variant="outline-secondary" className="btnStyle"> 
+                              <Link to={"/shop/" + p.id}> <Button variant="outline-secondary" className="btnStyle">
                                 <i class="bi bi-box-arrow-up-right"></i>
                               </Button></Link>
                             </div>
@@ -108,9 +112,9 @@ export default function UserOrders() {
                 <Accordion defaultActiveKey="1">
                   <div className="subOrder">
                     {" "}
-                    <h4>Order number: #{el.id}</h4>{" "}
-                    <h5>Total price: ${el.totalPrice}</h5>{" "}
-                    <h5>Purchase Date: {el.date}</h5>
+                    <h5>Order number: #{el.id}</h5>
+                    <h6>Total price: ${el.totalPrice}</h6>{" "}
+                    <h6>Purchase Date: {el.date}</h6>
                     <Accordion.Item eventKey="0">
                       <Accordion.Header>Products</Accordion.Header>
                       <Accordion.Body>
@@ -120,7 +124,7 @@ export default function UserOrders() {
                               <p className="pStyle">Name: {p.name}</p>
                               <p className="pStyle">Quantity: {p.quantity}</p>
                               <p className="pStyle">Price: ${p.price}</p>
-                              <Link to={"/shop/" + p.id}> <Button variant="outline-secondary" className="btnStyle"> 
+                              <Link to={"/shop/" + p.id}> <Button variant="outline-secondary" className="btnStyle">
                                 <i class="bi bi-box-arrow-up-right"></i>
                               </Button></Link>
                             </div>
@@ -143,9 +147,9 @@ export default function UserOrders() {
                 <Accordion defaultActiveKey="1">
                   <div className="subOrder">
                     {" "}
-                    <h4>Order number: #{el.id}</h4>{" "}
-                    <h5>Total price: ${el.totalPrice}</h5>{" "}
-                    <h5>Purchase Date: {el.date}</h5>
+                    <h5>Order number: #{el.id}</h5>
+                    <h6>Total price: ${el.totalPrice}</h6>{" "}
+                    <h6>Purchase Date: {el.date}</h6>
                     <Accordion.Item eventKey="0">
                       <Accordion.Header>Products</Accordion.Header>
                       <Accordion.Body>
@@ -155,7 +159,7 @@ export default function UserOrders() {
                               <p className="pStyle">Name: {p.name}</p>
                               <p className="pStyle">Quantity: {p.quantity}</p>
                               <p className="pStyle">Price: ${p.price}</p>
-                              <Link to={"/shop/" + p.id}> <Button variant="outline-secondary" className="btnStyle"> 
+                              <Link to={"/shop/" + p.id}> <Button variant="outline-secondary" className="btnStyle">
                                 <i class="bi bi-box-arrow-up-right"></i>
                               </Button></Link>
                             </div>
@@ -177,9 +181,9 @@ export default function UserOrders() {
               el.status === "cancelled" ? (
                 <Accordion defaultActiveKey="0">
                   <div className="subOrder">
-                    <h4>Order number: #{el.id}</h4>{" "}
-                    <h5>Total price: ${el.totalPrice}</h5>{" "}
-                    <h5>Purchase Date: {el.date}</h5>
+                    <h5>Order number: #{el.id}</h5>
+                    <h6>Total price: ${el.totalPrice}</h6>{" "}
+                    <h6>Purchase Date: {el.date}</h6>
                     <Accordion.Item eventKey="0">
                       <Accordion.Header>Products</Accordion.Header>
                       <Accordion.Body>
@@ -189,7 +193,7 @@ export default function UserOrders() {
                               <p className="pStyle">Name: {p.name}</p>
                               <p className="pStyle">Quantity: {p.quantity}</p>
                               <p className="pStyle">Price: ${p.price}</p>
-                              <Link to={"/shop/" + p.id}> <Button variant="outline-secondary" className="btnStyle"> 
+                              <Link to={"/shop/" + p.id}> <Button variant="outline-secondary" className="btnStyle">
                                 <i class="bi bi-box-arrow-up-right"></i>
                               </Button></Link>
                             </div>

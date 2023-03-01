@@ -1,12 +1,11 @@
-.boxStyle{
-    margin: 200px;
-    /* padding: 50px; */
-}
-.notMembership{
-    font-size: 22px;
-    margin-bottom: 50px;
+.cardMember {
+    border-radius: 1rem;
+    box-shadow: 0 5px 5px rgba(0, 0, 0, 0.1);
+    transition: 0.5s;
 }
 
-.cardStyle{
-    margin-bottom: 20px;
+.cardMember:hover {
+    transform: translateY(-5px) scale(1.05);
+    border-radius: 1.1rem;
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.15);
 }
