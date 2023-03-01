@@ -185,7 +185,7 @@ export default function Paypal() {
       if (input.reference !== '') {
         dispatch(statusPayment(input))
       }
-      dispatch(createUserAddress(addressUser))
+      // dispatch(createUserAddress(addressUser))
       dispatch(resetCart())
       history.push('/shop');
     })
