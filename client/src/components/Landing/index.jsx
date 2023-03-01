@@ -15,6 +15,7 @@ export default function Landing() {
       <div style={{ height: '100vh' }}>
         <Row className="d-flex align-items-center" style={{ height: '100vh' }}>
           <Col md={8} className="text-center">
+            <img className="mb-2" src="https://res.cloudinary.com/dom9fvn1q/image/upload/v1677697005/products/pkkcqvdzzhu5graylrzw.png" alt="" style={{ width: '50%' }} />
             <h1>Welcome!</h1>
             <p>We sell products with alcohol on this webpage, how old are you?</p>
             <AgeForm />

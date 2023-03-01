@@ -11,6 +11,7 @@ import { useAuth0 } from '@auth0/auth0-react';
 import LoginButton from '../Login/LoginButton';
 import { Loader } from '../Loader';
 import { getMemberships } from '../../actions/membershipsActions';
+import { getUserInfo } from '../../actions/userActions';
 
 
 export default function Memberships() {

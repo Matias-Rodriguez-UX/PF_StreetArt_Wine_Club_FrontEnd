@@ -29,7 +29,7 @@ export default function SideBar({ setCurrentPage }) {
 
             <Nav variant="pills" className="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark justify-content-around" style={{ width: '280px', height: '100vh' }}>
                 <a href="/home" className="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
-                    <span className="fs-4">StreetArt</span>
+                    <img className='ms-3' style={{ width: '150px' }} src="https://res.cloudinary.com/dom9fvn1q/image/upload/v1677697005/products/pkkcqvdzzhu5graylrzw.png" alt="" />
                 </a>
                 <hr />
                 <Nav.Item onClick={() => setCurrentPage('home')} >
