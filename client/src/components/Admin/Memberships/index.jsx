@@ -18,8 +18,8 @@ export default function AdminMemberships() {
     const showLoading = useSelector((state) => state.products.showLoading)
 
     useEffect(() => {
-        dispatch(getMemberships())
         dispatch(loadingAction(true))
+        dispatch(getMemberships())
     }, [membershipList])
 
     let headers = []

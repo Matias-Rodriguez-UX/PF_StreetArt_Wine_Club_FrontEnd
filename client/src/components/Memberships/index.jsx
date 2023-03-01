@@ -1,15 +1,59 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import Banner from '../Home/Banner';
 import Navbar from '../Navbar'
 import Footer from '../Footer';
 import './Memberships.css'
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useHistory } from 'react-router-dom';
+import { useAuth0 } from '@auth0/auth0-react';
+import LoginButton from '../Login/LoginButton';
+import { Loader } from '../Loader';
+import { getMemberships } from '../../actions/membershipsActions';
+import { getUserInfo } from '../../actions/userActions';
 
 
 export default function Memberships() {
+    const dispatch = useDispatch();
+    const history = useHistory();
+    const { user, isAuthenticated, isLoading } = useAuth0();
+    const allMemberships = useSelector((state) => state.memberships.allMemberships)
+    const currentUser = useSelector((state) => state.users.userInfo)
+
+    useEffect(() => {
+        dispatch(getMemberships())
+        if (!currentUser.id && isAuthenticated) {
+            dispatch(getUserInfo(user.email))
+        }
+    }, [dispatch, currentUser.id])
+
+
+    function hasMembership(name) {
+        if (currentUser.id) {
+            for (const membership of currentUser?.memberships) {
+                console.log(currentUser)
+                if (membership?.name === name) {
+                    return true
+                } else {
+                    return false
+                }
+            }
+        }
+    }
+
+    function handleClick(name) {
+        for (const membership of allMemberships) {
+            if (membership.name === name) {
+                localStorage.setItem('membership', JSON.stringify(membership))
+            }
+        }
+        console.log(localStorage)
+    }
+
+
     return (
-        <>
+        <>{isLoading ? <Loader /> :
             <div>
                 <Banner />
                 <Navbar />
@@ -20,7 +64,7 @@ export default function Memberships() {
                     <p className='w-75 p-0 m-0 fs-6 text-center'>Packages are available in 2, 4 and 6 pack 750ml mixed bottles.</p>
                 </div>
                 <div className='row m-0 mt-5 mb-5 p-0 gap-5 align-items-center justify-content-center'>
-                    <Card className='card-white' style={{ width: '22rem' }}>
+                    <Card className='card-white' style={{ width: '22rem' }} >
                         <Card.Body>
                             <Card.Title className='mt-3 mb-3'>Stencil</Card.Title>
                             <div className='d-flex h-auto gap-1 mb-3'>
@@ -31,7 +75,7 @@ export default function Memberships() {
                             <hr></hr>
                             <div className='d-flex col gap-3 mb-2 align-items-center'>
                                 <img src='https://cdn-icons-png.flaticon.com/512/8335/8335942.png' width={'26px'} height={'26px'} alt='checked-i' />
-                                <Card.Text className='d-flex fs-6 m-0'>Shipments 50% OFF</Card.Text>
+                                <Card.Text className='d-flex fs-6 m-0'>Free Shipments</Card.Text>
                             </div>
                             <div className='d-flex col mb-2 gap-3 align-items-center'>
                                 <img src='https://cdn-icons-png.flaticon.com/512/8335/8335942.png' width={'26px'} height={'26px'} alt='checked-i' />
@@ -50,7 +94,17 @@ export default function Memberships() {
                                 <Card.Text className='d-flex fs-6 m-0'>Technical sheets</Card.Text>
                             </div>
                             <div className='d-flex align-items-center justify-content-center'>
-                                <Button variant="warning" size='md'>Get Started</Button>
+                                {isAuthenticated && hasMembership('stencil') ? <h6>You are already subscribed</h6> :
+                                    <div>
+                                        {isAuthenticated ? <Link to="/paymentMemberships">
+                                            <Button variant="light" size='md' onClick={() => handleClick('stencil')}>Get Started</Button>
+                                        </Link> :
+                                            <div>
+                                                <h6>You must login first</h6>
+                                                <LoginButton></LoginButton>
+                                            </div>}
+                                    </div>
+                                }
                             </div>
                         </Card.Body>
                     </Card>
@@ -68,7 +122,7 @@ export default function Memberships() {
                             <hr></hr>
                             <div className='d-flex col gap-3 mb-2 align-items-center'>
                                 <img src='https://cdn-icons-png.flaticon.com/512/8335/8335942.png' width={'26px'} height={'26px'} alt='checked-i' />
-                                <Card.Text className='d-flex fs-6 m-0'>Shipments Free</Card.Text>
+                                <Card.Text className='d-flex fs-6 m-0'>Free Shipments</Card.Text>
                             </div>
                             <div className='d-flex col mb-2 gap-3 align-items-center'>
                                 <img src='https://cdn-icons-png.flaticon.com/512/8335/8335942.png' width={'26px'} height={'26px'} alt='checked-i' />
@@ -87,7 +141,17 @@ export default function Memberships() {
                                 <Card.Text className='d-flex fs-6 m-0'>Technical sheets</Card.Text>
                             </div>
                             <div className='d-flex align-items-center justify-content-center'>
-                                <Button variant="light" size='md'>Get Started</Button>
+                                {isAuthenticated && hasMembership('graffiti') ? <h6>You are already subscribed</h6> :
+                                    <div>
+                                        {isAuthenticated ? <Link to="/paymentMemberships">
+                                            <Button variant="light" size='md' onClick={() => handleClick('graffiti')}>Get Started</Button>
+                                        </Link> :
+                                            <div>
+                                                <h6>You must login first</h6>
+                                                <LoginButton></LoginButton>
+                                            </div>}
+                                    </div>
+                                }
                             </div>
                         </Card.Body>
                     </Card>
@@ -102,7 +166,7 @@ export default function Memberships() {
                             <hr></hr>
                             <div className='d-flex col gap-3 mb-2 align-items-center'>
                                 <img src='https://cdn-icons-png.flaticon.com/512/8335/8335942.png' width={'26px'} height={'26px'} alt='checked-i' />
-                                <Card.Text className='d-flex fs-6 m-0'>Shipments 50% OFF</Card.Text>
+                                <Card.Text className='d-flex fs-6 m-0'>Free Shipments</Card.Text>
                             </div>
                             <div className='d-flex col mb-2 gap-3 align-items-center'>
                                 <img src='https://cdn-icons-png.flaticon.com/512/8335/8335942.png' width={'26px'} height={'26px'} alt='checked-i' />
@@ -121,14 +185,25 @@ export default function Memberships() {
                                 <Card.Text className='d-flex fs-6 m-0'>Technical sheets and food pairings</Card.Text>
                             </div>
                             <div className='d-flex align-items-center justify-content-center'>
-                                <Button variant="warning" size='md'>Get Started</Button>
+                                {isAuthenticated && hasMembership('mural') ? <h6>You are already subscribed</h6> :
+                                    <div>
+                                        {isAuthenticated ? <Link to="/paymentMemberships">
+                                            <Button variant="light" size='md' onClick={() => handleClick('mural')}>Get Started</Button>
+                                        </Link> :
+                                            <div>
+                                                <h6>You must login first</h6>
+                                                <LoginButton></LoginButton>
+                                            </div>}
+                                    </div>
+                                }
                             </div>
                         </Card.Body>
                     </Card>
 
                 </div>
                 <Footer />
-            </div>
+            </div>}
+
         </>
     )
 }
