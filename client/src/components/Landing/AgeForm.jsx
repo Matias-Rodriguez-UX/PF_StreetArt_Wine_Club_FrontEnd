@@ -24,7 +24,7 @@ export default function AgeForm() {
             localStorage.setItem('age', fechaNacimiento)
             window.location.href = '/home'
         } else {
-            window.location.href = 'https://www.google.com'
+            window.location.href = 'https://ciudadesamigas.org/no-te-consumas-alcohol/';
         }
     };
 
