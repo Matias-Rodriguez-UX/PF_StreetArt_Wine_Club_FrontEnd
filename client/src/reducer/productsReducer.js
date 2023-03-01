@@ -24,6 +24,7 @@ import {
   DELETE_REVIEW,
   POST_REVIEW,
   UPDATE_REVIEW,
+  LOCALSTORAGE_CART,
 } from "../actions/allActions";
 
 const initialState = {
@@ -33,6 +34,7 @@ const initialState = {
   filtersActive: false,
   showLoading: false,
   cart: [],
+  cartState: "",
   totalCart: 0,
   types: [],
   regions: [],
@@ -205,6 +207,12 @@ export default function productsReducer(state = initialState, action) {
         cart: addProd,
       };
 
+    case LOCALSTORAGE_CART:
+      return {
+        ...state,
+        cartState: action.payload.data,
+      };
+
     case REMOVE_CART_QUANTITY:
       const remProd = state.cart.map((product) =>
         product.id === action.payload && product.cartQuantity > 0
@@ -258,7 +266,7 @@ function sortArrayAtoZ(x, y) {
     return 1;
   }
   return 0;
-};
+}
 
 function sortArrayZtoA(x, y) {
   if (x.name > y.name) {
@@ -268,4 +276,4 @@ function sortArrayZtoA(x, y) {
     return 1;
   }
   return 0;
-};
+}

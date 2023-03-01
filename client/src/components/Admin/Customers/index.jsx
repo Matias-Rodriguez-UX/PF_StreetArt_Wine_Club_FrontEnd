@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { loadingAction } from "../../../actions";
 import { getAllUsers } from "../../../actions/userActions";
 import { Loader } from "../../Loader";
+import WebPagination from "../../Shop/Pagination/Pagination";
 import FormUser from "./FormUser";
 
 
@@ -14,10 +15,20 @@ export default function AdminCustomers() {
     const [userList, setUserList] = useState(allUsers);
     const [selectedData, setSelectedData] = useState({});
     const [showModalEdit, setShowModalEdit] = useState(false);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [customersPerPage, setCustomersPerPage] = useState(8);
+    const indexOfLastOrder = currentPage * customersPerPage;
+    const indexOfFirstOrder = indexOfLastOrder - customersPerPage;
+    const currentcustomers = allUsers.slice(indexOfFirstOrder, indexOfLastOrder);
+    const pagination = (pageNumber) => {
+        setCurrentPage(pageNumber)
+    };
 
     useEffect(() => {
         dispatch(getAllUsers())
     }, [userList])
+
+
 
     function handleClick(item) {
         setSelectedData(item);
@@ -28,7 +39,7 @@ export default function AdminCustomers() {
     if (allUsers.length) {
         headers = Object.keys(allUsers[0]);
     }
-
+    console.log(allUsers)
 
     return (
         <>
@@ -48,7 +59,13 @@ export default function AdminCustomers() {
                                 {allUsers.map((item, index) => (
                                     <tr key={index} onClick={() => handleClick(item)} style={{ cursor: 'pointer' }}>
                                         {headers.map((header, subIndex) => (
-                                            <td key={subIndex} className="ellipsis">{item[header]}</td>
+                                            (Array.isArray(item[header])) ?
+                                                <td key={subIndex} className="ellipsis"> {item[header].map((el, index) =>
+                                                    (typeof el === 'object') ?
+                                                        <li key={index} style={{ listStyleType: 'none' }}>{el.name}</li> :
+                                                        <li key={index} style={{ listStyleType: 'none' }}>{el}</li>
+                                                )}</td> :
+                                                <td key={subIndex} className="ellipsis">{item[header]}</td>
                                         ))}
                                     </tr>
                                 ))}
@@ -58,19 +75,20 @@ export default function AdminCustomers() {
 
                     <Modal show={showModalEdit} onHide={() => setShowModalEdit(false)} >
                         <Modal.Header closeButton>
-                            <Modal.Title>Edit Product</Modal.Title>
+                            <Modal.Title>Edit User</Modal.Title>
                         </Modal.Header>
                         <Modal.Body>
                             <FormUser selectedData={selectedData} setShowModalEdit={setShowModalEdit} />
                         </Modal.Body>
-                        <Modal.Footer>
-                            <Button variant="secondary" onClick={() => setShowModalEdit(false)}>
-                                Close
-                            </Button>
-                        </Modal.Footer>
                     </Modal>
                 </>
             }
+            <WebPagination
+                winesPerPage={customersPerPage}
+                numberOfWines={allUsers.length}
+                currentPage={currentPage}
+                setCurrentPage={setCurrentPage}
+                pagination={pagination} />
         </>
     )
 }

@@ -1,0 +1,23 @@
+.ellipsis {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100px;
+}
+
+.dark-modal .modal-content {
+    background-color: #333;
+    color: #fff;
+}
+
+.dark-modal .modal-header {
+    border-bottom: none;
+}
+
+.dark-modal .modal-title {
+    color: #fff;
+}
+
+.dark-modal .modal-footer {
+    border-top: none;
+}

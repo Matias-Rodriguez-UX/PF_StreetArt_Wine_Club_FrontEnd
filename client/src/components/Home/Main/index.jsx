@@ -14,7 +14,7 @@ export default function Main() {
                             alt="First slide"
                         />
                         <Carousel.Caption>
-                            <h2>StreetArt Wine Club</h2>
+                            <img className="mb-2" src="https://res.cloudinary.com/dom9fvn1q/image/upload/v1677696902/products/ccctwtw7ykd43qu9kx6l.png" alt="" style={{ width: '300px' }} />
                             <p><i>“Wine is the only work of art that can be drunk.”</i> Luis Fernando Olaverri</p>
                             <p>We believe a wine club should offer wines that expand your knowledge and teach you about the world.</p>
                             <Link to='/memberships'>

@@ -1,14 +1,32 @@
-
 import { useAuth0 } from "@auth0/auth0-react";
 // const { isLoading, isAuthenticated: auth, user } = useAuth0();
 import {
-  GET_ALL_STATES, GET_ALL_CITIES, GET_ALL_USERS, GET_USER_INFO, CREATE_USER, EDIT_USER, GET_USER_ADDRESSES, CREATE_USER_ADDRESS, EDIT_USER_ADDRESS, DELETE_USER_ADDRESS,
-  DELETE_USER, GET_WISHLIST, POST_WISHLIST, DELETE_FAVOURITE, ADD_TO_CART,
-  GET_USER_CART, POST_NEWSLETTER
+  GET_ALL_STATES,
+  GET_ALL_CITIES,
+  GET_ALL_USERS,
+  GET_USER_INFO,
+  CREATE_USER,
+  EDIT_USER,
+  GET_USER_ADDRESSES,
+  CREATE_USER_ADDRESS,
+  EDIT_USER_ADDRESS,
+  DELETE_USER_ADDRESS,
+  DELETE_USER,
+  GET_WISHLIST,
+  POST_WISHLIST,
+  DELETE_FAVOURITE,
+  ADD_TO_CART,
+  GET_USER_CART,
+  POST_NEWSLETTER,
+  SET_AGE,
+  ASSIGN_MEMBERSHIPS,
+  SET_DEFAULT_ADDRESS,
+  GET_DEFAULT_ADDRESS,
+  GET_NEWSLETTER,
 } from "./allActions";
 import axios from "axios";
 import { loadingAction } from ".";
-import { instance } from '../axiosInstance.jsx';
+import { instance } from "../axiosInstance.jsx";
 
 const headers = {
   headers: {
@@ -24,17 +42,19 @@ export function getAllStates() {
       payload: states.data,
     });
   };
-};
+}
 
 export function getAllCities(id) {
   return async function (dispatch) {
-    let cities = await axios.get(`https://apis.datos.gob.ar/georef/api/municipios?provincia=${id}&campos=id,nombre&max=1000`);
+    let cities = await axios.get(
+      `https://apis.datos.gob.ar/georef/api/municipios?provincia=${id}&campos=id,nombre&max=1000`
+    );
     return dispatch({
       type: GET_ALL_CITIES,
       payload: cities.data,
     });
   };
-};
+}
 
 export function getAllUsers() {
   return async function (dispatch) {
@@ -87,11 +107,13 @@ export function editUserInfo(payload) {
   return async function (dispatch) {
     try {
       let updatedUser = await axios.put(`/users`, payload);
-      dispatch({
-        type: EDIT_USER,
-        payload: updatedUser.data,
-      }),
-        loadingAction(false);
+      return (
+        dispatch({
+          type: EDIT_USER,
+          payload: updatedUser.data,
+        }),
+        loadingAction(false)
+      )
     } catch (e) {
       console.log("Error", e);
     }
@@ -100,22 +122,34 @@ export function editUserInfo(payload) {
 
 export function getUserAddresses(email) {
   return async function (dispatch) {
-    let addresses = await axios.get(`/addresses?email=${email}`);
-    dispatch({
-      type: GET_USER_ADDRESSES,
-      payload: addresses.data,
-    });
+    try {
+      let addresses = await axios.get(`/addresses?email=${email}`);
+      return (
+        dispatch({
+          type: GET_USER_ADDRESSES,
+          payload: addresses.data,
+        }),
+        loadingAction(false)
+      )
+    } catch (e) {
+      console.log(e)
+    }
+
   };
 }
 
 export function createUserAddress(payload) {
   return async function (dispatch) {
+    console.log(payload)
     try {
-      let address = await axios.post('/addresses', payload);
-      return dispatch({
-        type: CREATE_USER_ADDRESS,
-        payload: address.data,
-      });
+      let address = await axios.post("/addresses", payload);
+      return (
+        dispatch({
+          type: CREATE_USER_ADDRESS,
+          payload: address.data,
+        }),
+        loadingAction(false)
+      );
     } catch (error) {
       console.log("ERROR", error);
     }
@@ -125,28 +159,53 @@ export function createUserAddress(payload) {
 export function deleteUserAddress(addressId, userId) {
   return async function () {
     try {
-      var address = await axios.delete(`/users/${addressId}`);
-      return dispatch({
-        type: DELETE_USER_ADDRESS,
-        payload: address.data,
-      });
+      var address = await axios.delete(`/addresses/${addressId}`);
+      return (
+        dispatch({
+          type: DELETE_USER_ADDRESS,
+          payload: address.data,
+        }),
+        loadingAction(false)
+      );
     } catch (error) {
       console.log("Error", error);
     }
   };
 }
 
-export function editUserAddress(payload) {
+export function editUserAddress(id, payload) {
   return async function (dispatch) {
     try {
-      let updatedAddress = await axios.put(`/users/${payload}`);
-      dispatch({
-        type: EDIT_USER_ADDRESS,
-        payload: updatedAddress.data,
-      });
+      let updatedAddress = await axios.put(`/addresses/${id}`, payload);
+      return (
+        dispatch({
+          type: EDIT_USER_ADDRESS,
+          payload: updatedAddress.data,
+        }),
+        loadingAction(false)
+      )
     } catch (error) {
       console.log("Error", error);
     }
+  };
+}
+
+export function setDefaultAddress(address) {
+  return async function (dispatch) {
+    return (
+      dispatch({
+        type: SET_DEFAULT_ADDRESS,
+        payload: address,
+      }),
+      loadingAction(false)
+    )
+  };
+}
+
+export function getDefaultAddress() {
+  return (dispatch) => {
+    const defaultAddress = JSON.parse(localStorage.getItem("defaultAddress"));
+    dispatch(setDefaultAddress(defaultAddress));
   };
 }
 
@@ -154,12 +213,14 @@ export function editUserAddress(payload) {
 
 export function addUserCart(payload) {
   return async function () {
-    console.log("PAYLOAD: ", payload);
+    /* console.log("PAYLOAD: ", payload); */
     try {
-      await axios.post(
+      console.log("PAYLOAD addUserCart: ", payload);
+      const result = await axios.post(
         `http://localhost:3001/users/${payload.userId}/cart`,
         payload
       );
+      console.log("result addUserCart: ", result);
     } catch (error) {
       console.log("Error", error);
     }
@@ -169,23 +230,24 @@ export function addUserCart(payload) {
 export function getUserCart(id) {
   return async function (dispatch) {
     let userCart = await axios.get(`http://localhost:3001/users/${id}/cart`);
-    return dispatch({
-      type: GET_USER_CART,
-      payload: userCart.data.products,
-    });
+    return (
+      dispatch({
+        type: GET_USER_CART,
+        payload: userCart.data.products,
+      }),
+      loadingAction(false)
+    );
   };
 }
 
 export function updateUserCart(payload) {
   return async function () {
     try {
-      await axios.put(
+      const result = await axios.put(
         `http://localhost:3001/users/${payload.userId}/cart`,
         payload
       );
-    } catch (error) {
-      console.log("Error", error);
-    }
+    } catch (error) { }
   };
 }
 
@@ -195,70 +257,189 @@ export function deleteUserCart(userId, productId) {
       let result = await axios.delete(
         `http://localhost:3001/users/${userId}/cart/${productId}`
       );
-      console.log(result);
     } catch (error) {
       console.log("Error", error);
     }
   };
+}
 
-};
+export function statusCart(payload) {
+  return async function () {
+    try {
+      let result = await axios.put(
+        `http://localhost:3001/orders/checkout`,
+        payload
+      );
+    } catch (error) {
+      console.log("Error", error);
+    }
+  };
+}
+
+export function statusPayment(payload) {
+  console.log(payload);
+  return async function () {
+    try {
+      if (payload.addressId) {
+        let result = await axios.put(
+          `http://localhost:3001/orders/checkout?addressId=${payload.addressId}`,
+          payload
+        );
+      } else {
+        let result = await axios.put(
+          `http://localhost:3001/orders/checkout`,
+          payload
+        );
+      }
+    } catch (error) {
+      console.log("Error", error);
+    }
+  };
+}
+
+export function deleteCart(userId) {
+  return async function () {
+    try {
+      let result = await axios.delete(
+        `http://localhost:3001/users/${userId}/cart`
+      );
+    } catch (error) {
+      console.log("Error", error);
+    }
+  };
+}
 
 export function getUserWishlist(email) {
   return async function (dispatch) {
     try {
-      let wishlist = await axios.get(`/users/favourites/${email}`)
-      dispatch({
-        type: GET_WISHLIST,
-        payload: wishlist.data
-      })
+      let wishlist = await axios.get(`/users/favourites/${email}`);
+      return (
+        dispatch({
+          type: GET_WISHLIST,
+          payload: wishlist.data,
+        }),
+        loadingAction(false)
+      )
     } catch (e) {
-      console.log("Error", e)
+      console.log("Error", e);
     }
-  }
+  };
 }
 
 export function postFavourite(id, email) {
   return async function (dispatch) {
     try {
-      console.log(email)
+      console.log(email);
       let wishlist = await axios.post(`/users/fav/${email}/${id}`);
-      return dispatch({
-        type: POST_WISHLIST,
-        payload: wishlist.data
-      });
+      return (
+        dispatch({
+          type: POST_WISHLIST,
+          payload: wishlist.data,
+        }),
+        loadingAction(false)
+      );
     } catch (error) {
-      console.log("ERROR", error)
+      console.log("ERROR", error);
     }
   };
-};
+}
 
 export function deleteFavourite(id, email) {
-
   return async function (dispatch) {
     try {
       var wishlist = await axios.delete(`/users/deleteFav/${email}/${id}`);
-      return dispatch({
-        type: DELETE_FAVOURITE,
-        payload: wishlist.data
-      })
+      return (
+        dispatch({
+          type: DELETE_FAVOURITE,
+          payload: wishlist.data,
+        }),
+        loadingAction(false)
+      );
     } catch (error) {
       console.log("Error", error);
     }
   };
-};
+}
 
 export function postNewsletter(email) {
   return async function (dispatch) {
     try {
-      console.log(email)
-      let newsletter = await axios.post('/newsletter', email);
-      return dispatch({
-        type: POST_NEWSLETTER,
-        payload: newsletter.data
-      });
+      console.log(email);
+      let newsletter = await axios.post("/newsletter", email);
+      return (
+        dispatch({
+          type: POST_NEWSLETTER,
+          payload: newsletter.data,
+        }),
+        loadingAction(false)
+      );
     } catch (error) {
-      console.log("ERROR", error)
+      console.log("ERROR", error);
     }
   };
-};
+}
 
+export function setAge(age) {
+  return async function (dispatch) {
+    try {
+      return (
+        dispatch({
+          type: SET_AGE,
+          payload: age,
+        }),
+        loadingAction(false)
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
+export function assignMemberships(idUser, idMembership) {
+  return async function (dispatch) {
+    try {
+      let memeberships = await axios.put(
+        `users/${idUser}/membership`, idMembership
+      );
+      return (
+        dispatch({
+          type: ASSIGN_MEMBERSHIPS,
+          payload: memeberships.result,
+        }),
+        loadingAction(false)
+      );
+    } catch (error) {
+      console.log("ERROR", error);
+    }
+  };
+}
+
+export function deleteUserCartGet(userId, productId) {
+  return (dispatch) => {
+    dispatch(deleteUserCart(userId, productId));
+    dispatch(getUserCart(userId));
+  };
+}
+
+export function updateSubscription(email) {
+  return async function () {
+    try {
+      await axios.put(`http://localhost:3001/newsletter`, email);
+    } catch (error) { }
+  };
+}
+
+export function getNewsletter() {
+  return async function (dispatch) {
+    try {
+      let newsletter = await axios.get(`http://localhost:3001/newsletter`,);
+      return (
+        dispatch({
+          type: GET_NEWSLETTER,
+          payload: newsletter.data
+        }),
+        loadingAction(false)
+      )
+    } catch (error) { }
+  };
+}

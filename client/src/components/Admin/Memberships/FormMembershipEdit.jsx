@@ -21,6 +21,7 @@ export default function FormMembershipEdit({ selectedData, setShowModalEdit }) {
         if (input.name === ""
             || input.price <= 0
             || input.discount <= 0
+            || input.description === ""
         ) {
             setActiveButton(true)
         } else {
@@ -46,6 +47,7 @@ export default function FormMembershipEdit({ selectedData, setShowModalEdit }) {
             name: input.name.toLowerCase(),
             price: parseInt(input.price, 10),
             discount: parseInt(input.quantity, 10),
+            description: input.description
         })
         try {
             const response = dispatch(updateMemberships(input.id, input));
@@ -83,6 +85,18 @@ export default function FormMembershipEdit({ selectedData, setShowModalEdit }) {
         })
     }
 
+    const addAlertDelete = (name) => {
+        Swal.fire({
+            title: "THE MEMBERSHIP WAS DELETE",
+            text: `You delete the membership ${name}`,
+            icon: 'error',
+            timer: '3000',
+            timerProgressBar: true,
+            allowOutsideClick: true,
+            confirmButtonColor: '#ffc107'
+        })
+    }
+
 
     return (
         <>
@@ -111,6 +125,13 @@ export default function FormMembershipEdit({ selectedData, setShowModalEdit }) {
                         <InputGroup.Text>%</InputGroup.Text>
                     </InputGroup>
                 </Form.Group>
+                <Form.Group controlId="formDetails">
+                    <Form.Label>Description</Form.Label>
+                    <InputGroup>
+                        <InputGroup.Text>Membership Details</InputGroup.Text>
+                        <Form.Control as="textarea" aria-label="With textarea" type="text" defaultValue={'vino'} name="description" value={input.description} onChange={e => handleChanges(e)} required />
+                    </InputGroup>
+                </Form.Group>
                 <div className="d-flex flex-row-reverse justify-content-evenly mt-3">
                     <Button variant="warning" type="button" disabled={activeButton} onClick={e => setShowModalUpdate(true)} style={{ width: '40%' }} >
                         Save the Change
@@ -122,7 +143,7 @@ export default function FormMembershipEdit({ selectedData, setShowModalEdit }) {
             </Form>
             <Modal show={showModalUpdate} onHide={() => setShowModalUpdate(false)} className="bg-dark">
                 <Modal.Header closeButton>
-                    <Modal.Title>Update Product</Modal.Title>
+                    <Modal.Title>Update Membership</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>Are you sure about the changes you are going to make?</Modal.Body>
                 <Modal.Footer>
