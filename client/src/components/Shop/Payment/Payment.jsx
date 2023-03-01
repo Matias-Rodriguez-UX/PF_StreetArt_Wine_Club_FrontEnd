@@ -115,14 +115,14 @@ export default function Paypal() {
       purchase_units: [
         {
           amount: {
-            value: total,
+            value: newTotal,
           },
         },
       ],
     });
   }
   const onApprove = (data, actions) => {
-    return actions.order.capture(handlePay(total));
+    return actions.order.capture(handlePay(newTotal));
   }
 
     const handleAddressChange = (event) => {

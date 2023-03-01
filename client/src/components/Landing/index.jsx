@@ -7,7 +7,7 @@ import AgeForm from './AgeForm'
 export default function Landing() {
 
   const handleClick = () => {
-    window.location.href = 'https://www.google.com';
+    window.location.href = 'https://ciudadesamigas.org/no-te-consumas-alcohol/';
   };
 
   return (
