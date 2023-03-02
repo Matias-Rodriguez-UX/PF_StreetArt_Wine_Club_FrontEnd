@@ -21,11 +21,10 @@ export default function NavigationBar() {
 
 
   useEffect(() => {
-    if (userInfo.id && isAuthenticated) {
+    if (userInfo.id) {
       dispatch(getUserCart(userInfo.id))
     }
-
-  }, [dispatch, cart])
+  }, [dispatch])
 
 
   return (
