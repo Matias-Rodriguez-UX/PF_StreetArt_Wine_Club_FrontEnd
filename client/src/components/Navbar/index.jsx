@@ -14,6 +14,7 @@ import { getUserCart } from "../../actions/userActions";
 
 export default function NavigationBar() {
   const { isAuthenticated } = useAuth0();
+  const cartState = useSelector((state) => state.products.cartState)
   const dispatch = useDispatch();
   let location = useLocation();
   const cart = useSelector(state => state.products.cart)
@@ -24,6 +25,12 @@ export default function NavigationBar() {
     const itemsCount = cart?.length
     setCartItemsCount(itemsCount)
   }, [cart])
+
+  useEffect(() => {
+    if (userInfo.id && isAuthenticated && cartState === '') {
+      dispatch(getUserCart(userInfo.id))
+    }
+  }, [cartItemsCount])
 
 
   return (
