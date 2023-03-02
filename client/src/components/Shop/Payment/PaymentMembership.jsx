@@ -155,7 +155,6 @@ export default function PaymentMembership() {
         let addressUser = input;
         addMemberships()
         currentMembership.push(storedMembership.id)
-        console.log(currentMembership)
         Swal.fire({
             title: `Your purchase by ${total},00 It was successful!`,
             icon: 'success',
@@ -164,12 +163,11 @@ export default function PaymentMembership() {
             allowOutsideClick: true,
             confirmButtonColor: '#ffc107'
         }).then(() => {
-            dispatch(createUserAddress(addressUser)).then(() => {
-                dispatch(assignMemberships(userInfo.id, { idMembership: currentMembership }))
-            })
-            history.push('/userprofile');
+            dispatch(assignMemberships(userInfo.id, { idMembership: currentMembership }))
         })
+        history.push('/userprofile');
     }
+
 
     const isInputDisabled = input.address || input.reference || input.region || input.state || input.telephone || input.zipCode !== "";
 
