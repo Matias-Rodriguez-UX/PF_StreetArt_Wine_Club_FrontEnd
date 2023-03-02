@@ -35,11 +35,9 @@ export default function Cart() {
 
   useEffect(() => {
     if (cart.length === 0 && !currentUser.id) {
-      console.log(cart, 'cart global', localStorage.getItem('cart'), 'lo que hay en local storage')
       if (!isAuthenticated) {
         const storedCart = JSON.parse(localStorage.getItem('cart')) || [];
         storedCart.forEach(item => dispatch(addCartToLs(item)));
-        console.log(cart, 'cart global', storedCart, 'lo que hay en local storage')
       }
     }
     if (currentUser.id) {
@@ -47,7 +45,6 @@ export default function Cart() {
       if (storedCart.length) {
         setLocalStorageState(true)
       }
-      console.log(cart, 'cart global', storedCart, 'lo que hay en local storage', localStorageState)
     }
 
     if (total > 0) {
@@ -141,7 +138,6 @@ export default function Cart() {
         setGetSwitch(true)
         dispatch(getUserCart(currentUser.id))
       })
-
       addDeleteAlert(name)
     }
   }
@@ -149,7 +145,8 @@ export default function Cart() {
   const handleStatus = () => {
     dispatch(statusCart({
       email: currentUser.email,
-      status: 'processing payment'
+      status: 'processing payment',
+      discount: discount
     }))
     // console.log(currentUser.email);
   }

@@ -71,43 +71,43 @@ export default function Paypal() {
   });
 
 
-   let orderedCities = cities?.municipios?.sort(function(a,b) {
-      if (a.nombre > b.nombre){
-          return 1;
-      }
-      if (b.nombre > a.nombre){
-          return -1
-      }
-      return 0;
-    });
+  let orderedCities = cities?.municipios?.sort(function (a, b) {
+    if (a.nombre > b.nombre) {
+      return 1;
+    }
+    if (b.nombre > a.nombre) {
+      return -1
+    }
+    return 0;
+  });
 
-    useEffect(() => {
-      if (userInfo?.orders?.some(el => el.status=== 'processing payment')) {
-        dispatch(getUserCart(userInfo.id))
-      }
-    }, [dispatch, userInfo])
+  useEffect(() => {
+    if (userInfo?.orders?.some(el => el.status === 'processing payment')) {
+      dispatch(getUserCart(userInfo.id))
+    }
+  }, [dispatch, userInfo])
 
-    useEffect(() => {
-      if(!userInfo.id && isAuthenticated){
-          dispatch(getUserInfo(user.email))
-          dispatch(getUserAddresses(userInfo.email));
-          dispatch(getStates());
-      }
-      if(userInfo.id && isAuthenticated){
-        dispatch(getStates());
-        dispatch(getUserInfo(user.email));
-        dispatch(getUserAddresses(userInfo.email));
-      }
-      if (total > 0) {
-        for (let i = 0; i < userInfo.memberships?.length; i++) {
-          let objetoActual = userInfo.memberships[i];
-          if (objetoActual.discount > discount) {
-            setDiscount(objetoActual.discount)
-          }
+  useEffect(() => {
+    if (!userInfo.id && isAuthenticated) {
+      dispatch(getUserInfo(user.email))
+      dispatch(getUserAddresses(userInfo.email));
+      dispatch(getStates());
+    }
+    if (userInfo.id && isAuthenticated) {
+      dispatch(getStates());
+      dispatch(getUserInfo(user.email));
+      dispatch(getUserAddresses(userInfo.email));
+    }
+    if (total > 0) {
+      for (let i = 0; i < userInfo.memberships?.length; i++) {
+        let objetoActual = userInfo.memberships[i];
+        if (objetoActual.discount > discount) {
+          setDiscount(objetoActual.discount)
         }
-        setNewTotal(Math.ceil(total * (1 - (discount / 100))))
       }
-    }, [dispatch, isAuthenticated, userInfo.id, discount, newTotal, total])
+      setNewTotal(Math.ceil(total * (1 - (discount / 100))))
+    }
+  }, [dispatch, isAuthenticated, userInfo.id, discount, newTotal, total])
 
 
   const createOrder = (data, actions) => {
@@ -125,21 +125,21 @@ export default function Paypal() {
     return actions.order.capture(handlePay(newTotal));
   }
 
-    const handleAddressChange = (event) => {
-      const addressId = event.target.value;
-      const selected = userAddresses.find((address) => address.id === parseInt(addressId));
-      if (addressId === '') {
-        setSelectedAddress('')
-      }
-      if (addressId !== ''){
-        setSelectedAddress({
-          ...selected, email: selected.userEmail, 
-          addressId: selected.id,
-          status: "processing shipping",
-         });
-      }
-    };
-    
+  const handleAddressChange = (event) => {
+    const addressId = event.target.value;
+    const selected = userAddresses.find((address) => address.id === parseInt(addressId));
+    if (addressId === '') {
+      setSelectedAddress('')
+    }
+    if (addressId !== '') {
+      setSelectedAddress({
+        ...selected, email: selected.userEmail,
+        addressId: selected.id,
+        status: "processing shipping",
+      });
+    }
+  };
+
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -178,30 +178,30 @@ export default function Paypal() {
 
   console.log(input)
 
-    
-    function handlePay (total) {
-      Swal.fire({
-        title: `Your purchase by $ ${total},00 It was successful!`,
-        icon: 'success',
-        timer: '8000',
-        timerProgressBar: true,
-        allowOutsideClick: true,
-        confirmButtonColor: '#ffc107'
-      }).then(() => {
-        if (selectedAddress !== '') {
-          dispatch(statusPayment(selectedAddress))
-        }
-        if(input.reference !== ''){
-          dispatch(statusPayment(input))
-        }
-      }).then(() => {
-        dispatch(resetCart())
-        dispatch(getUserInfo(userInfo.email));
-        history.push('/shop');
-      }) 
-    }
 
-    let isInputDisabled = input.address || input.reference || input.region || input.state || input.telephone || input.zipCode !== "";
+  function handlePay(total) {
+    Swal.fire({
+      title: `Your purchase by $ ${total},00 It was successful!`,
+      icon: 'success',
+      timer: '8000',
+      timerProgressBar: true,
+      allowOutsideClick: true,
+      confirmButtonColor: '#ffc107'
+    }).then(() => {
+      if (selectedAddress !== '') {
+        dispatch(statusPayment({ ...selectedAddress, discount: discount }))
+      }
+      if (input.reference !== '') {
+        dispatch(statusPayment({ ...input, discount: discount }))
+      }
+    }).then(() => {
+      dispatch(resetCart())
+      dispatch(getUserInfo(userInfo.email));
+      history.push('/shop');
+    })
+  }
+
+  let isInputDisabled = input.address || input.reference || input.region || input.state || input.telephone || input.zipCode !== "";
 
   const paypalDisabled = input.address && input.reference && input.region && input.state && input.telephone && input.zipCode !== "";
 
