@@ -70,7 +70,7 @@ export default function Shop() {
         if (!isAuthenticated) {
             localStorage.setItem('cart', JSON.stringify(cart));
         }
-    }, [dispatch, getSwitch])
+    }, [dispatch, getSwitch, cart])
 
     useEffect(() => {
         if (!currentUser.id && isAuthenticated) {
