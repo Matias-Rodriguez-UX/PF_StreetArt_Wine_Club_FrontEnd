@@ -33,10 +33,10 @@ export default function Memberships() {
         if (currentUser.id) {
             for (const membership of currentUser?.memberships) {
                 if (membership?.name == name) {
-                    console.log(name)
+                    console.log(name, 'verdadero vs', membership.name)
                     return true
                 } else {
-                    console.log(name)
+                    console.log(name, ' falso vs', membership.name)
                     return false
                 }
             }
