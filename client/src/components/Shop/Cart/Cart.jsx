@@ -31,8 +31,8 @@ export default function Cart() {
   const [newTotal, setNewTotal] = useState(total)
   const dispatch = useDispatch();
   const { user, isAuthenticated, isLoading } = useAuth0();
-  console.log(newTotal)
-  console.log(total)
+
+
   useEffect(() => {
     if (cart.length === 0 && !currentUser.id) {
       if (!isAuthenticated) {
@@ -124,8 +124,9 @@ export default function Cart() {
 
   const deleteProduct = (userId, productId, name) => {
     if (!isAuthenticated) {
-      dispatch(deleteFromCart(productId))
-      addDeleteAlert(name)
+      dispatch(deleteFromCart(productId)).then(() => {
+        addDeleteAlert(name)
+      })
     }
     if (isAuthenticated) {
       dispatch(deleteUserCart(userId, productId))
