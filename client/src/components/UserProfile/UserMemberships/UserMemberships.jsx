@@ -28,7 +28,6 @@ export default function UserOrders({ setCurrentPage }) {
   return (
     <div className="d-flex flex-column align-items-center mt-4 justify-content-evenly">
       <div className="d-flex align-items-center mt-4">
-        {console.log(userActive.memberships)}
         {userActive && userActive.memberships && userActive.memberships.length > 0 ? (
 
           userActive.memberships.length > 1 && userActive.memberships.map((el) => {

@@ -35,17 +35,21 @@ export default function Cart() {
 
   useEffect(() => {
     if (cart.length === 0 && !currentUser.id) {
+      console.log(cart, 'cart global', localStorage.getItem('cart'), 'lo que hay en local storage')
       if (!isAuthenticated) {
         const storedCart = JSON.parse(localStorage.getItem('cart')) || [];
         storedCart.forEach(item => dispatch(addCartToLs(item)));
+        console.log(cart, 'cart global', storedCart, 'lo que hay en local storage')
       }
     }
     if (currentUser.id) {
       const storedCart = JSON.parse(localStorage.getItem('cart')) || [];
-      if (storedCart.length > 0) {
+      if (storedCart.length) {
         setLocalStorageState(true)
       }
+      console.log(cart, 'cart global', storedCart, 'lo que hay en local storage', localStorageState)
     }
+
     if (total > 0) {
       for (let i = 0; i < currentUser.memberships?.length; i++) {
         let objetoActual = currentUser.memberships[i];
