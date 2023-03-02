@@ -32,10 +32,11 @@ export default function Memberships() {
     function hasMembership(name) {
         if (currentUser.id) {
             for (const membership of currentUser?.memberships) {
-                console.log(currentUser)
-                if (membership?.name === name) {
+                if (membership?.name == name) {
+                    console.log(name)
                     return true
                 } else {
+                    console.log(name)
                     return false
                 }
             }
@@ -48,7 +49,6 @@ export default function Memberships() {
                 localStorage.setItem('membership', JSON.stringify(membership))
             }
         }
-        console.log(localStorage)
     }
 
 
