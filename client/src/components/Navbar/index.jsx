@@ -17,6 +17,10 @@ export default function NavigationBar() {
   let location = useLocation();
   const cart = useSelector(state => state.products.cart)
   const userInfo = useSelector(state => state.users.userInfo);
+  useEffect(() => {
+
+  }, [cart])
+
 
   return (
     <Navbar collapseOnSelect expand="lg" bg="light" variant="light" style={{ boxShadow: 'rgba(0, 0, 0, 0.1) 0px 4px 8px' }}>
