@@ -67,8 +67,10 @@ export default function Detail(props) {
   }, [dispatch, isAuthenticated, currentUser.id, selectedReview, allReviews, userIf, maxDiscount, priceDiscount, wine.price]);
 
   useEffect(() => {
-    if (getSwitch) dispatch(getUserCart(currentUser.id))
-  })
+    if (getSwitch)
+      dispatch(getUserCart(currentUser.id))
+    return setGetSwitch(false)
+  }, [dispatch])
 
 
 

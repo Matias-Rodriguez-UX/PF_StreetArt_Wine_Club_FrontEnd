@@ -123,7 +123,7 @@ export default function Shop() {
             title: "YOUR PRODUCT WAS ADDED",
             text: `You have added ${cartQuantity} ${name} Box`,
             icon: 'success',
-            timer: '4000',
+            timer: '2500',
             timerProgressBar: true,
             allowOutsideClick: true,
             confirmButtonColor: '#ffc107'
