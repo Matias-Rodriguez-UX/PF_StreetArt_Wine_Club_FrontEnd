@@ -124,9 +124,8 @@ export default function Cart() {
 
   const deleteProduct = (userId, productId, name) => {
     if (!isAuthenticated) {
-      dispatch(deleteFromCart(productId)).then(() => {
-        addDeleteAlert(name)
-      })
+      dispatch(deleteFromCart(productId))
+      addDeleteAlert(name)
     }
     if (isAuthenticated) {
       dispatch(deleteUserCart(userId, productId))
