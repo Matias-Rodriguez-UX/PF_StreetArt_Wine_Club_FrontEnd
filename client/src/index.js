@@ -1,4 +1,4 @@
-import { Auth0Provider, useAuth0} from "@auth0/auth0-react";
+import { Auth0Provider, useAuth0 } from "@auth0/auth0-react";
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
@@ -11,10 +11,10 @@ import axios from "axios";
 // const { user, isAuthenticated } = useAuth0();
 // const { isLoading, isAuthenticated: auth, user } = useAuth0();
 
-axios.defaults.baseURL = 'http://localhost:3001';
+// axios.defaults.baseURL = 'http://localhost:3001';
 axios.defaults.headers.common['Authorization'] = sessionStorage.getItem('user');
 
-//axios.defaults.baseURL = 'https://pfstreetartwineclubbackend-production.up.railway.app';
+axios.defaults.baseURL = 'https://pfstreetartwineclubbackend-production.up.railway.app';
 
 const domain = "dev-eqjids43tpn0c5lj.us.auth0.com";
 const clientId = "CW1fFkRrBryYtSpyefTvYFWGf6sNQNhg";
@@ -26,7 +26,7 @@ ReactDOM.render(
         domain={domain}
         clientId={clientId}
         authorizationParams={{
-          redirect_uri: "http://localhost:3000/userprofile",
+          redirect_uri: "/userprofile",
         }}
       >
         <App />
