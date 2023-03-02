@@ -26,6 +26,9 @@ export default function NavigationBar() {
         const itemsCount = cart?.length
         setCartItemsCount(itemsCount);
       })
+    } else {
+      const itemsCount = cart?.length
+      setCartItemsCount(itemsCount)
     }
   }, [cart])
 
