@@ -20,10 +20,7 @@ export default function NavigationBar() {
   const [cartItemsCount, setCartItemsCount] = useState(0);
 
   useEffect(() => {
-    const itemsCount = cart.reduce(
-      (count, item) => count + item.quantity,
-      0
-    );
+    const itemsCount = cart?.length
     setCartItemsCount(itemsCount);
   }, [cart])
 
