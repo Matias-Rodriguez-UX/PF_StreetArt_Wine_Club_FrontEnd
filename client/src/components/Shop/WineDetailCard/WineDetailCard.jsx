@@ -110,7 +110,9 @@ export default function Detail(props) {
         quantity: cartQuantity,
         email: user.email,
         productId: id,
-      }))
+      })).then(() => {
+        dispatch(getUserCart(currentUser.id))
+      })
       setGetSwitch(true)
       addAlert(cartQuantity, name);
     }
