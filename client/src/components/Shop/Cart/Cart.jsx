@@ -124,7 +124,7 @@ export default function Cart() {
 
   const deleteProduct = (userId, productId, name) => {
     if (!isAuthenticated) {
-      if (cart.length) {
+      if (cart.length > 1) {
         dispatch(deleteFromCart(productId))
       } else {
         localStorage.removeItem('cart')
