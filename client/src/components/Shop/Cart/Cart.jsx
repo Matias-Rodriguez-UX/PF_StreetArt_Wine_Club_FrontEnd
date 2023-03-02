@@ -4,7 +4,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from "react-router-dom";
-import { deleteFromCart, removeCartQuantity, addCartQuantity, addCartToLs, addToCart } from '../../../actions';
+import { deleteFromCart, removeCartQuantity, addCartQuantity, addCartToLs, addToCart, resetCart } from '../../../actions';
 import NavigationBar from "../../Navbar/index";
 import Banner from '../../Home/Banner/index';
 import Footer from '../../Footer/index';
@@ -124,7 +124,12 @@ export default function Cart() {
 
   const deleteProduct = (userId, productId, name) => {
     if (!isAuthenticated) {
-      dispatch(deleteFromCart(productId))
+      if (cart.length) {
+        dispatch(deleteFromCart(productId))
+      } else {
+        localStorage.removeItem('cart')
+        dispatch(resetCart())
+      }
       addDeleteAlert(name)
     }
     if (isAuthenticated) {
