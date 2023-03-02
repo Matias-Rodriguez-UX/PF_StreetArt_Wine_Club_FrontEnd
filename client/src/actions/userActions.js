@@ -217,7 +217,7 @@ export function addUserCart(payload) {
     try {
       console.log("PAYLOAD addUserCart: ", payload);
       const result = await axios.post(
-        `http://localhost:3001/users/${payload.userId}/cart`,
+        `/users/${payload.userId}/cart`,
         payload
       );
       console.log("result addUserCart: ", result);
@@ -229,7 +229,7 @@ export function addUserCart(payload) {
 
 export function getUserCart(id) {
   return async function (dispatch) {
-    let userCart = await axios.get(`http://localhost:3001/users/${id}/cart`);
+    let userCart = await axios.get(`/users/${id}/cart`);
     return (
       dispatch({
         type: GET_USER_CART,
@@ -244,7 +244,7 @@ export function updateUserCart(payload) {
   return async function () {
     try {
       const result = await axios.put(
-        `http://localhost:3001/users/${payload.userId}/cart`,
+        `/users/${payload.userId}/cart`,
         payload
       );
     } catch (error) { }
@@ -255,7 +255,7 @@ export function deleteUserCart(userId, productId) {
   return async function () {
     try {
       let result = await axios.delete(
-        `http://localhost:3001/users/${userId}/cart/${productId}`
+        `/users/${userId}/cart/${productId}`
       );
     } catch (error) {
       console.log("Error", error);
@@ -267,7 +267,7 @@ export function statusCart(payload) {
   return async function () {
     try {
       let result = await axios.put(
-        `http://localhost:3001/orders/checkout`,
+        `/orders/checkout`,
         payload
       );
     } catch (error) {
@@ -282,12 +282,12 @@ export function statusPayment(payload) {
     try {
       if (payload.addressId) {
         let result = await axios.put(
-          `http://localhost:3001/orders/checkout?addressId=${payload.addressId}`,
+          `/orders/checkout?addressId=${payload.addressId}`,
           payload
         );
       } else {
         let result = await axios.put(
-          `http://localhost:3001/orders/checkout`,
+          `/orders/checkout`,
           payload
         );
       }
@@ -301,7 +301,7 @@ export function deleteCart(userId) {
   return async function () {
     try {
       let result = await axios.delete(
-        `http://localhost:3001/users/${userId}/cart`
+        `/users/${userId}/cart`
       );
     } catch (error) {
       console.log("Error", error);
@@ -424,7 +424,7 @@ export function deleteUserCartGet(userId, productId) {
 export function updateSubscription(email) {
   return async function () {
     try {
-      await axios.put(`http://localhost:3001/newsletter`, email);
+      await axios.put(`/newsletter`, email);
     } catch (error) { }
   };
 }
@@ -432,7 +432,7 @@ export function updateSubscription(email) {
 export function getNewsletter() {
   return async function (dispatch) {
     try {
-      let newsletter = await axios.get(`http://localhost:3001/newsletter`,);
+      let newsletter = await axios.get(`/newsletter`,);
       return (
         dispatch({
           type: GET_NEWSLETTER,
