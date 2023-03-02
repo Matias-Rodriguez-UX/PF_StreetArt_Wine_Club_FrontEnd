@@ -17,8 +17,6 @@ import { useSelector } from "react-redux";
 
 export default function Home() {
     const { isLoading, isAuthenticated: auth } = useAuth0();
-    const cart = useSelector((state) => state.products.cart);
-    const currentUser = useSelector((state) => state.users.userInfo)
     console.log(localStorage)
     return (
         <>{isLoading ?
@@ -26,7 +24,7 @@ export default function Home() {
             : auth ?
                 <>
                     <Banner></Banner>
-                    <NavigationBar userInfo={currentUser} cart={cart}></NavigationBar>
+                    <NavigationBar ></NavigationBar>
                     <Main></Main>
                     <Section1></Section1>
                     <Why></Why>

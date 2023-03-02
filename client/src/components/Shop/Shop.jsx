@@ -188,7 +188,7 @@ export default function Shop() {
     return (
         <>
             <Banner />
-            <NavigationBar userInfo={currentUser} cart={cart} />
+            <NavigationBar />
             <Sort
                 handleClick={handleClick}
                 setSort={setSort}

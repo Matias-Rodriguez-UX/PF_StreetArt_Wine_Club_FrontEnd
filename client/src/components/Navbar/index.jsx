@@ -12,13 +12,11 @@ import { useSelector, useDispatch } from "react-redux"
 import "./navbar.css"
 import { getUserCart } from "../../actions/userActions";
 
-export default function NavigationBar({ cart }) {
+export default function NavigationBar() {
   const { isAuthenticated } = useAuth0();
   let location = useLocation();
   const userInfo = useSelector((state) => state.users.userInfo);
-
-
-
+  const cart = useSelector((state) => state.products.cart);
 
   return (
     <Navbar collapseOnSelect expand="lg" bg="light" variant="light" style={{ boxShadow: 'rgba(0, 0, 0, 0.1) 0px 4px 8px' }}>

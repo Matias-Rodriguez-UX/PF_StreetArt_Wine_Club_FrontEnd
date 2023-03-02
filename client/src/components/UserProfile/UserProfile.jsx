@@ -24,7 +24,6 @@ import UserAddress from "./UserAddress/UserAddress";
 
 export default function UserProfile() {
     const dispatch = useDispatch();
-    const cart = useSelector((state) => state.products.cart);
     // const users = useSelector((state) => state.users.users);
     const userInfo = useSelector((state) => state.users.userInfo);
     const favourites = useSelector((state) => state.users.userWishlist);
@@ -89,7 +88,7 @@ export default function UserProfile() {
             <div>
                 <div className="row " >
                     <Banner />
-                    <NavigationBar userInfo={userInfo} cart={cart} />
+                    <NavigationBar />
                     <div className='ms-3 col-3'>
                         <UserSideBar userName={userInfo.fullname} userPicture={userInfo.avatar} setCurrentPage={setCurrentPage} />
                         {auth && (userInfo.role === 'superAdmin' || userInfo.role === 'admin') ?
