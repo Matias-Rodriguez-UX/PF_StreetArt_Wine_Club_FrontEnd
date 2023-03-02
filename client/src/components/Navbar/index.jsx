@@ -10,18 +10,23 @@ import SignupButton from "../Login/Signup";
 import { NavDropdown } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux"
 import "./navbar.css"
+import { getUserCart } from "../../actions/userActions";
 
 export default function NavigationBar() {
   const { isAuthenticated } = useAuth0();
-
+  const dispatch = useDispatch();
   let location = useLocation();
   const cart = useSelector(state => state.products.cart)
   const userInfo = useSelector(state => state.users.userInfo);
   const [cartItemsCount, setCartItemsCount] = useState(0);
 
   useEffect(() => {
-    const itemsCount = cart?.length
-    setCartItemsCount(itemsCount);
+    if (userInfo.id && isAuthenticated) {
+      dispatch(getUserCart(currentUser.id)).then(() => {
+        const itemsCount = cart?.length
+        setCartItemsCount(itemsCount);
+      })
+    }
   }, [cart])
 
 
