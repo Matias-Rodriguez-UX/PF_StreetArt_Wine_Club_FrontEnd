@@ -55,7 +55,7 @@ export default function FormNewsEdit({ selectedData, setShowModalEdit }) {
     const handleSubmit = async (e, name) => {
         e.preventDefault()
         try {
-            const response = dispatch(updateSubscription({ emai: input.email }));
+            const response = dispatch(updateSubscription({ email: input.email }));
             if (response === 200) {
                 setPostSuccess(true);
             }
