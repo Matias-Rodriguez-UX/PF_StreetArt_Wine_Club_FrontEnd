@@ -31,8 +31,9 @@ export default function Memberships() {
 
     function hasMembership(name) {
         if (currentUser.id) {
-            for (const membership of currentUser?.memberships) {
-                if (membership?.name == name) {
+            console.log(currentUser.memberships)
+            for (const membership of currentUser.memberships) {
+                if (membership.name == name) {
                     console.log(name, 'verdadero vs', membership.name)
                     return true
                 } else {
