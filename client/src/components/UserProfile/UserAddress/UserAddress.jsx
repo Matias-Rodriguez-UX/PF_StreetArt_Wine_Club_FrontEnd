@@ -25,7 +25,7 @@ export default function UserAddress() {
 
     console.log(defaultAddress);
 
-
+    const [activeButton, setActiveButton] = useState(true)
     const [showToast, setShowToast] = useState(false);
     const [showToastSubmit, setShowToastSubmit] = useState(false);
     const [showToastAddress, setShowToastAddress] = useState(false);
@@ -69,6 +69,17 @@ export default function UserAddress() {
     useEffect(() => {
         dispatch(getStates());
         dispatch(getUserAddresses(userInfo.email))
+        if (input.reference === "" ||
+            input.address === "" ||
+            input.zipCode === "" ||
+            input.telephone === "" ||
+            input.userEmail === "" ||
+            input.state === "" ||
+            input.region === "") {
+            setActiveButton(true)
+        } else {
+            setActiveButton(false)
+        }
     }, [dispatch, input, addressToEdit]);
 
     const handleChange = (e) => {
@@ -309,10 +320,10 @@ export default function UserAddress() {
                         </Modal.Body>
                         <Modal.Footer>
                             <Button variant="secondary" onClick={() => setShowEditModal(false)}>
-                                Cancelar
+                                Cancel
                             </Button>
                             <Button variant=" btn-warning" type='submit' onClick={(e) => handleSaveChangedAddress(e)}>
-                                Guardar cambios
+                                Save Change
                             </Button>
                         </Modal.Footer>
                     </Modal>
@@ -379,7 +390,7 @@ export default function UserAddress() {
                         <div class="row">
                             <div class="col-sm-3">
                                 <div class="col-sm-9 text-secondary">
-                                    <input type="button" class="btn btn-warning btn-sm" value="Add" onClick={(e) => handleSubmit(e)} />
+                                    <input type="button" class="btn btn-warning float-end" value="Add" onClick={(e) => handleSubmit(e)} disabled={activeButton} />
                                 </div>
                                 {showToastSubmit && (
                                     <Toast className='toast prefers-reduced-motion: no-preference' show={showToastSubmit} onClose={toggleShowSubmit} delay={2000} autohide>
