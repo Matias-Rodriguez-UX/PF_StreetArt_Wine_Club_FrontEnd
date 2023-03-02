@@ -30,7 +30,7 @@ export default function NavigationBar() {
       const itemsCount = cart?.length
       setCartItemsCount(itemsCount)
     }
-  }, [dispatch, cart])
+  }, [dispatch])
 
 
   return (
