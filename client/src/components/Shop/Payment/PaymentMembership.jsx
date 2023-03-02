@@ -163,9 +163,17 @@ export default function PaymentMembership() {
             allowOutsideClick: true,
             confirmButtonColor: '#ffc107'
         }).then(() => {
-            dispatch(assignMemberships(userInfo.id, { idMembership: currentMembership }))
+            dispatch(assignMemberships(userInfo.id, { idMembership: currentMembership })).then(() => {
+                if (addressUser.reference.length) {
+                    dispatch(createUserAddress(addressUser)).then(() => {
+                        history.push('/userprofile');
+                    })
+                }
+            }).then(() => {
+                history.push('/userprofile');
+            })
         })
-        history.push('/userprofile');
+
     }
 
 
