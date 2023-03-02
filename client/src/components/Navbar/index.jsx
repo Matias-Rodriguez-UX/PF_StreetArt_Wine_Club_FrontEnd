@@ -18,13 +18,13 @@ export default function NavigationBar() {
   let location = useLocation();
   const cart = useSelector(state => state.products.cart)
   const userInfo = useSelector(state => state.users.userInfo);
-
+  const [items, setItems] = useState(cart?.length)
 
   useEffect(() => {
     if (userInfo.id) {
       dispatch(getUserCart(userInfo.id))
     }
-  }, [dispatch])
+  }, [dispatch, items])
 
 
   return (
