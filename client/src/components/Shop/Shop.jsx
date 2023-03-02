@@ -150,9 +150,11 @@ export default function Shop() {
                 quantity: 1,
                 email: user.email,
                 productId: id,
-            }))
+            })).then(() => {
+                dispatch(getUserCart(currentUser.id))
+            })
             setGetSwitch(true)
-            addAlert(cartQuantity, name);
+            addAlert(cartQuantity, name)
         }
         if (!isAuthenticated) {
             dispatch(addToCart(id, cartQuantity));
