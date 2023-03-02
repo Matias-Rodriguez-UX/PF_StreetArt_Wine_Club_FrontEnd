@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from 'react-redux';
-import {Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { deleteFromCart, removeCartQuantity, addCartQuantity, addCartToLs, addToCart } from '../../../actions';
 import NavigationBar from "../../Navbar/index";
 import Banner from '../../Home/Banner/index';
@@ -16,7 +16,7 @@ import SpinnerCard from "../WineCard/SpinnerCard";
 import LoginButton from "../../Login/LoginButton";
 
 export default function Cart() {
-  const cartState = useSelector ((state) => state.products.cartState)
+  const cartState = useSelector((state) => state.products.cartState)
   const cart = useSelector((state) => state.products.cart);
   const currentUser = useSelector((state) => state.users.userInfo)
   const [getSwitch, setGetSwitch] = useState(false)
@@ -31,18 +31,18 @@ export default function Cart() {
   const [newTotal, setNewTotal] = useState(total)
   const dispatch = useDispatch();
   const { user, isAuthenticated, isLoading } = useAuth0();
-console.log(newTotal)
-console.log(total)
+  console.log(newTotal)
+  console.log(total)
   useEffect(() => {
-    if(cart.length === 0 && !currentUser.id){
-      if(!isAuthenticated){
+    if (cart.length === 0 && !currentUser.id) {
+      if (!isAuthenticated) {
         const storedCart = JSON.parse(localStorage.getItem('cart')) || [];
         storedCart.forEach(item => dispatch(addCartToLs(item)));
       }
     }
-    if(currentUser.id){
+    if (currentUser.id) {
       const storedCart = JSON.parse(localStorage.getItem('cart')) || [];
-      if(storedCart.length > 0){
+      if (storedCart.length > 0) {
         setLocalStorageState(true)
       }
     }
@@ -61,75 +61,77 @@ console.log(total)
 
 
   useEffect(() => {
-    if(getSwitch){
+    if (getSwitch) {
       dispatch(getUserCart(currentUser.id))
       setGetSwitch(false)
     }
   }, [dispatch, getSwitch]);
 
   useEffect(() => {
-    if(!isAuthenticated){
+    if (!isAuthenticated) {
       localStorage.setItem('cart', JSON.stringify(cart));
     }
   }, [cart]);
 
 
   useEffect(() => {
-    if(!currentUser.id && isAuthenticated){
-        dispatch(getUserInfo(user.email))
+    if (!currentUser.id && isAuthenticated) {
+      dispatch(getUserInfo(user.email))
     }
-    if(currentUser.id && isAuthenticated && cartState === ''){
-        dispatch(getUserCart(currentUser.id))
+    if (currentUser.id && isAuthenticated && cartState === '') {
+      dispatch(getUserCart(currentUser.id))
     }
-    if(cartState !== '' ){
+    if (cartState !== '') {
       console.log('cart created o cart update')
       dispatch(getUserCart(currentUser.id))
     }
   }, [dispatch, isAuthenticated, currentUser.id, cartState])
 
   const addProductQuantity = (id, price) => {
-    if(isAuthenticated){
-        let updateWine = cart.find(el => el.id === id)
-        dispatch(updateUserCart({
-          userId: currentUser.id,
-          totalPrice: price * (updateWine.cartQuantity + 1),
-          quantity: updateWine.cartQuantity + 1,
-          email: user.email,
-          productId: id,
-        }))
-        dispatch(addCartQuantity(id))
+    if (isAuthenticated) {
+      let updateWine = cart.find(el => el.id === id)
+      dispatch(updateUserCart({
+        userId: currentUser.id,
+        totalPrice: price * (updateWine.cartQuantity + 1),
+        quantity: updateWine.cartQuantity + 1,
+        email: user.email,
+        productId: id,
+      }))
+      dispatch(addCartQuantity(id))
     }
-    if(!isAuthenticated){
+    if (!isAuthenticated) {
       dispatch(addCartQuantity(id))
     }
   }
 
   const restProductQuantity = (id, price) => {
-    if(isAuthenticated){
-        let updateWine = cart.find(el => el.id === id)
+    if (isAuthenticated) {
+      let updateWine = cart.find(el => el.id === id)
 
-        dispatch(updateUserCart({
-          userId: currentUser.id,
-          totalPrice: price * (updateWine.cartQuantity - 1),
-          quantity: updateWine.cartQuantity - 1,
-          email: user.email,
-          productId: id,
-        }))
-        dispatch(removeCartQuantity(id))
+      dispatch(updateUserCart({
+        userId: currentUser.id,
+        totalPrice: price * (updateWine.cartQuantity - 1),
+        quantity: updateWine.cartQuantity - 1,
+        email: user.email,
+        productId: id,
+      }))
+      dispatch(removeCartQuantity(id))
     }
-    if(!isAuthenticated){
+    if (!isAuthenticated) {
       dispatch(removeCartQuantity(id))
     }
   }
 
   const deleteProduct = (userId, productId, name) => {
-    if(!isAuthenticated){
+    if (!isAuthenticated) {
       dispatch(deleteFromCart(productId))
       addDeleteAlert(name)
     }
-    if(isAuthenticated){
-      dispatch(deleteUserCart(userId, productId))
-      setGetSwitch(true)
+    if (isAuthenticated) {
+      dispatch(deleteUserCart(userId, productId)).then(() => {
+        setGetSwitch(true)
+        dispatch(getUserCart(currentUser.id))
+      })
       addDeleteAlert(name)
     }
   }
@@ -141,26 +143,26 @@ console.log(total)
     }))
     // console.log(currentUser.email);
   }
-  
+
   const addDeleteAlert = (name) => {
     Swal.fire({
-        title: "YOUR PRODUCT WAS DELETED",
-        text: `You have deleted all ${name} Boxes`,
-        icon: 'warning',
-        timer: '4000',
-        timerProgressBar: true,
-        allowOutsideClick: true,
-        confirmButtonColor: '#ffc107'
+      title: "YOUR PRODUCT WAS DELETED",
+      text: `You have deleted all ${name} Boxes`,
+      icon: 'warning',
+      timer: '4000',
+      timerProgressBar: true,
+      allowOutsideClick: true,
+      confirmButtonColor: '#ffc107'
     })
-}
+  }
 
   return (
     <>
-      {localStorageState ? <CartAlert 
-        setLocalStorageState={setLocalStorageState} 
+      {localStorageState ? <CartAlert
+        setLocalStorageState={setLocalStorageState}
         localStorageState={localStorageState}
         cart={cart}
-        currentUser={currentUser}/> : undefined}
+        currentUser={currentUser} /> : undefined}
       <Banner />
       <NavigationBar />
       <div className="container d-flex col align-items-center" >
@@ -213,26 +215,26 @@ console.log(total)
       <div className="container d-flex align-items-center justify-content-around">
         <div className="d-flex ">
           <div>
-              {
-                total === newTotal ?
-                  <p>
-                    <strong>Total: ${newTotal}.00-</strong>
-                  </p> :
-                  <div className='d-flex align-items-center gap-4'><p className="fs-4 fw-bold">Total: </p><p className="text-decoration-line-through text-muted fs-6">${total}.00-</p><p className="fs-4 fw-bold"> ${cart.length >0? newTotal : 0}.00-</p></div>
-              }
-            </div>
+            {
+              total === newTotal ?
+                <p>
+                  <strong>Total: ${newTotal}.00-</strong>
+                </p> :
+                <div className='d-flex align-items-center gap-4'><p className="fs-4 fw-bold">Total: </p><p className="text-decoration-line-through text-muted fs-6">${total}.00-</p><p className="fs-4 fw-bold"> ${cart.length > 0 ? newTotal : 0}.00-</p></div>
+            }
+          </div>
         </div>
         <div className="float-end" >
           {isAuthenticated ?
             (
               <div>{cart.length ? (
                 <Link to={"/payment"}>
-                <button type="button" id="button-cart" className="btn btn-warning btn-lg mb-4" onClick={handleStatus}>Buy Product<i class="bi bi-cart-check-fill ms-2"></i></button>
-              </Link>
-              ):
-              (
-                <button disabled type="button" id="button-cart" className="btn btn-warning btn-lg mb-4">Buy Product<i class="bi bi-cart-check-fill ms-2"></i></button>
-              )
+                  <button type="button" id="button-cart" className="btn btn-warning btn-lg mb-4" onClick={handleStatus}>Buy Product<i class="bi bi-cart-check-fill ms-2"></i></button>
+                </Link>
+              ) :
+                (
+                  <button disabled type="button" id="button-cart" className="btn btn-warning btn-lg mb-4">Buy Product<i class="bi bi-cart-check-fill ms-2"></i></button>
+                )
               }</div>
             ) :
             (
@@ -240,7 +242,7 @@ console.log(total)
             )
           }
         </div>
-      </div>
+      </div>
       <div className="col col-12">
         <Footer />
       </div>
