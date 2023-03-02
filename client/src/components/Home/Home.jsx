@@ -17,7 +17,6 @@ import { useSelector } from "react-redux";
 
 export default function Home() {
     const { isLoading, isAuthenticated: auth } = useAuth0();
-    console.log(localStorage)
     return (
         <>{isLoading ?
             <Loader />
