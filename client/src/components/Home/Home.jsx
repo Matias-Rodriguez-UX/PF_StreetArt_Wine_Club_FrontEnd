@@ -16,6 +16,8 @@ import { loadingAction } from "../../actions";
 
 export default function Home() {
     const { isLoading, isAuthenticated: auth } = useAuth0();
+    const cart = useSelector((state) => state.products.cart);
+    const currentUser = useSelector((state) => state.users.userInfo)
     console.log(localStorage)
     return (
         <>{isLoading ?
@@ -23,7 +25,7 @@ export default function Home() {
             : auth ?
                 <>
                     <Banner></Banner>
-                    <NavigationBar></NavigationBar>
+                    <NavigationBar userInfo={currentUser} cart={cart}></NavigationBar>
                     <Main></Main>
                     <Section1></Section1>
                     <Why></Why>

@@ -12,13 +12,9 @@ import { useSelector, useDispatch } from "react-redux"
 import "./navbar.css"
 import { getUserCart } from "../../actions/userActions";
 
-export default function NavigationBar() {
+export default function NavigationBar({ cart, userInfo }) {
   const { isAuthenticated } = useAuth0();
-  const cartState = useSelector((state) => state.products.cartState)
-  const dispatch = useDispatch();
   let location = useLocation();
-  const cart = useSelector(state => state.products.cart)
-  const userInfo = useSelector(state => state.users.userInfo);
   const [cartItemsCount, setCartItemsCount] = useState(0);
 
   useEffect(() => {
@@ -26,11 +22,6 @@ export default function NavigationBar() {
     setCartItemsCount(itemsCount)
   }, [cart])
 
-  useEffect(() => {
-    if (userInfo.id && isAuthenticated) {
-      dispatch(getUserCart(userInfo.id))
-    }
-  }, [cartItemsCount])
 
 
   return (
