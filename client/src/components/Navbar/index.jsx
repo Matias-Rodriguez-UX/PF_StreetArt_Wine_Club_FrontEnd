@@ -21,16 +21,9 @@ export default function NavigationBar() {
   const [cartItemsCount, setCartItemsCount] = useState(0);
 
   useEffect(() => {
-    if (userInfo.id && isAuthenticated) {
-      dispatch(getUserCart(userInfo.id)).then(() => {
-        const itemsCount = cart?.length
-        setCartItemsCount(itemsCount);
-      })
-    } else {
-      const itemsCount = cart?.length
-      setCartItemsCount(itemsCount)
-    }
-  }, [dispatch, cart])
+    const itemsCount = cart?.length
+    setCartItemsCount(itemsCount)
+  }, [cart])
 
 
   return (
