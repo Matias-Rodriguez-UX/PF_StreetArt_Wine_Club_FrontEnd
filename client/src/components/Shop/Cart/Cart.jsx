@@ -128,10 +128,8 @@ export default function Cart() {
       addDeleteAlert(name)
     }
     if (isAuthenticated) {
-      dispatch(deleteUserCart(userId, productId)).then(() => {
-        setGetSwitch(true)
-        dispatch(getUserCart(currentUser.id))
-      })
+      dispatch(deleteUserCart(userId, productId))
+      setGetSwitch(true)
       addDeleteAlert(name)
     }
   }
