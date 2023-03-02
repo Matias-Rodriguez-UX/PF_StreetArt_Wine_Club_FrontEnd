@@ -133,8 +133,11 @@ export default function Cart() {
       addDeleteAlert(name)
     }
     if (isAuthenticated) {
-      dispatch(deleteUserCart(userId, productId))
-      setGetSwitch(true)
+      dispatch(deleteUserCart(userId, productId)).then(() => {
+        setGetSwitch(true)
+        dispatch(getUserCart(currentUser.id))
+      })
+
       addDeleteAlert(name)
     }
   }
@@ -183,7 +186,7 @@ export default function Cart() {
             </tr>
           </thead>
           <tbody >
-            {cart.map(product => (
+            {cart?.map(product => (
               <tr key={product.id} >
                 <th scope="col" className="text-center">
                   <img src={product.image} className="ms-3 align-middle" alt="imagen" style={{ width: '100px', height: '100px' }} id="img-detail" />
@@ -230,7 +233,7 @@ export default function Cart() {
         <div className="float-end" >
           {isAuthenticated ?
             (
-              <div>{cart.length ? (
+              <div>{cart?.length ? (
                 <Link to={"/payment"}>
                   <button type="button" id="button-cart" className="btn btn-warning btn-lg mb-4" onClick={handleStatus}>Buy Product<i class="bi bi-cart-check-fill ms-2"></i></button>
                 </Link>
