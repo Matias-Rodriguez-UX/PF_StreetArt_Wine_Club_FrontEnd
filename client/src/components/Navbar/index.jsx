@@ -27,7 +27,7 @@ export default function NavigationBar() {
   }, [cart])
 
   useEffect(() => {
-    if (userInfo.id && isAuthenticated && cartState === '') {
+    if (userInfo.id && isAuthenticated) {
       dispatch(getUserCart(userInfo.id))
     }
   }, [cartItemsCount])
