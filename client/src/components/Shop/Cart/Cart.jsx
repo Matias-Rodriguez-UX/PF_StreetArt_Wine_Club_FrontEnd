@@ -146,7 +146,6 @@ export default function Cart() {
     dispatch(statusCart({
       email: currentUser.email,
       status: 'processing payment',
-      discount: discount
     }))
     // console.log(currentUser.email);
   }
