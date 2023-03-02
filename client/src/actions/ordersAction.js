@@ -5,7 +5,7 @@ import {
   GET_ORDERS,
   LOCALSTORAGE_CART,
   GET_USER_ORDER,
-    CHANGE_ORDER,
+  CHANGE_ORDER,
 } from "./allActions";
 
 const headers = {
@@ -104,7 +104,7 @@ export function changeOrder(orderId, addressId, status) {
   return async function (dispatch) {
     try {
       let order
-      addressId !== null || addressId !== NaN ?
+      addressId !== null && addressId !== NaN ?
         order = await axios.put(`/orders/update?orderId=${orderId}&addressId=${addressId}`, status) :
         order = await axios.put(`/orders/update?orderId=${orderId}`, status)
       return (
