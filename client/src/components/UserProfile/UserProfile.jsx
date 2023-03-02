@@ -24,7 +24,7 @@ import UserAddress from "./UserAddress/UserAddress";
 
 export default function UserProfile() {
     const dispatch = useDispatch();
-
+    const cart = useSelector((state) => state.products.cart);
     // const users = useSelector((state) => state.users.users);
     const userInfo = useSelector((state) => state.users.userInfo);
     const favourites = useSelector((state) => state.users.userWishlist);
@@ -33,7 +33,7 @@ export default function UserProfile() {
     const [currentPage, setCurrentPage] = useState('home');
 
     const { isLoading, isAuthenticated: auth, user } = useAuth0();
-    
+
     let userDb = {};
 
     if (auth) {
@@ -56,7 +56,7 @@ export default function UserProfile() {
     }, [dispatch, userDb.email]);
 
     useEffect(() => {
-        if(userInfo.status === 'User Created'){
+        if (userInfo.status === 'User Created') {
             dispatch(getAllUsers());
             dispatch(getUserInfo(userDb.email));
             dispatch(getUserWishlist(userDb.email));
@@ -89,7 +89,7 @@ export default function UserProfile() {
             <div>
                 <div className="row " >
                     <Banner />
-                    <NavigationBar />
+                    <NavigationBar userInfo={userInfo} cart={cart} />
                     <div className='ms-3 col-3'>
                         <UserSideBar userName={userInfo.fullname} userPicture={userInfo.avatar} setCurrentPage={setCurrentPage} />
                         {auth && (userInfo.role === 'superAdmin' || userInfo.role === 'admin') ?

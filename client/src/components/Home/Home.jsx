@@ -13,6 +13,7 @@ import RegisterModal from "./RegisterModal/RegisterModal";
 import { useAuth0 } from "@auth0/auth0-react";
 import { Loader } from "../Loader";
 import { loadingAction } from "../../actions";
+import { useSelector } from "react-redux";
 
 export default function Home() {
     const { isLoading, isAuthenticated: auth } = useAuth0();
