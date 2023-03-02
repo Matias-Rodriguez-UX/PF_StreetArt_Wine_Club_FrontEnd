@@ -30,18 +30,22 @@ export default function Memberships() {
 
 
     function hasMembership(name) {
+        let cont = 0
         if (currentUser.id) {
             console.log(currentUser.memberships)
             for (const membership of currentUser.memberships) {
-                if (membership.name == name) {
+                if (membership.name === name) {
                     console.log(name, 'verdadero vs', membership.name)
-                    return true
+                    cont++
+                    console.log(cont)
                 } else {
                     console.log(name, ' falso vs', membership.name)
-                    return false
+                    cont
+                    console.log(cont)
                 }
             }
         }
+        return cont === 0 ? false : true
     }
 
     function handleClick(name) {
