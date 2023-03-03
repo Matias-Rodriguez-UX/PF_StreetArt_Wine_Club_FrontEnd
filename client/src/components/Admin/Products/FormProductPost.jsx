@@ -1,10 +1,12 @@
-import axios from "axios";
+require('dotenv').config();
 import React, { useEffect, useState } from "react";
 import { Badge, Button, Form, Image, InputGroup } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
 import { getGrapes, getProducts, getRegions, getStates, getTypes, postProduct } from "../../../actions";
 import Swal from 'sweetalert2';
+const {
+    API_KEY_CLOUD
+} = process.env;
 
 export default function FormProductsPost({ setShowModalPost }) {
     const dispatch = useDispatch()
@@ -165,7 +167,7 @@ export default function FormProductsPost({ setShowModalPost }) {
         console.log(file)
         formData.append('file', file);
         formData.append('upload_preset', 'products')
-        formData.append('api_key', 757917398541782);
+        formData.append('api_key', `${API_KEY_CLOUD}`);
         setLoading(true)
         const res = await fetch('https://api.cloudinary.com/v1_1/dom9fvn1q/image/upload',
             {

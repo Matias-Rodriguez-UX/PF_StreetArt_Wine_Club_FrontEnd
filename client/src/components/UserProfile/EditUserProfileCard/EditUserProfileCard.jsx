@@ -1,3 +1,4 @@
+require('dotenv').config();
 import React, { useEffect, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useDispatch, useSelector } from 'react-redux';
@@ -5,7 +6,9 @@ import { getUserInfo, editUserInfo, editUserAddress } from "../../../actions/use
 import { Image } from "react-bootstrap";
 import { Toast } from 'react-bootstrap';
 import { useHistory } from "react-router-dom";
-
+const {
+    API_KEY_CLOUD
+} = process.env;
 
 
 
@@ -49,7 +52,7 @@ export default function EditUserProfileCard() {
         formData.append("file", file);
         console.log(file);
         formData.append("upload_preset", "user_profile_pictures");
-        formData.append('api_key', 757917398541782);
+        formData.append('api_key', `${API_KEY_CLOUD}`);
         setLoading(true);
         const res = await fetch("https://api.cloudinary.com/v1_1/dom9fvn1q/image/upload", {
             method: "POST",
