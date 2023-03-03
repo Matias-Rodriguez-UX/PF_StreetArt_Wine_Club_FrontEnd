@@ -81,14 +81,6 @@ export default function EditUserProfileCard() {
         dispatch(editUserInfo(input)).then(() => {
             dispatch(getUserInfo(userEmail))
         }).then(() => {
-            setInput({
-                fullname: userInfo.fullname,
-                profile: userInfo.profile ? userInfo.profile : '',
-                avatar: userInfo.avatar,
-                status: 'active',
-                userEmail: userInfo.email
-            });
-        }).then(() => {
             toggleShowUser();
         })
         // dispatch(editUserAddress(userInfo.addresses[addressSelect].id,input))
