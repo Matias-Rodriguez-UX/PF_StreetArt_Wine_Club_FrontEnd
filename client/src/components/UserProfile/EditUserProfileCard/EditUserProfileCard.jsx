@@ -80,20 +80,20 @@ export default function EditUserProfileCard() {
         // e.preventDefault();
         dispatch(editUserInfo(input)).then(() => {
             dispatch(getUserInfo(userEmail))
+        }).then(() => {
+            setInput({
+                fullname: userInfo.fullname,
+                profile: userInfo.profile ? userInfo.profile : '',
+                avatar: userInfo.avatar,
+                status: 'active',
+                userEmail: userInfo.email
+            });
+        }).then(() => {
+            toggleShowUser();
         })
         // dispatch(editUserAddress(userInfo.addresses[addressSelect].id,input))
-        setInput({
-            fullname: '',
-            email: '',
-            phone: '',
-            reference: '',
-            address: '',
-            state: '',
-            city: '',
-            zipCode: '',
-            profile: ''
-        });
-        toggleShowUser();
+
+
     };
 
     return (
