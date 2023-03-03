@@ -7,7 +7,7 @@ export default function Footer() {
         <>
             <div className="container-fluid m-0 p-5 h-100 bg-dark text-white ">
                 <div className="container d-flex flex-wrap gap-3 align-items-center justify-content-center">
-                    <img src="https://res.cloudinary.com/dom9fvn1q/image/upload/v1677697005/products/pkkcqvdzzhu5graylrzw.png" alt="logo" style={{ width: '150px' }} />
+                    <img className="me-4" src="https://res.cloudinary.com/dom9fvn1q/image/upload/v1677697005/products/pkkcqvdzzhu5graylrzw.png" alt="logo" style={{ width: '150px' }} />
                     <div className="d-flex m-1 gap-3 ms-5 me-5 align-items-center justify-content-center ">
                         <Link className='text-reset text-decoration-none' to="/home">Home</Link>
                         <Link className='text-reset text-decoration-none' to="/shop">Shop</Link>
