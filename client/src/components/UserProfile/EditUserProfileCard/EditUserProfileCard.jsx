@@ -1,4 +1,3 @@
-require('dotenv').config();
 import React, { useEffect, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useDispatch, useSelector } from 'react-redux';
@@ -7,7 +6,7 @@ import { Image } from "react-bootstrap";
 import { Toast } from 'react-bootstrap';
 import { useHistory } from "react-router-dom";
 const {
-    API_KEY_CLOUD
+    REACT_APP_API_KEY_CLOUD
 } = process.env;
 
 

@@ -3,9 +3,7 @@ import { Modal, Button, Form, InputGroup, Badge, Image } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteProduct, getGrapes, getProducts, getRegions, getStates, getTypes, updateProduct } from "../../../actions";
 import Swal from 'sweetalert2';
-const {
-    API_KEY_CLOUD
-} = process.env;
+const cloudKey = process.env.REACT_APP_API_KEY_CLOUD;
 
 export default function FormProducts({ selectedData, setShowModalEdit }) {
     const dispatch = useDispatch()
@@ -127,7 +125,7 @@ export default function FormProducts({ selectedData, setShowModalEdit }) {
         console.log(file)
         formData.append('file', file);
         formData.append('upload_preset', 'products')
-        formData.append('api_key', `${API_KEY_CLOUD}`);
+        formData.append('api_key', `${cloudKey}`);
         setLoading(true)
         const res = await fetch('https://api.cloudinary.com/v1_1/dom9fvn1q/image/upload',
             {
