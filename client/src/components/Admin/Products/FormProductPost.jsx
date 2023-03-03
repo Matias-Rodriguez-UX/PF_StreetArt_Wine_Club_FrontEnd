@@ -164,7 +164,7 @@ export default function FormProductsPost({ setShowModalPost }) {
         console.log(file)
         formData.append('file', file);
         formData.append('upload_preset', 'products')
-        formData.append('api_key', `${cloudKey}`);
+        formData.append('api_key', 757917398541782);
         setLoading(true)
         const res = await fetch('https://api.cloudinary.com/v1_1/dom9fvn1q/image/upload',
             {
