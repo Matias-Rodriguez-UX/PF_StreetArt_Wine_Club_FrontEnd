@@ -50,8 +50,12 @@ export default function Detail(props) {
     dispatch(loadingAction(true))
     dispatch(getReviews(idProduct))
     if (reviews.length) { setAllReviews(reviews) }
-    if (currentUser.email !== user.email && isAuthenticated) {
+    if (isAuthenticated && !currentUser.id) {
       dispatch(getUserInfo(user.email))
+    }
+    if (isAuthenticated && currentUser.email) {
+      currentUser.email !== user.email?
+      dispatch(getUserInfo(user.email)):null
     }
     dispatch(getMemberships())
 
