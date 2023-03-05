@@ -14,7 +14,7 @@ import axios from "axios";
 // axios.defaults.baseURL = 'http://localhost:3001';
 axios.defaults.headers.common['Authorization'] = sessionStorage.getItem('user');
 
-axios.defaults.baseURL = 'https://streetartwineclub-backend-production.up.railway.app/';
+axios.defaults.baseURL = 'https://streetartwineclub-backend-production.up.railway.app';
 
 const domain = "dev-6ttpzvp7k3ijg0l6.us.auth0.com";
 const clientId = "aAnP8ywOwAijCGOi8OsIKdidjFMdoeHl";
