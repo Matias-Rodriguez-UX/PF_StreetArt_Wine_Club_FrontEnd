@@ -14,10 +14,10 @@ import axios from "axios";
 // axios.defaults.baseURL = 'http://localhost:3001';
 axios.defaults.headers.common['Authorization'] = sessionStorage.getItem('user');
 
-axios.defaults.baseURL = 'https://pfstreetartwineclubbackend-production.up.railway.app';
+axios.defaults.baseURL = 'https://streetartwineclub-backend-production.up.railway.app/';
 
-const domain = "dev-eqjids43tpn0c5lj.us.auth0.com";
-const clientId = "CW1fFkRrBryYtSpyefTvYFWGf6sNQNhg";
+const domain = "dev-6ttpzvp7k3ijg0l6.us.auth0.com";
+const clientId = "aAnP8ywOwAijCGOi8OsIKdidjFMdoeHl";
 
 ReactDOM.render(
   <Provider store={store}>
@@ -26,7 +26,7 @@ ReactDOM.render(
         domain={domain}
         clientId={clientId}
         authorizationParams={{
-          redirect_uri: "https://pf-street-art-wine-club-front-en-git-bb3b74-matias-rodriguez-ux.vercel.app/userprofile",
+          redirect_uri: "https://pf-street-art-wine-club-front-end.vercel.app/home",
         }}
       >
         <App />
