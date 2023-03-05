@@ -32,10 +32,10 @@ export default function ReviewsTemplate({ review, handleClickEditReview, setShow
             {isLoading ? <Loader /> :
                 <div class="d-flex mt-3 mb-4 align-items-center justify-content-center row bg-light p-2">
                     <div className="img-avatar col-2">
-                        <img src={userInfo.avatar} className="avatar-image" alt="image" />
+                        <img src={review.user.avatar} className="avatar-image" alt="image" />
                     </div>
                     <div class="col-4">
-                        <h6 class="mb-1">{userInfo.fullname}</h6>
+                        <h6 class="mb-1">{review.user.fullname}</h6>
                         <p class="mb-0"><i>{review.review}</i></p>
                         <div class="d-flex mt-2">
                             <Rating name='rating' max={5} value={review.rating} readOnly />
