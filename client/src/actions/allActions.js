@@ -17,5 +17,6 @@ export const EDIT_ADDRESS = 'EDIT_ADDRESS';
 export const DELETE_USER = 'DELETE_USER';
 export const GET_USER_BY_ID = 'GET_USER_BY_ID';
 export const POST_USER_INFO = 'POST_USER_INFO';
-
+// export const REVIEW_PRODUCT = 'REVIEW_PRODUCT';
+// export const GET_REVIEWS = 'GET_REVIEWS';
 

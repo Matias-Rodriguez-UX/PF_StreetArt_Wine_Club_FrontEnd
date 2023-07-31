@@ -7,6 +7,7 @@ import NavigationBar from "../../Navbar/index";
 import Banner from '../../Home/Banner/index';
 import Footer from '../../Footer/index'
 /* import {videogameDetail} from '../../actions/index'; */
+import Reviws from "../Reviws/Reviws"; 
 
 /* import Loading from "../Loading/Loading.jsx"; */
 import { getDetail } from "../../../actions";
@@ -65,7 +66,7 @@ export default function Detail(props){
           </div>
         </div>
         <div className="col col-12 p-5" id="review">
-          <h3>REVIEW</h3>
+        <Reviws />
         </div>
         <div class=" d-flex mt-3 mb-4 align-items-center justify-content-center">
             <div className="img-avatar">

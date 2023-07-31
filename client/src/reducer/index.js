@@ -10,6 +10,8 @@ import {
   GET_REGIONS,
   GET_STATES,
   GET_GRAPES,
+ // REVIEW_PRODUCT,
+  //GET_REVIEWS,
 } from "../actions/allActions";
 
 const initialState = {
@@ -22,6 +24,7 @@ const initialState = {
   regions: [],
   states: [],
   grapes: [],
+ 
 };
 
 function sortArrayAtoZ(x, y) {
@@ -122,6 +125,16 @@ export default function reducer(state = initialState, action) {
         ...state,
         grapes: action.payload
       }
+      // case REVIEW_PRODUCT:
+      //   return{
+      //     ...state
+      //   }
+      // case GET_REVIEWS:
+      //   return{
+      //     ...state,
+      //     getReviews: action.payload
+      //   }  
+   
     default:
       return state; //!
   }

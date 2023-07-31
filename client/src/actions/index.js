@@ -11,6 +11,8 @@ import {
   GET_REGIONS,
   GET_STATES,
   GET_GRAPES,
+ // REVIEW_PRODUCT, 
+ // GET_REVIEWS, 
 } from "./allActions";
 
 const headers = {
@@ -183,3 +185,23 @@ export function getGrapes() {
     }
   };
 }
+
+// export function reviewProduct(payload) {
+//   return async function(dispatch) {
+//       const res = await axios.post('http://localhost:3001/products/id/review', payload)
+//       return {
+//           type: REVIEW_PRODUCT,
+//           res
+//       }
+//   };
+// };
+
+// export function getReviews() {
+//   return async function(dispatch) {
+//       const res = await axios.get('http://localhost:3001/products/id/review')
+//       return dispatch({
+//           type: GET_REVIEWS,
+//           payload: res.data
+//       });
+//   };
+// };
